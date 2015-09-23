@@ -1,0 +1,5 @@
+/* Import color variables */
+.food-list-container {
+  border-right: 1px solid #f63;
+  padding: 30px;
+}

@@ -1,0 +1,30 @@
+doctype
+html
+  head
+    title #{title} - Intake24 Admin
+    
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/libs/animate.css')
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    link(rel='stylesheet', href='/scripts/themes/default/style.min.css')
+    link(rel='stylesheet', href='/stylesheets/food-list.css')
+    link(rel='stylesheet', href='/stylesheets/food-properties.css')
+
+    script(type='text/javascript' src='https://code.jquery.com/jquery-2.1.4.min.js')
+    script(type='text/javascript' src='/scripts/jstree.min.js')
+    script(type='text/javascript' src='/scripts/main.js')
+
+  body.animated.fadeIn
+    header
+      h4 <strong>Intake24</strong> Admin
+      a(href='#').auth-menu
+        i.fa.fa-user
+        p Edward Jenkins
+
+    .container
+      .main-content
+        block content
+      .sidebar
+        block sidebar
+        .sidebar-footer
+          p Open Lab 2015

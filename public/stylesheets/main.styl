@@ -1,0 +1,147 @@
+/* Import nib */
+@import 'nib'
+
+/* Import color variables */
+@import 'variables'
+
+/* Grab custom fonts from Google */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,300')
+
+/* Nib provides a CSS reset */
+global-reset()
+
+transition()
+  -webkit-transition arguments
+  -moz-transition arguments
+  -o-transition arguments
+  transition arguments
+
+.clearfloat
+	clear both
+	float none
+
+body
+	font-family 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif
+
+header
+	background-color rgba(255, 255, 255, 0.1)
+	background-color main-color
+	line-height 50px
+	padding 0 15px
+
+	h4
+		color white
+		font-size 18px
+		font-weight 300
+
+		strong
+			font-weight 400
+
+	a.auth-menu
+		background-color main-color
+		border-radius 6px
+		color white
+		line-height 34px
+		margin 8px
+		padding 0 15px
+		position absolute
+		right 0
+		top 0
+		transition(background .2s ease-out)
+
+		i
+			float left
+			line-height inherit
+			margin-right 8px
+
+		p
+			float left
+			line-height inherit
+			font-size 13px
+
+	a.auth-menu:hover
+		background-color darken(main-color, 10%)
+		cursor pointer
+	a.auth-menu:active
+		background-color darken(main-color, 25%)
+
+.main-content
+	padding-left 230px
+
+.col
+	float left
+	min-width 320px
+	width 50%
+
+.food-list-col
+	width 40%
+
+.food-properties-col
+	width 60%
+
+.sidebar
+	background-color sidebar-color
+	bottom 0
+	left 0
+	overflow scroll
+	position absolute
+	top 50px
+	width 230px
+
+	.sidebar-footer
+		bottom 0
+		left 0
+		line-height 50px
+		margin-top 50px
+		position absolute
+		right 0
+		text-align center
+
+		p
+			color lighten(sidebar-color, 20%)
+			font-size 13px
+
+
+	ul
+		list-style none
+		margin 0
+		padding 0
+
+		li
+			a
+				border-left transparent 3px solid
+				color white
+				display block
+				font-size 13px
+				line-height 48px
+				margin 0
+				padding 0 60px 0 20px
+				position relative
+				text-decoration none
+	
+				i
+					font-size 11px
+					line-height 48px
+					position absolute
+					right 10px
+					top 0px
+				
+			a.active, a:hover
+				border-left-color main-color
+				cursor pointer
+
+	.nested-li li
+		background-color lighten(sidebar-color, 5%)
+	
+	.nested-li li a:hover
+		border-left-color #aaa
+
+/* Buttons */
+	.btn
+		background-color #fafafa
+		border 1px solid #e1e1e1
+		border-radius 6px
+		float left
+		font-size 13px
+		margin 10px 10px 10px 0
+		padding 12px 15px

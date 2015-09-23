@@ -1,0 +1,231 @@
+/* Import nib */
+/* Import color variables */
+/* Grab custom fonts from Google */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,300");
+/* Nib provides a CSS reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+  color: #000;
+  background: #fff;
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+a img {
+  border: none;
+}
+.clearfloat {
+  clear: both;
+  float: none;
+}
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+header {
+  background-color: rgba(255,255,255,0.1);
+  background-color: #f63;
+  line-height: 50px;
+  padding: 0 15px;
+}
+header h4 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 300;
+}
+header h4 strong {
+  font-weight: 400;
+}
+header a.auth-menu {
+  background-color: #f63;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  color: #fff;
+  line-height: 34px;
+  margin: 8px;
+  padding: 0 15px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  -webkit-transition: background 0.2s ease-out;
+  -moz-transition: background 0.2s ease-out;
+  -o-transition: background 0.2s ease-out;
+  transition: background 0.2s ease-out;
+}
+header a.auth-menu i {
+  float: left;
+  line-height: inherit;
+  margin-right: 8px;
+}
+header a.auth-menu p {
+  float: left;
+  line-height: inherit;
+  font-size: 13px;
+}
+header a.auth-menu:hover {
+  background-color: #ff4f14;
+  cursor: pointer;
+}
+header a.auth-menu:active {
+  background-color: #e63900;
+}
+.main-content {
+  padding-left: 230px;
+}
+.col {
+  float: left;
+  min-width: 320px;
+  width: 50%;
+}
+.food-list-col {
+  width: 40%;
+}
+.food-properties-col {
+  width: 60%;
+}
+.sidebar {
+  background-color: #222d32;
+  bottom: 0;
+  left: 0;
+  overflow: scroll;
+  position: absolute;
+  top: 50px;
+  width: 230px;
+}
+.sidebar .sidebar-footer {
+  bottom: 0;
+  left: 0;
+  line-height: 50px;
+  margin-top: 50px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+}
+.sidebar .sidebar-footer p {
+  color: #445b65;
+  font-size: 13px;
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar ul li a {
+  border-left: transparent 3px solid;
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  line-height: 48px;
+  margin: 0;
+  padding: 0 60px 0 20px;
+  position: relative;
+  text-decoration: none;
+}
+.sidebar ul li a i {
+  font-size: 11px;
+  line-height: 48px;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+  border-left-color: #f63;
+  cursor: pointer;
+}
+.sidebar .nested-li li {
+  background-color: #2b383f;
+}
+.sidebar .nested-li li a:hover {
+  border-left-color: #aaa;
+}
+/* Buttons */
+.btn {
+  background-color: #fafafa;
+  border: 1px solid #e1e1e1;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  float: left;
+  font-size: 13px;
+  margin: 10px 10px 10px 0;
+  padding: 12px 15px;
+}

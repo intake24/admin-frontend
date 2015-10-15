@@ -1,6 +1,16 @@
+/* Import CSS snippets */
+.clearfloat {
+  clear: both;
+  float: none;
+}
 /* Import color variables */
 .properties-container {
+  display: none;
   padding: 30px;
+}
+.properties-container hr {
+  border: none;
+  border-bottom: #e1e1e1 1px solid;
 }
 .properties-container .property {
   margin-bottom: 50px;

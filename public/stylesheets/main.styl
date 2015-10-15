@@ -1,6 +1,9 @@
 /* Import nib */
 @import 'nib'
 
+/* Import snippets */
+@import 'snippets'
+
 /* Import color variables */
 @import 'variables'
 
@@ -9,20 +12,6 @@
 
 /* Nib provides a CSS reset */
 global-reset()
-
-transition()
-  -webkit-transition arguments
-  -moz-transition arguments
-  -o-transition arguments
-  transition arguments
-
-border-right()
-  border-top-right-radius arguments
-  border-bottom-right-radius arguments
-
-.clearfloat
-	clear both
-	float none
 
 html
 	background-color light-grey
@@ -94,22 +83,13 @@ header
 
 .food-list-col
 	background-color light-grey
-	border-right 1px solid #f2f2f2
-	width 369px
+	width 370px
 
 .properties-col
-	background-color transparent
-	left 600px
-	opacity 0
-	right 0
-	display none
-	transition(opacity .3s ease-out)
-	transition(background-color .3s ease-out)
-
-.properties-col.active
 	background-color white
-	opacity 1
-	display block
+	border-left #e1e1e1 1px solid
+	left 600px
+	right 0
 
 @media (max-width: 1080px)
 	.col

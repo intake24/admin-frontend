@@ -1,3 +1,8 @@
+/* Import CSS snippets */
+.clearfloat {
+  clear: both;
+  float: none;
+}
 /* Import color variables */
 .modal {
   background: #fff;

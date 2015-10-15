@@ -2,6 +2,13 @@ extend layout
 
 block content
 	.col.food-list-col
+		.search-container
+			.search-field-wrapper
+				.search-field
+					i.fa.fa-search
+					input(type='text' id='search-field' placeholder='Search')
+			#search-results
+				ul
 		.food-list-container
 			.food-list#food-list
 				ul
@@ -29,8 +36,17 @@ block content
 						span #{ gettext("Add to category...") }
 					.clearfloat
 
-			.property.visibly-hidden
+			.property
 				h3 #{ gettext("Portion size estimation") }
+
+			.property
+				hr
+				.input-wrapper
+					.btn
+						span #{ gettext("Accept changes") }
+					.btn
+						span #{ gettext("Discard changes") }
+					.clearfloat
 
 		.properties-container#food-properties-container
 
@@ -44,7 +60,7 @@ block content
 					input(id='input-food-code' type='text', placeholder='#{ gettext("ALBU") }')
 				.input-wrapper
 					label #{ gettext("NDNS code") }
-					input(type='text', placeholder='10968')
+					input(id='input-NDNS-code' type='text', placeholder='10968')
 				.input-wrapper
 					label #{ gettext("Food group") }
 					select
@@ -61,8 +77,17 @@ block content
 						span #{ gettext("Add to category...") }
 					.clearfloat
 
-			.property.visibly-hidden
+			.property
 				h3 #{ gettext("Portion size estimation") }
+
+			.property
+				hr
+				.input-wrapper
+					.btn
+						span #{ gettext("Accept changes") }
+					.btn
+						span #{ gettext("Discard changes") }
+					.clearfloat
 
 
 block sidebar

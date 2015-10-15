@@ -1,4 +1,9 @@
 /* Import nib */
+/* Import snippets */
+.clearfloat {
+  clear: both;
+  float: none;
+}
 /* Import color variables */
 /* Grab custom fonts from Google */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,300");
@@ -94,10 +99,6 @@ td {
 a img {
   border: none;
 }
-.clearfloat {
-  clear: both;
-  float: none;
-}
 html {
   background-color: #f9f9f9;
 }
@@ -171,33 +172,13 @@ header a.auth-menu:active {
 }
 .food-list-col {
   background-color: #f9f9f9;
-  border-top-right-radius: 1px solid #f2f2f2;
-  border-bottom-right-radius: 1px solid #f2f2f2;
-  width: 369px;
+  width: 370px;
 }
 .properties-col {
-  background-color: transparent;
-  left: 600px;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  right: 0;
-  display: none;
-  -webkit-transition: opacity 0.3s ease-out;
-  -moz-transition: opacity 0.3s ease-out;
-  -o-transition: opacity 0.3s ease-out;
-  transition: opacity 0.3s ease-out;
-  -webkit-transition: #383434 0.3s ease-out;
-  -moz-transition: #383434 0.3s ease-out;
-  -o-transition: #383434 0.3s ease-out;
-  transition: #383434 0.3s ease-out;
-}
-.properties-col.active {
   background-color: #fff;
-  opacity: 1;
-  -ms-filter: none;
-  filter: none;
-  display: block;
+  border-left: #e1e1e1 1px solid;
+  left: 600px;
+  right: 0;
 }
 @media (max-width: 1080px) {
   .col {

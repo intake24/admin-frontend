@@ -3,97 +3,126 @@ extend layout
 block content
 	.col.food-list-col
 		.food-list-container
-			p All Foods
-				.food-list
-					ul
-						li Beans on toast
-							ul
-								li.child-node Beans
-								li.child-node Toast
-						li Chicken curry
-						li Swedish Meatballs
-							ul
-								li.child-node Meatballs
-								li.child-node Spaghetti
+			.food-list#food-list
+				ul
 
-	.col.food-properties-col
-		.food-properties-container
+	.col.properties-col
+		.properties-container#category-properties-container
 
-			.food-property
-				h3 Food definition
+			.property
+				h3 #{ gettext("Category definition") }
 				.input-wrapper
-					label Intake24 code
-					input(type='text', placeholder='ALBU')
+					label #{ gettext("Description") }
+					input(id='input-category-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
 				.input-wrapper
-					label NDNS code
-					input(type='text', placeholder='10968')
-				.input-wrapper
-					label Food group
-					select
-						option Other vegetables
-				.input-wrapper
-					label Description
-					input(type='text', placeholder='Beans on toast')
+					label #{ gettext("Intake24 code") }
+					input(id='input-category-code' type='text', placeholder='#{ gettext("ALBU") }')
 
-			.food-property
-				h3 Categories
+			.property
+				h3 #{ gettext("Parent Categories") }
 				.input-wrapper
-					textarea(rows='4', placeholder='Enter categories')
+					textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
 				.input-wrapper
 					.btn
-						span Remove from selected category
+						span #{ gettext("Remove from selected category") }
 					.btn
-						span Add to category...
+						span #{ gettext("Add to category...") }
 					.clearfloat
 
-			.food-property
-				h3 Portion size estimation
+			.property.visibly-hidden
+				h3 #{ gettext("Portion size estimation") }
+
+		.properties-container#food-properties-container
+
+			.property
+				h3 #{ gettext("Food definition") }
+				.input-wrapper
+					label #{ gettext("Description") }
+					input(id='input-food-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
+				.input-wrapper
+					label #{ gettext("Intake24 code") }
+					input(id='input-food-code' type='text', placeholder='#{ gettext("ALBU") }')
+				.input-wrapper
+					label #{ gettext("NDNS code") }
+					input(type='text', placeholder='10968')
+				.input-wrapper
+					label #{ gettext("Food group") }
+					select
+						option #{ gettext("Other vegetables") }
+
+			.property
+				h3 #{ gettext("Categories") }
+				.input-wrapper
+					textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+				.input-wrapper
+					.btn
+						span #{ gettext("Remove from selected category") }
+					.btn
+						span #{ gettext("Add to category...") }
+					.clearfloat
+
+			.property.visibly-hidden
+				h3 #{ gettext("Portion size estimation") }
 
 
 block sidebar
 	ul
 		li
-			a(href='') Create new survey
+			a(href='') #{ gettext("Edit your profile") }
 		li
-			a(href='').active Edit staff accounts<i class="fa fa-chevron-down"></i>
+			a(href='').active #{ gettext("Manage foods") }<i class="fa fa-chevron-down"></i>
 			ul.nested-li
 				li
-					a(href='') Survey 1
+					a(href='') #{ gettext("Add new food") }
 				li
-					a(href='') Survey 2
+					a(href='') #{ gettext("Clone food") }
+		li
+			a(href='').active #{ gettext("Manage categories") }<i class="fa fa-chevron-down"></i>
+			ul.nested-li
 				li
-					a(href='') Survey 3
+					a(href='') #{ gettext("Add new category") }
+				li
+					a(href='') #{ gettext("Clone food") }
+		li
+			a(href='').active #{ gettext("Manage accounts") }<i class="fa fa-chevron-down"></i>
+			ul.nested-li
+				li
+					a(href='') #{ gettext("List accounts") }
+				li
+					a(href='') #{ gettext("Add new user") }
+				li
+					a(href='') #{ gettext("Manage priviledges") }
 
 			li
-				a(href='') Survey management<i class="fa fa-chevron-down"></i>
+				a(href='') #{ gettext("Survey management") }<i class="fa fa-chevron-down"></i>
 				ul
 					li
-						a(href='').active Survey 1<i class="fa fa-chevron-down"></i>
+						a(href='').active #{ format(gettext("Survey %s"), ["1"]) }<i class="fa fa-chevron-down"></i>
 						ul.nested-li
 							li
-								a(href='') Change settings
+								a(href='') #{ gettext("Change settings") }
 							li
-								a(href='') Change schedule
+								a(href='') #{ gettext("Change schedule") }
 							li
-								a(href='') Upload user accounts
+								a(href='') #{ gettext("Upload user accounts") }
 							li
-								a(href='') Download data
+								a(href='') #{ gettext("Download data") }
 							li
-								a(href='') Download report
+								a(href='') #{ gettext("Download report") }
 
 						li
-							a(href='') Survey 2<i class="fa fa-chevron-left"></i>
+							a(href='') #{ format(gettext("Survey %s"), ["2"]) }<i class="fa fa-chevron-left"></i>
 						li
-							a(href='') Survey 3<i class="fa fa-chevron-left"></i>
+							a(href='') #{ format(gettext("Survey %s"), ["3"]) }<i class="fa fa-chevron-left"></i>
 
 						li
-							a(href='').active Food Database<i class="fa fa-chevron-down"></i>
+							a(href='').active #{ gettext("Food Database") }<i class="fa fa-chevron-down"></i>
 						ul.nested-li
 							li
-								a(href='') Foods and categories
+								a(href='') #{ gettext("Foods and categories") }
 							li
-								a(href='') 'As served' images
+								a(href='') #{ gettext("'As served' images") }
 							li
-								a(href='') 'Guide' images
+								a(href='') #{ gettext("'Guide' images") }
 							li
-								a(href='') 'Sliding scale' images
+								a(href='') #{ gettext("'Sliding scale' images") }

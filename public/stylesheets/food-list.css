@@ -1,5 +1,13 @@
 /* Import color variables */
 .food-list-container {
-  border-right: 1px solid #f63;
-  padding: 30px;
+  padding: 20px 30px 30px 15px;
+}
+.food-list-container .food-list {
+  overflow: hidden;
+}
+@media (max-width: 1080px) {
+  .food-list-container {
+    border-right: none;
+    border-bottom: 1px solid #f2f2f2;
+  }
 }

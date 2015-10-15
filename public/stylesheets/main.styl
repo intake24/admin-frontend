@@ -16,9 +16,16 @@ transition()
   -o-transition arguments
   transition arguments
 
+border-right()
+  border-top-right-radius arguments
+  border-bottom-right-radius arguments
+
 .clearfloat
 	clear both
 	float none
+
+html
+	background-color light-grey
 
 body
 	font-family 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif
@@ -27,29 +34,34 @@ header
 	background-color rgba(255, 255, 255, 0.1)
 	background-color main-color
 	line-height 50px
-	padding 0 15px
+	padding 0
+	position fixed
+	top 0
+	left 0
+	right 0
+	z-index 10
 
 	h4
 		color white
 		font-size 18px
 		font-weight 300
+		padding 0 15px
 
 		strong
 			font-weight 400
 
 	a.auth-menu
 		background-color main-color
-		border-radius 6px
 		color white
-		line-height 34px
-		margin 8px
-		padding 0 15px
+		line-height 50px
+		padding 0 20px
 		position absolute
 		right 0
 		top 0
 		transition(background .2s ease-out)
 
 		i
+			display none
 			float left
 			line-height inherit
 			margin-right 8px
@@ -59,6 +71,10 @@ header
 			line-height inherit
 			font-size 13px
 
+	a.auth-menu.authenticated
+		i
+			display block
+
 	a.auth-menu:hover
 		background-color darken(main-color, 10%)
 		cursor pointer
@@ -66,41 +82,79 @@ header
 		background-color darken(main-color, 25%)
 
 .main-content
+	background-color light-grey
 	padding-left 230px
 
 .col
-	float left
-	min-width 320px
-	width 50%
+	bottom 0px
+	overflow scroll
+	padding-top 50px
+	position absolute
+	top 0
 
 .food-list-col
-	width 40%
+	background-color light-grey
+	border-right 1px solid #f2f2f2
+	width 369px
 
-.food-properties-col
-	width 60%
+.properties-col
+	background-color transparent
+	left 600px
+	opacity 0
+	right 0
+	display none
+	transition(opacity .3s ease-out)
+	transition(background-color .3s ease-out)
+
+.properties-col.active
+	background-color white
+	opacity 1
+	display block
+
+@media (max-width: 1080px)
+	.col
+		position relative
+		bottom auto
+		top auto
+		left auto
+		right auto
+		width 100%
+
+	.food-list-col
+		width 100%
+
+	.properties-col
+		padding-top 0
+
+
+#sidebar-button
+	display none
+	position absolute
+	top 0px
+	left 0px
+	transition(background .2s ease-out)
+
+	i
+		color white
+		line-height 50px
+		padding 0 15px
+
+#sidebar-button:hover
+	background-color darken(main-color, 10%)
+	cursor pointer
 
 .sidebar
 	background-color sidebar-color
 	bottom 0
 	left 0
 	overflow scroll
+	padding-top 50px
 	position absolute
-	top 50px
+	top 0
 	width 230px
-
-	.sidebar-footer
-		bottom 0
-		left 0
-		line-height 50px
-		margin-top 50px
-		position absolute
-		right 0
-		text-align center
-
-		p
-			color lighten(sidebar-color, 20%)
-			font-size 13px
-
+	z-index 9
+	transition-timing-function: cubic-bezier(0.1, 0.2, 0.3, 1.0);
+	transition-duration: 0.4s;
 
 	ul
 		list-style none
@@ -135,6 +189,36 @@ header
 	
 	.nested-li li a:hover
 		border-left-color #aaa
+
+@media (max-width: 1080px)
+	.sidebar
+		position fixed
+
+@media (max-width: 600px)
+	.main-content
+		padding-left 0px
+
+	header
+
+		h4
+			margin 0 50px
+			text-align center
+
+		a.auth-menu
+			p
+				display none
+			i
+				display block
+				margin-right 0
+
+	#sidebar-button
+		display block
+
+	.sidebar
+		left -230px
+
+	.sidebar.active
+		left 0px
 
 /* Buttons */
 	.btn

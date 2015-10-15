@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2015-10-12 12:40+0000\n"
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:6
+msgid "All Foods"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:23
+msgid "Food definition"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:25
+msgid "Intake24 code"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:26
+msgid "ALBU"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:28
+msgid "NDNS code"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:31
+msgid "Food group"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:33
+msgid "Other vegetables"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:35
+msgid "Description"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:36
+msgid "Beans on toast"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:39
+msgid "Categories"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:41
+msgid "Enter categories"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:44
+msgid "Remove from selected category"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:46
+msgid "Add to category..."
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:50
+msgid "Portion size estimation"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:56
+msgid "Create new survey"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:58
+msgid "Edit staff accounts"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:61
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:63
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:65
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:71
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:85
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:87
+msgid "Survey %s"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:68
+msgid "Survey management"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:74
+msgid "Change settings"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:76
+msgid "Change schedule"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:78
+msgid "Upload user accounts"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:80
+msgid "Download data"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:82
+msgid "Download report"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:90
+msgid "Food Database"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:93
+msgid "Foods and categories"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:95
+msgid "'As served' images"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:97
+msgid "'Guide' images"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/index.jade:99
+msgid "'Sliding scale' images"
+msgstr ""
+
+#: /Users/edjenkins/MAMP/intake-node/views/layout.jade:4
+msgid "Intake24 Admin"
+msgstr ""

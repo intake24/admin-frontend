@@ -35,7 +35,6 @@ header
 		font-size 18px
 		font-weight 300
 		padding 0 15px
-
 		strong
 			font-weight 400
 
@@ -48,28 +47,55 @@ header
 		right 0
 		top 0
 		transition(background .2s ease-out)
-
 		i
 			display none
 			float left
 			line-height inherit
 			margin-right 8px
-
 		p
 			float left
 			line-height inherit
 			font-size 13px
-
-	a.auth-menu.authenticated
-		i
-			display block
 
 	a.auth-menu:hover
 		background-color darken(main-color, 10%)
 		cursor pointer
 	a.auth-menu:active
 		background-color darken(main-color, 25%)
+		
+.authenticated
+	a.auth-menu
+		i
+			display block
+			
+#authenticate-overlay
+	background-color main-color
+	display block
+	opacity 1
+	position fixed
+	top 0
+	bottom 0
+	left 0
+	right 0
+	z-index 12
+	transition(opacity .2s ease-out)
+	#authenticate-logo
+		padding 0 20px
+		text-align center
+		h4
+			color white
+			font-size 28px
+			font-weight 300
+			line-height 200px
+			padding 0 15px
+			strong
+				font-weight 400
 
+.authenticated
+	#authenticate-overlay
+		display none
+		opacity 0
+	
 .main-content
 	background-color light-grey
 	padding-left 230px
@@ -113,7 +139,6 @@ header
 	top 0px
 	left 0px
 	transition(background .2s ease-out)
-
 	i
 		color white
 		line-height 50px

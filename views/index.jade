@@ -2,7 +2,7 @@ extend layout
 
 block content
 	.col.food-list-col
-		.search-container
+		.search-container(ng-controller='SearchController')
 			.search-field-wrapper
 				.search-field
 					i.fa.fa-search
@@ -13,7 +13,7 @@ block content
 			.food-list#food-list
 				ul
 
-	.col.properties-col
+	.col.properties-col(ng-controller='ExplorerController')
 		.properties-container#category-properties-container
 
 			.property
@@ -67,6 +67,18 @@ block content
 						option #{ gettext("Other vegetables") }
 
 			.property
+				h3 #{ gettext("Attributes") }
+				.input-wrapper
+					label #{ gettext("Ready meal option") }
+					<input id="input-ready-meal-option" type="checkbox" value="" checked="checked">
+				.input-wrapper
+					label #{ gettext("Same as before option") }
+					<input id="input-same-as-before-option" type="checkbox" value="" checked="checked">
+				.input-wrapper
+					label #{ gettext("Reasonable amount (g/ml)") }
+					input(id='input-reasonable-amount' type='text', placeholder='#{ gettext("600") }', style='min-width:60px; width:60px')
+
+			.property
 				h3 #{ gettext("Categories") }
 				.input-wrapper
 					textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
@@ -87,6 +99,8 @@ block content
 						span #{ gettext("Accept changes") }
 					.btn
 						span #{ gettext("Discard changes") }
+					.btn
+						span #{ gettext("Delete") }
 					.clearfloat
 
 

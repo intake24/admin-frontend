@@ -15,18 +15,22 @@ html(lang='#{lang}' dir='#{lang_dir}')
     link(rel='stylesheet', href='/stylesheets/search.css')
 
     script(type="text/javascript" src="/scripts/jquery.min.js")
+    script(type="text/javascript" src="/scripts/js.cookie.js")
     script(type="text/javascript" src="/scripts/angular.js")
     script(type="text/javascript" src='/scripts/jstree.min.js')
     script(type="text/javascript" src='/scripts/modals.js')
     script(type="text/javascript" src='/scripts/main.js')
+    script(type="text/javascript" src='/scripts/auth.js')
+    script(type="text/javascript" src='/scripts/search.js')
+    script(type="text/javascript" src='/scripts/explorer.js')
 
   body.animated.fadeIn(ng-app='app')
     header
       #sidebar-button
         i.fa.fa-bars
       h4 <strong>Intake24</strong> Admin
-      a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-authenticate').auth-menu
-        i.fa.fa-lock
+      a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
+        i.fa.fa-user
         p Login / Register
 
     .container
@@ -35,13 +39,22 @@ html(lang='#{lang}' dir='#{lang_dir}')
       .sidebar
         block sidebar
 
+  #authenticate-overlay
+    #authenticate-logo
+      h4 <strong>Intake24</strong> Admin
+
   .modal.modal-narrow.animated#modal-authenticate
-    #button-close-modal
-      i.fa.fa-times
     .modal-title Login
     .modal-content(ng-controller='AuthController')
       input(id="form-login-username" type="text" placeholder="Username")
       input(id="form-login-password" type="password" placeholder="Password")
-      button(id="button-login") Login
+      button(class="modal-form-button" id="button-login") Login
+
+  .modal.modal-narrow.animated#modal-logout
+    #button-close-modal
+      i.fa.fa-times
+    .modal-title Are you sure?
+    .modal-content(ng-controller='AuthController')
+      button(class="modal-form-button" id="button-logout") Logout
         
   #modal-backdrop

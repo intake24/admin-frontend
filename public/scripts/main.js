@@ -1,6 +1,7 @@
-var app = angular.module('app', []);
 var api_base_url = 'http://api-test.intake24.co.uk/';
 var locale = 'en';
+
+var app = angular.module('app', []);
 
 app.service("fetchCategoriesService", function($rootScope) {
     this.broadcast = function() { $rootScope.$broadcast("fetchCategories")}
@@ -8,7 +9,17 @@ app.service("fetchCategoriesService", function($rootScope) {
 })
 
 $(document).ready(function() {
-
-	// Click handler on menu button to toggle sidebar
-	$('#sidebar-button').click(function() { $('.sidebar').toggleClass('active') });
+	$('#flash-dismiss-btn').click(function() {
+		hideMessage();
+	});
 });
+
+function showMessage(message, type) {
+	$('.flash-message #message').html(message);
+	$('.flash-message').removeClass('success warning danger').addClass(type).addClass('active');
+	setTimeout(function() {hideMessage()}, 2000);
+}
+
+function hideMessage() {
+	$('.flash-message').removeClass('active');
+}

@@ -2,14 +2,14 @@
  * Module dependencies
  */
 var express = require('express')
-  , stylus = require('stylus')
-  , nib = require('nib')
-  , i18n = require('i18n-abide')
-  , request = require('request')
-  , cors = require('express-cors')
+    ,stylus = require('stylus')
+    ,nib = require('nib')
+    ,i18n = require('i18n-abide')
+    ,request = require('request')
+    ,cors = require('express-cors')
 
 var app = express()
-// var app = angular.module('app', []);
+
 app.use(i18n.abide({
   supported_languages: ['en-US', 'de'],
   default_lang: 'en-US',

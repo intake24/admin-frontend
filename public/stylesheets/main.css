@@ -4,7 +4,7 @@
   clear: both;
   float: none;
 }
-/* Import color variables */
+/* Import variables */
 /* Grab custom fonts from Google */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,300");
 /* Nib provides a CSS reset */
@@ -116,13 +116,16 @@ header {
   right: 0;
   z-index: 10;
 }
-header h4 {
+header a {
+  text-decoration: none;
+}
+header a h4 {
   color: #fff;
   font-size: 18px;
   font-weight: 300;
   padding: 0 15px;
 }
-header h4 strong {
+header a h4 strong {
   font-weight: 400;
 }
 header a.auth-menu {
@@ -155,6 +158,64 @@ header a.auth-menu:hover {
 }
 header a.auth-menu:active {
   background-color: #e63900;
+}
+.flash-message {
+  background: #3af;
+  color: #fff;
+  height: 50px;
+  line-height: 50px;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  padding: 0 50px;
+  position: fixed;
+  text-align: center;
+  top: -50px;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.flash-message #flash-dismiss-btn {
+  background-color: rgba(0,0,0,0.1);
+  height: 50px;
+  line-height: 50px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 50px;
+}
+.flash-message.active {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  top: 0;
+}
+.flash-message.success {
+  background-color: #38d075;
+}
+.flash-message.warning {
+  background-color: #fb850c;
+}
+.flash-message.danger {
+  background-color: #ff3636;
+}
+@media (max-width: 568px) {
+  .flash-message {
+    padding: 0 50px 0 0;
+  }
+}
+.page-header {
+  padding: 0 0 30px 0;
+}
+.page-header h2 {
+  color: #f63;
+  font-size: 26px;
+  font-weight: 100;
 }
 .authenticated a.auth-menu i {
   display: block;
@@ -198,7 +259,7 @@ header a.auth-menu:active {
 }
 .main-content {
   background-color: #f9f9f9;
-  padding-left: 230px;
+  padding-left: 240px;
 }
 .col {
   bottom: 0px;
@@ -207,15 +268,22 @@ header a.auth-menu:active {
   position: absolute;
   top: 0;
 }
-.food-list-col {
+#food-list-col {
   background-color: #f9f9f9;
   width: 370px;
 }
-.properties-col {
+#properties-col {
   background-color: #fff;
   border-left: #e1e1e1 1px solid;
   left: 600px;
   right: 0;
+  -webkit-transition: left 0.6s ease-out;
+  -moz-transition: left 0.6s ease-out;
+  -o-transition: left 0.6s ease-out;
+  transition: left 0.6s ease-out;
+}
+#properties-col.fullwidth {
+  left: 240px;
 }
 @media (max-width: 1080px) {
   .col {
@@ -226,11 +294,16 @@ header a.auth-menu:active {
     right: auto;
     width: 100%;
   }
-  .food-list-col {
+  #food-list-col {
     width: 100%;
   }
-  .properties-col {
+  #properties-col {
+    left: 0;
     padding-top: 0;
+  }
+  #properties-col.fullwidth {
+    left: 0;
+    padding-top: 50px;
   }
 }
 #sidebar-button {
@@ -260,7 +333,7 @@ header a.auth-menu:active {
   padding-top: 50px;
   position: absolute;
   top: 0;
-  width: 230px;
+  width: 240px;
   z-index: 9;
   -webkit-transition-timing-function: cubic-bezier(0.1, 0.2, 0.3, 1);
   -moz-transition-timing-function: cubic-bezier(0.1, 0.2, 0.3, 1);
@@ -331,7 +404,7 @@ header a.auth-menu:active {
     display: block;
   }
   .sidebar {
-    left: -230px;
+    left: -240px;
   }
   .sidebar.active {
     left: 0px;
@@ -340,11 +413,40 @@ header a.auth-menu:active {
 /* Buttons */
 .btn {
   background-color: #fafafa;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #ededed;
   -webkit-border-radius: 6px;
   border-radius: 6px;
   float: left;
   font-size: 13px;
   margin: 10px 10px 10px 0;
   padding: 12px 15px;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.btn:hover {
+  background-color: #ededed;
+  cursor: pointer;
+}
+.success:hover {
+  background-color: #30cb6e;
+  border: 1px solid #30cb6e;
+  color: #fff;
+}
+.warning:hover {
+  background-color: #f67e04;
+  border: 1px solid #f67e04;
+  color: #fff;
+}
+.danger:hover {
+  background-color: #ff2727;
+  border: 1px solid #ff2727;
+  color: #fff;
+}
+input.valid {
+  border-color: #38d075 !important;
+}
+input.invalid {
+  border-color: #ff3636 !important;
 }

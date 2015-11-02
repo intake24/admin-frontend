@@ -1,0 +1,14 @@
+.properties-container#food-properties-container
+
+	include forms/food-properties
+
+	.property
+		hr
+		.input-wrapper
+			.btn.success
+				span #{ gettext("Accept changes") }
+			.btn.warning
+				span #{ gettext("Discard changes") }
+			.btn.danger#delete-food-btn
+				span #{ gettext("Delete") }
+			.clearfloat

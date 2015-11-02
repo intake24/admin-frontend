@@ -44,7 +44,7 @@
 }
 .properties-container .property .input-wrapper select {
   height: 36px;
-  min-width: 220px;
+  width: 220px;
   outline: 0;
 }
 .properties-container .property .input-wrapper textarea {

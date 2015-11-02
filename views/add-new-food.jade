@@ -1,0 +1,15 @@
+.properties-container#add-new-food-container
+
+	.page-header
+		h2 #{ gettext("Add new food") }
+
+	include forms/food-properties
+
+	.property
+		hr
+		.input-wrapper
+			.btn.success#add-food-btn
+				span #{ gettext("Add food") }
+			.btn.danger
+				span #{ gettext("Cancel") }
+			.clearfloat

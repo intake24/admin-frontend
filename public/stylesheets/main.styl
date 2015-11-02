@@ -4,7 +4,7 @@
 /* Import snippets */
 @import 'snippets'
 
-/* Import color variables */
+/* Import variables */
 @import 'variables'
 
 /* Grab custom fonts from Google */
@@ -30,13 +30,15 @@ header
 	right 0
 	z-index 10
 
-	h4
-		color white
-		font-size 18px
-		font-weight 300
-		padding 0 15px
-		strong
-			font-weight 400
+	a
+		text-decoration none
+		h4
+			color white
+			font-size 18px
+			font-weight 300
+			padding 0 15px
+			strong
+				font-weight 400
 
 	a.auth-menu
 		background-color main-color
@@ -62,7 +64,51 @@ header
 		cursor pointer
 	a.auth-menu:active
 		background-color darken(main-color, 25%)
-		
+
+.flash-message
+	background #3AF
+	color #FFF
+	height 50px
+	line-height 50px
+	opacity 0
+	padding 0 50px 
+	position fixed
+	text-align center
+	top -50px
+	z-index 1000 
+	left 0
+	right 0
+	transition(all 0.5s ease-in-out)
+	#flash-dismiss-btn
+		background-color rgba(0, 0, 0, 0.1)
+		height 50px
+		line-height 50px
+		position absolute
+		right 0
+		text-align center 
+		top 0
+		width 50px
+	&.active
+		opacity 1
+		top 0
+	&.success
+		background-color flash-success-color
+	&.warning
+		background-color flash-warning-color
+	&.danger
+		background-color flash-danger-color
+		 
+@media(max-width:568px)
+	.flash-message
+		padding 0 50px 0 0
+
+.page-header
+	padding 0 0 30px 0
+	h2
+		color main-color
+		font-size 26px 
+		font-weight 100 
+			
 .authenticated
 	a.auth-menu
 		i
@@ -98,7 +144,7 @@ header
 	
 .main-content
 	background-color light-grey
-	padding-left 230px
+	padding-left sidebar-width
 
 .col
 	bottom 0px
@@ -107,15 +153,18 @@ header
 	position absolute
 	top 0
 
-.food-list-col
+#food-list-col
 	background-color light-grey
 	width 370px
 
-.properties-col
+#properties-col
 	background-color white
 	border-left #e1e1e1 1px solid
 	left 600px
 	right 0
+	transition(left 0.6s ease-out)
+#properties-col.fullwidth
+	left sidebar-width
 
 @media (max-width: 1080px)
 	.col
@@ -126,11 +175,15 @@ header
 		right auto
 		width 100%
 
-	.food-list-col
+	#food-list-col
 		width 100%
 
-	.properties-col
+	#properties-col
+		left 0
 		padding-top 0
+	#properties-col.fullwidth
+		left 0
+		padding-top 50px
 
 
 #sidebar-button
@@ -156,7 +209,7 @@ header
 	padding-top 50px
 	position absolute
 	top 0
-	width 230px
+	width sidebar-width
 	z-index 9
 	transition-timing-function: cubic-bezier(0.1, 0.2, 0.3, 1.0);
 	transition-duration: 0.4s;
@@ -220,17 +273,42 @@ header
 		display block
 
 	.sidebar
-		left -230px
+		left - sidebar-width
 
 	.sidebar.active
 		left 0px
 
 /* Buttons */
-	.btn
-		background-color #fafafa
-		border 1px solid #e1e1e1
-		border-radius 6px
-		float left
-		font-size 13px
-		margin 10px 10px 10px 0
-		padding 12px 15px
+.btn
+	background-color btn-default-color
+	border 1px solid darken(btn-default-color, 5%)
+	border-radius 6px
+	float left
+	font-size 13px
+	margin 10px 10px 10px 0
+	padding 12px 15px
+	transition(all .2s ease-out)
+	&:hover
+		background-color darken(btn-default-color, 5%)
+		cursor pointer
+.success
+	&:hover
+		background-color darken(btn-success-color, 5%)
+		border 1px solid darken(btn-success-color, 5%)
+		color #FFF
+.warning
+	&:hover
+		background-color darken(btn-warning-color, 5%)
+		border 1px solid darken(btn-warning-color, 5%)
+		color #FFF
+.danger
+	&:hover
+		background-color darken(btn-danger-color, 5%)
+		border 1px solid darken(btn-danger-color, 5%)
+		color #FFF
+		
+input
+	&.valid
+		border-color border-valid-color !important
+	&.invalid
+		border-color border-invalid-color !important

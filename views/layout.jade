@@ -1,60 +1,67 @@
 doctype
 html(lang='#{lang}' dir='#{lang_dir}')
-  head
-    title #{title} - #{ gettext("Intake24 Admin") }
+	head
+		title #{title} - #{ gettext("Intake24 Admin") }
 
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-    link(rel='stylesheet', href='/stylesheets/libs/animate.css')
-    link(rel='stylesheet', href='/stylesheets/main.css')
-    link(rel='stylesheet', href='/stylesheets/modals.css')
-    link(rel='stylesheet', href='/scripts/themes/intake/style.css')
-    link(rel='stylesheet', href='/stylesheets/food-list.css')
-    link(rel='stylesheet', href='/stylesheets/properties.css')
-    link(rel='stylesheet', href='/stylesheets/search.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+		link(rel='stylesheet', href='/stylesheets/libs/animate.css')
+		link(rel='stylesheet', href='/stylesheets/main.css')
+		link(rel='stylesheet', href='/stylesheets/modals.css')
+		link(rel='stylesheet', href='/scripts/themes/intake/style.css')
+		link(rel='stylesheet', href='/stylesheets/food-list.css')
+		link(rel='stylesheet', href='/stylesheets/properties.css')
+		link(rel='stylesheet', href='/stylesheets/search.css')
 
-    script(type="text/javascript" src="/scripts/jquery.min.js")
-    script(type="text/javascript" src="/scripts/js.cookie.js")
-    script(type="text/javascript" src="/scripts/angular.js")
-    script(type="text/javascript" src='/scripts/jstree.min.js')
-    script(type="text/javascript" src='/scripts/modals.js')
-    script(type="text/javascript" src='/scripts/main.js')
-    script(type="text/javascript" src='/scripts/auth.js')
-    script(type="text/javascript" src='/scripts/search.js')
-    script(type="text/javascript" src='/scripts/explorer.js')
+		script(type="text/javascript" src="/scripts/jquery.min.js")
+		script(type="text/javascript" src="/scripts/js.cookie.js")
+		script(type="text/javascript" src="/scripts/angular.js")
+		script(type="text/javascript" src='/scripts/jstree.min.js')
+		script(type="text/javascript" src='/scripts/modals.js')
+		script(type="text/javascript" src='/scripts/main.js')
+		script(type="text/javascript" src='/scripts/sidebar.js')
+		script(type="text/javascript" src='/scripts/auth.js')
+		script(type="text/javascript" src='/scripts/search.js')
+		script(type="text/javascript" src='/scripts/explorer.js')
 
-  body.animated.fadeIn(ng-app='app')
-    header
-      #sidebar-button
-        i.fa.fa-bars
-      h4 <strong>Intake24</strong> Admin
-      a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
-        i.fa.fa-user
-        p Login / Register
+	body.animated.fadeIn(ng-app='app')
+		header
+			#sidebar-button
+				i.fa.fa-bars
+			a(href='/')
+				h4 <strong>Intake24</strong> Admin
+			a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
+				i.fa.fa-user
+				p Login / Register
 
-    .container
-      .main-content
-        block content
-      .sidebar
-        block sidebar
+		.container
+			.main-content
+				block content
+			.sidebar
+				include sidebar
 
-  #authenticate-overlay
-    #authenticate-logo
-      h4 <strong>Intake24</strong> Admin
+	.flash-message
+		#message You have logged in
+		#flash-dismiss-btn
+			i(class='fa fa-close')
 
-  .modal.modal-narrow.animated#modal-authenticate
-    .modal-title Login
-    .modal-content(ng-controller='AuthController')
-      input(id="form-login-username" type="text" placeholder="Username")
-      input(id="form-login-password" type="password" placeholder="Password")
-      button(class="modal-form-button" id="button-login") Login
+	#authenticate-overlay
+		#authenticate-logo
+			h4 <strong>Intake24</strong> Admin
 
-  .modal.modal-narrow.animated#modal-logout
-    #button-close-modal
-      i.fa.fa-times
-    .modal-title Are you sure?
-    .modal-content(ng-controller='AuthController')
-      button(class="modal-form-button" id="button-logout") Logout
-        
-  #modal-backdrop
+	.modal.modal-narrow.animated#modal-authenticate
+		.modal-title Login
+		.modal-content(ng-controller='AuthController')
+			input(id="form-login-username" type="text" placeholder="Username")
+			input(id="form-login-password" type="password" placeholder="Password")
+			button(class="modal-form-button" id="button-login") Login
+
+	.modal.modal-narrow.animated#modal-logout
+		#button-close-modal
+			i.fa.fa-times
+		.modal-title Are you sure?
+		.modal-content
+			button(class="modal-form-button" id="button-logout") Logout
+		
+	#modal-backdrop

@@ -82,7 +82,7 @@ app.controller('SearchController', function($scope, $http) {
 			var type = $(this).attr('data-type');
 			var index = $(this).attr('data-index');
 
-			$('.properties-col').addClass('active');
+			$('#properties-col').addClass('active');
 
 			var item = $scope.search[index];
 

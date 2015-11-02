@@ -1,0 +1,15 @@
+.properties-container#add-new-category-container
+
+	.page-header
+		h2 #{ gettext("Add new category") }
+
+	include forms/category-properties
+
+	.property
+		hr
+		.input-wrapper
+			.btn.success
+				span #{ gettext("Add category") }
+			.btn.danger
+				span #{ gettext("Cancel") }
+			.clearfloat

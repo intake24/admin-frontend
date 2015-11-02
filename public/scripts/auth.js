@@ -29,6 +29,8 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 
 		hideModal();
 		showModal('modal-authenticate');
+
+		showMessage('You have logged out', 'success');
 	});
 
 	// Attempt to login user
@@ -53,13 +55,14 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 		    $('body').addClass('authenticated');
 		    $('#btn-authenticate p').html('Edward Jenkins');
 
-		}, function errorCallback(response) { handleError(response); });
+		    showMessage('You have logged in', 'success');
+
+		}, function errorCallback(response) { showMessage('Failed to log you in', 'danger'); handleError(response); });
 
 	});
 
 	function handleError(response) {
 
-		console.log(response);
-		if (response.status === 401) { alert('Unauthorized'); Cookies.remove('auth-token'); }
+		if (response.status === 401) { Cookies.remove('auth-token'); }
 	}
 });

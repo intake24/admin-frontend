@@ -1,0 +1,22 @@
+.property
+	h3 #{ gettext("Category definition") }
+	.input-wrapper
+		label #{ gettext("Description") }
+		input(id='input-category-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
+	.input-wrapper
+		label #{ gettext("Intake24 code") }
+		input(id='input-category-code' type='text', placeholder='#{ gettext("ALBU") }')
+
+.property
+	h3 #{ gettext("Parent Categories") }
+	.input-wrapper
+		textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+	.input-wrapper
+		.btn.success
+			span #{ gettext("Add to category") }
+		.btn.danger
+			span #{ gettext("Remove from selected category") }
+		.clearfloat
+
+.property
+	h3 #{ gettext("Portion size estimation") }

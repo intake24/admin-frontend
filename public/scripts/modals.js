@@ -9,7 +9,6 @@ $(document).ready(function() {
 	$('.btn-modal').click(function() {
 		showModal($(this).attr('data-modal'));
 	});
-
 });
 
 function showModal(modal_id) {
@@ -20,7 +19,7 @@ function showModal(modal_id) {
 
 function hideModal() {
 
-	$('.modal').removeClass('fadeInUp').addClass('fadeOutDown');
+	$('.modal').removeClass('fadeInUp').addClass('fadeOutDown').hide();
 
 	$('#modal-backdrop').animate({'opacity': 0.0}, 300, function() {
 		$('#modal-backdrop').hide();

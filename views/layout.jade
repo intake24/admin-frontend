@@ -1,6 +1,5 @@
 doctype
 html(lang='#{lang}' dir='#{lang_dir}')
-<<<<<<< HEAD
 
 	head
 		title #{title} - #{ gettext("Intake24 Admin") }
@@ -67,50 +66,3 @@ html(lang='#{lang}' dir='#{lang_dir}')
 			button(class="modal-form-button" id="button-logout") Logout
 		
 	#modal-backdrop
-=======
-  head
-    title #{title} - #{ gettext("Intake24 Admin") }
-
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-    link(rel='stylesheet', href='/stylesheets/libs/animate.css')
-    link(rel='stylesheet', href='/stylesheets/main.css')
-    link(rel='stylesheet', href='/stylesheets/modals.css')
-    link(rel='stylesheet', href='/scripts/themes/intake/style.css')
-    link(rel='stylesheet', href='/stylesheets/food-list.css')
-    link(rel='stylesheet', href='/stylesheets/properties.css')
-    link(rel='stylesheet', href='/stylesheets/search.css')
-
-    script(type="text/javascript" src="/scripts/jquery.min.js")
-    script(type="text/javascript" src="/scripts/angular.js")
-    script(type="text/javascript" src='/scripts/jstree.min.js')
-    script(type="text/javascript" src='/scripts/modals.js')
-    script(type="text/javascript" src='/scripts/main.js')
-
-  body.animated.fadeIn(ng-app='app')
-    header
-      #sidebar-button
-        i.fa.fa-bars
-      h4 <strong>Intake24</strong> Admin
-      a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-authenticate').auth-menu
-        i.fa.fa-lock
-        p Login / Register
-
-    .container
-      .main-content
-        block content
-      .sidebar
-        block sidebar
-
-  .modal.modal-narrow.animated#modal-authenticate
-    #button-close-modal
-      i.fa.fa-times
-    .modal-title Login
-    .modal-content(ng-controller='AuthController')
-      input(id="form-login-username" type="text" placeholder="Username")
-      input(id="form-login-password" type="password" placeholder="Password")
-      button(id="button-login") Login
-        
-  #modal-backdrop
->>>>>>> parent of d0e8920... Updates

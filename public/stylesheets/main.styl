@@ -49,15 +49,21 @@ header
 		right 0
 		top 0
 		transition(background .2s ease-out)
+
 		i
 			display none
 			float left
 			line-height inherit
 			margin-right 8px
+
 		p
 			float left
 			line-height inherit
 			font-size 13px
+
+	a.auth-menu.authenticated
+		i
+			display block
 
 	a.auth-menu:hover
 		background-color darken(main-color, 10%)
@@ -192,6 +198,7 @@ header
 	top 0px
 	left 0px
 	transition(background .2s ease-out)
+
 	i
 		color white
 		line-height 50px

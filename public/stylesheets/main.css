@@ -152,6 +152,9 @@ header a.auth-menu p {
   line-height: inherit;
   font-size: 13px;
 }
+header a.auth-menu.authenticated i {
+  display: block;
+}
 header a.auth-menu:hover {
   background-color: #ff4f14;
   cursor: pointer;

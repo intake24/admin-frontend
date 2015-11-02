@@ -1,5 +1,12 @@
 $(document).ready(function() {
 
+	// Show authentication modal
+	$('#button-close-modal').click(function() {
+
+		$('#modal-authenticate').removeClass('active');
+		$('#modal-backdrop').removeClass('active');
+	});
+
 	// Hide modal on backdrop click
 	$('#modal-backdrop').click(hideModal);
 

@@ -162,6 +162,7 @@ header a.auth-menu:hover {
 header a.auth-menu:active {
   background-color: #e63900;
 }
+<<<<<<< HEAD
 .flash-message {
   background: #3af;
   color: #fff;
@@ -260,6 +261,8 @@ header a.auth-menu:active {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
+=======
+>>>>>>> parent of d0e8920... Updates
 .main-content {
   background-color: #f9f9f9;
   padding-left: 240px;

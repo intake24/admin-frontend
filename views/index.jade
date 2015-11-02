@@ -1,9 +1,155 @@
 extend layout
 
 block content
+<<<<<<< HEAD
 
 	include page-header
+=======
+	.col.food-list-col
+		.search-container
+			.search-field-wrapper
+				.search-field
+					i.fa.fa-search
+					input(type='text' id='search-field' placeholder='Search')
+			#search-results
+				ul
+		.food-list-container
+			.food-list#food-list
+				ul
+
+	.col.properties-col
+		.properties-container#category-properties-container
+>>>>>>> parent of d0e8920... Updates
 
 	include food-list
 
+<<<<<<< HEAD
 	include properties
+=======
+			.property
+				h3 #{ gettext("Parent Categories") }
+				.input-wrapper
+					textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+				.input-wrapper
+					.btn
+						span #{ gettext("Remove from selected category") }
+					.btn
+						span #{ gettext("Add to category...") }
+					.clearfloat
+
+			.property
+				h3 #{ gettext("Portion size estimation") }
+
+			.property
+				hr
+				.input-wrapper
+					.btn
+						span #{ gettext("Accept changes") }
+					.btn
+						span #{ gettext("Discard changes") }
+					.clearfloat
+
+		.properties-container#food-properties-container
+
+			.property
+				h3 #{ gettext("Food definition") }
+				.input-wrapper
+					label #{ gettext("Description") }
+					input(id='input-food-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
+				.input-wrapper
+					label #{ gettext("Intake24 code") }
+					input(id='input-food-code' type='text', placeholder='#{ gettext("ALBU") }')
+				.input-wrapper
+					label #{ gettext("NDNS code") }
+					input(id='input-NDNS-code' type='text', placeholder='10968')
+				.input-wrapper
+					label #{ gettext("Food group") }
+					select
+						option #{ gettext("Other vegetables") }
+
+			.property
+				h3 #{ gettext("Categories") }
+				.input-wrapper
+					textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+				.input-wrapper
+					.btn
+						span #{ gettext("Remove from selected category") }
+					.btn
+						span #{ gettext("Add to category...") }
+					.clearfloat
+
+			.property
+				h3 #{ gettext("Portion size estimation") }
+
+			.property
+				hr
+				.input-wrapper
+					.btn
+						span #{ gettext("Accept changes") }
+					.btn
+						span #{ gettext("Discard changes") }
+					.clearfloat
+
+
+block sidebar
+	ul
+		li
+			a(href='') #{ gettext("Edit your profile") }
+		li
+			a(href='').active #{ gettext("Manage foods") }<i class="fa fa-chevron-down"></i>
+			ul.nested-li
+				li
+					a(href='') #{ gettext("Add new food") }
+				li
+					a(href='') #{ gettext("Clone food") }
+		li
+			a(href='').active #{ gettext("Manage categories") }<i class="fa fa-chevron-down"></i>
+			ul.nested-li
+				li
+					a(href='') #{ gettext("Add new category") }
+				li
+					a(href='') #{ gettext("Clone food") }
+		li
+			a(href='').active #{ gettext("Manage accounts") }<i class="fa fa-chevron-down"></i>
+			ul.nested-li
+				li
+					a(href='') #{ gettext("List accounts") }
+				li
+					a(href='') #{ gettext("Add new user") }
+				li
+					a(href='') #{ gettext("Manage priviledges") }
+
+			li
+				a(href='') #{ gettext("Survey management") }<i class="fa fa-chevron-down"></i>
+				ul
+					li
+						a(href='').active #{ format(gettext("Survey %s"), ["1"]) }<i class="fa fa-chevron-down"></i>
+						ul.nested-li
+							li
+								a(href='') #{ gettext("Change settings") }
+							li
+								a(href='') #{ gettext("Change schedule") }
+							li
+								a(href='') #{ gettext("Upload user accounts") }
+							li
+								a(href='') #{ gettext("Download data") }
+							li
+								a(href='') #{ gettext("Download report") }
+
+						li
+							a(href='') #{ format(gettext("Survey %s"), ["2"]) }<i class="fa fa-chevron-left"></i>
+						li
+							a(href='') #{ format(gettext("Survey %s"), ["3"]) }<i class="fa fa-chevron-left"></i>
+
+						li
+							a(href='').active #{ gettext("Food Database") }<i class="fa fa-chevron-down"></i>
+						ul.nested-li
+							li
+								a(href='') #{ gettext("Foods and categories") }
+							li
+								a(href='') #{ gettext("'As served' images") }
+							li
+								a(href='') #{ gettext("'Guide' images") }
+							li
+								a(href='') #{ gettext("'Sliding scale' images") }
+>>>>>>> parent of d0e8920... Updates

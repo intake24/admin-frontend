@@ -1,9 +1,10 @@
 // Search (SearchController)
 
-app.controller('SearchController', function($scope, $http) {
-	
+app.controller('SearchController', function($scope, $http, SharedData) {
+
 	// Init object to store search results
 	$scope.search = new Object();
+	$scope.SharedData = SharedData;
 	
 	// Add click and mouse enter/leave events to search wrapper
 	$('.search-field-wrapper').on('click', function() {
@@ -120,24 +121,14 @@ app.controller('SearchController', function($scope, $http) {
 						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 					}).then(function successCallback(response) {
 
-						// console.log(response);
-						console.log(response.data.attributes.sameAsBeforeOption);
+						console.log(response);
 
-						$('#input-food-code').val(response.data.code);
-						$('#input-food-englishDescription').val(response.data.englishDescription);
-						$('#input-NDNS-code').val(response.data.nutrientTableCodes.NDNS);
+						$scope.SharedData.currentItem = item = response.data;
 
-						var checked = (response.data.attributes.readyMealOption.length == 0) ? false : response.data.attributes.readyMealOption[0];
-						$('#input-ready-meal-option').prop("checked", checked);
-
-						var checked = (response.data.attributes.sameAsBeforeOption.length == 0) ? false : response.data.attributes.sameAsBeforeOption[0];
-						$('#input-same-as-before-option').prop("checked", checked);
-
-						$('#input-reasonable-amount').val(response.data.attributes.reasonableAmount); // TODO
-						// response.data.groupCode
-						// response.data.attributes.portionSize
-						// response.data.attributes.reasonableAmount
-						// response.data.attributes.sameAsBeforeOption
+						$scope.SharedData.currentItem.attributes.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
+						$scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
+						
+						$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
 
 					}, function errorCallback(response) { handleError(response); });
 

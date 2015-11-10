@@ -8,7 +8,7 @@
 	.property
 		hr
 		.input-wrapper
-			.btn.success#add-food-btn
+			.btn.success(ng-click='addFood()')
 				span #{ gettext("Add food") }
 			.btn.danger
 				span #{ gettext("Cancel") }

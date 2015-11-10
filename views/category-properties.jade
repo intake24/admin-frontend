@@ -5,10 +5,10 @@
 	.property
 		hr
 		.input-wrapper
-			.btn.success
+			.btn.success(ng-click='updateCategory()')
 				span #{ gettext("Accept changes") }
-			.btn.warning
+			.btn.warning(ng-click='discardCategoryChanges()')
 				span #{ gettext("Discard changes") }
-			.btn.danger
+			.btn.danger(ng-click='deleteCategory()')
 				span #{ gettext("Delete") }
 			.clearfloat

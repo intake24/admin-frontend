@@ -2,40 +2,45 @@
 	h3 #{ gettext("Food definition") }
 	.input-wrapper
 		label #{ gettext("Description") }
-		input(id='input-food-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
+		input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
-		input(id='input-food-code' type='text', placeholder='#{ gettext("ALBU") }')
+		input(id='input-food-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.code')
 	.input-wrapper
 		label #{ gettext("NDNS code") }
-		input(id='input-NDNS-code' type='text', placeholder='10968')
+		input(id='input-NDNS-code' type='text' placeholder='10968' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
 	.input-wrapper
 		label #{ gettext("Food group") }
-		select(id='food-group-dropdown')
-			option #{ gettext("Other vegetables") }
+		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.englishDescription for fg in SharedData.foodGroups" data-ng-model="SharedData.selectedFoodGroup")
 
 .property
 	h3 #{ gettext("Attributes") }
 	.input-wrapper
 		label #{ gettext("Ready meal option") }
-		<input id="input-ready-meal-option" type="checkbox" value="" checked="checked">
+		input(id='input-ready-meal-option' type='checkbox' ng-model='SharedData.currentItem.attributes.booleanReadyMealOption')
 	.input-wrapper
 		label #{ gettext("Same as before option") }
-		<input id="input-same-as-before-option" type="checkbox" value="" checked="checked">
+		input(id='input-same-as-before-option' type='checkbox' ng-model='SharedData.currentItem.attributes.booleanSameAsBeforeOption')
 	.input-wrapper
 		label #{ gettext("Reasonable amount (g/ml)") }
-		input(id='input-reasonable-amount' type='text', placeholder='#{ gettext("600") }', style='min-width:60px; width:60px')
+		input(id='input-reasonable-amount' type='text' placeholder='#{ gettext("600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.attributes.reasonableAmount[0]')
 
 .property
 	h3 #{ gettext("Categories") }
 	.input-wrapper
-		textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+		ul(class="categories-container" ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
+
 	.input-wrapper
 		.btn.success#add-food-to-category-btn
 			span #{ gettext("Add to category") }
-		.btn.danger
+		.btn.danger#remove-food-from-category-btn
 			span #{ gettext("Remove from selected category") }
 		.clearfloat
 
 .property
 	h3 #{ gettext("Portion size estimation") }
+	.input-wrapper
+		.btn.success
+			span #{ gettext("Add a portion size method") }
+		.clearfloat

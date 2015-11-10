@@ -2,17 +2,34 @@
 	h3 #{ gettext("Category definition") }
 	.input-wrapper
 		label #{ gettext("Description") }
-		input(id='input-category-englishDescription', type='text', placeholder='#{ gettext("Beans on toast") }')
+		input(id='input-category-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
-		input(id='input-category-code' type='text', placeholder='#{ gettext("ALBU") }')
+		input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.code')
+	.input-wrapper
+		label #{ gettext("Hidden") }
+		input(id='input-is-hidden' type='checkbox' ng-model='SharedData.currentItem.isHidden')
 
 .property
-	h3 #{ gettext("Parent Categories") }
+	h3 #{ gettext("Attributes") }
 	.input-wrapper
-		textarea(rows='4', placeholder='#{ gettext("Enter categories") }')
+		label #{ gettext("Ready meal option") }
+		input(id='input-ready-meal-option' type='checkbox' ng-model='SharedData.currentItem.attributes.booleanReadyMealOption')
 	.input-wrapper
-		.btn.success
+		label #{ gettext("Same as before option") }
+		input(id='input-same-as-before-option' type='checkbox' ng-model='SharedData.currentItem.attributes.booleanSameAsBeforeOption')
+	.input-wrapper
+		label #{ gettext("Reasonable amount (g/ml)") }
+		input(id='input-reasonable-amount' type='text' placeholder='#{ gettext("600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.attributes.reasonableAmount[0]')
+
+.property
+	h3 #{ gettext("Categories") }
+	.input-wrapper
+		ul(class="categories-container" ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+			li(onClick='$(".categories-container li").removeClass("selected");$(this).addClass("selected")'){{parentCategory.englishDescription}}
+
+	.input-wrapper
+		.btn.success#add-category-to-category-btn
 			span #{ gettext("Add to category") }
 		.btn.danger
 			span #{ gettext("Remove from selected category") }
@@ -20,3 +37,7 @@
 
 .property
 	h3 #{ gettext("Portion size estimation") }
+	.input-wrapper
+		.btn.success
+			span #{ gettext("Add a portion size method") }
+		.clearfloat

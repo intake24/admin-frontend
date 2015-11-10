@@ -11,7 +11,7 @@ $(document).ready(function() {
 	$('#modal-backdrop').click(hideModal);
 
 	// Hide modal on close button click
-	$('#button-close-modal').click(hideModal);
+	$('.button-close-modal').click(hideModal);
 
 	$('.btn-modal').click(function() {
 		showModal($(this).attr('data-modal'));
@@ -20,12 +20,14 @@ $(document).ready(function() {
 
 function showModal(modal_id) {
 
+	$('body').addClass('modal-open');
 	$('#modal-backdrop').show().animate({'opacity': 1.0}, 300);
 	$('.modal#' + modal_id).show().removeClass('fadeOutDown').addClass('fadeInUp');
 }
 
 function hideModal() {
 
+	$('body').removeClass('modal-open');
 	$('.modal').removeClass('fadeInUp').addClass('fadeOutDown').hide();
 
 	$('#modal-backdrop').animate({'opacity': 0.0}, 300, function() {

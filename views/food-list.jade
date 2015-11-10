@@ -2,5 +2,9 @@
 	include search
 	
 	.food-list-container
-		.food-list#food-list
-			ul
+		.food-list
+			ul(ng-model='SharedData.treeData')
+				li(ng-repeat='(index, value) in SharedData.treeData | orderBy:["type", "englishDescription"]' ng-include='"node"')
+
+script(type="text/ng-template", id="node")
+	include node

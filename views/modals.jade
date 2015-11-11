@@ -22,7 +22,7 @@
 				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
 
 	.modal-footer
-		button(class="btn success modal-form-button" id="button-add-food-to-category") #{ gettext("Add Category") }
+		button(class="btn success modal-form-button button-close-modal close-modal" ng-click='reloadCategories()') #{ gettext("Add Category") }
 		button(class="btn danger modal-form-button button-close-modal close-modal") #{ gettext("Cancel") }
 		.clearfloat
 	

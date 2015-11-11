@@ -1,14 +1,15 @@
+form(id='food-properties-form')
 .property
 	h3 #{ gettext("Food definition") }
 	.input-wrapper
 		label #{ gettext("Description") }
-		input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
+		input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("e.g. Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
-		input(id='input-food-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.code')
+		input(id='input-food-code' type='text' placeholder='#{ gettext("e.g. ALBU") }' ng-model='SharedData.currentItem.code')
 	.input-wrapper
 		label #{ gettext("NDNS code") }
-		input(id='input-NDNS-code' type='text' placeholder='10968' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
+		input(id='input-NDNS-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
 	.input-wrapper
 		label #{ gettext("Food group") }
 		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.englishDescription for fg in SharedData.foodGroups" data-ng-model="SharedData.selectedFoodGroup")
@@ -23,7 +24,7 @@
 		input(id='input-same-as-before-option' type='checkbox' ng-model='SharedData.currentItem.attributes.booleanSameAsBeforeOption')
 	.input-wrapper
 		label #{ gettext("Reasonable amount (g/ml)") }
-		input(id='input-reasonable-amount' type='text' placeholder='#{ gettext("600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.attributes.reasonableAmount[0]')
+		input(id='input-reasonable-amount' type='text' placeholder='#{ gettext("e.g. 600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.attributes.reasonableAmount[0]')
 
 .property
 	h3 #{ gettext("Categories") }
@@ -32,7 +33,7 @@
 			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper
-		.btn.success#add-food-to-category-btn
+		.btn.success(onClick='showModal("modal-add-food-to-category")')
 			span #{ gettext("Add to category") }
 		.btn.danger#remove-food-from-category-btn
 			span #{ gettext("Remove from selected category") }

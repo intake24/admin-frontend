@@ -509,7 +509,12 @@ input.invalid {
 }
 .food-list ul li .fa-circle,
 .food-list ul li .fa-circle-o {
+  color: #38d075;
   margin-right: 5px;
+}
+.food-list ul li .fa-circle.editing,
+.food-list ul li .fa-circle-o.editing {
+  color: #fb850c;
 }
 .food-list ul li > ul > li {
   padding: 0 0 0 10px;

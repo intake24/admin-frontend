@@ -14,6 +14,38 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.loading_uncategorized = false;
 
+	$scope.$watch('SharedData.currentItem', function(newItem) {
+
+		$.each($scope.SharedData.treeData, function(key, value) {
+
+			updateItems(newItem, value);
+
+		});
+
+	}, true);
+
+	function updateItems(newItem, oldItem)
+	{
+		if (oldItem.code == newItem.code) {
+
+			oldItem.editing = !angular.equals(oldItem.englishDescription, newItem.englishDescription);
+
+			if (oldItem.hasOwnProperty('children')) {
+				newItem.children = oldItem.children;
+			}
+
+			angular.merge(oldItem, newItem);
+		}
+
+		if (oldItem.hasOwnProperty('children')) {
+			$.each(oldItem.children, function(key, value) {
+
+				updateItems(newItem, value);
+
+			})
+		}
+	}
+
 	function showContainer(container_id) {
 		$('.properties-container').hide();
 		$(container_id).show();
@@ -23,18 +55,6 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	$('input').keyup(function() {
 		if ($(this).attr('id') == 'input-food-code') { checkCode(this, 'foods'); }
 		if ($(this).attr('id') == 'input-category-code') { checkCode(this, 'categories'); }
-	});
-	
-	$('#add-food-to-category-btn').click(function() {
-		showModal('modal-add-food-to-category');
-	});
-
-	$('#button-add-food-to-category').click(function() {
-		$.each($scope.SharedData.allCategories, function(index, value) {
-			if (value.isParentCategory) {
-				addFoodToCategory($scope.SharedData.currentItem.code, value.code);
-			};
-		});
 	});
 
 	$('#remove-food-from-category-btn').click(function() {
@@ -53,18 +73,15 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 				}).then(function successCallback(response) {
 
-					showMessage('Removed from categories', 'success');
-					loadItem('food', $scope.SharedData.currentItem.code, $scope.SharedData.currentItem.code);
+					showMessage('Removed from selected categories', 'success');
+					
+					$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
+					$scope.getProperties($scope.SharedData.currentItem);
 
 				}, function errorCallback(response) { showMessage('Failed to remove from categories', 'danger'); });
 			};
 		});
 	});
-
-	function deleteNode(code)
-	{
-		$('#food-list').jstree().delete_node($('#' + code));
-	}
 
 	function resetProperties()
 	{
@@ -73,13 +90,27 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		$('input').removeClass('valid invalid');
 	}
 
-	function hasWhiteSpace(s) {
-	  return s.indexOf(' ') >= 0;
+	function loadUncategorised()
+	{
+		$http({
+			method: 'GET',
+			url: api_base_url + 'foods/' + locale + '/uncategorised',
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$.each(response.data, function(index, value) { value.type = 'category'; })
+
+			$scope.SharedData.treeData['UCAT'] = {code: 'UCAT', type: 'uncategorised', englishDescription: 'Uncategorised foods', children: response.data};
+
+		}, function errorCallback(response) { handleError(response); });	
 	}
 
 	function fetchCategories()
 	{
-		resetProperties();
+		// remove active
+		$(".food-list>ul>li.node-open").removeClass("node-open");
+
+		loadUncategorised();
 
 		$http({
 			method: 'GET',
@@ -92,6 +123,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 				$scope.SharedData.treeData[value.code] = value;
 			})
 
+			$scope.SharedData.allCategories = response.data;
+
 			fetchFoodGroups();
 
 		}, function errorCallback(response) { handleError(response); });
@@ -99,24 +132,26 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.nodeSelected = function($event, value) {
 
-		SharedData.currentItem = value; 
-
-		$scope.SharedData.originalCode = value.code;
-
 		$($event.target).parent().toggleClass('node-open');
 
-		$scope.getChildren($event, value);
+		if (value.type == 'uncategorised') {
+
+		} else {
+
+			SharedData.currentItem = value; 
+
+			$scope.SharedData.originalCode = value.code;
+
+			$scope.getChildren(value);
+		}
 	}
 
-	$scope.getProperties = function($event, value) {
+	$scope.getProperties = function(value) {
 
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
 		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + locale + '/' + value.code + '/definition' : api_base_url + 'foods/' + locale + '/' + value.code + '/definition';
-
-		$('#food-properties-container').hide();
-		$('#category-properties-container').hide();
 
 		$http({
 			method: 'GET',
@@ -131,25 +166,25 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			$scope.SharedData.currentItem.attributes.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
 			$scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
 
-			console.log($scope.SharedData.currentItem.type);
-
 			if ($scope.SharedData.currentItem.type == 'category') {
 
 				fetchParentCategories('categories', value.code);
+				$('.properties-container').not('#category-properties-container').hide();
 				$('#category-properties-container').show();
 
 			} else {
 
 				$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
 
-				$('#food-properties-container').show();
 				fetchParentCategories('foods', value.code);
+				$('.properties-container').not('#food-properties-container').hide();
+				$('#food-properties-container').show();
 			}
 			
 		}, function errorCallback(response) { handleError(response); });
 	}
 	
-	$scope.getChildren = function($event, value) {
+	$scope.getChildren = function(value) {
 
 		$http({
 			method: 'GET',
@@ -165,7 +200,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			$scope.SharedData.currentItem.children = children;
 
-			$scope.getProperties($event, value);
+			$scope.getProperties(value);
 		});
 	}
 
@@ -190,35 +225,31 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
-			$.each(response.data, function(index, value) {
-				value.remove = false;
-			});
+			$.each(response.data, function(index, value) { value.remove = false; });
 			
 			$scope.SharedData.currentItem.parentCategories = response.data;
 
 		}, function errorCallback(response) { handleError(response); });		
 	}
 
-	function addNode(node_id, parent_id, index, value, type)
-	{
-		node_id += '_' + parent_id.replace('#','');
-
-		if (value.isHidden)
-			return;
-
-		if ($('#' + node_id).length > 0) {
-			console.log('Node exists with this id');
-			return;
-		}
-
-		$('#food-list').jstree().create_node(parent_id, { "id" : node_id, "index" : index, "data" : { "type" : type }, "text" : value.englishDescription}, "last", function() {
-			$scope.items[node_id] = value; });
-	}
-
 	function setAttributes()
 	{
 		$scope.SharedData.currentItem.attributes.readyMealOption = ($scope.SharedData.currentItem.attributes.booleanReadyMealOption) ? Array(true) : Array();
 		$scope.SharedData.currentItem.attributes.sameAsBeforeOption = ($scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption) ? Array(true) : Array();
+	}
+
+	$scope.reloadCategories = function() {
+
+		if (!$scope.SharedData.currentItem.parentCategories) {
+			$scope.SharedData.currentItem.parentCategories = [];
+		}
+
+		$.each($scope.SharedData.allCategories, function(index, value) {
+			if (value.isParentCategory) {
+				value.add = true;
+				$scope.SharedData.currentItem.parentCategories.push(value);
+			};
+		});
 	}
 
 	// Food Actions
@@ -238,6 +269,11 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
+			// Loop through categories and add the food to them
+			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
+				addFoodToCategory($scope.SharedData.currentItem.code, value.code);
+			});
+
 			showMessage('Food added', 'success');
 			$scope.SharedData.currentItem = new Object();
 			$('input').removeClass('valid invalid');
@@ -247,7 +283,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.discardFoodChanges = function() {
 	
-		loadItem('food', $scope.SharedData.currentItem.code, $scope.SharedData.currentItem.code);
+		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
+		$scope.getProperties($scope.SharedData.currentItem);
 	}
 
 	$scope.deleteFood = function() {
@@ -263,7 +300,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 				showMessage('Food deleted', 'success');
 				
-				deleteNode($scope.SharedData.currentItem.code);
+				$scope.SharedData.currentItem = new Object();
+
 				resetProperties();
 
 			}, function errorCallback(response) { showMessage('Failed to delete food', 'danger'); });
@@ -283,15 +321,15 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
+			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
+				if (value.add) {
+					addFoodToCategory($scope.SharedData.currentItem.code, value.code);
+				}
+			});
+
 			showMessage('Food updated', 'success');
 
-			var parent_id = $('#' + $scope.SharedData.originalCode).parent().parent().first().attr('id');
-			
-			deleteNode($scope.SharedData.originalCode);
-	
-			addNode($scope.SharedData.currentItem.code, parent_id, 0, $scope.SharedData.currentItem, 'food');
-
-			resetProperties();
+			$scope.getProperties(SharedData.currentItem);
 
 		}, function errorCallback(response) { showMessage('Failed to update food', 'danger'); console.log(response); });
 	}
@@ -321,7 +359,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.discardCategoryChanges = function() {
 
-		loadItem('category', $scope.SharedData.currentItem.code, $scope.SharedData.currentItem.code);
+		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
+		$scope.getProperties($scope.SharedData.currentItem);
 	}
 
 	$scope.deleteCategory = function() {
@@ -338,7 +377,6 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 				showMessage('Category deleted', 'success');
 				
-				deleteNode($scope.SharedData.currentItem.code);
 				resetProperties();
 
 			}, function errorCallback(response) { showMessage('Failed to delete category', 'danger'); });
@@ -357,8 +395,6 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		}).then(function successCallback(response) {
 
 			showMessage('Category updated', 'success');
-
-			fetchCategoriesService.broadcast();
 
 		}, function errorCallback(response) { showMessage('Failed to update category', 'danger'); console.log(response); });
 	}

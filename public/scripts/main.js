@@ -1,8 +1,7 @@
 var api_base_url = 'http://api-test.intake24.co.uk/';
 var token = '';
-var locale = 'en';
 
-var messageStack = [];
+var showingFlashMessage = false;
 
 var app = angular.module('app', []);
 
@@ -36,6 +35,8 @@ app.directive('jfbFormModel', function() {
 
 app.factory('SharedData', function () {
     return {
+        locales: [{'language':'Arabic', 'locale':'ar'}, {'language':'English', 'locale':'en'}, {'language':'German', 'locale':'de'}, {'language':'Spanish', 'locale':'es'}],
+        locale: {'language':'Russian', 'locale':'ru'},
     	currentItem: new Object(),
         originalCode: new Object(),
     	foodGroups: new Object(), 
@@ -46,27 +47,17 @@ app.factory('SharedData', function () {
 });
 
 function showMessage(message, type) {
-    messageStack.push({message: message, type: type});
 
-    showMessages();
+    if ($('.flash-message').hasClass('active')) {
+        
+        setTimeout(function() { showMessage(message, type); }, 500);
 
-    // $.each(messageStack, function(index, value) {
-    //     $('.flash-message #message').html(message);
-    //     $('.flash-message').removeClass('success warning danger').addClass(type).addClass('active');
-    //     setTimeout(function() { hideMessage(); }, 2000);
-    // });
-}
+    } else {
 
-function showMessages() {
-    var item = messageStack.pop();
-    $('.flash-message #message').html(item.message);
-    $('.flash-message').removeClass('success warning danger').addClass(item.type).addClass('active');
-    setTimeout(function() {
-        hideMessage();
-        if (messageStack.length > 0) {
-            showMessages();
-        };
-    }, 2000);
+        $('.flash-message #message').html(message);
+        $('.flash-message').removeClass('success warning danger').addClass(type).addClass('active');
+        setTimeout(function() { hideMessage(); }, 1500);
+    }
 }
 
 function hideMessage() {

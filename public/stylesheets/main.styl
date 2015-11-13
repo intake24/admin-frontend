@@ -250,12 +250,17 @@ header
 			a.active, a:hover
 				border-left-color main-color
 				cursor pointer
-
-	.nested-li li
-		background-color lighten(sidebar-color, 5%)
-	
-	.nested-li li a:hover
-		border-left-color #aaa
+			.nested-li
+				display none
+			.nested-li li
+				background-color lighten(sidebar-color, 5%)
+			
+			.nested-li li a:hover
+				border-left-color #aaa
+				
+			&.active
+				.nested-li
+					display block 
 
 @media (max-width: 1080px)
 	.sidebar
@@ -325,28 +330,41 @@ input
 
 /* Sortable */
 .categories-container
-	list-style-type none
-	margin 0
-	max-height 300px
-	overflow-y scroll 
-	padding 0
+	overflow scroll 
+	input
+		background #f9f9f9 
+		border #e1e1e1 !important
+		font-size 15px
+		font-weight 300 
+		outline 0
+		padding 15px 20px 
+		width 100%
 		
-	li
-		border #fff 1px solid 
-		border-left main-color 3px solid
-		height 40px
-		line-height 40px
-		margin 0 0 10px 0
-		padding 0 15px
-		&:hover
-			background #f9f9f9
-			cursor pointer
-		&.selected
-			background #f2f2f2
-			border #e1e1e1 1px solid 
-			border-left success-color 3px solid 
-		span
-			position absolute
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	ul
+		list-style-type none
+		margin 0
+		max-height 300px
+		padding 0
+			
+		li
+			border #fff 1px solid 
+			border-left main-color 3px solid
+			height 40px
+			line-height 40px
+			margin 0 0 10px 0
+			padding 0 15px
+			&:hover
+				background #f9f9f9
+				cursor pointer
+			&.selected
+				background #f2f2f2
+				border #e1e1e1 1px solid 
+				border-left success-color 3px solid 
+			span
+				position absolute
 			
 .modal
 	.categories-container

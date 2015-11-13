@@ -5,14 +5,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	// Listen for boradcasts
 	fetchCategoriesService.listen(function(event, data) { fetchCategories(); });
 	
-	// Init object to store food
-	$scope.items = new Object();
+	// Load shared data
 	$scope.SharedData = SharedData;
-
-	// When adding a food
-	$scope.newFood = new Object();
-
-	$scope.loading_uncategorized = false;
 
 	$scope.$watch('SharedData.currentItem', function(newItem) {
 
@@ -26,24 +20,29 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	function updateItems(newItem, oldItem)
 	{
+		if (oldItem.code == $scope.SharedData.originalCode) {
+
+			if ($scope.SharedData.currentItem.hasOwnProperty('temp')) {
+				if ($scope.SharedData.currentItem.temp.hasOwnProperty('update_code')) {
+					delete $scope.SharedData.currentItem.temp.update_code;
+					oldItem.code = newItem.code = $scope.SharedData.currentItem.temp.code;
+				}
+			}
+		}
+
 		if (oldItem.code == newItem.code) {
 
 			oldItem.editing = !angular.equals(oldItem.englishDescription, newItem.englishDescription);
 
-			if (oldItem.hasOwnProperty('children')) {
-				newItem.children = oldItem.children;
-			}
-
+			newItem.children = (oldItem.hasOwnProperty('children')) ? oldItem.children : [];
+			
 			angular.merge(oldItem, newItem);
 		}
 
 		if (oldItem.hasOwnProperty('children')) {
-			$.each(oldItem.children, function(key, value) {
-
-				updateItems(newItem, value);
-
-			})
+			$.each(oldItem.children, function(key, value) { updateItems(newItem, value); })
 		}
+			
 	}
 
 	function showContainer(container_id) {
@@ -94,7 +93,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + 'foods/' + locale + '/uncategorised',
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/uncategorised',
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -107,14 +106,11 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	function fetchCategories()
 	{
-		// remove active
-		$(".food-list>ul>li.node-open").removeClass("node-open");
-
 		loadUncategorised();
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'categories/' + locale,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -151,7 +147,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
-		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + locale + '/' + value.code + '/definition' : api_base_url + 'foods/' + locale + '/' + value.code + '/definition';
+		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + value.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + value.code + '/definition';
 
 		$http({
 			method: 'GET',
@@ -165,6 +161,11 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			
 			$scope.SharedData.currentItem.attributes.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
 			$scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
+			
+			$scope.SharedData.currentItem.temp = Object();
+			$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
+
+			console.log($scope.SharedData.currentItem);
 
 			if ($scope.SharedData.currentItem.type == 'category') {
 
@@ -180,6 +181,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 				$('.properties-container').not('#food-properties-container').hide();
 				$('#food-properties-container').show();
 			}
+			console.log($scope.SharedData.currentItem);
 			
 		}, function errorCallback(response) { handleError(response); });
 	}
@@ -188,7 +190,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'categories/' + locale + '/' + value.code,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + value.code,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -208,7 +210,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + 'food-groups/' + locale,
+			url: api_base_url + 'food-groups/' + $scope.SharedData.locale.locale,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -234,8 +236,14 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	function setAttributes()
 	{
+		$scope.SharedData.currentItem.code = $scope.SharedData.currentItem.temp.code;
+
+		$scope.SharedData.currentItem.temp.update_code = true;
+
 		$scope.SharedData.currentItem.attributes.readyMealOption = ($scope.SharedData.currentItem.attributes.booleanReadyMealOption) ? Array(true) : Array();
 		$scope.SharedData.currentItem.attributes.sameAsBeforeOption = ($scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption) ? Array(true) : Array();
+
+		// delete $scope.SharedData.currentItem.temp;
 	}
 
 	$scope.reloadCategories = function() {
@@ -285,6 +293,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 		$scope.getProperties($scope.SharedData.currentItem);
+
+		showMessage('Changes discarded', 'success');
 	}
 
 	$scope.deleteFood = function() {
@@ -329,9 +339,38 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			showMessage('Food updated', 'success');
 
+			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
+
 			$scope.getProperties(SharedData.currentItem);
 
 		}, function errorCallback(response) { showMessage('Failed to update food', 'danger'); console.log(response); });
+	}
+
+	$scope.updateLocalFood = function() {
+
+		var food = {
+		  "version": [
+		    $scope.SharedData.version
+		  ],
+		  "localDescription": [
+		    "Another language"
+		  ],
+		  "nutrientTableCodes": {
+		    "NDNS": "1348"
+		  },
+		  "portionSize": []
+		};
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: food
+		}).then(function successCallback(response) {
+
+			showMessage('Local food updated', 'success');
+
+		}, function errorCallback(response) { showMessage('Failed to update local food', 'danger'); console.log(response); });
 	}
 
 	// Category Actions
@@ -361,6 +400,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 		$scope.getProperties($scope.SharedData.currentItem);
+
+		showMessage('Changes discarded', 'success');
 	}
 
 	$scope.deleteCategory = function() {
@@ -394,7 +435,15 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
+			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
+				if (value.add) {
+					addCategoryToCategory($scope.SharedData.currentItem.code, value.code);
+				}
+			});
+
 			showMessage('Category updated', 'success');
+
+			$scope.getProperties(SharedData.currentItem);
 
 		}, function errorCallback(response) { showMessage('Failed to update category', 'danger'); console.log(response); });
 	}
@@ -408,6 +457,21 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		}).then(function successCallback(response) {
 
 			showMessage('Food added to category', 'success');
+
+			fetchCategoriesService.broadcast();
+
+		}, function errorCallback(response) { showMessage('Failed to add to category', 'danger'); console.log(response); });
+	}
+
+	function addCategoryToCategory(category_code, subcategory_code)
+	{
+		$http({
+			method: 'PUT',
+			url: api_base_url + 'categories/' + category_code + '/subcategories/' + subcategory_code,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+		}).then(function successCallback(response) {
+
+			showMessage('Category added to category', 'success');
 
 			fetchCategoriesService.broadcast();
 

@@ -5,7 +5,7 @@
 		input(id='input-category-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
-		input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.code')
+		input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.temp.code')
 	.input-wrapper
 		label #{ gettext("Hidden") }
 		input(id='input-is-hidden' type='checkbox' ng-model='SharedData.currentItem.isHidden')
@@ -25,11 +25,12 @@
 .property
 	h3 #{ gettext("Categories") }
 	.input-wrapper
-		ul(class="categories-container" ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
-			li(onClick='$(".categories-container li").removeClass("selected");$(this).addClass("selected")'){{parentCategory.englishDescription}}
+		.categories-container
+			ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+				li(onClick='$(".categories-container li").removeClass("selected");$(this).addClass("selected")'){{parentCategory.englishDescription}}
 
 	.input-wrapper
-		.btn.success#add-category-to-category-btn
+		.btn.success(onClick='showModal("modal-add-food-to-category")')
 			span #{ gettext("Add to category") }
 		.btn.danger
 			span #{ gettext("Remove from selected category") }

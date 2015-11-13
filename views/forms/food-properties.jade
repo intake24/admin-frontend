@@ -6,7 +6,7 @@ form(id='food-properties-form')
 		input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("e.g. Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
-		input(id='input-food-code' type='text' placeholder='#{ gettext("e.g. ALBU") }' ng-model='SharedData.currentItem.code')
+		input(id='input-food-code' type='text' placeholder='#{ gettext("e.g. ALBU") }' ng-model='SharedData.currentItem.temp.code')
 	.input-wrapper
 		label #{ gettext("NDNS code") }
 		input(id='input-NDNS-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
@@ -29,8 +29,9 @@ form(id='food-properties-form')
 .property
 	h3 #{ gettext("Categories") }
 	.input-wrapper
-		ul(class="categories-container" ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
-			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
+		.categories-container
+			ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+				li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper
 		.btn.success(onClick='showModal("modal-add-food-to-category")')

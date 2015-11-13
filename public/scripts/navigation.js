@@ -8,6 +8,11 @@ app.controller('NavigationController', function($scope, $http, expandPropertiesS
 	// Init shared data
 	$scope.SharedData = SharedData;
 
+	$scope.setLocale = function(locale) {
+		SharedData.locale = locale;
+		showMessage('Language set to ' + locale.language + ' (' + locale.locale + ')', 'success');
+	}
+
 	$('.sidebar-btn').click(function() {
 		if ($(this).closest("li").children("ul").length == 0) {
 			$('.sidebar').removeClass('active');
@@ -43,8 +48,10 @@ app.controller('NavigationController', function($scope, $http, expandPropertiesS
 	});
 
 	// Add new food
-	$('#add-new-food-btn').click(function() {
+	$scope.addNewFood = function() {
 		
+		$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[0];
+
 		$scope.SharedData.currentItem = {
 			code:"",
 			englishDescription:"",
@@ -62,11 +69,9 @@ app.controller('NavigationController', function($scope, $http, expandPropertiesS
 			}
 		};
 
-		$scope.$apply();
-
 		expandPropertiesService.broadcast();
 		showContainer('#add-new-food-container');
-	});
+	}
 
 
 	/***********************/
@@ -74,7 +79,7 @@ app.controller('NavigationController', function($scope, $http, expandPropertiesS
 	/***********************/
 
 	// Add new category
-	$('#add-new-category-btn').click(function() {
+	$scope.addNewCategory = function() {
 
 		$scope.SharedData.currentItem = {
 			code:"",
@@ -86,11 +91,9 @@ app.controller('NavigationController', function($scope, $http, expandPropertiesS
 				reasonableAmount:Array()
 			}
 		};
-
-		$scope.$apply();
 		
 		expandPropertiesService.broadcast();
 		showContainer('#add-new-category-container');
-	});
+	}
 
 });

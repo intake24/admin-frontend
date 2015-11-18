@@ -1,16 +1,37 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', function($scope, $http, expandPropertiesService, fetchCategoriesService, SharedData) {
+app.controller('NavigationController', function($scope, $http, $cookies, expandPropertiesService, fetchCategoriesService, SharedData) {
 
 	// Listen for boradcasts
 	expandPropertiesService.listen(function(event, data) { expandProperties(); });
+	
+	// Set sidebar defaults
+	$scope.set_language_active = $cookies.getObject("set_language_active");
+	
+	$scope.$watch($scope.set_language_active, function(newItem) {
+		
+		$cookies.putObject("set_language_active", newItem);
+
+	});
+
+	var locale = $cookies.getObject("locale");
+
+	if (locale) {
+		if (locale.changed) {
+			locale.changed = false;
+			showMessage('Language set to ' + locale.language, 'success');
+		}
+		SharedData.locale = locale;
+		$cookies.putObject("locale", locale);
+	}
 	
 	// Init shared data
 	$scope.SharedData = SharedData;
 
 	$scope.setLocale = function(locale) {
-		SharedData.locale = locale;
-		showMessage('Language set to ' + locale.language + ' (' + locale.locale + ')', 'success');
+		locale.changed = true;
+		$cookies.putObject("locale", locale);
+		document.location = '/' + locale.locale;
 	}
 
 	$('.sidebar-btn').click(function() {

@@ -50,7 +50,7 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'foods/' + locale + '/search/' + query,
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/search/' + query,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -70,6 +70,14 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 
 		}, function errorCallback(response) { handleError(response); });
 
+	}
+
+	function setTempAttributes()
+	{
+		$scope.SharedData.currentItem.temp = Object();
+		$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
+		$scope.SharedData.currentItem.temp.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
+		$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
 	}
 
 	function addSearchResultHandlers() {
@@ -97,7 +105,7 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 					// Category selected so lets fetch that definition
 					$http({
 						method: 'GET',
-						url: api_base_url + 'categories/' + locale + '/' + item.code + '/definition',
+						url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + item.code + '/definition',
 						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 					}).then(function successCallback(response) {
 
@@ -125,8 +133,7 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 
 						$scope.SharedData.currentItem = item = response.data;
 
-						$scope.SharedData.currentItem.attributes.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
-						$scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
+						setTempAttributes()
 						
 						$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
 

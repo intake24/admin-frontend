@@ -1,0 +1,84 @@
+/* Import variables */
+#sidebar-button {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#sidebar-button i {
+  color: #fff;
+  line-height: 50px;
+  padding: 0 15px;
+}
+#sidebar-button:hover {
+  background-color: #ff4f14;
+  cursor: pointer;
+}
+.sidebar {
+  background-color: #222d32;
+  bottom: 0;
+  left: 0;
+  overflow: scroll;
+  padding-top: 50px;
+  position: absolute;
+  top: 0;
+  width: 240px;
+  z-index: 9;
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar ul li a {
+  border-left: transparent 3px solid;
+  color: #fff;
+  display: block;
+  font-size: 13px;
+  line-height: 48px;
+  margin: 0;
+  padding: 0 60px 0 20px;
+  position: relative;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sidebar ul li a i {
+  font-size: 11px;
+  line-height: 48px;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+  border-left-color: #f63;
+  cursor: pointer;
+}
+.sidebar ul li .nested-li {
+  display: none;
+}
+.sidebar ul li .nested-li li {
+  background-color: #2b383f;
+}
+.sidebar ul li .nested-li li a:hover {
+  border-left-color: #aaa;
+}
+.sidebar ul li.active .nested-li {
+  display: block;
+}
+@media (max-width: 1080px) {
+  .sidebar {
+    position: fixed;
+  }
+}
+@media (max-width: 600px) {
+  #sidebar-button {
+    display: block;
+  }
+  .sidebar {
+    left: -240px;
+  }
+  .sidebar.active {
+    left: 0px;
+  }
+}

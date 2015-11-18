@@ -1,0 +1,35 @@
+.portion-size-method
+	.input-wrapper
+		label #{ gettext("Description") }
+		input(placeholder='#{ gettext("Description") }' ng-model='portionSize.description')
+	.input-wrapper
+		label #{ gettext("Image") }
+		input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
+	.input-wrapper
+		label #{ gettext("Use for recipes") }
+		input(type='checkbox' ng-model='portionSize.useForRecipes')
+	.units-list
+		.row.header
+			.column
+				.cell #{ gettext("Unit name (plural)") }
+			.column
+				.cell #{ gettext("Unit weight (g)") }
+			.column
+				.cell #{ gettext("Omit food description") }
+		.row
+			.column
+				.cell sticks
+			.column
+				.cell 7
+			.column
+				.cell
+					input(type='checkbox')
+
+
+	.btn
+		span #{ gettext("Move up") }
+	.btn
+		span #{ gettext("Move down") }
+	.btn
+		span #{ gettext("Add unit") }
+	.clearfloat

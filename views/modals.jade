@@ -18,9 +18,9 @@
 	.modal-title #{ gettext("Add Category") }
 	.modal-content
 		.categories-container
-			input(type='text' ng-model='categoryFilter' placeholder='#{ gettext("Search categories") }')
+			input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
 			ul
-				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | filter:categoryFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
+				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | custom:searchFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
 
 	.modal-footer
 		button(class="btn success modal-form-button button-close-modal close-modal" ng-click='reloadCategories()') #{ gettext("Add Category") }

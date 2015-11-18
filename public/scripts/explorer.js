@@ -77,6 +77,8 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 					$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 					$scope.getProperties($scope.SharedData.currentItem);
 
+					getChildren({code: category_code, type: 'category'});
+
 				}, function errorCallback(response) { showMessage('Failed to remove from categories', 'danger'); });
 			};
 		});
@@ -134,7 +136,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 		} else {
 
-			SharedData.currentItem = value; 
+			$scope.SharedData.currentItem = value;
 
 			$scope.SharedData.originalCode = value.code;
 
@@ -159,13 +161,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			$scope.SharedData.currentItem = response.data;
 			
-			$scope.SharedData.currentItem.attributes.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
-			$scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
-			
-			$scope.SharedData.currentItem.temp = Object();
-			$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
+			console.log($scope.SharedData.currentItem.version);
 
-			console.log($scope.SharedData.currentItem);
+			setTempAttributes();
 
 			if ($scope.SharedData.currentItem.type == 'category') {
 
@@ -223,7 +221,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + type + '/en/' + item_code + '/parent-categories',
+			url: api_base_url + type + '/' + $scope.SharedData.locale.locale + '/' + item_code + '/parent-categories',
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -240,10 +238,16 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 		$scope.SharedData.currentItem.temp.update_code = true;
 
-		$scope.SharedData.currentItem.attributes.readyMealOption = ($scope.SharedData.currentItem.attributes.booleanReadyMealOption) ? Array(true) : Array();
-		$scope.SharedData.currentItem.attributes.sameAsBeforeOption = ($scope.SharedData.currentItem.attributes.booleanSameAsBeforeOption) ? Array(true) : Array();
+		$scope.SharedData.currentItem.attributes.readyMealOption = ($scope.SharedData.currentItem.temp.booleanReadyMealOption) ? Array(true) : Array();
+		$scope.SharedData.currentItem.attributes.sameAsBeforeOption = ($scope.SharedData.currentItem.temp.booleanSameAsBeforeOption) ? Array(true) : Array();
+	}
 
-		// delete $scope.SharedData.currentItem.temp;
+	function setTempAttributes()
+	{
+		$scope.SharedData.currentItem.temp = Object();
+		$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
+		$scope.SharedData.currentItem.temp.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
+		$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
 	}
 
 	$scope.reloadCategories = function() {
@@ -348,24 +352,11 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.updateLocalFood = function() {
 
-		var food = {
-		  "version": [
-		    $scope.SharedData.version
-		  ],
-		  "localDescription": [
-		    "Another language"
-		  ],
-		  "nutrientTableCodes": {
-		    "NDNS": "1348"
-		  },
-		  "portionSize": []
-		};
-
 		$http({
 			method: 'POST',
 			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: food
+			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {
 
 			showMessage('Local food updated', 'success');

@@ -1,23 +1,23 @@
 block sidebar
-	.sidebar(ng-init='sidebaropen=false' ng-class="{'active': sidebaropen}")
-		ul(ng-controller='NavigationController')
-			li(class='sidebar-btn' ng-class="{'active': set_language_active}")
+	.sidebar(ng-init='sidebaropen=false' ng-class='{"active": sidebaropen}')
+		ul(ng-controller='NavigationController' ng-init='set_language_active = manage_foods_active = manage_categories_active = true')
+			li.sidebar-btn(ng-class="{'active': set_language_active}")
 				a(ng-click='set_language_active = !set_language_active') #{ gettext("Set Language") } <i class="fa" ng-class="set_language_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
 					li(ng-repeat='(index, value) in SharedData.locales | orderBy:["language", "locale"]' class='sidebar-btn' ng-click='setLocale(value);')
-						a {{ value.language }}
-			li(class='sidebar-btn' ng-class="{'active': manage_foods_active}")
+						a(ng-class='{"active":SharedData.locale.locale == value.locale}') {{ value.language }}
+			li.sidebar-btn(ng-class="{'active': manage_foods_active}")
 				a(ng-click='manage_foods_active = !manage_foods_active') #{ gettext("Manage foods") } <i class="fa" ng-class="manage_foods_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
-					li(class='sidebar-btn' id='browse-foods-btn') 
+					li.sidebar-btn(id='browse-foods-btn') 
 						a #{ gettext("Browse foods") }
 				ul.nested-li
-					li(class='sidebar-btn' ng-click='addNewFood()') 
+					li.sidebar-btn(ng-click='addNewFood()') 
 						a #{ gettext("Add new food") }
-					li(class='sidebar-btn')
+					li.sidebar-btn
 						a #{ gettext("Clone food") }
 			
-			li(class='sidebar-btn' ng-class="{'active': manage_categories_active}")
+			li.sidebar-btn(ng-class="{'active': manage_categories_active}")
 				a(ng-click='manage_categories_active = !manage_categories_active') #{ gettext("Manage categories") } <i class="fa" ng-class="manage_categories_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
 					li(class= 'sidebar-btn' ng-click='addNewCategory()')

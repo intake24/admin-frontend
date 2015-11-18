@@ -7,16 +7,10 @@
 		.input-wrapper
 			.btn.success(ng-click='updateFood()')
 				span #{ gettext("Accept changes") }
+			.btn.success(ng-click='updateLocalFood()')
+				span #{ gettext("Update local data") }
 			.btn.warning(ng-click='discardFoodChanges()')
 				span #{ gettext("Discard changes") }
 			.btn.danger(ng-click='deleteFood()')
 				span #{ gettext("Delete") }
-			.clearfloat
-				updateLocalFood
-
-	.property
-		hr
-		.input-wrapper
-			.btn.success(ng-click='updateLocalFood()')
-				span #{ gettext("Update locale food") }
 			.clearfloat

@@ -1,0 +1,29 @@
+/* Import variables */
+.btn {
+  background-color: #fafafa;
+  border: 1px solid #ededed;
+  border-radius: 6px;
+  float: left;
+  font-size: 13px;
+  margin: 10px 10px 10px 0;
+  padding: 12px 15px;
+}
+.btn:hover {
+  background-color: #ededed;
+  cursor: pointer;
+}
+.success:hover {
+  background-color: #30cb6e;
+  border: 1px solid #30cb6e;
+  color: #fff;
+}
+.warning:hover {
+  background-color: #f67e04;
+  border: 1px solid #f67e04;
+  color: #fff;
+}
+.danger:hover {
+  background-color: #ff2727;
+  border: 1px solid #ff2727;
+  color: #fff;
+}

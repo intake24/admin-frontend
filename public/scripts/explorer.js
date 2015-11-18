@@ -161,7 +161,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			$scope.SharedData.currentItem = response.data;
 			
-			console.log($scope.SharedData.currentItem.version);
+			console.log($scope.SharedData.currentItem.localData.portionSize.parameters);
 
 			setTempAttributes();
 

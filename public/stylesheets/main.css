@@ -359,11 +359,10 @@ input.invalid {
   padding: 0;
 }
 .categories-container ul li {
-  border: 1px solid #fff 1px solid;
-  border-left: #f63 3px solid;
+  border-left: #e1e1e1 3px solid;
   height: 40px;
   line-height: 40px;
-  margin: 0 0 10px 0;
+  margin: 0;
   padding: 0 15px;
 }
 .categories-container ul li:hover {
@@ -371,15 +370,11 @@ input.invalid {
   cursor: pointer;
 }
 .categories-container ul li.selected {
-  background: #f2f2f2;
-  border: 1px solid #e1e1e1 1px solid;
-  border-left: #38d075 3px solid;
+  background: #f9f9f9;
+  border-left: #fb850c 3px solid;
 }
 .categories-container ul li span {
   position: absolute;
-}
-.modal .categories-container {
-  background: #f9f9f9;
 }
 .modal .categories-container li {
   margin: 0;

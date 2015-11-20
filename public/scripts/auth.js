@@ -9,7 +9,7 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 	    hideModal();
 
 	    $('body').addClass('authenticated');
-	    $('#btn-authenticate p').html('Edward Jenkins');
+	    $('#btn-authenticate p').html(Cookies.get('auth-username'));
 	} else {
 		showModal('modal-authenticate');
 	}
@@ -47,13 +47,15 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 		}).then(function successCallback(response) {
 		    
 		    Cookies.set('auth-token', response.data.token);
+
+		    Cookies.set('auth-username', username);
     		
     		fetchCategoriesService.broadcast();
     
 		    hideModal();
 
 		    $('body').addClass('authenticated');
-		    $('#btn-authenticate p').html('Edward Jenkins');
+		    $('#btn-authenticate p').html(username);
 
 		    showMessage('You have logged in', 'success');
 

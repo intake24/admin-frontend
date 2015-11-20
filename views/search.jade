@@ -4,4 +4,6 @@
 			i.fa.fa-search
 			input(type='text' id='search-field')
 	#search-results
-		ul
+		ul(ng-model='search')
+			li(ng-repeat='value in search | orderBy:["type", "englishDescription"]' ng-class='' ng-click='resultSelected($event, value)')
+				{{ value.englishDescription }}

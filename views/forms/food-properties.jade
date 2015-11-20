@@ -39,7 +39,7 @@ form(id='food-properties-form')
 	.input-wrapper
 		.btn.success(onClick='showModal("modal-add-food-to-category")')
 			span #{ gettext("Add to category") }
-		.btn.danger#remove-food-from-category-btn
+		.btn.danger(ng-click='removeFromCategory()')
 			span #{ gettext("Remove from selected category") }
 		.clearfloat
 

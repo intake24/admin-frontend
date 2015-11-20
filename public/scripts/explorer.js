@@ -1,9 +1,10 @@
 // Explorer (ExplorerController)
 
-app.controller('ExplorerController', function($scope, $http, expandPropertiesService, fetchCategoriesService, SharedData) {
+app.controller('ExplorerController', function($scope, $http, expandPropertiesService, fetchCategoriesService, getPropertiesService, SharedData) {
 
 	// Listen for boradcasts
 	fetchCategoriesService.listen(function(event, data) { fetchCategories(); });
+	getPropertiesService.listen(function(event, data) { $scope.getProperties(); });
 	
 	// Load shared data
 	$scope.SharedData = SharedData;
@@ -56,7 +57,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		if ($(this).attr('id') == 'input-category-code') { checkCode(this, 'categories'); }
 	});
 
-	$('#remove-food-from-category-btn').click(function() {
+	$scope.removeFromCategory = function() {
 
 		$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
 
@@ -66,23 +67,29 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 				var food_code = $scope.SharedData.currentItem.code;
 				var category_code = value.code;
 
+				// api_base_url + 'categories/' + category_code + '/foods/' + food_code
+				// api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code
+				
+				var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
+
 				$http({
 					method: 'DELETE',
-					url: api_base_url + 'categories/' + category_code + '/foods/' + food_code,
+					url: api_endpoint,
 					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 				}).then(function successCallback(response) {
 
 					showMessage('Removed from selected categories', 'success');
 					
 					$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
-					$scope.getProperties($scope.SharedData.currentItem);
+					$scope.getProperties();
 
 					getChildren({code: category_code, type: 'category'});
 
 				}, function errorCallback(response) { showMessage('Failed to remove from categories', 'danger'); });
 			};
 		});
-	});
+
+	}
 
 	function resetProperties()
 	{
@@ -144,12 +151,12 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		}
 	}
 
-	$scope.getProperties = function(value) {
+	$scope.getProperties = function() {
 
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
-		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + value.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + value.code + '/definition';
+		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.currentItem.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.currentItem.code + '/definition';
 
 		$http({
 			method: 'GET',
@@ -160,14 +167,12 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			response.data.type = $scope.SharedData.currentItem.type;
 
 			$scope.SharedData.currentItem = response.data;
-			
-			console.log($scope.SharedData.currentItem.localData.portionSize.parameters);
 
 			setTempAttributes();
 
 			if ($scope.SharedData.currentItem.type == 'category') {
 
-				fetchParentCategories('categories', value.code);
+				fetchParentCategories('categories', $scope.SharedData.currentItem.code);
 				$('.properties-container').not('#category-properties-container').hide();
 				$('#category-properties-container').show();
 
@@ -175,11 +180,10 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 				$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
 
-				fetchParentCategories('foods', value.code);
+				fetchParentCategories('foods', $scope.SharedData.currentItem.code);
 				$('.properties-container').not('#food-properties-container').hide();
 				$('#food-properties-container').show();
 			}
-			console.log($scope.SharedData.currentItem);
 			
 		}, function errorCallback(response) { handleError(response); });
 	}
@@ -200,7 +204,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			$scope.SharedData.currentItem.children = children;
 
-			$scope.getProperties(value);
+			$scope.getProperties();
 		});
 	}
 
@@ -248,6 +252,45 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
 		$scope.SharedData.currentItem.temp.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
 		$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
+
+		// Portion sizes
+		$.each($scope.SharedData.currentItem.localData.portionSize, function(index, portionSize) {
+			
+			portionSize.temp = new Object();
+			portionSize.temp.parameters = [];
+
+			$.each(portionSize.parameters, function(index, parameter) {
+				
+				var name = parameter.name;
+				console.log(name);
+
+				var indexArray = name.match(/\d+/);
+				var index = 0;
+
+				if (indexArray) {
+					index = indexArray[0];
+
+					if (!portionSize.temp.parameters[index]) {
+						portionSize.temp.parameters[index] = new Object();
+					}
+
+					if (parameter.name.indexOf("name") > -1) {
+						portionSize.temp.parameters[index].name = parameter.value; // name
+					} else if (parameter.name.indexOf("weight") > -1) {
+						portionSize.temp.parameters[index].value = parameter.value; // value
+					} else if (parameter.name.indexOf("omit-food-description") > -1) {
+						portionSize.temp.parameters[index].omitFoodDescription = parameter.value; // omit food description
+					}
+
+				};
+			})
+			
+			console.log('----');
+			console.log(portionSize.temp.parameters);
+
+		})
+
+
 	}
 
 	$scope.reloadCategories = function() {
@@ -296,7 +339,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	$scope.discardFoodChanges = function() {
 	
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
-		$scope.getProperties($scope.SharedData.currentItem);
+		$scope.getProperties();
 
 		showMessage('Changes discarded', 'success');
 	}
@@ -345,7 +388,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
 
-			$scope.getProperties(SharedData.currentItem);
+			$scope.updateLocalFood();
 
 		}, function errorCallback(response) { showMessage('Failed to update food', 'danger'); console.log(response); });
 	}
@@ -361,7 +404,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			showMessage('Local food updated', 'success');
 
-		}, function errorCallback(response) { showMessage('Failed to update local food', 'danger'); console.log(response); });
+			$scope.getProperties();
+
+		}, function errorCallback(response) { showMessage('Failed to update local food', 'danger'); console.log(response); $scope.getProperties(); });
 	}
 
 	// Category Actions
@@ -390,7 +435,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	$scope.discardCategoryChanges = function() {
 
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
-		$scope.getProperties($scope.SharedData.currentItem);
+		$scope.getProperties();
 
 		showMessage('Changes discarded', 'success');
 	}
@@ -434,7 +479,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 			showMessage('Category updated', 'success');
 
-			$scope.getProperties(SharedData.currentItem);
+			$scope.getProperties();
+
+			$scope.updateLocalCategory();
 
 		}, function errorCallback(response) { showMessage('Failed to update category', 'danger'); console.log(response); });
 	}

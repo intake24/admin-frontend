@@ -23,6 +23,11 @@ app.service("fetchCategoriesService", function($rootScope) {
     this.listen = function(callback) { $rootScope.$on("fetchCategories", callback)}
 })
 
+app.service("getPropertiesService", function($rootScope) {
+    this.broadcast = function() { $rootScope.$broadcast("getProperties")}
+    this.listen = function(callback) { $rootScope.$on("getProperties", callback)}
+})
+
 app.directive('jfbFormModel', function() {
     'use strict';
 

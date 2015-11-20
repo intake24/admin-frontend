@@ -3,6 +3,9 @@
 	.input-wrapper
 		label #{ gettext("Description") }
 		input(id='input-category-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
+	.input-wrapper(ng-hide='SharedData.locale.locale=="en_GB"')
+		label #{ gettext("Local Description") }
+		input(id='input-food-localeDescription' type='text' ng-model='SharedData.currentItem.localData.localDescription[0]')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
 		input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.temp.code')
@@ -27,12 +30,12 @@
 	.input-wrapper
 		.categories-container
 			ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
-				li(onClick='$(".categories-container li").removeClass("selected");$(this).addClass("selected")'){{parentCategory.englishDescription}}
+				li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper
 		.btn.success(onClick='showModal("modal-add-food-to-category")')
 			span #{ gettext("Add to category") }
-		.btn.danger
+		.btn.danger(ng-click='removeFromCategory()')
 			span #{ gettext("Remove from selected category") }
 		.clearfloat
 

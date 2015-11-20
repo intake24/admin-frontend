@@ -1,10 +1,47 @@
 // Search (SearchController)
 
-app.controller('SearchController', function($scope, $http, SharedData) {
+app.controller('SearchController', function($scope, $http, SharedData, getPropertiesService) {
 
 	// Init object to store search results
 	$scope.search = new Object();
 	$scope.SharedData = SharedData;
+
+	$scope.$watch('SharedData.currentItem', function(newItem) {
+
+		$.each($scope.search, function(key, value) {
+
+			updateItems(newItem, value);
+
+		});
+
+	}, true);
+
+	function updateItems(newItem, oldItem)
+	{
+		if (oldItem.code == $scope.SharedData.originalCode) {
+
+			if ($scope.SharedData.currentItem.hasOwnProperty('temp')) {
+				if ($scope.SharedData.currentItem.temp.hasOwnProperty('update_code')) {
+					delete $scope.SharedData.currentItem.temp.update_code;
+					oldItem.code = newItem.code = $scope.SharedData.currentItem.temp.code;
+				}
+			}
+		}
+
+		if (oldItem.code == newItem.code) {
+
+			oldItem.editing = !angular.equals(oldItem.englishDescription, newItem.englishDescription);
+
+			newItem.children = (oldItem.hasOwnProperty('children')) ? oldItem.children : [];
+			
+			angular.merge(oldItem, newItem);
+		}
+
+		if (oldItem.hasOwnProperty('children')) {
+			$.each(oldItem.children, function(key, value) { updateItems(newItem, value); })
+		}
+			
+	}
 	
 	// Add click and mouse enter/leave events to search wrapper
 	$('.search-field-wrapper').on('click', function() {
@@ -26,27 +63,36 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 	// Detect change of search query and update results
 	$('#search-field').on('input', function(e) {
 
-		var query = $(this).val();
-		performFoodSearch(query);
+		performFoodSearch($(this).val());
 
 	}).keypress(function(e) {
 
-		if (e.keyCode == 13) {
-			var query = $(this).val();
-			performFoodSearch(query);
-		}
+		if (e.keyCode == 13) { performFoodSearch($(this).val()); }
 	});
 
 	function performFoodSearch(query) {
-		
-		$('#search-results ul').html('');
+
+		$scope.search = [];
 
 		if (query == '') {
 			$('.food-list-container').show();
+			$('#search-results').hide();
 			return;
 		} else {
 			$('.food-list-container').hide();
+			$('#search-results').show();
 		}
+
+		$http({
+			method: 'GET',
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/search/' + query,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$.each(response.data, function(index, value) { value.type = 'category'; })
+			$scope.search = $scope.search.concat(response.data);
+
+		}, function errorCallback(response) { handleError(response); });
 
 		$http({
 			method: 'GET',
@@ -54,96 +100,26 @@ app.controller('SearchController', function($scope, $http, SharedData) {
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
-			console.log(response);
-
-			var type = 'food';
-
-			$scope.search = new Object();
-
-			$.each(response.data, function(index, value) {
-
-				$('#search-results ul').append('<li data-type="' + type + '" data-index="' + index + '">' + value.englishDescription + '</li>');
-				$scope.search[index] = value;
-			});
-
-			addSearchResultHandlers();
+			$.each(response.data, function(index, value) { value.type = 'food'; })
+			$scope.search = $scope.search.concat(response.data);
 
 		}, function errorCallback(response) { handleError(response); });
 
 	}
 
-	function setTempAttributes()
-	{
-		$scope.SharedData.currentItem.temp = Object();
-		$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
-		$scope.SharedData.currentItem.temp.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
-		$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
-	}
+	$scope.resultSelected = function($event, value) {
 
-	function addSearchResultHandlers() {
+		$('#search-results ul li').removeClass('active');
 
-		$('#search-results ul li').off().click(function() {
+		$($event.target).addClass('active');
 
-			$('#search-results ul li').removeClass('active');
+		$scope.SharedData.currentItem = value;
 
-			$(this).addClass('active');
+		$scope.SharedData.originalCode = value.code;
 
-			var type = $(this).attr('data-type');
-			var index = $(this).attr('data-index');
+		// $scope.SharedData.currentItem.type = 'category';
 
-			$('#properties-col').addClass('active');
-
-			var item = $scope.search[index];
-
-			switch (type) {
-
-				case "category":
-
-					$('#category-properties-container').show();
-					$('#food-properties-container').hide();
-
-					// Category selected so lets fetch that definition
-					$http({
-						method: 'GET',
-						url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + item.code + '/definition',
-						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-					}).then(function successCallback(response) {
-
-						console.log(response);
-
-					}, function errorCallback(response) { handleError(response); });
-
-					$('#input-category-code').val(item.code);
-					$('#input-category-englishDescription').val(item.englishDescription);
-					break;
-
-				case "food":
-						
-					$('#category-properties-container').hide();
-					$('#food-properties-container').show();
-
-					// Food selected so lets fetch that definition
-					$http({
-						method: 'GET',
-						url: api_base_url + 'foods/en/' + item.code + '/definition',
-						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-					}).then(function successCallback(response) {
-
-						console.log(response);
-
-						$scope.SharedData.currentItem = item = response.data;
-
-						setTempAttributes()
-						
-						$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
-
-					}, function errorCallback(response) { handleError(response); });
-
-					break;
-
-				default:
-			}
-		})
+		getPropertiesService.broadcast();
 	}
 
 	function handleError(response) {

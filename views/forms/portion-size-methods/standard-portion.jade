@@ -11,19 +11,23 @@
 	.units-list
 		.row.header
 			.column
-				.cell #{ gettext("Unit name (plural)") }
+				.unit-cell #{ gettext("Unit name (plural)") }
 			.column
-				.cell #{ gettext("Unit weight (g)") }
+				.unit-cell #{ gettext("Unit weight (g)") }
 			.column
-				.cell #{ gettext("Omit food description") }
-		.row
+				.unit-cell #{ gettext("Omit food description") }
+			.clearfloat
+		.row(ng-model='portionSize.temp.parameters' ng-repeat='unit in portionSize.temp.parameters')
 			.column
-				.cell sticks
+				.unit-cell
+					{{ unit.name }}
 			.column
-				.cell 7
+				.unit-cell
+					{{ unit.value }}
 			.column
-				.cell
-					input(type='checkbox')
+				.unit-cell
+					input(type='checkbox' ng-model='unit.omitFoodDescription')
+			.clearfloat
 
 
 	.btn

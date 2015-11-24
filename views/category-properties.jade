@@ -1,9 +1,13 @@
 .properties-container#category-properties-container
 
-	include forms/category-properties
+	.properties-padding
+		
+		.page-header
+			h2 #{ gettext("Category") }
 
-	.property
-		hr
+		include forms/category-properties
+
+	.properties-footer
 		.input-wrapper
 			.btn.success(ng-click='updateCategory()')
 				span #{ gettext("Accept changes") }

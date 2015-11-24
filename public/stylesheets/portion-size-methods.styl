@@ -1,0 +1,53 @@
+/* Import CSS snippets */
+@import 'snippets'
+
+/* Import color variables */
+@import 'variables'
+
+.portion-size-method
+	background-color #f9f9f9
+	border #ededed 1px solid
+	margin-bottom 20px 
+	padding 10px 20px
+	.units-list
+		background-color white
+		border #ededed 1px solid
+		font-size 12px
+		margin 20px 0 10px 0
+		
+		.row
+			width 100%
+			&:hover
+				background-color #f9f9f9
+				cursor pointer
+			.column
+				float left
+				width 33.333% 
+				.unit-cell
+					padding 0px
+					input
+						background transparent !important 
+						border none !important
+						width auto !important
+					input[type="checkbox"]
+						height 30px 
+			&.header
+				background-color #fff !important
+				border-bottom #ededed 1px solid
+				.column
+					.unit-cell
+						font-weight bold
+						 padding 10px
+
+	.as-served
+		.inline-link
+			color #999
+			display inline-block
+			font-size 14px 
+			i
+				color #999
+				margin 0 6px 
+			&:hover
+				color main-color
+				cursor pointer
+			 

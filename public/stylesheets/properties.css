@@ -6,82 +6,73 @@
 /* Import color variables */
 .properties-container {
   display: none;
-  padding: 30px;
 }
-.properties-container hr {
+.properties-container .properties-padding {
+  padding: 30px 30px 120px 30px;
+}
+.properties-container .properties-padding hr {
   border: none;
   border-bottom: #e1e1e1 1px solid;
 }
-.properties-container .property {
+.properties-container .properties-padding .property {
   margin-bottom: 50px;
 }
-.properties-container .property h3 {
+.properties-container .properties-padding .property h3 {
   color: #444;
   font-size: 20px;
   padding-bottom: 15px;
 }
-.properties-container .property .input-wrapper {
+.properties-container .properties-padding .property .input-wrapper {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  min-height: 45px;
   padding-left: 0px;
 }
-.properties-container .property .input-wrapper label {
+.properties-container .properties-padding .property .input-wrapper label {
   display: inline-block;
   font-size: 13px;
+  line-height: 45px;
   margin-right: 20px;
   min-width: 120px;
 }
-.properties-container .property .input-wrapper input,
-.properties-container .property .input-wrapper select,
-.properties-container .property .input-wrapper textarea {
+.properties-container .properties-padding .property .input-wrapper input,
+.properties-container .properties-padding .property .input-wrapper select,
+.properties-container .properties-padding .property .input-wrapper textarea {
   border: 1px solid #e1e1e1;
-  border-radius: 6px;
-  min-width: 200px;
+  border-radius: 4px;
 }
-.properties-container .property .input-wrapper input {
+.properties-container .properties-padding .property .input-wrapper input {
   outline: 0;
   padding: 10px 12px;
+  width: 200px;
 }
-.properties-container .property .input-wrapper select {
+.properties-container .properties-padding .property .input-wrapper select {
   height: 36px;
-  width: 220px;
+  line-height: 45px;
   outline: 0;
+  width: 220px;
 }
-.properties-container .property .input-wrapper textarea {
+.properties-container .properties-padding .property .input-wrapper textarea {
   width: 320px;
   outline: 0;
   padding: 8px 10px;
 }
-.properties-container .property:last-child {
+.properties-container .properties-padding .property:last-child {
   margin-bottom: 0px;
 }
-.portion-size-method {
-  background-color: #f2f2f2;
-  padding: 10px 20px;
-}
-.portion-size-method .units-list {
-  background-color: #fff;
-  font-size: 12px;
-  margin: 20px 0 10px 0;
-}
-.portion-size-method .units-list .row {
+.properties-container .properties-footer {
+  background: #fff;
+  border-top: #e1e1e1 1px solid;
+  bottom: 0;
+  padding: 5px 15px;
+  position: fixed;
   width: 100%;
 }
-.portion-size-method .units-list .row:hover {
-  background-color: #f2f2f2;
-  cursor: pointer;
-}
-.portion-size-method .units-list .row .column {
-  float: left;
-  width: 33.333%;
-}
-.portion-size-method .units-list .row .column .unit-cell {
-  padding: 10px;
-}
-.portion-size-method .units-list .row.header {
-  background-color: #fff !important;
-  border-bottom: #e1e1e1 1px solid;
-}
-.portion-size-method .units-list .row.header .column .cell {
-  font-weight: bold;
+@media (max-width: 600px) {
+  .properties-container .properties-padding {
+    padding: 30px;
+  }
+  .properties-container .properties-footer {
+    position: relative !important;
+  }
 }

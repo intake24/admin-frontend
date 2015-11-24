@@ -1,0 +1,16 @@
+.drawer.drawer-wide.animated#drawer-add-food-to-category
+	#button-close-drawer.button-close-drawer
+		i.fa.fa-times
+	.drawer-title #{ gettext("Add Category") }
+	.drawer-content
+		.categories-container
+			input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
+			ul
+				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | custom:searchFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
+
+	.drawer-footer
+		button(class="btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Add Category") }
+		button(class="btn danger drawer-form-button button-close-drawer close-drawer") #{ gettext("Cancel") }
+		.clearfloat
+	
+#drawer-backdrop

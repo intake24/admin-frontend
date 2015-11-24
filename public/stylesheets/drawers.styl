@@ -1,0 +1,99 @@
+/* Import CSS snippets */
+@import 'snippets'
+
+/* Import color variables */
+@import 'variables'
+
+transition()
+  -webkit-transition arguments
+  -moz-transition arguments
+  -o-transition arguments
+  transition arguments
+  
+.drawer
+	background white
+	bottom 0
+	display none
+	right 0
+	overflow scroll
+	position fixed
+	top 0
+	width 600px
+	z-index 12
+
+	#button-close-drawer
+		line-height 50px
+		position absolute
+		top 0
+		right 0
+		height 50px
+		text-align center
+		width 50px
+
+		i
+			color #ccc
+			font-size 1.4em
+			line-height inherit
+			transition(color .3s ease-out)
+
+	#button-close-drawer:hover
+		cursor pointer
+		i
+			color red
+	
+	.drawer-title
+		border-bottom #ededed 1px solid
+		font-size 28px 
+		font-weight 100 
+		height 100px
+		line-height 100px 
+		padding 0 50px
+		text-align center
+			
+	.drawer-content
+		padding 0 30px 30px 30px
+		
+	.drawer-footer
+		background white
+		border-top #e1e1e1 1px solid 
+		padding 20px 30px
+		z-index 20 
+		button
+			margin-bottom 0 !important
+			margin-top 0 !important
+			
+&.drawer-narrow
+	width 400px
+	
+&.drawer-wide
+	width 600px
+	
+&.no-padding
+	.drawer-content
+		padding 0
+	
+.drawer.active
+	display block
+
+#drawer-backdrop
+	background-color rgba(0, 0, 0, 0.5)
+	display none
+	opacity 0
+	position fixed
+	top 0
+	bottom 0
+	left 0
+	right 0
+	z-index 11
+	
+#drawer-backdrop.active
+	display block
+	
+@media(max-width:600px)
+	
+	.drawer
+		left 0
+		right 0  
+		width 100% 
+		.drawer-footer
+			width 100%

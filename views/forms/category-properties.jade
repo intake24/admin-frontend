@@ -1,5 +1,5 @@
 .property
-	h3 #{ gettext("Category definition") }
+	h3 #{ gettext("Definition") }
 	.input-wrapper
 		label #{ gettext("Description") }
 		input(id='input-category-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
@@ -33,7 +33,7 @@
 				li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper
-		.btn.success(onClick='showModal("modal-add-food-to-category")')
+		.btn.success(onClick='showDrawer("drawer-add-food-to-category")')
 			span #{ gettext("Add to category") }
 		.btn.danger(ng-click='removeFromCategory()')
 			span #{ gettext("Remove from selected category") }

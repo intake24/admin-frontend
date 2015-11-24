@@ -13,18 +13,5 @@
 	.modal-content
 		button(class="modal-form-button" id="button-logout") #{ gettext("Logout") }
 		.clearfloat
-
-.modal.modal-wide.animated#modal-add-food-to-category
-	.modal-title #{ gettext("Add Category") }
-	.modal-content
-		.categories-container
-			input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
-			ul
-				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | custom:searchFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
-
-	.modal-footer
-		button(class="btn success modal-form-button button-close-modal close-modal" ng-click='reloadCategories()') #{ gettext("Add Category") }
-		button(class="btn danger modal-form-button button-close-modal close-modal") #{ gettext("Cancel") }
-		.clearfloat
 	
 #modal-backdrop

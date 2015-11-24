@@ -41,7 +41,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, expandP
 	});
 
 	function expandProperties() {
-		$('#food-list-col').animate({'opacity':0}, function() { $('#food-list-col').hide(); $('#properties-col').addClass('fullwidth'); });
+		// $('#food-list-col').hide(); $('#properties-col').addClass('fullwidth');
 	}
 
 	function showContainer(container_id) {

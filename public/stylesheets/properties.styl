@@ -6,79 +6,72 @@
 
 .properties-container
 	display none 
-	padding 30px
-
-	hr
-		border none
-		border-bottom #e1e1e1 1px solid
-
-	.property
-		margin-bottom 50px
-
-		h3
-			color dark-font-color
-			font-size 20px
-			padding-bottom 15px
-
-		.input-wrapper
-			display block 
-			margin-bottom 10px
-			padding-left 0px
-
-			label
-				display inline-block
-				font-size 13px
-				margin-right 20px
-				min-width 120px
-
-			input, select, textarea
-				border 1px solid #e1e1e1
-				border-radius 6px
-				min-width 200px
-
-			input
-				outline 0
-				padding 10px 12px
-
-			select
-				height 36px
-				width 220px
-				outline 0
-
-			textarea
-				width 320px
-				outline 0
-				padding 8px 10px
 	
-	.property:last-child
-		margin-bottom 0px
-		
+	.properties-padding
+		padding 30px 30px 120px 30px
 
-// Portion size methods
+		hr
+			border none
+			border-bottom #e1e1e1 1px solid
 
-.portion-size-method
-	background-color #f2f2f2
-	padding 10px 20px 
-	
-	.units-list
-		background-color white
-		font-size 12px
-		margin 20px 0 10px 0
+		.property
+			margin-bottom 50px
+
+			h3
+				color dark-font-color
+				font-size 20px
+				padding-bottom 15px
+
+			.input-wrapper
+				display block
+				margin-bottom 0px
+				min-height 45px
+				padding-left 0px
+
+				label
+					display inline-block
+					font-size 13px
+					line-height 45px
+					margin-right 20px
+					min-width 120px
+
+				input, select, textarea
+					border 1px solid #e1e1e1
+					border-radius 4px
+
+				input
+					outline 0
+					padding 10px 12px
+					width 200px 
+
+				select
+					height 36px
+					line-height 45px
+					outline 0
+					width 220px
+
+				textarea
+					width 320px
+					outline 0
+					padding 8px 10px
 		
-		.row
-			width 100%
-			&:hover
-				background-color #f2f2f2
-				cursor pointer
-			.column
-				float left
-				width 33.333% 
-				.unit-cell
-					 padding 10px
-			&.header
-				background-color #fff !important
-				border-bottom #e1e1e1 1px solid
-				.column
-					.cell
-						font-weight bold
-				
+		.property:last-child
+			margin-bottom 0px
+
+	.properties-footer
+		background #fff
+		border-top #e1e1e1 1px solid
+		bottom 0
+		padding 5px 15px
+		position fixed
+		width 100%
+		
+@media(max-width: 600px)
+
+	.properties-container
+		
+		.properties-padding
+			padding 30px
+			
+		.properties-footer
+			position relative !important

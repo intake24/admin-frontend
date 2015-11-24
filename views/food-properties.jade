@@ -1,14 +1,16 @@
 .properties-container#food-properties-container
 
-	include forms/food-properties
+	.properties-padding
+		
+		.page-header
+			h2 #{ gettext("Food") }
 
-	.property
-		hr
+		include forms/food-properties
+
+	.properties-footer
 		.input-wrapper
 			.btn.success(ng-click='updateFood()')
 				span #{ gettext("Accept changes") }
-			.btn.success(ng-click='updateLocalFood()')
-				span #{ gettext("Update local data") }
 			.btn.warning(ng-click='discardFoodChanges()')
 				span #{ gettext("Discard changes") }
 			.btn.danger(ng-click='deleteFood()')

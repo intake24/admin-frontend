@@ -12,9 +12,11 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		link(rel='stylesheet', href='/stylesheets/buttons.css')
 		link(rel='stylesheet', href='/stylesheets/sidebar.css')
 		link(rel='stylesheet', href='/stylesheets/modals.css')
+		link(rel='stylesheet', href='/stylesheets/drawers.css')
 		link(rel='stylesheet', href='/scripts/themes/intake/style.css')
 		link(rel='stylesheet', href='/stylesheets/food-list.css')
 		link(rel='stylesheet', href='/stylesheets/properties.css')
+		link(rel='stylesheet', href='/stylesheets/portion-size-methods.css')
 		link(rel='stylesheet', href='/stylesheets/search.css')
 
 		script(type="text/javascript" src="/scripts/jquery.min.js")
@@ -25,6 +27,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-cookies.js")
 		script(type="text/javascript" src='/scripts/jstree.min.js')
 		script(type="text/javascript" src='/scripts/modals.js')
+		script(type="text/javascript" src='/scripts/drawers.js')
 		script(type="text/javascript" src='/scripts/main.js')
 		script(type="text/javascript" src='/scripts/auth.js')
 		script(type="text/javascript" src='/scripts/search.js')
@@ -57,3 +60,5 @@ html(lang='#{lang}' dir='#{lang_dir}')
 			h4 <strong>Intake24</strong> Admin
 
 	include modals
+
+	include drawers

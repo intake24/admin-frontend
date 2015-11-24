@@ -1,0 +1,15 @@
+//- Incomplete
+
+.input-wrapper
+	label #{ gettext("Drinkware set") }
+	input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
+.input-wrapper
+	label #{ gettext("Initial fill level") }
+	input(type='range' min='0' max='100' )
+.input-wrapper
+	label #{ gettext("Skip fill level prompt") }
+	input(type='checkbox' ng-model='portionSize.skipFillLevelPrompt')
+
+.btn.danger
+	span #{ gettext("Delete this method") }
+.clearfloat

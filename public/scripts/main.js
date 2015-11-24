@@ -45,6 +45,7 @@ app.directive('jfbFormModel', function() {
         }
     };
 });
+
 app.filter('custom', function() {
   return function(input, search) {
     if (!input) return input;
@@ -61,16 +62,31 @@ app.filter('custom', function() {
   }
 });
 
+// Serving method filters
+
+app.filter('serving-image-set-filter', function () {  
+   return function(inputs, filterValues) {
+      var output = [];
+      angular.forEach(inputs, function (input) {
+        if (filterValues.indexOf(input.id) !== -1)
+            output.push(input);
+       });
+       return output;
+   };
+});
+
 app.factory('SharedData', function () {
     return {
-        locales: [{'language':'Arabic', 'locale':'ar_AE', 'changed':false}, {'language':'English', 'locale':'en_GB', 'changed':false}],
-        locale: {'language':'English', 'locale':'en_GB', 'changed':false},
-    	currentItem: new Object(),
-        originalCode: new Object(),
-    	foodGroups: new Object(), 
-    	selectedFoodGroup: new Object(),
-        allCategories: new Object(),
-        treeData: new Object()
+      locales: [{'language':'Arabic', 'locale':'ar_AE', 'changed':false}, {'language':'English', 'locale':'en_GB', 'changed':false}],
+      locale: {'language':'English', 'locale':'en_GB', 'changed':false},
+      estimationMethods: [{'name':'As served', 'slug':'as-served'}, {'name':'Guide Image', 'slug':'guide-image'}, {'name':'Drink scale', 'slug':'drink-scale'}, {'name':'Standard portion', 'slug':'standard-portion'}, {'name':'Cereal', 'slug':'cereal'}, {'name':'Milk on cereal', 'slug':'milk-on-cereal'}, {'name':'Milk in a hot drink', 'slug':'milk-in-a-hot-drink'}, {'name':'Pizza', 'slug':'pizza'}],
+      currentItem: new Object(),
+      originalCode: new Object(),
+      foodGroups: new Object(), 
+      selectedFoodGroup: new Object(),
+      allCategories: new Object(),
+      treeData: new Object(),
+      portionSizes: new Object()
     }
 });
 

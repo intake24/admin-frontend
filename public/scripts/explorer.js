@@ -9,16 +9,35 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 	// Load shared data
 	$scope.SharedData = SharedData;
 
+	// Watch the current item for changes
 	$scope.$watch('SharedData.currentItem', function(newItem) {
 
 		$.each($scope.SharedData.treeData, function(key, value) {
 
+			// Update items in the food list as they are modified
 			updateItems(newItem, value);
 
 		});
 
 	}, true);
 
+	fetchServedImageSets();
+
+	function fetchServedImageSets() {
+
+		// Get all as served image sets
+		$http({
+			method: 'GET',
+			url: api_base_url + 'portion-size/as-served',
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$scope.SharedData.portionSizes.as_served_image_sets = response.data;
+			
+		}, function errorCallback(response) { handleError(response); });	
+	}
+
+	// Update items in the food list as they are modified
 	function updateItems(newItem, oldItem)
 	{
 		if (oldItem.code == $scope.SharedData.originalCode) {
@@ -46,7 +65,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			
 	}
 
-	function showContainer(container_id) {
+	// Show a container and hide all others
+	function showContainer(container_id)
+	{
 		$('.properties-container').hide();
 		$(container_id).show();
 	}
@@ -67,9 +88,6 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 				var food_code = $scope.SharedData.currentItem.code;
 				var category_code = value.code;
 
-				// api_base_url + 'categories/' + category_code + '/foods/' + food_code
-				// api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code
-				
 				var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
 
 				$http({
@@ -144,9 +162,7 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 		} else {
 
 			$scope.SharedData.currentItem = value;
-
 			$scope.SharedData.originalCode = value.code;
-
 			$scope.getChildren(value);
 		}
 	}
@@ -185,6 +201,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 				$('#food-properties-container').show();
 			}
 			
+			console.log('original');
+			console.log($scope.SharedData.currentItem);
+
 		}, function errorCallback(response) { handleError(response); });
 	}
 	
@@ -259,38 +278,105 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			portionSize.temp = new Object();
 			portionSize.temp.parameters = [];
 
-			$.each(portionSize.parameters, function(index, parameter) {
-				
-				var name = parameter.name;
-				console.log(name);
-
-				var indexArray = name.match(/\d+/);
-				var index = 0;
-
-				if (indexArray) {
-					index = indexArray[0];
-
-					if (!portionSize.temp.parameters[index]) {
-						portionSize.temp.parameters[index] = new Object();
-					}
-
-					if (parameter.name.indexOf("name") > -1) {
-						portionSize.temp.parameters[index].name = parameter.value; // name
-					} else if (parameter.name.indexOf("weight") > -1) {
-						portionSize.temp.parameters[index].value = parameter.value; // value
-					} else if (parameter.name.indexOf("omit-food-description") > -1) {
-						portionSize.temp.parameters[index].omitFoodDescription = parameter.value; // omit food description
-					}
-
-				};
-			})
+			console.log(portionSize);
 			
-			console.log('----');
-			console.log(portionSize.temp.parameters);
+			switch (portionSize.method) {
 
+				case "standard-portion":
+
+					$.each(portionSize.parameters, function(index, parameter) {
+						
+						var name = parameter.name;
+						var indexArray = name.match(/\d+/);
+						var index = 0;
+
+						if (indexArray) {
+							index = indexArray[0];
+
+							if (!portionSize.temp.parameters[index]) { portionSize.temp.parameters[index] = new Object(); }
+
+							if (parameter.name.indexOf("name") > -1) {
+								portionSize.temp.parameters[index].name = parameter.value; // name
+							} else if (parameter.name.indexOf("weight") > -1) {
+								portionSize.temp.parameters[index].value = parameter.value; // value
+							} else if (parameter.name.indexOf("omit-food-description") > -1) {
+								portionSize.temp.parameters[index].omitFoodDescription = parameter.value; // omit food description
+							}
+						};
+					})
+					break;
+
+				case "guide-image":
+					break;
+
+				case "as-served":
+
+					$.each(portionSize.parameters, function(index, value) {
+
+						if (value.name == 'serving-image-set') {
+							$scope.setImageSet(value.value, 'serving', portionSize);
+						}
+
+						if (value.name == 'leftovers-image-set') {
+							$scope.setImageSet(value.value, 'leftovers', portionSize);
+						}
+					});
+
+					break;
+
+				case "drink-scale":
+					break;
+
+				case "cereal":
+					break;
+
+				case "milk-on-cereal":
+					break;
+
+				default:
+					console.log("Other portion size method: " + portionSize.method);
+					break;
+			}
 		})
+	}
 
+	$scope.setImageSet = function(id, type, portionSize) {
 
+		// Get served image definition
+		$http({
+			method: 'GET',
+			url: api_base_url + 'portion-size/as-served/' + id,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			switch (type) {
+
+				case 'serving':
+					$scope.SharedData.selected_serving_image_set = response.data;
+
+					$.each(portionSize.parameters, function(index, value) {
+
+						if (value.name == 'serving-image-set') { value.value = response.data.id; }
+
+					});
+					
+					break;
+
+				case 'leftovers':
+					$scope.SharedData.selected_leftovers_image_set = response.data;
+
+					$.each(portionSize.parameters, function(index, value) {
+
+						if (value.name == 'leftovers-image-set') { value.value = response.data.id; }
+
+					});
+					
+					break;
+			}
+
+			hideDrawer();
+			
+		}, function errorCallback(response) { handleError(response); });	
 	}
 
 	$scope.reloadCategories = function() {
@@ -395,6 +481,9 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 
 	$scope.updateLocalFood = function() {
 
+		console.log('updated');
+		console.log($scope.SharedData.currentItem);
+
 		$http({
 			method: 'POST',
 			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
@@ -484,6 +573,22 @@ app.controller('ExplorerController', function($scope, $http, expandPropertiesSer
 			$scope.updateLocalCategory();
 
 		}, function errorCallback(response) { showMessage('Failed to update category', 'danger'); console.log(response); });
+	}
+
+	$scope.updateLocalCategory = function() {
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: $scope.SharedData.currentItem.localData
+		}).then(function successCallback(response) {
+
+			showMessage('Local category updated', 'success');
+
+			$scope.getProperties();
+
+		}, function errorCallback(response) { showMessage('Failed to update local category', 'danger'); console.log(response); $scope.getProperties(); });
 	}
 
 	function addFoodToCategory(food_code, category_code)

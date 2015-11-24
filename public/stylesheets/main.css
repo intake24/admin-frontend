@@ -108,6 +108,9 @@ body {
 body.modal-open {
   overflow: hidden;
 }
+.hidden {
+  display: none;
+}
 header {
   background-color: rgba(255,255,255,0.1);
   background-color: #f63;
@@ -275,7 +278,7 @@ header a.auth-menu:active {
   top: 0;
 }
 #food-list-col {
-  background-color: #f9f9f9;
+  background-color: #fff;
   width: 360px;
 }
 #properties-col {
@@ -283,15 +286,11 @@ header a.auth-menu:active {
   border-left: #e1e1e1 1px solid;
   left: 600px;
   right: 0;
-  -webkit-transition: left 0.3s ease-out;
-  -moz-transition: left 0.3s ease-out;
-  -o-transition: left 0.3s ease-out;
-  transition: left 0.3s ease-out;
 }
 #properties-col.fullwidth {
   left: 240px;
 }
-@media (max-width: 1080px) {
+@media (max-width: 880px) {
   .col {
     position: relative;
     bottom: auto;
@@ -312,7 +311,7 @@ header a.auth-menu:active {
     padding-top: 50px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .main-content {
     padding-left: 0px;
   }
@@ -355,7 +354,6 @@ input.invalid {
 .categories-container ul {
   list-style-type: none;
   margin: 0;
-  max-height: 300px;
   padding: 0;
 }
 .categories-container ul li {
@@ -378,4 +376,42 @@ input.invalid {
 }
 .modal .categories-container li {
   margin: 0;
+}
+.drawer .list-container {
+  overflow: scroll;
+}
+.drawer .list-container input {
+  background: #f9f9f9;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 15px;
+  font-weight: 300;
+  outline: 0;
+  padding: 15px 20px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.drawer .list-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.drawer .list-container ul li {
+  height: 50px;
+  line-height: 50px;
+  margin: 0;
+  padding: 0 20px;
+}
+.drawer .list-container ul li:hover {
+  background: #f9f9f9;
+  cursor: pointer;
+}
+.drawer .list-container ul li.selected {
+  background: #f9f9f9;
+}
+.drawer .list-container ul li span {
+  position: absolute;
 }

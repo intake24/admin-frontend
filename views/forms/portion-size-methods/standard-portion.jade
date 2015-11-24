@@ -1,39 +1,32 @@
-.portion-size-method
-	.input-wrapper
-		label #{ gettext("Description") }
-		input(placeholder='#{ gettext("Description") }' ng-model='portionSize.description')
-	.input-wrapper
-		label #{ gettext("Image") }
-		input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
-	.input-wrapper
-		label #{ gettext("Use for recipes") }
-		input(type='checkbox' ng-model='portionSize.useForRecipes')
-	.units-list
-		.row.header
-			.column
-				.unit-cell #{ gettext("Unit name (plural)") }
-			.column
-				.unit-cell #{ gettext("Unit weight (g)") }
-			.column
-				.unit-cell #{ gettext("Omit food description") }
-			.clearfloat
-		.row(ng-model='portionSize.temp.parameters' ng-repeat='unit in portionSize.temp.parameters')
-			.column
-				.unit-cell
-					{{ unit.name }}
-			.column
-				.unit-cell
-					{{ unit.value }}
-			.column
-				.unit-cell
-					input(type='checkbox' ng-model='unit.omitFoodDescription')
-			.clearfloat
+//- Incomplete
 
+.units-list
+	.row.header
+		.column
+			.unit-cell #{ gettext("Unit name (plural)") }
+		.column
+			.unit-cell #{ gettext("Unit weight (g)") }
+		.column
+			.unit-cell #{ gettext("Omit food description") }
+		.clearfloat
+	.row(ng-model='portionSize.temp.parameters' ng-repeat='unit in portionSize.temp.parameters')
+		.column
+			.unit-cell
+				input(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
+		.column
+			.unit-cell
+				input(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
+		.column
+			.unit-cell
+				input(type='checkbox' ng-model='unit.omitFoodDescription')
+		.clearfloat
 
-	.btn
-		span #{ gettext("Move up") }
-	.btn
-		span #{ gettext("Move down") }
-	.btn
-		span #{ gettext("Add unit") }
-	.clearfloat
+.btn.hidden
+	span #{ gettext("Move up") }
+.btn.hidden
+	span #{ gettext("Move down") }
+.btn
+	span #{ gettext("Add unit") }
+.btn.danger
+	span #{ gettext("Delete this method") }
+.clearfloat

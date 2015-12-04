@@ -80,8 +80,8 @@
   cursor: pointer;
 }
 .view-toggle {
-  background-color: #444;
-  border-top: #3d3d3d 1px solid;
+  background-color: #f63;
+  border-top: #ff4f14 1px solid;
   display: none;
   position: fixed;
   z-index: 9;
@@ -103,13 +103,12 @@
   display: inline-block;
   font-size: 12px;
   line-height: 50px;
-  width: 50%;
-}
-.view-toggle ul li.active {
-  background-color: #3d3d3d;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 .view-toggle ul li:hover {
-  background-color: #3d3d3d;
+  background-color: #ff4f14;
   cursor: pointer;
 }
 /* RTL Styles */

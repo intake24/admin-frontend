@@ -393,10 +393,11 @@ input.invalid {
 }
 .categories-container ul li {
   border-left: #e1e1e1 3px solid;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   margin: 0;
   padding: 0 15px;
+  white-space: nowrap;
 }
 .categories-container ul li:hover {
   background: #f9f9f9;

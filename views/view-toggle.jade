@@ -1,4 +1,4 @@
 .view-toggle
 	ul
-		li.active(onclick='$(".food-list-container").show(); $("#food-properties-col").hide()') #{gettext("Food List")}
-		li(onclick='$(".food-list-container").hide(); $("#food-properties-col").show()') #{gettext("Properties")}
+		li(onclick='$(".food-list-container").fadeToggle(); $("food-properties-col").fadeToggle()')
+			p {{ SharedData.currentItem.englishDescription }}

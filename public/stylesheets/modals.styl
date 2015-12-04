@@ -3,12 +3,6 @@
 
 /* Import color variables */
 @import 'variables'
-
-transition()
-  -webkit-transition arguments
-  -moz-transition arguments
-  -o-transition arguments
-  transition arguments
   
 .modal
 	background white
@@ -101,3 +95,11 @@ transition()
 	
 #modal-backdrop.active
 	display block
+
+/* RTL Styles */
+
+html[dir="rtl"]
+	.modal
+		#button-close-modal
+			left 0
+			right auto

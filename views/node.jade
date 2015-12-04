@@ -1,6 +1,7 @@
 a(ng-click='value.open = !value.open; nodeSelected($event, value)')
 	i(class='fa fa-caret-down fa-fw' ng-if='(value.type == "category" || value.type == "uncategorised")')
-	i(class='fa fa-caret-right fa-fw' ng-if='(value.type == "category" || value.type == "uncategorised")')
+	i(class='fa fa-caret-right fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "ltr"))')
+	i(class='fa fa-caret-left fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "rtl"))')
 	i(class='fa fa-fw' ng-class='{"fa-circle-o" : (value.type == "food"), "fa-circle" : (value.type != "food"), "editing" : (value.editing)}')
 	{{ value.englishDescription }}
 ul(ng-if='value.children' ng-model='SharedData.treeData')

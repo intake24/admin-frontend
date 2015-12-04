@@ -2,8 +2,21 @@
 
 .input-wrapper
 	label #{ gettext("Guide image") }
-	input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
-
-.btn.danger
-	span #{ gettext("Delete this method") }
+	.inline-link(onClick='showDrawer("drawer-guide-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
+		span(ng-if='!portionSize.selected_guide_image_set.id')
+			p #{ gettext("Select image set") }
+		span(ng-if='portionSize.selected_guide_image_set.id != ""')
+			{{ portionSize.selected_guide_image_set.id }}
 .clearfloat
+
+//- Drawers
+
+.drawer.drawer-narrow.no-padding.animated#drawer-guide-image-set
+	#button-close-drawer.button-close-drawer
+		i.fa.fa-times
+	.drawer-title #{ gettext("Select Image Set") }
+	.drawer-content
+		.list-container
+			ul
+				li(ng-click='setGuideImageSet(guide_image_set.id, SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.guide_image_sets' ng-repeat='guide_image_set in SharedData.portionSizes.guide_image_sets | orderBy: "id"')
+					{{ guide_image_set.id }}

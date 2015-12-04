@@ -10,6 +10,11 @@
 .properties-container .properties-padding {
   padding: 30px 30px 120px 30px;
 }
+@media (max-width: 800px) {
+  .properties-container .properties-padding {
+    padding: 30px;
+  }
+}
 .properties-container .properties-padding hr {
   border: none;
   border-bottom: #e1e1e1 1px solid;
@@ -46,6 +51,9 @@
   padding: 10px 12px;
   width: 200px;
 }
+.properties-container .properties-padding .property .input-wrapper input[type="range"] {
+  padding: 0;
+}
 .properties-container .properties-padding .property .input-wrapper select {
   height: 36px;
   line-height: 45px;
@@ -68,11 +76,16 @@
   position: fixed;
   width: 100%;
 }
-@media (max-width: 600px) {
-  .properties-container .properties-padding {
-    padding: 30px;
-  }
+@media (max-width: 800px) {
   .properties-container .properties-footer {
     position: relative !important;
   }
+}
+/* RTL Styles */
+html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper {
+  padding-right: 0px;
+}
+html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper label {
+  margin-left: 20px;
+  margin-right: auto;
 }

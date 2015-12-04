@@ -13,14 +13,32 @@
 /* Nib provides a CSS reset */
 global-reset()
 
+*::-webkit-scrollbar
+    display none
+    
 html
 	background-color light-grey
 
 body
 	font-family 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif
+	overflow-x hidden
 
 body.modal-open
 	overflow hidden
+
+/* This snippet prevents bouncing but fails on small screen sizes
+html, body
+    height 100%
+    overflow hidden
+    
+.container
+	position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+    overflow auto
+*/
 
 .hidden
 	display none
@@ -82,7 +100,7 @@ header
 	color #FFF
 	height 50px
 	line-height 50px
-	opacity 0
+	opacity 1
 	padding 0 50px 
 	position fixed
 	text-align center
@@ -128,6 +146,10 @@ header
 			
 #authenticate-overlay
 	background-color main-color
+	background-image url('../images/web.png')
+	background-repeat no-repeat
+	background-position bottom right
+	background-size 40%
 	display block
 	opacity 1
 	position fixed
@@ -136,6 +158,8 @@ header
 	left 0
 	right 0
 	z-index 12
+	@media(max-width:800px)
+		background-size 70%
 	transition(opacity .3s ease-out)
 	#authenticate-logo
 		padding 0 20px
@@ -167,17 +191,19 @@ header
 
 #food-list-col
 	background-color white
-	width 360px
+	width food-list-width
 
 #properties-col
 	background-color white
 	border-left #e1e1e1 1px solid
-	left 600px
+	left (food-list-width + sidebar-width)
 	right 0
+	@media (max-width: 1080px)
+		left food-list-width
 #properties-col.fullwidth
 	left sidebar-width
-
-@media (max-width: 880px)
+		
+@media (max-width: 800px)
 	.col
 		position relative
 		bottom auto
@@ -196,7 +222,7 @@ header
 		left 0
 		padding-top 50px
 
-@media (max-width: 800px)
+@media (max-width: 1080px)
 	.main-content
 		padding-left 0px
 
@@ -272,7 +298,6 @@ input
 			outline 0
 			padding 15px 20px 
 			width 100%
-			
 			-webkit-box-sizing: border-box;
 			-moz-box-sizing: border-box;
 			box-sizing: border-box;
@@ -280,7 +305,6 @@ input
 			list-style-type none
 			margin 0
 			padding 0
-				
 			li
 				height 50px
 				line-height 50px
@@ -293,3 +317,55 @@ input
 					background #f9f9f9
 				span
 					position absolute
+
+/* RTL Styles */
+
+html[dir="rtl"]
+	header
+		a.auth-menu
+			left 0
+			right auto
+			i
+				float right
+				margin-left 8px
+				margin-right auto
+			p
+				float right
+	.flash-message
+		#flash-dismiss-btn
+			left 0
+			right auto
+	@media(max-width:568px)
+		.flash-message
+			padding 0 0 0 50px
+	.main-content
+		padding-left 0
+		padding-right sidebar-width
+	#properties-col
+		border-left none
+		border-right #e1e1e1 1px solid
+		left 0
+		right (sidebar-width + food-list-width)px
+		@media (max-width: 1080px)
+			right food-list-width
+		@media (max-width: 800px)
+			right auto
+	#properties-col.fullwidth
+		left 0
+		right sidebar-width
+	@media (max-width: 1080px)
+		.main-content
+			padding-left 0px
+			padding-right 0px
+		header
+			a.auth-menu
+				i
+					margin-left 0
+					margin-right auto			
+	.categories-container
+		ul		
+			li
+				border-left none
+				border-right #e1e1e1 3px solid
+				&.selected
+					border-right warning-color 3px solid

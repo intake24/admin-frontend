@@ -1,6 +1,6 @@
 // Search (SearchController)
 
-app.controller('SearchController', function($scope, $http, SharedData, getPropertiesService) {
+app.controller('SearchController', function($scope, $http, SharedData, fetchPropertiesService) {
 
 	// Init object to store search results
 	$scope.search = new Object();
@@ -75,12 +75,12 @@ app.controller('SearchController', function($scope, $http, SharedData, getProper
 		$scope.search = [];
 
 		if (query == '') {
-			$('.food-list-container').show();
-			$('#search-results').hide();
+			$('.food-list-container').addClass('visible');
+			$('#search-results').removeClass('visible');
 			return;
 		} else {
-			$('.food-list-container').hide();
-			$('#search-results').show();
+			$('.food-list-container').removeClass('visible');
+			$('#search-results').addClass('visible');
 		}
 
 		$http({
@@ -119,7 +119,7 @@ app.controller('SearchController', function($scope, $http, SharedData, getProper
 
 		// $scope.SharedData.currentItem.type = 'category';
 
-		getPropertiesService.broadcast();
+		fetchPropertiesService.broadcast();
 	}
 
 	function handleError(response) {

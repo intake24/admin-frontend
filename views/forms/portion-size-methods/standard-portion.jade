@@ -1,4 +1,4 @@
-//- Incomplete
+//- Standard portion
 
 .units-list
 	.row.header
@@ -20,13 +20,13 @@
 			.unit-cell
 				input(type='checkbox' ng-model='unit.omitFoodDescription')
 		.clearfloat
+		.delete-unit(ng-click='removeItem(portionSize.temp.parameters, $index)')
+				i.fa.fa-minus-circle
 
 .btn.hidden
 	span #{ gettext("Move up") }
 .btn.hidden
 	span #{ gettext("Move down") }
-.btn
+.btn(ng-click='portionSize.temp.parameters.push({name:"", value:"", omitFoodDescription:false})')
 	span #{ gettext("Add unit") }
-.btn.danger
-	span #{ gettext("Delete this method") }
 .clearfloat

@@ -5,7 +5,11 @@
 }
 /* Import color variables */
 .food-list-container {
+  display: none;
   padding: 15px 10px;
+}
+.food-list-container.visible {
+  display: flex;
 }
 .food-list-container .food-list {
   overflow: hidden;
@@ -53,20 +57,33 @@
 }
 @media (max-width: 1080px) {
   .food-list-container {
-    border-top-right-radius: none;
-    border-bottom-right-radius: none;
+    border-right: none;
     border-bottom: 1px solid #f2f2f2;
   }
 }
-.fa-caret-right {
+.fa-caret-right,
+.fa-caret-left {
   display: inline-block;
 }
 .fa-caret-down {
   display: none;
 }
-.node-open > a .fa-caret-right {
+.node-open > a .fa-caret-right,
+.node-open > a .fa-caret-left {
   display: none;
 }
 .node-open > a .fa-caret-down {
   display: inline-block;
+}
+/* RTL Styles */
+html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o {
+  margin-left: auto;
+  margin-right: 20px;
+}
+html[dir="rtl"] .food-list-container .food-list ul li .fa-circle,
+html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o {
+  margin-left: 5px;
+}
+html[dir="rtl"] .food-list-container .food-list ul li > ul > li {
+  padding: 0 15px 0 0;
 }

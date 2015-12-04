@@ -7,32 +7,54 @@
 .btn {
   background-color: #fafafa;
   border: 1px solid #ededed;
-  border-radius: 2px;
+  border-radius: 4px;
   float: left;
   font-size: 13px;
   margin: 10px 10px 10px 0;
   padding: 12px 15px;
-  -webkit-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  -o-transition: all 0.1s linear;
-  transition: all 0.1s linear;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
 }
 .btn:hover {
   background-color: #ededed;
+  border: 1px solid #ededed;
   cursor: pointer;
+}
+.btn:active {
+  background-color: #d4d4d4;
+  border: 1px solid #d4d4d4;
 }
 .success:hover {
   background-color: #30cb6e;
   border: 1px solid #30cb6e;
   color: #fff;
 }
+.success:active {
+  background-color: #2bb663;
+  border: 1px solid #2bb663;
+}
 .warning:hover {
   background-color: #f67e04;
   border: 1px solid #f67e04;
   color: #fff;
 }
+.warning:active {
+  background-color: #dc7104;
+  border: 1px solid #dc7104;
+}
 .danger:hover {
   background-color: #ff2727;
   border: 1px solid #ff2727;
   color: #fff;
+}
+.danger:active {
+  background-color: #ff0808;
+  border: 1px solid #ff0808;
+}
+/* RTL Styles */
+html[dir="rtl"] .btn {
+  float: right;
+  margin: 10px 0 10px 10px;
 }

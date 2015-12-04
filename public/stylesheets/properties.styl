@@ -5,10 +5,12 @@
 @import 'variables'
 
 .properties-container
-	display none 
+	display none
 	
 	.properties-padding
 		padding 30px 30px 120px 30px
+		@media(max-width: 800px)
+			padding 30px
 
 		hr
 			border none
@@ -43,6 +45,9 @@
 					outline 0
 					padding 10px 12px
 					width 200px 
+					
+				input[type="range"]
+					padding 0
 
 				select
 					height 36px
@@ -65,13 +70,20 @@
 		padding 5px 15px
 		position fixed
 		width 100%
-		
-@media(max-width: 600px)
-
-	.properties-container
-		
-		.properties-padding
-			padding 30px
-			
-		.properties-footer
+		@media(max-width: 800px)
 			position relative !important
+
+			
+/* RTL Styles */
+
+html[dir="rtl"]
+	
+	.properties-container
+		.properties-padding
+			.property
+				.input-wrapper
+					padding-right 0px
+
+					label
+						margin-left 20px
+						margin-right auto

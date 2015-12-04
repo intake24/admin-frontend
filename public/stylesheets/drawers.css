@@ -97,3 +97,12 @@
     width: 100%;
   }
 }
+/* RTL Styles */
+html[dir="rtl"] .drawer {
+  left: 0;
+  right: auto;
+}
+html[dir="rtl"] .drawer #button-close-drawer {
+  left: 0;
+  right: auto;
+}

@@ -5,7 +5,7 @@
          "600"
       ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-11-13 11:09+0000\nLanguage: ar_AE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-11-13 10:54+0000\nLast-Translator: Edward Jenkins <edjenkins@newhuaweiapstaff-10-57-140-119.ncl.ac.uk>\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-01 12:20+0000\nLanguage: ar_AE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-01 12:20+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
       },
       "Add new category": [
          null,
@@ -27,6 +27,10 @@
          null,
          "إضافة الغذائية"
       ],
+      "Category": [
+         null,
+         "فئة"
+      ],
       "Accept changes": [
          null,
          "قبول التغييرات"
@@ -39,13 +43,21 @@
          null,
          "حذف "
       ],
-      "Update locale food": [
+      "Add Category": [
          null,
-         "تحديث لغة الطعام"
+         "إضافة فئة"
       ],
-      "Category definition": [
+      "Search categories": [
          null,
-         "فئة تعريف"
+         "فئات بحث"
+      ],
+      "Food": [
+         null,
+         "طعام"
+      ],
+      "Definition": [
+         null,
+         "تعريف"
       ],
       "Description": [
          null,
@@ -54,6 +66,10 @@
       "Beans on toast": [
          null,
          "الفول على نخب"
+      ],
+      "Local Description": [
+         null,
+         "الوصف المحلي"
       ],
       "Intake24 code": [
          null,
@@ -103,10 +119,6 @@
          null,
          "إضافة أسلوب حجم الجزء"
       ],
-      "Food definition": [
-         null,
-         "تعريف الغذاء"
-      ],
       "e.g. Beans on toast": [
          null,
          "مثل الفول على نخب"
@@ -131,6 +143,102 @@
          null,
          "على سبيل المثال 600"
       ],
+      "Image": [
+         null,
+         "صورة"
+      ],
+      "e.g. path/filename.jpg": [
+         null,
+         "على سبيل المثال مسار / filename.jpg"
+      ],
+      "Use for recipes": [
+         null,
+         "استخدام وصفات"
+      ],
+      "Estimation method": [
+         null,
+         "طريقة تقدير"
+      ],
+      "Delete this method": [
+         null,
+         "حذف هذه الطريقة"
+      ],
+      "Serving image set": [
+         null,
+         "خدمة مجموعة صورة"
+      ],
+      "Select image set": [
+         null,
+         "حدد مجموعة صورة"
+      ],
+      "Use leftover images": [
+         null,
+         "استخدام الصور المتبقية"
+      ],
+      "Leftover image set": [
+         null,
+         "بقايا مجموعة صورة"
+      ],
+      "Select Image Set": [
+         null,
+         "حدد مجموعة صورة"
+      ],
+      "Type": [
+         null,
+         "اكتب"
+      ],
+      "Drinkware set": [
+         null,
+         "مجموعة Drinkware"
+      ],
+      "Initial fill level": [
+         null,
+         "مستوى التعبئة الأولي"
+      ],
+      "Skip fill level prompt": [
+         null,
+         "تخطي مستوى التعبئة موجه"
+      ],
+      "Guide image": [
+         null,
+         "الصورة دليل"
+      ],
+      "This method has no parameters": [
+         null,
+         "هذا الأسلوب لديه أية معلمات"
+      ],
+      "Unit name (plural)": [
+         null,
+         "اسم الوحدة (الجمع)"
+      ],
+      "Unit weight (g)": [
+         null,
+         "وحدة الوزن (ز)"
+      ],
+      "Omit food description": [
+         null,
+         "حذفت وصف الطعام"
+      ],
+      "Name": [
+         null,
+         "اسم"
+      ],
+      "Value": [
+         null,
+         "القيمة"
+      ],
+      "Move up": [
+         null,
+         "تحرك"
+      ],
+      "Move down": [
+         null,
+         "تحرك لأسفل"
+      ],
+      "Add unit": [
+         null,
+         "إضافة وحدة"
+      ],
       "Intake24 Admin": [
          null,
          "Intake24 الادارية"
@@ -154,14 +262,6 @@
       "Logout": [
          null,
          "تسجيل الخروج"
-      ],
-      "Add Category": [
-         null,
-         "إضافة فئة"
-      ],
-      "Search categories": [
-         null,
-         "فئات بحث"
       ],
       "Set Language": [
          null,

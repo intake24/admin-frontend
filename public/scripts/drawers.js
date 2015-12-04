@@ -22,13 +22,23 @@ function showDrawer(drawer_id) {
 
 	$('body').addClass('drawer-open');
 	$('#drawer-backdrop').show().animate({'opacity': 1.0}, 300);
-	$('.drawer#' + drawer_id).show().removeClass('fadeOutRight').addClass('fadeInRight');
+
+	if ($('html').attr('dir') == 'ltr') {
+		$('.drawer#' + drawer_id).show().removeClass('fadeOutRight').addClass('fadeInRight');
+	} else {
+		$('.drawer#' + drawer_id).show().removeClass('fadeOutLeft').addClass('fadeInLeft');
+	}
 }
 
 function hideDrawer() {
 
 	$('body').removeClass('drawer-open');
-	$('.drawer').removeClass('fadeInRight').addClass('fadeOutRight');
+	
+	if ($('html').attr('dir') == 'ltr') {
+		$('.drawer').removeClass('fadeInRight').addClass('fadeOutRight');
+	} else {
+		$('.drawer').removeClass('fadeInLeft').addClass('fadeOutLeft');
+	}
 
 	$('#drawer-backdrop').animate({'opacity': 0.0}, 300, function() {
 		$('#drawer-backdrop').hide();

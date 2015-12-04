@@ -2,18 +2,22 @@
 
 .input-wrapper
 	label #{ gettext("Serving image set") }
-	.inline-link(onClick='showDrawer("drawer-served-image-set")') 
-		{{ SharedData.selected_serving_image_set.description }}
+	.inline-link(onClick='showDrawer("drawer-served-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
+		span(ng-if='!portionSize.selected_serving_image_set.description')
+			p #{ gettext("Select image set") }
+		span(ng-if='portionSize.selected_serving_image_set.description != ""')
+			{{ portionSize.selected_serving_image_set.description }}
 .input-wrapper
 	label #{ gettext("Use leftover images") }
 	input(type='checkbox' ng-model='portionSize.useLeftoverImages')
+
 .input-wrapper
 	label #{ gettext("Leftover image set") }
-	.inline-link(onClick='showDrawer("drawer-leftovers-image-set")') 
-		{{ SharedData.selected_leftovers_image_set.description }}
-
-.btn.danger
-	span #{ gettext("Delete this method") }
+	.inline-link(onClick='showDrawer("drawer-leftovers-image-set")' ng-click='SharedData.currentPortionSize = portionSize') 
+		span(ng-if='!portionSize.selected_leftovers_image_set.description')
+			p #{ gettext("Select image set") }
+		span(ng-if='portionSize.selected_leftovers_image_set.description != ""')
+			{{ portionSize.selected_leftovers_image_set.description }}
 .clearfloat
 
 //- Drawers
@@ -25,7 +29,7 @@
 	.drawer-content
 		.list-container
 			ul
-				li(ng-click='setImageSet(as_served_image_set.id, "serving", portionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets')
+				li(ng-click='setAsServedImageSet(as_served_image_set.id, "serving", SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets')
 					{{ as_served_image_set.description }}
 
 .drawer.drawer-narrow.no-padding.animated#drawer-leftovers-image-set
@@ -35,5 +39,5 @@
 	.drawer-content
 		.list-container
 			ul
-				li(ng-click='setImageSet(as_served_image_set.id, "leftovers", portionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets')
+				li(ng-click='setAsServedImageSet(as_served_image_set.id, "leftovers", SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets')
 					{{ as_served_image_set.description }}

@@ -106,3 +106,8 @@
 #modal-backdrop.active {
   display: block;
 }
+/* RTL Styles */
+html[dir="rtl"] .modal #button-close-modal {
+  left: 0;
+  right: auto;
+}

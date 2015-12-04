@@ -1,7 +1,10 @@
 .col#food-list-col
+
+	include view-toggle
+	
 	include search
 	
-	.food-list-container
+	.food-list-container.visible
 		.food-list
 			ul(ng-model='SharedData.treeData')
 				li(ng-repeat='(index, value) in SharedData.treeData | orderBy:["type", "englishDescription"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')

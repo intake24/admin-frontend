@@ -6,6 +6,7 @@ var express = require('express')
     ,stylus = require('stylus')
     ,nib = require('nib')
     ,i18n = require('i18n-abide')
+    ,gettext = require('gettext')
     ,request = require('request')
     ,cors = require('express-cors')
 
@@ -39,6 +40,5 @@ app.use(stylus.middleware(
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', routes.dashboard);
-// app.get('/dashboard', routes.dashboard);
 
 app.listen(3000)

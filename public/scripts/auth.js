@@ -1,17 +1,22 @@
 // Authentication (AuthController)
 
-app.controller('AuthController', function($scope, $http, fetchCategoriesService) {
+app.controller('AuthController', function($scope, $http, fetchCategoriesService, fetchImageSetsService) {
 
 	// Check authentication
 	if (Cookies.get('auth-token')) {
+		
 		fetchCategoriesService.broadcast();
+		fetchImageSetsService.broadcast();
 
 	    hideModal();
 
 	    $('body').addClass('authenticated');
 	    $('#btn-authenticate p').html(Cookies.get('auth-username'));
+
 	} else {
+		
 		showModal('modal-authenticate');
+
 	}
 
 	$('#modal-authenticate input').off().keypress(function(e) {
@@ -30,7 +35,7 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 		hideModal();
 		showModal('modal-authenticate');
 
-		showMessage('You have logged out', 'success');
+		// showMessage('You have logged out', 'success');
 	});
 
 	// Attempt to login user
@@ -51,13 +56,15 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService)
 		    Cookies.set('auth-username', username);
     		
     		fetchCategoriesService.broadcast();
+
+    		fetchImageSetsService.broadcast();
     
 		    hideModal();
 
 		    $('body').addClass('authenticated');
 		    $('#btn-authenticate p').html(username);
 
-		    showMessage('You have logged in', 'success');
+		    // showMessage('You have logged in', 'success');
 
 		}, function errorCallback(response) { showMessage('Failed to log you in', 'danger'); handleError(response); });
 

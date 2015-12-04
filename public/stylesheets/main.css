@@ -99,15 +99,32 @@ td {
 a img {
   border: none;
 }
+*::-webkit-scrollbar {
+  display: none;
+}
 html {
   background-color: #f9f9f9;
 }
 body {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
 }
 body.modal-open {
   overflow: hidden;
 }
+/* This snippet prevents bouncing but fails on small screen sizes
+html, body
+    height 100%
+    overflow hidden
+    
+.container
+	position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+    overflow auto
+*/
 .hidden {
   display: none;
 }
@@ -173,9 +190,9 @@ header a.auth-menu:active {
   color: #fff;
   height: 50px;
   line-height: 50px;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
   padding: 0 50px;
   position: fixed;
   text-align: center;
@@ -231,6 +248,12 @@ header a.auth-menu:active {
 }
 #authenticate-overlay {
   background-color: #f63;
+  background-image: url("../images/web.png");
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  -webkit-background-size: 40%;
+  -moz-background-size: 40%;
+  background-size: 40%;
   display: block;
   opacity: 1;
   -ms-filter: none;
@@ -245,6 +268,13 @@ header a.auth-menu:active {
   -moz-transition: opacity 0.3s ease-out;
   -o-transition: opacity 0.3s ease-out;
   transition: opacity 0.3s ease-out;
+}
+@media (max-width: 800px) {
+  #authenticate-overlay {
+    -webkit-background-size: 70%;
+    -moz-background-size: 70%;
+    background-size: 70%;
+  }
 }
 #authenticate-overlay #authenticate-logo {
   padding: 0 20px;
@@ -279,18 +309,23 @@ header a.auth-menu:active {
 }
 #food-list-col {
   background-color: #fff;
-  width: 360px;
+  width: 340px;
 }
 #properties-col {
   background-color: #fff;
   border-left: #e1e1e1 1px solid;
-  left: 600px;
+  left: 580px;
   right: 0;
+}
+@media (max-width: 1080px) {
+  #properties-col {
+    left: 340px;
+  }
 }
 #properties-col.fullwidth {
   left: 240px;
 }
-@media (max-width: 880px) {
+@media (max-width: 800px) {
   .col {
     position: relative;
     bottom: auto;
@@ -311,7 +346,7 @@ header a.auth-menu:active {
     padding-top: 50px;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 1080px) {
   .main-content {
     padding-left: 0px;
   }
@@ -414,4 +449,67 @@ input.invalid {
 }
 .drawer .list-container ul li span {
   position: absolute;
+}
+/* RTL Styles */
+html[dir="rtl"] header a.auth-menu {
+  left: 0;
+  right: auto;
+}
+html[dir="rtl"] header a.auth-menu i {
+  float: right;
+  margin-left: 8px;
+  margin-right: auto;
+}
+html[dir="rtl"] header a.auth-menu p {
+  float: right;
+}
+html[dir="rtl"] .flash-message #flash-dismiss-btn {
+  left: 0;
+  right: auto;
+}
+@media (max-width: 568px) {
+  html[dir="rtl"] .flash-message {
+    padding: 0 0 0 50px;
+  }
+}
+html[dir="rtl"] .main-content {
+  padding-left: 0;
+  padding-right: 240px;
+}
+html[dir="rtl"] #properties-col {
+  border-left: none;
+  border-right: #e1e1e1 1px solid;
+  left: 0;
+  right: 580px;
+}
+@media (max-width: 1080px) {
+  html[dir="rtl"] #properties-col {
+    right: 340px;
+  }
+}
+@media (max-width: 800px) {
+  html[dir="rtl"] #properties-col {
+    right: auto;
+  }
+}
+html[dir="rtl"] #properties-col.fullwidth {
+  left: 0;
+  right: 240px;
+}
+@media (max-width: 1080px) {
+  html[dir="rtl"] .main-content {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  html[dir="rtl"] header a.auth-menu i {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+html[dir="rtl"] .categories-container ul li {
+  border-left: none;
+  border-right: #e1e1e1 3px solid;
+}
+html[dir="rtl"] .categories-container ul li.selected {
+  border-right: #fb850c 3px solid;
 }

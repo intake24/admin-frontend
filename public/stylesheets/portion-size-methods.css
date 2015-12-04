@@ -5,30 +5,44 @@
 }
 /* Import color variables */
 .portion-size-method {
-  background-color: #f9f9f9;
-  border: #ededed 1px solid;
-  margin-bottom: 20px;
+  border: #e1e1e1 1px solid;
+  margin-bottom: 30px;
+  max-width: 700px;
   padding: 10px 20px;
 }
 .portion-size-method .units-list {
   background-color: #fff;
   border: #ededed 1px solid;
+  border-bottom: none;
   font-size: 12px;
   margin: 20px 0 10px 0;
 }
 .portion-size-method .units-list .row {
+  position: relative;
   width: 100%;
 }
 .portion-size-method .units-list .row:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }
+.portion-size-method .units-list .row .delete-unit {
+  color: #ccc;
+  padding: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.portion-size-method .units-list .row .delete-unit:hover {
+  color: #ff3636;
+}
 .portion-size-method .units-list .row .column {
   float: left;
   width: 33.333%;
 }
 .portion-size-method .units-list .row .column .unit-cell {
+  border-bottom: #e9e9e9 1px solid;
   padding: 0px;
+  text-align: center;
 }
 .portion-size-method .units-list .row .column .unit-cell input {
   background: transparent !important;
@@ -36,26 +50,39 @@
   width: auto !important;
 }
 .portion-size-method .units-list .row .column .unit-cell input[type="checkbox"] {
-  height: 30px;
+  height: 31px;
 }
 .portion-size-method .units-list .row.header {
   background-color: #fff !important;
-  border-bottom: #ededed 1px solid;
 }
 .portion-size-method .units-list .row.header .column .unit-cell {
   font-weight: bold;
+  overflow: hidden;
   padding: 10px;
+  text-align: left;
+  white-space: nowrap;
 }
-.portion-size-method .as-served .inline-link {
+.portion-size-method .inline-link {
   color: #999;
   display: inline-block;
   font-size: 14px;
 }
-.portion-size-method .as-served .inline-link i {
+.portion-size-method .inline-link i {
   color: #999;
   margin: 0 6px;
 }
-.portion-size-method .as-served .inline-link:hover {
+.portion-size-method .inline-link:hover {
   color: #f63;
   cursor: pointer;
+}
+/* RTL Styles */
+html[dir="rtl"] .portion-size-method .units-list .row .delete-unit {
+  left: 0;
+  right: auto;
+}
+html[dir="rtl"] .portion-size-method .units-list .row .column {
+  float: right;
+}
+html[dir="rtl"] .portion-size-method .units-list .row.header .column .unit-cell {
+  text-align: right;
 }

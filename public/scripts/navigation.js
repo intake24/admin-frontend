@@ -1,10 +1,7 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', function($scope, $http, $cookies, expandPropertiesService, fetchCategoriesService, SharedData) {
+app.controller('NavigationController', function($scope, $http, $cookies, SharedData) {
 
-	// Listen for boradcasts
-	expandPropertiesService.listen(function(event, data) { expandProperties(); });
-	
 	// Set sidebar defaults
 	$scope.set_language_active = $cookies.getObject("set_language_active");
 	
@@ -39,10 +36,6 @@ app.controller('NavigationController', function($scope, $http, $cookies, expandP
 			$('.sidebar').removeClass('active');
 		}
 	});
-
-	function expandProperties() {
-		// $('#food-list-col').hide(); $('#properties-col').addClass('fullwidth');
-	}
 
 	function showContainer(container_id) {
 		$('.properties-container:not(' + container_id + ')').hide();
@@ -90,7 +83,6 @@ app.controller('NavigationController', function($scope, $http, $cookies, expandP
 			}
 		};
 
-		expandPropertiesService.broadcast();
 		showContainer('#add-new-food-container');
 	}
 
@@ -113,7 +105,6 @@ app.controller('NavigationController', function($scope, $http, $cookies, expandP
 			}
 		};
 		
-		expandPropertiesService.broadcast();
 		showContainer('#add-new-category-container');
 	}
 

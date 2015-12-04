@@ -31,10 +31,9 @@ form(id='food-properties-form')
 
 .property
 	h3 #{ gettext("Categories") }
-	.input-wrapper
-		.categories-container
-			ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
-				li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
+	.categories-container
+		ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper
 		.btn.success(onClick='showDrawer("drawer-add-food-to-category")')
@@ -61,21 +60,29 @@ form(id='food-properties-form')
 				select(class='estimation-method-dropdown' id='estimation-method-dropdown' data-ng-model="portionSize.method")
 					option(ng-repeat="estimationMethod in SharedData.estimationMethods" value="{{estimationMethod.slug}}") {{estimationMethod.name}}
 
-			.standard-portion(ng-if='portionSize.method == "standard-portion"')
-				include portion-size-methods/standard-portion
-			.cereal(ng-if='portionSize.method == "cereal"')
-				include portion-size-methods/cereal
 			.as-served(ng-if='portionSize.method == "as-served"')
-				include portion-size-methods/as-served	
+				include portion-size-methods/as-served
 			.guide-image(ng-if='portionSize.method == "guide-image"')
 				include portion-size-methods/guide-image
 			.drink-scale(ng-if='portionSize.method == "drink-scale"')
 				include portion-size-methods/drink-scale
+			.standard-portion(ng-if='portionSize.method == "standard-portion"')
+				include portion-size-methods/standard-portion
+			.cereal(ng-if='portionSize.method == "cereal"')
+				include portion-size-methods/cereal
 			.milk-on-cereal(ng-if='portionSize.method == "milk-on-cereal"')
 				include portion-size-methods/milk-on-cereal
+			.milk-on-cereal(ng-if='portionSize.method == "milk-in-a-hot-drink"')
+				include portion-size-methods/milk-in-a-hot-drink
+			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
+				include portion-size-methods/pizza
+
+			.btn.danger(ng-click='deletePortionSize(SharedData.currentItem.localData.portionSize, $index)')
+				span #{ gettext("Delete this method") }
+			.clearfloat
 				
 
 	.input-wrapper
-		.btn.success
+		.btn.success(ng-click='addPortionSize(SharedData.currentItem.localData.portionSize)')
 			span #{ gettext("Add a portion size method") }
 		.clearfloat

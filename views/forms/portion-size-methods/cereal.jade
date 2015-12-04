@@ -1,9 +1,7 @@
-//- Incomplete
+//- Cereal
 
 .input-wrapper
-	label #{ gettext("Guide Image") }
-	input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
-
-.btn.danger
-	span #{ gettext("Delete this method") }
+	label #{ gettext("Type") }
+	select(class='cereal-type-dropdown' id='cereal-type-dropdown' data-ng-model="portionSize.temp.parameters.cereal_type")
+		option(ng-repeat="cerealType in SharedData.cerealTypes" value="{{cerealType.slug}}") {{cerealType.name}}
 .clearfloat

@@ -3,12 +3,6 @@
 
 /* Import color variables */
 @import 'variables'
-
-transition()
-  -webkit-transition arguments
-  -moz-transition arguments
-  -o-transition arguments
-  transition arguments
   
 .drawer
 	background white
@@ -97,3 +91,14 @@ transition()
 		width 100% 
 		.drawer-footer
 			width 100%
+			
+/* RTL Styles */
+
+html[dir="rtl"]
+	
+	.drawer
+		left 0
+		right auto
+		#button-close-drawer
+			left 0
+			right auto

@@ -1,12 +1,13 @@
 .properties-container#add-new-category-container
 
-	.page-header
-		h2 #{ gettext("Add new category") }
+	.properties-padding
+	
+		.page-header
+			h2 #{ gettext("Add new category") }
 
-	include forms/category-properties
+		include forms/category-properties
 
-	.property
-		hr
+	.properties-footer
 		.input-wrapper
 			.btn.success(ng-click='addCategory()')
 				span #{ gettext("Add category") }

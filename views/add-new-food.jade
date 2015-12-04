@@ -1,12 +1,12 @@
 .properties-container#add-new-food-container
 
-	.page-header
-		h2 #{ gettext("Add new food") }
+	.properties-padding
+		.page-header
+			h2 #{ gettext("Add new food") }
 
-	include forms/food-properties
+		include forms/food-properties
 
-	.property
-		hr
+	.properties-footer
 		.input-wrapper
 			.btn.success(ng-click='addFood()')
 				span #{ gettext("Add food") }

@@ -3,29 +3,31 @@ var token = '';
 
 var showingFlashMessage = false;
 
-var app = angular.module('app', ['ngRoute', 'ngCookies']);
-
-app.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-      // $locationProvider.html5Mode(true);
-      $routeProvider
-      .when("/dashboard", { templateUrl: "partials/index.jade", controller: "ExplorerController" });
-    }
-]);
-
-app.service("expandPropertiesService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("expandProperties")}
-    this.listen = function(callback) { $rootScope.$on("expandProperties", callback)}
-})
+var app = angular.module('app', ['ngCookies']);
 
 app.service("fetchCategoriesService", function($rootScope) {
     this.broadcast = function() { $rootScope.$broadcast("fetchCategories")}
     this.listen = function(callback) { $rootScope.$on("fetchCategories", callback)}
 })
 
-app.service("getPropertiesService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("getProperties")}
-    this.listen = function(callback) { $rootScope.$on("getProperties", callback)}
+app.service("fetchPropertiesService", function($rootScope) {
+    this.broadcast = function() { $rootScope.$broadcast("fetchProperties")}
+    this.listen = function(callback) { $rootScope.$on("fetchProperties", callback)}
+})
+
+app.service("fetchImageSetsService", function($rootScope) {
+    this.broadcast = function() { $rootScope.$broadcast("fetchImageSets")}
+    this.listen = function(callback) { $rootScope.$on("fetchImageSets", callback)}
+})
+
+app.service("packCurrentItemService", function($rootScope) {
+    this.broadcast = function() { $rootScope.$broadcast("packCurrentItem")}
+    this.listen = function(callback) { $rootScope.$on("packCurrentItem", callback)}
+})
+
+app.service("unpackCurrentItemService", function($rootScope) {
+    this.broadcast = function() { $rootScope.$broadcast("unpackCurrentItem")}
+    this.listen = function(callback) { $rootScope.$on("unpackCurrentItem", callback)}
 })
 
 app.directive('jfbFormModel', function() {
@@ -75,11 +77,16 @@ app.filter('serving-image-set-filter', function () {
    };
 });
 
+// Shared data definition
+
+// var gt = new Gettext();
+
 app.factory('SharedData', function () {
     return {
       locales: [{'language':'Arabic', 'locale':'ar_AE', 'changed':false}, {'language':'English', 'locale':'en_GB', 'changed':false}],
       locale: {'language':'English', 'locale':'en_GB', 'changed':false},
       estimationMethods: [{'name':'As served', 'slug':'as-served'}, {'name':'Guide Image', 'slug':'guide-image'}, {'name':'Drink scale', 'slug':'drink-scale'}, {'name':'Standard portion', 'slug':'standard-portion'}, {'name':'Cereal', 'slug':'cereal'}, {'name':'Milk on cereal', 'slug':'milk-on-cereal'}, {'name':'Milk in a hot drink', 'slug':'milk-in-a-hot-drink'}, {'name':'Pizza', 'slug':'pizza'}],
+      cerealTypes: [{'name':'Hoop', 'slug':'hoop'}, {'name':'Flake', 'slug':'flake'}, {'name':'Rice krispie', 'slug':'rice-krispie'}],
       currentItem: new Object(),
       originalCode: new Object(),
       foodGroups: new Object(), 
@@ -89,21 +96,3 @@ app.factory('SharedData', function () {
       portionSizes: new Object()
     }
 });
-
-function showMessage(message, type) {
-
-    if ($('.flash-message').hasClass('active')) {
-        
-        setTimeout(function() { showMessage(message, type); }, 500);
-
-    } else {
-
-        $('.flash-message #message').html(message);
-        $('.flash-message').removeClass('success warning danger').addClass(type).addClass('active');
-        setTimeout(function() { hideMessage(); }, 1500);
-    }
-}
-
-function hideMessage() {
-	$('.flash-message').removeClass('active');
-}

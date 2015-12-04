@@ -8,7 +8,8 @@
 #sidebar-button i {
   color: #fff;
   line-height: 50px;
-  padding: 0 15px;
+  text-align: center;
+  width: 50px;
 }
 #sidebar-button:hover {
   background-color: #ff4f14;
@@ -16,6 +17,7 @@
 }
 .sidebar {
   background-color: #222d32;
+  display: flex;
   bottom: 0;
   left: 0;
   overflow: scroll;
@@ -29,6 +31,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 .sidebar ul li a {
   border-left: transparent 3px solid;
@@ -71,7 +74,7 @@
     position: fixed;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 1080px) {
   #sidebar-button {
     display: block;
   }
@@ -80,5 +83,43 @@
   }
   .sidebar.active {
     left: 0px;
+  }
+}
+/* RTL Styles */
+html[dir="rtl"] #sidebar-button {
+  left: auto;
+  right: 0px;
+}
+html[dir="rtl"] .sidebar {
+  left: auto;
+  right: 0;
+}
+html[dir="rtl"] .sidebar ul li a {
+  border-left: none;
+  border-right: transparent 3px solid;
+  padding: 0 20px 0 60px;
+}
+html[dir="rtl"] .sidebar ul li a i {
+  left: 10px;
+  right: auto;
+}
+html[dir="rtl"] .sidebar ul li a.active,
+html[dir="rtl"] .sidebar ul li a:hover {
+  border-right-color: #f63;
+}
+html[dir="rtl"] .sidebar ul li .nested-li li a:hover {
+  border-right-color: #aaa;
+}
+html[dir="rtl"] .sidebar ul li.active .nested-li {
+  display: block;
+}
+@media (max-width: 1080px) {
+  html[dir="rtl"] .sidebar {
+    left: auto;
+    right: -240px;
+  }
+  html[dir="rtl"] .sidebar.active {
+    left: auto;
+    right: 0px;
   }
 }

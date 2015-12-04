@@ -1,6 +1,6 @@
 block sidebar
 	.sidebar(ng-init='sidebaropen=false' ng-class='{"active": sidebaropen}')
-		ul(ng-controller='NavigationController' ng-init='set_language_active = manage_foods_active = manage_categories_active = true')
+		ul(ng-controller='NavigationController' ng-init='manage_foods_active = manage_categories_active = true')
 			li.sidebar-btn(ng-class="{'active': set_language_active}")
 				a(ng-click='set_language_active = !set_language_active') #{ gettext("Set Language") } <i class="fa" ng-class="set_language_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
@@ -56,18 +56,16 @@ block sidebar
 			//- 				a(href='') #{ format(gettext("Survey %s"), ["2"]) }<i class="fa fa-chevron-left"></i>
 			//- 			li
 			//- 				a(href='') #{ format(gettext("Survey %s"), ["3"]) }<i class="fa fa-chevron-left"></i>
-
-			//- li(class= 'sidebar-btn').active
-			//- 	a #{ gettext("Food Database") }<i class="fa fa-chevron-down"></i>
-			//- 	ul.nested-li
-			//- 		li(class= 'sidebar-btn')
-			//- 			a #{ gettext("Foods and categories") }
-			//- 		li(class= 'sidebar-btn')
-			//- 			a #{ gettext("'As served' images") }
-			//- 		li(class= 'sidebar-btn')
-			//- 			a #{ gettext("'Guide' images") }
-			//- 		li(class= 'sidebar-btn')
-			//- 			a #{ gettext("'Sliding scale' images") }
+	
+			li.sidebar-btn(ng-class="{'active': image_sets_active}")
+				a(ng-click='image_sets_active = !image_sets_active') #{ gettext("Image Sets") } <i class="fa" ng-class="image_sets_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
+				ul.nested-li
+					li(class= 'sidebar-btn')
+						a #{ gettext("'As served' images") }
+					li(class= 'sidebar-btn')
+						a #{ gettext("'Guide' images") }
+					li(class= 'sidebar-btn')
+						a #{ gettext("'Sliding scale' images") }
 
 			//- li(class= 'sidebar-btn')
 			//- 	a #{ gettext("Edit your profile") }

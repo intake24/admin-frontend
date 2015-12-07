@@ -45,12 +45,15 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.sidebar ul li a i {
+.sidebar ul li a .fa {
   font-size: 11px;
   line-height: 48px;
   position: absolute;
   right: 10px;
   top: 0px;
+}
+.sidebar ul li .flag {
+  margin-right: 10px;
 }
 .sidebar ul li a.active,
 .sidebar ul li a:hover {
@@ -99,9 +102,13 @@ html[dir="rtl"] .sidebar ul li a {
   border-right: transparent 3px solid;
   padding: 0 20px 0 60px;
 }
-html[dir="rtl"] .sidebar ul li a i {
+html[dir="rtl"] .sidebar ul li a .fa {
   left: 10px;
   right: auto;
+}
+html[dir="rtl"] .sidebar ul li a .flag {
+  margin-right: 0;
+  margin-left: 10px;
 }
 html[dir="rtl"] .sidebar ul li a.active,
 html[dir="rtl"] .sidebar ul li a:hover {

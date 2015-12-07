@@ -124,7 +124,6 @@ html[dir="rtl"] .drawer .drawer-content .categories-container ul li {
   border-right: none;
 }
 html[dir="rtl"] .drawer .drawer-content .categories-container ul li.selected {
+  border-left: none;
   border-right: #fb850c 3px solid;
-  border-left: none;
-  border-left: none;
 }

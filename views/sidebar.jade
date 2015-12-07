@@ -5,7 +5,9 @@ block sidebar
 				a(ng-click='set_language_active = !set_language_active') #{ gettext("Set Language") } <i class="fa" ng-class="set_language_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
 					li(ng-repeat='(index, value) in SharedData.locales | orderBy:["language", "locale"]' class='sidebar-btn' ng-click='setLocale(value);')
-						a(ng-class='{"active":SharedData.locale.locale == value.locale}') {{ value.language }}
+						a(ng-class='{"active":SharedData.locale.locale == value.locale}')
+							i.flag(ng-class='value.flag')
+							{{ value.locale_language }}
 			li.sidebar-btn(ng-class="{'active': manage_foods_active}")
 				a(ng-click='manage_foods_active = !manage_foods_active') #{ gettext("Manage foods") } <i class="fa" ng-class="manage_foods_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li

@@ -25,6 +25,11 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		script(type="text/javascript" src="/scripts/angular.js")
 		script(type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js")
 		script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-cookies.js")
+
+		//- Load current translation file
+		script(type="text/javascript" src='/i18n/#{lang}/messages.js')
+		script(type="text/javascript" src='/scripts/gettext.js')
+
 		script(type="text/javascript" src='/scripts/jstree.min.js')
 		script(type="text/javascript" src='/scripts/modals.js')
 		script(type="text/javascript" src='/scripts/drawers.js')
@@ -35,7 +40,6 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		script(type="text/javascript" src='/scripts/explorer.js')
 		script(type="text/javascript" src='/scripts/transform.js')
 
-			lang_dir
 		script(type="text/javascript" src='/scripts/navigation.js')
 
 	body.animated.fadeIn(ng-app='app' ng-controller='ExplorerController')

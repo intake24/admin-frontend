@@ -509,7 +509,7 @@ html[dir="rtl"] #properties-col.fullwidth {
 }
 html[dir="rtl"] .categories-container ul li {
   border-left: none;
-  border-right: #e1e1e1 3px solid;
+  border-right: none;
 }
 html[dir="rtl"] .categories-container ul li.selected {
   border-right: #fb850c 3px solid;

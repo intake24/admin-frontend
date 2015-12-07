@@ -5,7 +5,7 @@
          "600"
       ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: English\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-11-13 11:10+0000\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-11-13 10:54+0000\nLast-Translator: Edward Jenkins <edjenkins@newhuaweiapstaff-10-57-140-119.ncl.ac.uk>\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: English\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-07 11:31+0000\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-07 11:31+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
       },
       "Add new category": [
          null,
@@ -27,6 +27,10 @@
          null,
          "Add food"
       ],
+      "Category": [
+         null,
+         "Category"
+      ],
       "Accept changes": [
          null,
          "Accept changes"
@@ -39,13 +43,21 @@
          null,
          "Delete"
       ],
-      "Update locale food": [
+      "Add Category": [
          null,
-         "Update locale food"
+         "Add Category"
       ],
-      "Category definition": [
+      "Search categories": [
          null,
-         "Category definition"
+         "Search categories"
+      ],
+      "Food": [
+         null,
+         "Food"
+      ],
+      "Definition": [
+         null,
+         "Definition"
       ],
       "Description": [
          null,
@@ -54,6 +66,10 @@
       "Beans on toast": [
          null,
          "Beans on toast"
+      ],
+      "Local Description": [
+         null,
+         "Local Description"
       ],
       "Intake24 code": [
          null,
@@ -99,13 +115,29 @@
          null,
          "Portion size estimation"
       ],
+      "Image": [
+         null,
+         "Image"
+      ],
+      "e.g. path/filename.jpg": [
+         null,
+         "e.g. path/filename.jpg"
+      ],
+      "Use for recipes": [
+         null,
+         "Use for recipes"
+      ],
+      "Estimation method": [
+         null,
+         "Estimation method"
+      ],
+      "Delete this method": [
+         null,
+         "Delete this method"
+      ],
       "Add a portion size method": [
          null,
          "Add a portion size method"
-      ],
-      "Food definition": [
-         null,
-         "Food definition"
       ],
       "e.g. Beans on toast": [
          null,
@@ -131,6 +163,82 @@
          null,
          "e.g. 600"
       ],
+      "Serving image set": [
+         null,
+         "Serving image set"
+      ],
+      "Select image set": [
+         null,
+         "Select image set"
+      ],
+      "Use leftover images": [
+         null,
+         "Use leftover images"
+      ],
+      "Leftover image set": [
+         null,
+         "Leftover image set"
+      ],
+      "Select Image Set": [
+         null,
+         "Select Image Set"
+      ],
+      "Type": [
+         null,
+         "Type"
+      ],
+      "Drinkware set": [
+         null,
+         "Drinkware set"
+      ],
+      "Initial fill level": [
+         null,
+         "Initial fill level"
+      ],
+      "Skip fill level prompt": [
+         null,
+         "Skip fill level prompt"
+      ],
+      "Guide image": [
+         null,
+         "Guide image"
+      ],
+      "This method has no parameters": [
+         null,
+         "This method has no parameters"
+      ],
+      "Unit name (plural)": [
+         null,
+         "Unit name (plural)"
+      ],
+      "Unit weight (g)": [
+         null,
+         "Unit weight (g)"
+      ],
+      "Omit food description": [
+         null,
+         "Omit food description"
+      ],
+      "Name": [
+         null,
+         "Name"
+      ],
+      "Value": [
+         null,
+         "Value"
+      ],
+      "Move up": [
+         null,
+         "Move up"
+      ],
+      "Move down": [
+         null,
+         "Move down"
+      ],
+      "Add unit": [
+         null,
+         "Add unit"
+      ],
       "Intake24 Admin": [
          null,
          "Intake24 Admin"
@@ -155,14 +263,6 @@
          null,
          "Logout"
       ],
-      "Add Category": [
-         null,
-         "Add Category"
-      ],
-      "Search categories": [
-         null,
-         "Search categories"
-      ],
       "Set Language": [
          null,
          "Set Language"
@@ -186,6 +286,22 @@
       "Clone category": [
          null,
          "Clone category"
+      ],
+      "Image Sets": [
+         null,
+         "Image Sets"
+      ],
+      "'As served' images": [
+         null,
+         "'As served' images"
+      ],
+      "'Guide' images": [
+         null,
+         "'Guide' images"
+      ],
+      "'Sliding scale' images": [
+         null,
+         "'Sliding scale' images"
       ]
    }
 }

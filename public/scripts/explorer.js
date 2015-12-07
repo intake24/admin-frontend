@@ -117,14 +117,14 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 				}).then(function successCallback(response) {
 
-					showMessage('Removed from selected categories', 'success');
+					showMessage(gettext('Removed from selected categories'), 'success');
 					
 					$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 					$scope.fetchProperties();
 
 					getChildren({code: category_code, type: 'category'});
 
-				}, function errorCallback(response) { showMessage('Failed to remove from categories', 'danger'); });
+				}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
 			};
 		});
 
@@ -309,11 +309,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				addFoodToCategory($scope.SharedData.currentItem.code, value.code);
 			});
 
-			showMessage('Food added', 'success');
+			showMessage(gettext('Food added'), 'success');
 			$scope.SharedData.currentItem = new Object();
 			$('input').removeClass('valid invalid');
 
-		}, function errorCallback(response) { showMessage('Failed to add food', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to add food'), 'danger'); console.log(response); });
 	}
 
 	$scope.discardFoodChanges = function() {
@@ -321,7 +321,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 		$scope.fetchProperties();
 
-		showMessage('Changes discarded', 'success');
+		showMessage(gettext('Changes discarded'), 'success');
 	}
 
 	$scope.deleteFood = function() {
@@ -335,13 +335,13 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 			}).then(function successCallback(response) {
 
-				showMessage('Food deleted', 'success');
+				showMessage(gettext('Food deleted'), 'success');
 				
 				$scope.SharedData.currentItem = new Object();
 
 				resetProperties();
 
-			}, function errorCallback(response) { showMessage('Failed to delete food', 'danger'); });
+			}, function errorCallback(response) { showMessage(gettext('Failed to delete food'), 'danger'); });
 		}
 	}
 
@@ -364,13 +364,13 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				}
 			});
 
-			showMessage('Food updated', 'success');
+			showMessage(gettext('Food updated'), 'success');
 
 			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
 
 			$scope.updateLocalFood();
 
-		}, function errorCallback(response) { showMessage('Failed to update food', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to update food'), 'danger'); console.log(response); });
 	}
 
 	$scope.updateLocalFood = function() {
@@ -382,11 +382,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {
 
-			showMessage('Local food updated', 'success');
+			showMessage(gettext('Local food updated'), 'success');
 
 			$scope.fetchProperties();
 
-		}, function errorCallback(response) { showMessage('Failed to update local food', 'danger'); console.log(response); $scope.fetchProperties(); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to update local food'), 'danger'); console.log(response); $scope.fetchProperties(); });
 	}
 
 	// Category Actions
@@ -404,12 +404,12 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
-			showMessage('Category added', 'success');
+			showMessage(gettext('Category added'), 'success');
 			$scope.SharedData.currentItem = new Object();
 			$('input').removeClass('valid invalid');
 			$scope.$apply();
 
-		}, function errorCallback(response) { showMessage('Failed to add category', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to add category'), 'danger'); console.log(response); });
 	}
 
 	$scope.discardCategoryChanges = function() {
@@ -417,7 +417,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 		$scope.fetchProperties();
 
-		showMessage('Changes discarded', 'success');
+		showMessage(gettext('Changes discarded'), 'success');
 	}
 
 	$scope.deleteCategory = function() {
@@ -432,11 +432,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 			}).then(function successCallback(response) {
 
-				showMessage('Category deleted', 'success');
+				showMessage(gettext('Category deleted'), 'success');
 				
 				resetProperties();
 
-			}, function errorCallback(response) { showMessage('Failed to delete category', 'danger'); });
+			}, function errorCallback(response) { showMessage(gettext('Failed to delete category'), 'danger'); });
 		}
 	}
 
@@ -457,13 +457,13 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				}
 			});
 
-			showMessage('Category updated', 'success');
+			showMessage(gettext('Category updated'), 'success');
 
 			$scope.fetchProperties();
 
 			$scope.updateLocalCategory();
 
-		}, function errorCallback(response) { showMessage('Failed to update category', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to update category'), 'danger'); console.log(response); });
 	}
 
 	$scope.updateLocalCategory = function() {
@@ -475,11 +475,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {
 
-			showMessage('Local category updated', 'success');
+			showMessage(gettext('Local category updated'), 'success');
 
 			$scope.fetchProperties();
 
-		}, function errorCallback(response) { showMessage('Failed to update local category', 'danger'); console.log(response); $scope.fetchProperties(); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });
 	}
 
 	$scope.removeItem = function(array, index) {
@@ -502,11 +502,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 		}).then(function successCallback(response) {
 
-			showMessage('Food added to category', 'success');
+			showMessage(gettext('Food added to category'), 'success');
 
 			fetchCategoriesService.broadcast();
 
-		}, function errorCallback(response) { showMessage('Failed to add to category', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to add to category'), 'danger'); console.log(response); });
 	}
 
 	function addCategoryToCategory(category_code, subcategory_code)
@@ -517,11 +517,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 		}).then(function successCallback(response) {
 
-			showMessage('Category added to category', 'success');
+			showMessage(gettext('Category added to category'), 'success');
 
 			fetchCategoriesService.broadcast();
 
-		}, function errorCallback(response) { showMessage('Failed to add to category', 'danger'); console.log(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to add to category'), 'danger'); console.log(response); });
 	}
 
 	function checkCode(input, type)
@@ -549,7 +549,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	function handleError(response)
 	{
 		console.log(response);
-		if (response.status === 401) { showMessage('You are not authorized', 'danger'); Cookies.remove('auth-token'); }
+		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
 	}
 
 });

@@ -14,7 +14,7 @@ var app = express()
 
 app.use(i18n.abide({
   supported_languages: ['ar', 'en'],
-  translation_directory: 'i18n',
+  translation_directory: 'public/i18n',
   template_engine: 'jade',
   template_file_ext: 'jade',
   locale_on_url: true

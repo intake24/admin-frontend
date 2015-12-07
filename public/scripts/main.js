@@ -79,14 +79,12 @@ app.filter('serving-image-set-filter', function () {
 
 // Shared data definition
 
-// var gt = new Gettext();
-
 app.factory('SharedData', function () {
     return {
-      locales: [{'language':'Arabic', 'locale':'ar', 'intake_locale':'ar_AE', 'changed':false}, {'language':'English', 'locale':'en', 'intake_locale':'en_GB','changed':false}],
-      locale: {'language':'English', 'locale':'en', 'intake_locale':'en_GB', 'changed':false},
-      estimationMethods: [{'name':'As served', 'slug':'as-served'}, {'name':'Guide Image', 'slug':'guide-image'}, {'name':'Drink scale', 'slug':'drink-scale'}, {'name':'Standard portion', 'slug':'standard-portion'}, {'name':'Cereal', 'slug':'cereal'}, {'name':'Milk on cereal', 'slug':'milk-on-cereal'}, {'name':'Milk in a hot drink', 'slug':'milk-in-a-hot-drink'}, {'name':'Pizza', 'slug':'pizza'}],
-      cerealTypes: [{'name':'Hoop', 'slug':'hoop'}, {'name':'Flake', 'slug':'flake'}, {'name':'Rice krispie', 'slug':'rice-krispie'}],
+      locales: [{'language':gettext('Arabic'), 'locale':'ar', 'intake_locale':'ar_AE', 'changed':false}, {'language':gettext('English'), 'locale':'en', 'intake_locale':'en_GB','changed':false}],
+      locale: {'language':gettext('English'), 'locale':'en', 'intake_locale':'en_GB', 'changed':false},
+      estimationMethods: [{'name':gettext('As served'), 'slug':'as-served'}, {'name':gettext('Guide Image'), 'slug':'guide-image'}, {'name':gettext('Drink scale'), 'slug':'drink-scale'}, {'name':gettext('Standard portion'), 'slug':'standard-portion'}, {'name':gettext('Cereal'), 'slug':'cereal'}, {'name':gettext('Milk on cereal'), 'slug':'milk-on-cereal'}, {'name':gettext('Milk in a hot drink'), 'slug':'milk-in-a-hot-drink'}, {'name':gettext('Pizza'), 'slug':'pizza'}],
+      cerealTypes: [{'name':gettext('Hoop'), 'slug':'hoop'}, {'name':gettext('Flake'), 'slug':'flake'}, {'name':gettext('Rice krispie'), 'slug':'rice-krispie'}],
       currentItem: new Object(),
       originalCode: new Object(),
       foodGroups: new Object(), 

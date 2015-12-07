@@ -1,291 +1,308 @@
-{
+;var json_locale_data = {
    "messages": {
       "600": [
          null,
          "600"
       ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-01 12:20+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-01 12:20+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: English\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-07 11:31+0000\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-07 11:31+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
       },
       "Add new category": [
          null,
-         "إضافة فئة جديدة"
+         "Add new category"
       ],
       "Add category": [
          null,
-         "إضافة فئة"
+         "Add category"
       ],
       "Cancel": [
          null,
-         "إلغاء"
+         "Cancel"
       ],
       "Add new food": [
          null,
-         "إضافة طعام جديد"
+         "Add new food"
       ],
       "Add food": [
          null,
-         "إضافة الغذائية"
+         "Add food"
       ],
       "Category": [
          null,
-         "فئة"
+         "Category"
       ],
       "Accept changes": [
          null,
-         "قبول التغييرات"
+         "Accept changes"
       ],
       "Discard changes": [
          null,
-         "تجاهل التغييرات"
+         "Discard changes"
       ],
       "Delete": [
          null,
-         "حذف "
+         "Delete"
       ],
       "Add Category": [
          null,
-         "إضافة فئة"
+         "Add Category"
       ],
       "Search categories": [
          null,
-         "فئات بحث"
+         "Search categories"
       ],
       "Food": [
          null,
-         "طعام"
+         "Food"
       ],
       "Definition": [
          null,
-         "تعريف"
+         "Definition"
       ],
       "Description": [
          null,
-         "وصف"
+         "Description"
       ],
       "Beans on toast": [
          null,
-         "الفول على نخب"
+         "Beans on toast"
       ],
       "Local Description": [
          null,
-         "الوصف المحلي"
+         "Local Description"
       ],
       "Intake24 code": [
          null,
-         "كود Intake24"
+         "Intake24 code"
       ],
       "ALBU": [
          null,
-         "البو"
+         "ALBU"
       ],
       "Hidden": [
          null,
-         "مخفي"
+         "Hidden"
       ],
       "Attributes": [
          null,
-         "سمات"
+         "Attributes"
       ],
       "Ready meal option": [
          null,
-         "خيار وجبة جاهزة"
+         "Ready meal option"
       ],
       "Same as before option": [
          null,
-         "نفسه كما كان من قبل الخيار"
+         "Same as before option"
       ],
       "Reasonable amount (g/ml)": [
          null,
-         "قدر معقول (ز / مل)"
+         "Reasonable amount (g/ml)"
       ],
       "Categories": [
          null,
-         "الفئات"
+         "Categories"
       ],
       "Add to category": [
          null,
-         "إضافة إلى فئة"
+         "Add to category"
       ],
       "Remove from selected category": [
          null,
-         "إزالة من فئة المختارة"
+         "Remove from selected category"
       ],
       "Portion size estimation": [
          null,
-         "جزء حجم تقدير"
-      ],
-      "Add a portion size method": [
-         null,
-         "إضافة أسلوب حجم الجزء"
-      ],
-      "e.g. Beans on toast": [
-         null,
-         "مثل الفول على نخب"
-      ],
-      "e.g. ALBU": [
-         null,
-         "على سبيل المثال البو"
-      ],
-      "NDNS code": [
-         null,
-         "كود NDNS"
-      ],
-      "e.g. 10968": [
-         null,
-         "على سبيل المثال 10968"
-      ],
-      "Food group": [
-         null,
-         "مجموعة الطعام"
-      ],
-      "e.g. 600": [
-         null,
-         "على سبيل المثال 600"
+         "Portion size estimation"
       ],
       "Image": [
          null,
-         "صورة"
+         "Image"
       ],
       "e.g. path/filename.jpg": [
          null,
-         "على سبيل المثال مسار / filename.jpg"
+         "e.g. path/filename.jpg"
       ],
       "Use for recipes": [
          null,
-         "استخدام وصفات"
+         "Use for recipes"
       ],
       "Estimation method": [
          null,
-         "طريقة تقدير"
+         "Estimation method"
       ],
       "Delete this method": [
          null,
-         "حذف هذه الطريقة"
+         "Delete this method"
+      ],
+      "Add a portion size method": [
+         null,
+         "Add a portion size method"
+      ],
+      "e.g. Beans on toast": [
+         null,
+         "e.g. Beans on toast"
+      ],
+      "e.g. ALBU": [
+         null,
+         "e.g. ALBU"
+      ],
+      "NDNS code": [
+         null,
+         "NDNS code"
+      ],
+      "e.g. 10968": [
+         null,
+         "e.g. 10968"
+      ],
+      "Food group": [
+         null,
+         "Food group"
+      ],
+      "e.g. 600": [
+         null,
+         "e.g. 600"
       ],
       "Serving image set": [
          null,
-         "خدمة مجموعة صورة"
+         "Serving image set"
       ],
       "Select image set": [
          null,
-         "حدد مجموعة صورة"
+         "Select image set"
       ],
       "Use leftover images": [
          null,
-         "استخدام الصور المتبقية"
+         "Use leftover images"
       ],
       "Leftover image set": [
          null,
-         "بقايا مجموعة صورة"
+         "Leftover image set"
       ],
       "Select Image Set": [
          null,
-         "حدد مجموعة صورة"
+         "Select Image Set"
       ],
       "Type": [
          null,
-         "اكتب"
+         "Type"
       ],
       "Drinkware set": [
          null,
-         "مجموعة Drinkware"
+         "Drinkware set"
       ],
       "Initial fill level": [
          null,
-         "مستوى التعبئة الأولي"
+         "Initial fill level"
       ],
       "Skip fill level prompt": [
          null,
-         "تخطي مستوى التعبئة موجه"
+         "Skip fill level prompt"
       ],
       "Guide image": [
          null,
-         "الصورة دليل"
+         "Guide image"
       ],
       "This method has no parameters": [
          null,
-         "هذا الأسلوب لديه أية معلمات"
+         "This method has no parameters"
       ],
       "Unit name (plural)": [
          null,
-         "اسم الوحدة (الجمع)"
+         "Unit name (plural)"
       ],
       "Unit weight (g)": [
          null,
-         "وحدة الوزن (ز)"
+         "Unit weight (g)"
       ],
       "Omit food description": [
          null,
-         "حذفت وصف الطعام"
+         "Omit food description"
       ],
       "Name": [
          null,
-         "اسم"
+         "Name"
       ],
       "Value": [
          null,
-         "القيمة"
+         "Value"
       ],
       "Move up": [
          null,
-         "تحرك"
+         "Move up"
       ],
       "Move down": [
          null,
-         "تحرك لأسفل"
+         "Move down"
       ],
       "Add unit": [
          null,
-         "إضافة وحدة"
+         "Add unit"
       ],
       "Intake24 Admin": [
          null,
-         "Intake24 الادارية"
+         "Intake24 Admin"
       ],
       "Login": [
          null,
-         "تسجيل الدخول"
+         "Login"
       ],
       "Username": [
          null,
-         "إسم المستخدم"
+         "Username"
       ],
       "Password": [
          null,
-         "كلمة المرور"
+         "Password"
       ],
       "Are you sure?": [
          null,
-         "هل أنت متأكد؟"
+         "Are you sure?"
       ],
       "Logout": [
          null,
-         "تسجيل الخروج"
+         "Logout"
       ],
       "Set Language": [
          null,
-         "مجموعة اللغة"
+         "Set Language"
       ],
       "Manage foods": [
          null,
-         "إدارة الأغذية"
+         "Manage foods"
       ],
       "Browse foods": [
          null,
-         "تصفح الأطعمة"
+         "Browse foods"
       ],
       "Clone food": [
          null,
-         "الغذاء استنساخ"
+         "Clone food"
       ],
       "Manage categories": [
          null,
-         "إدارة الفئات"
+         "Manage categories"
       ],
       "Clone category": [
          null,
-         "فئة استنساخ"
+         "Clone category"
+      ],
+      "Image Sets": [
+         null,
+         "Image Sets"
+      ],
+      "'As served' images": [
+         null,
+         "'As served' images"
+      ],
+      "'Guide' images": [
+         null,
+         "'Guide' images"
+      ],
+      "'Sliding scale' images": [
+         null,
+         "'Sliding scale' images"
       ]
    }
 }
+;

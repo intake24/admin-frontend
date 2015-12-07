@@ -35,7 +35,7 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService,
 		hideModal();
 		showModal('modal-authenticate');
 
-		// showMessage('You have logged out', 'success');
+		// showMessage(gettext('You have logged out'), 'success');
 	});
 
 	// Attempt to login user
@@ -64,9 +64,9 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService,
 		    $('body').addClass('authenticated');
 		    $('#btn-authenticate p').html(username);
 
-		    // showMessage('You have logged in', 'success');
+		    // showMessage(gettext('You have logged in'), 'success');
 
-		}, function errorCallback(response) { showMessage('Failed to log you in', 'danger'); handleError(response); });
+		}, function errorCallback(response) { showMessage(gettext('Failed to log you in'), 'danger'); handleError(response); });
 
 	});
 

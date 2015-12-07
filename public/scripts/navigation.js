@@ -16,7 +16,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	if (locale) {
 		if (locale.changed) {
 			locale.changed = false;
-			showMessage('Language set to ' + locale.language, 'success');
+			showMessage(format('Language set to %s', [locale.language]), 'success');
 		}
 		SharedData.locale = locale;
 		$cookies.putObject("locale", locale);

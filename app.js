@@ -41,4 +41,4 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', routes.dashboard);
 
-app.listen(3000)
+app.listen(3002)

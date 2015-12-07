@@ -1,11 +1,11 @@
-{
+;var json_locale_data = {
    "messages": {
       "600": [
          null,
          "600"
       ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-01 12:20+0000\nLanguage: ar_AE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-01 12:20+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-01 12:20+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-01 12:20+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
       },
       "Add new category": [
          null,
@@ -289,3 +289,4 @@
       ]
    }
 }
+;

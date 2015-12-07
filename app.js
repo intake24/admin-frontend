@@ -13,7 +13,7 @@ var express = require('express')
 var app = express()
 
 app.use(i18n.abide({
-  supported_languages: ['ar_AE', 'en_GB'],
+  supported_languages: ['ar', 'en'],
   translation_directory: 'i18n',
   template_engine: 'jade',
   template_file_ext: 'jade',

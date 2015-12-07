@@ -85,7 +85,7 @@ app.controller('SearchController', function($scope, $http, SharedData, fetchProp
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/search/' + query,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/search/' + query,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -96,7 +96,7 @@ app.controller('SearchController', function($scope, $http, SharedData, fetchProp
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/search/' + query,
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/search/' + query,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 

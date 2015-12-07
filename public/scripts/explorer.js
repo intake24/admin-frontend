@@ -141,7 +141,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/uncategorised',
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/uncategorised',
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -158,7 +158,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -193,7 +193,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
-		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.currentItem.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.currentItem.code + '/definition';
+		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.currentItem.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.currentItem.code + '/definition';
 
 		$http({
 			method: 'GET',
@@ -229,7 +229,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		$http({
 			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + value.code,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + value.code,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -249,7 +249,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + 'food-groups/' + $scope.SharedData.locale.locale,
+			url: api_base_url + 'food-groups/' + $scope.SharedData.locale.intake_locale,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -262,7 +262,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	{
 		$http({
 			method: 'GET',
-			url: api_base_url + type + '/' + $scope.SharedData.locale.locale + '/' + item_code + '/parent-categories',
+			url: api_base_url + type + '/' + $scope.SharedData.locale.intake_locale + '/' + item_code + '/parent-categories',
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
@@ -377,7 +377,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		$http({
 			method: 'POST',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {
@@ -470,7 +470,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		$http({
 			method: 'POST',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.locale + '/' + $scope.SharedData.originalCode,
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {

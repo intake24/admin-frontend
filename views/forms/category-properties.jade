@@ -3,7 +3,7 @@
 	.input-wrapper
 		label #{ gettext("Description") }
 		input(id='input-category-englishDescription' type='text' placeholder='#{ gettext("Beans on toast") }' ng-model='SharedData.currentItem.englishDescription')
-	.input-wrapper(ng-hide='SharedData.locale.locale=="en_GB"')
+	.input-wrapper(ng-hide='SharedData.locale.intake_locale=="en_GB"')
 		label #{ gettext("Local Description") }
 		input(id='input-food-localeDescription' type='text' ng-model='SharedData.currentItem.localData.localDescription[0]')
 	.input-wrapper

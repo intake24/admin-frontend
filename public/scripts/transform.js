@@ -267,22 +267,30 @@ app.controller('TransformController', function($scope, $http, packCurrentItemSer
 				case 'serving':
 					portionSize.selected_serving_image_set = response.data;
 
+					var found = false;
+
 					$.each(portionSize.parameters, function(index, value) {
 
-						if (value.name == 'serving-image-set') { value.value = response.data.id; }
+						if (value.name == 'serving-image-set') { value.value = response.data.id; found = true; }
 
 					});
+
+					if (!found) { portionSize.parameters.push({name: 'serving-image-set', value: response.data.id}); };
 					
 					break;
 
 				case 'leftovers':
 					portionSize.selected_leftovers_image_set = response.data;
 
+					var found = false;
+
 					$.each(portionSize.parameters, function(index, value) {
 
-						if (value.name == 'leftovers-image-set') { value.value = response.data.id; }
+						if (value.name == 'leftovers-image-set') { value.value = response.data.id; found = true; }
 
 					});
+
+					if (!found) { portionSize.parameters.push({name: 'leftovers-image-set', value: response.data.id}); };
 					
 					break;
 			}
@@ -302,11 +310,15 @@ app.controller('TransformController', function($scope, $http, packCurrentItemSer
 
 			portionSize.selected_guide_image_set = response.data;
 
+			var found = false;
+
 			$.each(portionSize.parameters, function(index, value) {
 
-				if (value.name == 'guide-image-id') { value.value = response.data.id; }
+				if (value.name == 'guide-image-id') { value.value = response.data.id; found = true; }
 
 			});
+
+			if (!found) { portionSize.parameters.push({name: 'guide-image-id', value: response.data.id}); };
 
 			hideDrawer();
 			

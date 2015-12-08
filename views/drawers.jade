@@ -4,7 +4,7 @@
 	.drawer-title #{ gettext("Add Category") }
 	.drawer-content
 		.categories-container
-			input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
+			//input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
 			ul
 				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | filter:searchFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
 

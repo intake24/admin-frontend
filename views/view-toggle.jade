@@ -1,4 +1,4 @@
-.view-toggle
+.view-toggle(ng-if="(SharedData.currentItem.hasOwnProperty('englishDescription'))")
 	ul
 		li(onclick='$(".food-list-container").fadeToggle(); $("food-properties-col").fadeToggle()')
 			p {{ SharedData.currentItem.englishDescription }}

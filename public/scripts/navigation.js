@@ -1,6 +1,6 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', function($scope, $http, $cookies, SharedData) {
+app.controller('NavigationController', function($scope, $http, $cookies, SharedData, fetchCategoriesService) {
 
 	// Set sidebar defaults
 	$scope.set_language_active = $cookies.getObject("set_language_active");

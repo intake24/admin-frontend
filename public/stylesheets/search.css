@@ -80,8 +80,7 @@
   cursor: pointer;
 }
 .view-toggle {
-  background-color: #f63;
-  border-top: #ff4f14 1px solid;
+  background-color: #3af;
   display: none;
   position: fixed;
   z-index: 9;

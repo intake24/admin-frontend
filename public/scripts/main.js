@@ -48,34 +48,34 @@ app.directive('jfbFormModel', function() {
     };
 });
 
-app.filter('custom', function() {
-  return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
-    var expected = ('' + search).toLowerCase();
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value).toLowerCase();
-      if (actual.indexOf(expected) !== -1) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
-});
+// app.filter('custom', function() {
+//   return function(input, search) {
+//     if (!input) return input;
+//     if (!search) return input;
+//     var expected = ('' + search).toLowerCase();
+//     var result = {};
+//     angular.forEach(input, function(value, key) {
+//       var actual = ('' + value).toLowerCase();
+//       if (actual.indexOf(expected) !== -1) {
+//         result[key] = value;
+//       }
+//     });
+//     return result;
+//   }
+// });
 
-// Serving method filters
+// // Serving method filters
 
-app.filter('serving-image-set-filter', function () {  
-   return function(inputs, filterValues) {
-      var output = [];
-      angular.forEach(inputs, function (input) {
-        if (filterValues.indexOf(input.id) !== -1)
-            output.push(input);
-       });
-       return output;
-   };
-});
+// app.filter('serving-image-set-filter', function () {  
+//    return function(inputs, filterValues) {
+//       var output = [];
+//       angular.forEach(inputs, function (input) {
+//         if (filterValues.indexOf(input.id) !== -1)
+//             output.push(input);
+//        });
+//        return output;
+//    };
+// });
 
 // Shared data definition
 

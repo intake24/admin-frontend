@@ -205,6 +205,9 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 			$scope.SharedData.currentItem = response.data;
 
+			console.log('Properties fetched:');
+			console.log($scope.SharedData.currentItem);
+
 			unpackCurrentItemService.broadcast();
 
 			if ($scope.SharedData.currentItem.type == 'category') {
@@ -309,6 +312,12 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				addFoodToCategory($scope.SharedData.currentItem.code, value.code);
 			});
 
+			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
+
+			console.log($scope.SharedData.currentItem);
+
+			$scope.updateLocalFood();
+
 			showMessage(gettext('Food added'), 'success');
 			$scope.SharedData.currentItem = new Object();
 			$('input').removeClass('valid invalid');
@@ -374,6 +383,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 	$scope.updateLocalFood = function() {
+
+		$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
 
 		$http({
 			method: 'POST',

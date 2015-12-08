@@ -84,6 +84,7 @@
   display: none;
   position: fixed;
   z-index: 9;
+  text-align: center;
   width: 100%;
 }
 @media (max-width: 800px) {
@@ -91,23 +92,19 @@
     display: block;
   }
 }
-.view-toggle ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
-.view-toggle ul li {
+.view-toggle p {
   color: #fff;
-  display: inline-block;
   font-size: 12px;
   line-height: 50px;
   margin: 0;
   padding: 0;
   width: 100%;
 }
-.view-toggle ul li:hover {
-  background-color: #ff4f14;
+.view-toggle p i {
+  margin: 0 10px;
+}
+.view-toggle p:hover {
+  background-color: #149dff;
   cursor: pointer;
 }
 /* RTL Styles */

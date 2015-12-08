@@ -99,6 +99,13 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		if ($(this).attr('id') == 'input-category-code') { checkCode(this, 'categories'); }
 	});
 
+	$scope.returnHome = function() {
+
+		$('.properties-container').hide();
+		$('.food-list-container').show();
+
+	}
+
 	$scope.removeFromCategory = function() {
 
 		$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
@@ -177,14 +184,23 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	$scope.nodeSelected = function($event, value) {
 
 		$($event.target).parent().toggleClass('node-open');
-
-		if (value.type == 'uncategorised') {
+		
+		if ($scope.SharedData.currentItem.code == value.code) {
+			
+			if ($(window).width() < 800) {
+				$(".food-list-container").hide(); $("food-properties-col").show();	
+			};
 
 		} else {
 
-			$scope.SharedData.currentItem = value;
-			$scope.SharedData.originalCode = value.code;
-			$scope.getChildren(value);
+			if (value.type == 'uncategorised') {
+
+			} else {
+
+				$scope.SharedData.currentItem = value;
+				$scope.SharedData.originalCode = value.code;
+				$scope.getChildren(value);
+			}
 		}
 	}
 
@@ -214,6 +230,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 				fetchParentCategories('categories', $scope.SharedData.currentItem.code);
 				$('.properties-container').not('#category-properties-container').hide();
+
 				$('#category-properties-container').css({'display':'block'});
 
 			} else {
@@ -222,6 +239,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 				fetchParentCategories('foods', $scope.SharedData.currentItem.code);
 				$('.properties-container').not('#food-properties-container').hide();
+				
 				$('#food-properties-container').css({'display':'block'});
 			}
 
@@ -331,6 +349,10 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.fetchProperties();
 
 		showMessage(gettext('Changes discarded'), 'success');
+
+		if ($(window).width() < 800) {
+			$(".food-list-container").show(); $("food-properties-col").hide();
+		}
 	}
 
 	$scope.deleteFood = function() {
@@ -429,6 +451,10 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.fetchProperties();
 
 		showMessage(gettext('Changes discarded'), 'success');
+
+		if ($(window).width() < 800) {
+			$(".food-list-container").show(); $("category-properties-col").hide();
+		}
 	}
 
 	$scope.deleteCategory = function() {

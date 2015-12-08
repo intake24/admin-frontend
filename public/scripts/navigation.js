@@ -40,6 +40,9 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	function showContainer(container_id) {
 		$('.properties-container:not(' + container_id + ')').hide();
 		$(container_id).show();
+		if ($(window).width() < 800) {
+			$(".food-list-container").hide();
+		};
 	}
 
 
@@ -55,7 +58,8 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		$('#add-new-category-container').hide();
 
 		fetchCategoriesService.broadcast();
-	
+		
+		$(".food-list-container").show();
 		$('#food-list-col').show().animate({'opacity':1}, function() { 
 			$('#properties-col').addClass('active');
 		});

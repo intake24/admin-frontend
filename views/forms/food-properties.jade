@@ -1,4 +1,4 @@
-form(id='food-properties-form')
+form(id='food-properties-form' ng-model-options='{ debounce: { "default": 2000 } }')
 .property
 	h3 #{ gettext("Definition") }
 	.input-wrapper
@@ -32,7 +32,7 @@ form(id='food-properties-form')
 .property
 	h3 #{ gettext("Categories") }
 	.categories-container
-		ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
+		ul(ng-model='SharedData.currentItem.parentCategories' ng-model-options='{ debounce: { "default": 2000 } }' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
 			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
 
 	.input-wrapper

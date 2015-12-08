@@ -79,6 +79,7 @@
 @media (max-width: 800px) {
   .properties-container .properties-footer {
     position: relative !important;
+    width: auto;
   }
 }
 /* RTL Styles */

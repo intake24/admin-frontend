@@ -6,6 +6,7 @@
 /* Import color variables */
 .properties-container {
   display: none;
+  position: relative;
 }
 .properties-container .properties-padding {
   padding: 30px 30px 120px 30px;

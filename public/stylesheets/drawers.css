@@ -67,7 +67,7 @@
 .drawer .drawer-footer {
   background: #fff;
   border-top: #e1e1e1 1px solid;
-  padding: 20px 30px;
+  padding: 15px;
   z-index: 20;
 }
 .drawer .drawer-footer button {

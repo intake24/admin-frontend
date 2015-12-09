@@ -184,6 +184,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	$scope.nodeSelected = function($event, value) {
 
+		$scope.selected_node = $($event.target).parent();
+
 		$($event.target).parent().toggleClass('node-open');
 		$('.food-list ul li a').removeClass('active');
 		$($event.target).addClass('active');
@@ -346,8 +348,11 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 	$scope.deleteFood = function() {
+
 		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
 		{
+			$scope.selected_node.remove();
+
 			var food_code = $scope.SharedData.currentItem.code;
 
 			$http({
@@ -427,10 +432,20 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
+			// Loop through categories and add the category to them
+			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
+				addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
+			});
+
+			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
+
+			console.log($scope.SharedData.currentItem);
+
+			$scope.updateLocalCategory();
+
 			showMessage(gettext('Category added'), 'success');
 			$scope.SharedData.currentItem = new Object();
 			$('input').removeClass('valid invalid');
-			$scope.$apply();
 
 		}, function errorCallback(response) { showMessage(gettext('Failed to add category'), 'danger'); console.log(response); });
 	}
@@ -447,6 +462,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
 		{
+			$scope.selected_node.remove();
+			
 			var category_code = $scope.SharedData.currentItem.code;
 
 			$http({
@@ -490,6 +507,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 	$scope.updateLocalCategory = function() {
+
+		$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
 
 		$http({
 			method: 'POST',

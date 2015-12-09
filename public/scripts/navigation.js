@@ -107,6 +107,12 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 				readyMealOption:Array(),
 				sameAsBeforeOption:Array(),
 				reasonableAmount:Array()
+			},
+			localData:{
+				version:Array(),
+				localDescription:Array(),
+				nutrientTableCodes:{},
+				portionSize:Array()
 			}
 		};
 	

@@ -23,7 +23,8 @@
   margin: 0;
   padding: 0;
 }
-.food-list-container .food-list ul li .fa-circle-o {
+.food-list-container .food-list ul li .fa-circle-o,
+.food-list-container .food-list ul li .fa-spin {
   margin-left: 20px;
 }
 .food-list-container .food-list ul li a {
@@ -41,12 +42,14 @@
   color: #999;
 }
 .food-list-container .food-list ul li .fa-circle,
-.food-list-container .food-list ul li .fa-circle-o {
+.food-list-container .food-list ul li .fa-circle-o,
+.food-list-container .food-list ul li .fa-spin {
   color: #38d075;
   margin-right: 5px;
 }
 .food-list-container .food-list ul li .fa-circle.editing,
-.food-list-container .food-list ul li .fa-circle-o.editing {
+.food-list-container .food-list ul li .fa-circle-o.editing,
+.food-list-container .food-list ul li .fa-spin.editing {
   color: #fb850c;
 }
 .food-list-container .food-list ul li > ul > li {
@@ -79,12 +82,14 @@
   display: inline-block;
 }
 /* RTL Styles */
-html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o {
+html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o,
+html[dir="rtl"] .food-list-container .food-list ul li .fa-spin {
   margin-left: auto;
   margin-right: 20px;
 }
 html[dir="rtl"] .food-list-container .food-list ul li .fa-circle,
-html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o {
+html[dir="rtl"] .food-list-container .food-list ul li .fa-circle-o,
+html[dir="rtl"] .food-list-container .food-list ul li .fa-spin {
   margin-left: 5px;
 }
 html[dir="rtl"] .food-list-container .food-list ul li > ul > li {

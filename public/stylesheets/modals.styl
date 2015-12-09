@@ -15,6 +15,9 @@
 	top 200px
 	width 600px
 	z-index 12
+	@media(max-width: 600px)
+		width 300px
+		margin-left -150px 
 
 	#button-close-modal
 		line-height 50px
@@ -57,6 +60,9 @@
 .modal.modal-narrow
 	margin-left -200px
 	width 400px
+	@media(max-width: 600px)
+		width 300px
+		margin-left -150px 
 	
 .modal.active
 	display block
@@ -73,6 +79,8 @@
 		outline 0
 		padding 15px 25px
 		text-align center
+		@media(max-width: 800px)
+			min-width 200px
 	button
 		background-color main-color
 		border none

@@ -91,6 +91,25 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		showContainer('#add-new-food-container');
 	}
 
+	// Clone food
+	$scope.cloneFood = function() {
+		
+		if ($scope.SharedData.currentItem.type != 'food') {
+
+			alert('Please select a food');
+
+			return;
+		}
+
+		$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[0];
+
+		$('#properties-col').show().addClass('fullwidth');
+
+		$('#food-list-col').hide();
+
+		showContainer('#add-new-food-container');
+	}
+
 
 	/***********************/
 	/** Manage categories **/
@@ -116,6 +135,23 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 			}
 		};
 	
+		$('#properties-col').show().addClass('fullwidth');
+
+		$('#food-list-col').hide();
+
+		showContainer('#add-new-category-container');
+	}
+
+	// Clone category
+	$scope.cloneCategory = function() {
+		
+		if ($scope.SharedData.currentItem.type != 'category') {
+
+			alert('Please select a category');
+			
+			return;
+		}
+
 		$('#properties-col').show().addClass('fullwidth');
 
 		$('#food-list-col').hide();

@@ -55,6 +55,9 @@
 .sidebar ul li .flag {
   margin-right: 10px;
 }
+.sidebar ul li.disabled a {
+  color: #808080;
+}
 .sidebar ul li a.active,
 .sidebar ul li a:hover {
   border-left-color: #f63;

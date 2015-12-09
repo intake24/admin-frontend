@@ -16,15 +16,15 @@ block sidebar
 				ul.nested-li
 					li.sidebar-btn(ng-click='addNewFood()') 
 						a #{ gettext("Add new food") }
-					li.sidebar-btn
+					li.sidebar-btn(ng-class='{disabled:(SharedData.currentItem.type != "food")}' ng-click='cloneFood()') 
 						a #{ gettext("Clone food") }
 			
 			li.sidebar-btn(ng-class="{'active': manage_categories_active}")
 				a(ng-click='manage_categories_active = !manage_categories_active') #{ gettext("Manage categories") } <i class="fa" ng-class="manage_categories_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li
-					li(class= 'sidebar-btn' ng-click='addNewCategory()')
+					li.sidebar-btn(ng-click='addNewCategory()')
 						a #{ gettext("Add new category") }
-					li(class= 'sidebar-btn')
+					li.sidebar-btn(ng-class='{disabled:(SharedData.currentItem.type != "category")}' ng-click='cloneCategory()')
 						a #{ gettext("Clone category") }
 			
 			//- li(class= 'sidebar-btn').active

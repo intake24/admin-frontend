@@ -101,8 +101,9 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	$scope.returnHome = function() {
 
+		$('#properties-col').show().removeClass('fullwidth');
 		$('.properties-container').hide();
-		$('.food-list-container').show();
+		$('#food-list-col').show();
 
 	}
 
@@ -184,23 +185,16 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	$scope.nodeSelected = function($event, value) {
 
 		$($event.target).parent().toggleClass('node-open');
-		
-		if ($scope.SharedData.currentItem.code == value.code) {
-			
-			if ($(window).width() < 800) {
-				$(".food-list-container").hide(); $("food-properties-col").show();	
-			};
+		$('.food-list ul li a').removeClass('active');
+		$($event.target).addClass('active');
+
+		if (value.type == 'uncategorised') {
 
 		} else {
 
-			if (value.type == 'uncategorised') {
-
-			} else {
-
-				$scope.SharedData.currentItem = value;
-				$scope.SharedData.originalCode = value.code;
-				$scope.getChildren(value);
-			}
+			$scope.SharedData.currentItem = value;
+			$scope.SharedData.originalCode = value.code;
+			$scope.getChildren(value);
 		}
 	}
 
@@ -349,10 +343,6 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.fetchProperties();
 
 		showMessage(gettext('Changes discarded'), 'success');
-
-		if ($(window).width() < 800) {
-			$(".food-list-container").show(); $("food-properties-col").hide();
-		}
 	}
 
 	$scope.deleteFood = function() {
@@ -451,10 +441,6 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$scope.fetchProperties();
 
 		showMessage(gettext('Changes discarded'), 'success');
-
-		if ($(window).width() < 800) {
-			$(".food-list-container").show(); $("category-properties-col").hide();
-		}
 	}
 
 	$scope.deleteCategory = function() {

@@ -40,9 +40,6 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	function showContainer(container_id) {
 		$('.properties-container:not(' + container_id + ')').hide();
 		$(container_id).show();
-		if ($(window).width() < 800) {
-			$(".food-list-container").hide();
-		};
 	}
 
 
@@ -87,6 +84,10 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 			}
 		};
 
+		$('#properties-col').show().addClass('fullwidth');
+
+		$('#food-list-col').hide();
+
 		showContainer('#add-new-food-container');
 	}
 
@@ -108,7 +109,11 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 				reasonableAmount:Array()
 			}
 		};
-		
+	
+		$('#properties-col').show().addClass('fullwidth');
+
+		$('#food-list-col').hide();
+
 		showContainer('#add-new-category-container');
 	}
 

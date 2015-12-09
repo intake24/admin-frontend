@@ -3,6 +3,16 @@ var token = '';
 
 var showingFlashMessage = false;
 
+setInterval(function() {
+
+  if (($(window).height() + $(window).scrollTop()) > ($('#food-list-col').height() + $('header').height())) {
+    $('.view-toggle').fadeOut();
+  } else {
+    $('.view-toggle').fadeIn();
+  }
+
+}, 500);
+
 var app = angular.module('app', ['ngCookies']);
 
 app.service("fetchCategoriesService", function($rootScope) {

@@ -65,6 +65,7 @@
   border-left: 3px solid transparent;
   color: #444;
   font-size: 16px;
+  line-height: 1.5em;
   padding: 15px 12px;
   -webkit-transition: border 0.2s ease-out;
   -moz-transition: border 0.2s ease-out;
@@ -81,18 +82,25 @@
 }
 .view-toggle {
   background-color: #3af;
-  display: none;
+  bottom: 10px;
+  border-radius: 25px;
+  display: block;
+  left: 50%;
+  margin-left: -25px;
   position: fixed;
   z-index: 9;
   text-align: center;
-  width: 100%;
+  width: 50px;
 }
-@media (max-width: 800px) {
+.view-toggle.inactive {
+  display: none !important;
+}
+@media (min-width: 800px) {
   .view-toggle {
-    display: block;
+    display: none !important;
   }
 }
-.view-toggle p {
+.view-toggle i {
   color: #fff;
   font-size: 12px;
   line-height: 50px;
@@ -100,11 +108,12 @@
   padding: 0;
   width: 100%;
 }
-.view-toggle p i {
+.view-toggle i i {
   margin: 0 10px;
 }
-.view-toggle p:hover {
+.view-toggle i:hover {
   background-color: #149dff;
+  border-radius: 25px;
   cursor: pointer;
 }
 /* RTL Styles */

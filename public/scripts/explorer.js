@@ -415,7 +415,6 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 				if (value.state == 'remove') {
 					
-					var food_code = $scope.SharedData.originalCode;
 					var category_code = value.code;
 
 					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
@@ -537,12 +536,34 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
+				
+			$.each($scope.SharedData.allCategories, function(index, value) {
 
-			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
-				if (value.add) {
-					addCategoryToCategory($scope.SharedData.currentItem.code, value.code);
+				if (value.state == 'add') {
+					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
 				}
+
+				if (value.state == 'remove') {
+					
+					var category_code = value.code;
+
+					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
+
+					$http({
+						method: 'DELETE',
+						url: api_endpoint,
+						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+					}).then(function successCallback(response) {
+
+						showMessage(gettext('Removed from selected categories'), 'success');
+						
+					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
+
+				}
+
 			});
+
+			fetchCategoriesService.broadcast();
 
 			showMessage(gettext('Category updated'), 'success');
 

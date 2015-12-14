@@ -45,7 +45,7 @@
 			span #{ gettext("Manage categories") }
 		.clearfloat
 
-.property
+.property(ng-if='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
 	h3 #{ gettext("Portion size estimation") }
 	.input-wrapper(ng-model='SharedData.currentItem.localData.portionSize' ng-repeat='portionSize in SharedData.currentItem.localData.portionSize')
 		.portion-size-method

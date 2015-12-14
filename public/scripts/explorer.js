@@ -155,7 +155,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
-			$.each(response.data, function(index, value) { value.type = 'category'; })
+			$.each(response.data, function(index, value) { value.type = 'food'; })
 
 			$scope.SharedData.treeData['UCAT'] = {code: 'UCAT', type: 'uncategorised', englishDescription: 'Uncategorised foods', children: response.data};
 
@@ -207,7 +207,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
-		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.currentItem.code + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.currentItem.code + '/definition';
+		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode + '/definition';
 
 		$http({
 			method: 'GET',

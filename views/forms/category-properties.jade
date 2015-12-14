@@ -10,6 +10,9 @@
 		label #{ gettext("Intake24 code") }
 		input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='SharedData.currentItem.temp.code')
 	.input-wrapper
+		label #{ gettext("NDNS code") }
+		input(id='input-NDNS-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
+	.input-wrapper
 		label #{ gettext("Hidden") }
 		input(id='input-is-hidden' type='checkbox' ng-model='SharedData.currentItem.isHidden')
 
@@ -45,7 +48,7 @@
 			span #{ gettext("Manage categories") }
 		.clearfloat
 
-.property(ng-if='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
+.property
 	h3 #{ gettext("Portion size estimation") }
 	.input-wrapper(ng-model='SharedData.currentItem.localData.portionSize' ng-repeat='portionSize in SharedData.currentItem.localData.portionSize')
 		.portion-size-method

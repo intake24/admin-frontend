@@ -105,6 +105,22 @@ app.filter('asServedFilter', function() {
   }
 });
   
+app.filter('guideImageFilter', function() {
+  return function(input, search) {
+    if (!input) return input;
+    if (!search) return input;
+    var expected = ('' + search).toLowerCase();
+    var result = {};
+    angular.forEach(input, function(value, key) {
+      var actual = ('' + value.id).toLowerCase();
+      if (actual.indexOf(expected) !== -1) {
+        result[key] = value;
+      }
+    });
+    return result;
+  }
+});
+  
 app.filter('drinkScaleFilter', function() {
   return function(input, search) {
     if (!input) return input;
@@ -148,7 +164,7 @@ app.factory('SharedData', function () {
       originalCode: new Object(),
       foodGroups: new Object(), 
       selectedFoodGroup: new Object(),
-      allCategories: new Object(),
+      allCategories: Array(),
       treeData: new Object(),
       portionSizes: new Object()
     }

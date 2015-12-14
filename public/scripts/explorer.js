@@ -340,20 +340,23 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
+				
+			$.each($scope.SharedData.allCategories, function(index, value) {
 
-			// Loop through categories and add the food to them
-			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
-				addFoodToCategory($scope.SharedData.currentItem.code, value.code);
+				if (value.state == 'add') {
+					addFoodToCategory($scope.SharedData.currentItem.code, value.code);
+				}
+
 			});
+
+			showMessage(gettext('Food added'), 'success');
 
 			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
 
-			console.log($scope.SharedData.currentItem);
-
 			$scope.updateLocalFood();
 
-			showMessage(gettext('Food added'), 'success');
 			$scope.SharedData.currentItem = new Object();
+
 			$('input').removeClass('valid invalid');
 
 		}, function errorCallback(response) { showMessage(gettext('Failed to add food'), 'danger'); console.log(response); });
@@ -429,9 +432,6 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 				}
 
-				// if (value.state == 'existing') { }
-				// if (value.state == 'none') { }
-
 			});
 
 			showMessage(gettext('Food updated'), 'success');
@@ -476,19 +476,22 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
-			// Loop through categories and add the category to them
-			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
-				addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
+			$.each($scope.SharedData.allCategories, function(index, value) {
+
+				if (value.state == 'add') {
+					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
+				}
+
 			});
+
+			showMessage(gettext('Category added'), 'success');
 
 			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
 
-			console.log($scope.SharedData.currentItem);
-
 			$scope.updateLocalCategory();
 
-			showMessage(gettext('Category added'), 'success');
 			$scope.SharedData.currentItem = new Object();
+			
 			$('input').removeClass('valid invalid');
 
 		}, function errorCallback(response) { showMessage(gettext('Failed to add category'), 'danger'); console.log(response); });

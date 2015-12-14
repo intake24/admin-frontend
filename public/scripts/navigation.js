@@ -65,6 +65,12 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	// Add new food
 	$scope.addNewFood = function() {
 		
+		$.each($scope.SharedData.allCategories, function(index, value) {
+
+			value.state = 'none';
+
+		});
+
 		$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[0];
 
 		$scope.SharedData.currentItem = {
@@ -81,7 +87,8 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 				localDescription:Array(),
 				nutrientTableCodes:{},
 				portionSize:Array()
-			}
+			},
+			parentCategories:Array()
 		};
 
 		$('#properties-col').show().addClass('fullwidth');
@@ -118,6 +125,12 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	// Add new category
 	$scope.addNewCategory = function() {
 
+		$.each($scope.SharedData.allCategories, function(index, value) {
+
+			value.state = 'none';
+
+		});
+
 		$scope.SharedData.currentItem = {
 			code:"",
 			englishDescription:"",
@@ -132,7 +145,8 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 				localDescription:Array(),
 				nutrientTableCodes:{},
 				portionSize:Array()
-			}
+			},
+			parentCategories:Array()
 		};
 	
 		$('#properties-col').show().addClass('fullwidth');

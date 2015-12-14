@@ -96,7 +96,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		
 		if ($scope.SharedData.currentItem.type != 'food') {
 
-			alert('Please select a food');
+			showMessage(gettext('Please select a food'), 'warning');
 
 			return;
 		}
@@ -147,7 +147,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		
 		if ($scope.SharedData.currentItem.type != 'category') {
 
-			alert('Please select a category');
+			showMessage(gettext('Please select a category'), 'warning');
 			
 			return;
 		}

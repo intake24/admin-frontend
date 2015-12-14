@@ -103,6 +103,17 @@ html[dir="rtl"] .properties-container .properties-padding .property .input-wrapp
   margin-left: 20px;
   margin-right: auto;
 }
+html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper.overridable input {
+  margin-left: 10px;
+  margin-right: auto;
+}
+html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper.overridable .override-button {
+  margin-left: 10px;
+  margin-right: auto;
+}
+html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper.overridable .override-button.overriding {
+  color: #ccc;
+}
 html[dir="rtl"] .properties-container .properties-padding .property .input-wrapper .override-button {
   margin-left: 10px;
   margin-right: auto;

@@ -19,5 +19,5 @@
 	.drawer-content
 		.list-container
 			ul
-				li(ng-click='setGuideImageSet(guide_image_set.id, SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.guide_image_sets' ng-repeat='guide_image_set in SharedData.portionSizes.guide_image_sets | custom:query | orderBy: "id"')
+				li(ng-click='setGuideImageSet(guide_image_set.id, SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.guide_image_sets' ng-repeat='guide_image_set in SharedData.portionSizes.guide_image_sets | guideImageFilter:query | orderBy: "id"')
 					{{ guide_image_set.id }}

@@ -479,7 +479,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			$.each($scope.SharedData.allCategories, function(index, value) {
 
 				if (value.state == 'add') {
-					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
+					addCategoryToCategory($scope.SharedData.currentItem.code, value.code);
 				}
 
 			});

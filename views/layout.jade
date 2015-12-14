@@ -58,16 +58,16 @@ html(lang='#{lang}' dir='#{lang_dir}')
 				block content
 			
 			include sidebar
-		
-	.flash-message
-		#message
-		#flash-dismiss-btn(ng-click='hideMessage()')
-			i(class='fa fa-close')
 
-	#authenticate-overlay
-		#authenticate-logo
-			h4 <strong>Intake24</strong> Admin
+		include modals
 
-	include modals
+		include drawers
+			
+		.flash-message
+			#message
+			#flash-dismiss-btn(ng-click='hideMessage()')
+				i(class='fa fa-close')
 
-	include drawers
+		#authenticate-overlay
+			#authenticate-logo
+				h4 <strong>Intake24</strong> Admin

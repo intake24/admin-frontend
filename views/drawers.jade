@@ -1,16 +1,15 @@
-.drawer.drawer-narrow.no-padding.animated#drawer-add-food-to-category
+.drawer.drawer-narrow.no-padding.animated#drawer-manage-categories
 	#button-close-drawer.button-close-drawer
 		i.fa.fa-times
-	.drawer-title #{ gettext("Add Category") }
+	.drawer-title #{ gettext("Manage Categories") }
 	.drawer-content
 		.categories-container
-			input(type='text' ng-model='searchFilter' placeholder='#{ gettext("Search categories") }')
+			input(type='text' ng-model='searchQuery' placeholder='#{ gettext("Search categories") }')
 			ul
-				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | filter:searchFilter' ng-click='category.isParentCategory = !category.isParentCategory' ng-class='category.isParentCategory ? "selected" : "unselected"') {{category.englishDescription}}
+				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | categoryFilter: searchQuery | orderBy:englishDescription' ng-click='category.state = updateState(category.state)' ng-class='((category.state == "existing") || (category.state == "add")) ? "selected" : "unselected"') {{category.englishDescription}}
 
 	.drawer-footer
-		button(class="btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Add Category") }
-		button(class="btn danger drawer-form-button button-close-drawer close-drawer") #{ gettext("Cancel") }
+		button(class="btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Done") }
 		.clearfloat
 	
 #drawer-backdrop

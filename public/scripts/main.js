@@ -57,15 +57,30 @@ app.directive('jfbFormModel', function() {
         }
     };
 });
+  
 
-app.filter('custom', function() {
+app.filter('selectedCategoryFilter', function() {
+
+  return function(input, search) {
+    var result = {};
+    angular.forEach(input, function(value, key) {
+      var actual = ('' + value.state).toLowerCase();
+      if ((actual.indexOf('add') !== -1) || (actual.indexOf('existing') !== -1)) {
+        result[key] = value;
+      }
+    });
+    return result;
+  }
+});
+
+app.filter('categoryFilter', function() {
   return function(input, search) {
     if (!input) return input;
     if (!search) return input;
     var expected = ('' + search).toLowerCase();
     var result = {};
     angular.forEach(input, function(value, key) {
-      var actual = ('' + value).toLowerCase();
+      var actual = ('' + value.englishDescription).toLowerCase();
       if (actual.indexOf(expected) !== -1) {
         result[key] = value;
       }
@@ -73,6 +88,40 @@ app.filter('custom', function() {
     return result;
   }
 });
+  
+app.filter('asServedFilter', function() {
+  return function(input, search) {
+    if (!input) return input;
+    if (!search) return input;
+    var expected = ('' + search).toLowerCase();
+    var result = {};
+    angular.forEach(input, function(value, key) {
+      var actual = ('' + value.description).toLowerCase();
+      if (actual.indexOf(expected) !== -1) {
+        result[key] = value;
+      }
+    });
+    return result;
+  }
+});
+  
+app.filter('drinkScaleFilter', function() {
+  return function(input, search) {
+    if (!input) return input;
+    if (!search) return input;
+    var expected = ('' + search).toLowerCase();
+    var result = {};
+    angular.forEach(input, function(value, key) {
+      var actual = ('' + value.description).toLowerCase();
+      if (actual.indexOf(expected) !== -1) {
+        result[key] = value;
+      }
+    });
+    return result;
+  }
+});
+
+
 
 // Serving method filters
 

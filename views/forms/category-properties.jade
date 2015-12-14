@@ -15,27 +15,34 @@
 
 .property
 	h3 #{ gettext("Attributes") }
-	.input-wrapper
+	.input-wrapper.overridable
+		button.override-button(ng-click='SharedData.currentItem.temp.overrideReadyMealOption = !SharedData.currentItem.temp.overrideReadyMealOption')
+			span(ng-if='!(SharedData.currentItem.temp.overrideReadyMealOption)') Override
+			span(ng-if='(SharedData.currentItem.temp.overrideReadyMealOption)') Use inherited
+		input(ng-disabled='!SharedData.currentItem.temp.overrideReadyMealOption' id='input-ready-meal-option' type='checkbox' ng-model='SharedData.currentItem.temp.booleanReadyMealOption')
 		label #{ gettext("Ready meal option") }
-		input(id='input-ready-meal-option' type='checkbox' ng-model='SharedData.currentItem.temp.booleanReadyMealOption')
-	.input-wrapper
+	.input-wrapper.overridable
+		button.override-button(ng-click='SharedData.currentItem.temp.overrideSameAsBeforeOption = !SharedData.currentItem.temp.overrideSameAsBeforeOption')
+			span(ng-if='!(SharedData.currentItem.temp.overrideSameAsBeforeOption)') Override
+			span(ng-if='(SharedData.currentItem.temp.overrideSameAsBeforeOption)') Use inherited
+		input(ng-disabled='!SharedData.currentItem.temp.overrideSameAsBeforeOption' id='input-same-as-before-option' type='checkbox' ng-model='SharedData.currentItem.temp.booleanSameAsBeforeOption')
 		label #{ gettext("Same as before option") }
-		input(id='input-same-as-before-option' type='checkbox' ng-model='SharedData.currentItem.temp.booleanSameAsBeforeOption')
-	.input-wrapper
+	.input-wrapper.overridable
+		button.override-button(ng-click='SharedData.currentItem.temp.overrideReasonableAmount = !SharedData.currentItem.temp.overrideReasonableAmount')
+			span(ng-if='!(SharedData.currentItem.temp.overrideReasonableAmount)') Override
+			span(ng-if='(SharedData.currentItem.temp.overrideReasonableAmount)') Use inherited
+		input(ng-disabled='!SharedData.currentItem.temp.overrideReasonableAmount' id='input-reasonable-amount' type='text' placeholder='#{ gettext("e.g. 600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.temp.reasonableAmount')
 		label #{ gettext("Reasonable amount (g/ml)") }
-		input(id='input-reasonable-amount' type='text' placeholder='#{ gettext("600") }' style='min-width:60px; width:60px' ng-model='SharedData.currentItem.attributes.reasonableAmount[0]')
 
 .property
-	h3 #{ gettext("Categories") }	
+	h3 #{ gettext("Categories") }
 	.categories-container
-		ul(ng-model='SharedData.currentItem.parentCategories' ng-repeat='parentCategory in SharedData.currentItem.parentCategories')
-			li(ng-click='parentCategory.remove = !parentCategory.remove' ng-class='parentCategory.remove ? "selected" : "unselected"') {{parentCategory.englishDescription}}
+		ul(ng-model='SharedData.allCategories' ng-repeat='parentCategory in SharedData.allCategories | selectedCategoryFilter')
+			li {{parentCategory.englishDescription}}
 
 	.input-wrapper
-		.btn.success(onClick='showDrawer("drawer-add-food-to-category")')
-			span #{ gettext("Add to category") }
-		.btn.danger(ng-click='removeFromCategory()')
-			span #{ gettext("Remove from selected category") }
+		.btn.success(onClick='showDrawer("drawer-manage-categories")')
+			span #{ gettext("Manage categories") }
 		.clearfloat
 
 .property

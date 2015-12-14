@@ -16,19 +16,64 @@ app.controller('TransformController', function($scope, $http, packCurrentItemSer
 
 		$scope.SharedData.currentItem.temp.update_code = true;
 
-		$scope.SharedData.currentItem.attributes.readyMealOption = ($scope.SharedData.currentItem.temp.booleanReadyMealOption) ? Array(true) : Array();
-		$scope.SharedData.currentItem.attributes.sameAsBeforeOption = ($scope.SharedData.currentItem.temp.booleanSameAsBeforeOption) ? Array(true) : Array();
+		// Ready meal option
+		if ($scope.SharedData.currentItem.temp.overrideReadyMealOption) {
+			$scope.SharedData.currentItem.attributes.readyMealOption = Array($scope.SharedData.currentItem.temp.booleanReadyMealOption);
+		} else {
+			$scope.SharedData.currentItem.attributes.readyMealOption = Array();
+		}
 
+		// Same as before option
+		if ($scope.SharedData.currentItem.temp.overrideSameAsBeforeOption) {
+			$scope.SharedData.currentItem.attributes.sameAsBeforeOption = Array($scope.SharedData.currentItem.temp.booleanSameAsBeforeOption);
+		} else {
+			$scope.SharedData.currentItem.attributes.sameAsBeforeOption = Array();
+		}
+
+		// Reasonable amount
+		if ($scope.SharedData.currentItem.temp.overrideReasonableAmount) {
+			$scope.SharedData.currentItem.attributes.reasonableAmount = Array($scope.SharedData.currentItem.temp.reasonableAmount);
+		} else {
+			$scope.SharedData.currentItem.attributes.reasonableAmount = Array();
+		}
+		
 		packPortionSizes();
 	}
 
 	// Unpack current item for angular
 	function unpackCurrentItem()
-	{
+	{	
+		console.log($scope.SharedData.currentItem);
+
 		$scope.SharedData.currentItem.temp = Object();
 		$scope.SharedData.currentItem.temp.code = $scope.SharedData.currentItem.code;
-		$scope.SharedData.currentItem.temp.booleanReadyMealOption = ($scope.SharedData.currentItem.attributes.readyMealOption.length) ? true : false;
-		$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) ? true : false;
+		
+		// Ready meal option
+		if ($scope.SharedData.currentItem.attributes.readyMealOption.length) {
+			$scope.SharedData.currentItem.temp.overrideReadyMealOption = true;
+			$scope.SharedData.currentItem.temp.booleanReadyMealOption = $scope.SharedData.currentItem.attributes.readyMealOption[0];
+		} else {
+			$scope.SharedData.currentItem.temp.overrideReadyMealOption = false;
+			$scope.SharedData.currentItem.temp.booleanReadyMealOption = false;
+		}
+
+		// Same as before option
+		if ($scope.SharedData.currentItem.attributes.sameAsBeforeOption.length) {
+			$scope.SharedData.currentItem.temp.overrideSameAsBeforeOption = true;
+			$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = $scope.SharedData.currentItem.attributes.sameAsBeforeOption[0];
+		} else {
+			$scope.SharedData.currentItem.temp.overrideSameAsBeforeOption = false;
+			$scope.SharedData.currentItem.temp.booleanSameAsBeforeOption = false;
+		}
+
+		// Reasonable amount
+		if ($scope.SharedData.currentItem.attributes.reasonableAmount.length) {
+			$scope.SharedData.currentItem.temp.overrideReasonableAmount = true;
+			$scope.SharedData.currentItem.temp.reasonableAmount = $scope.SharedData.currentItem.attributes.reasonableAmount[0];
+		} else {
+			$scope.SharedData.currentItem.temp.overrideReasonableAmount = false;
+			$scope.SharedData.currentItem.temp.reasonableAmount = 0;
+		}
 
 		// Portion sizes
 		$.each($scope.SharedData.currentItem.localData.portionSize, function(index, portionSize) {

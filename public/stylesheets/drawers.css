@@ -16,9 +16,15 @@
   z-index: 12;
 }
 .drawer input {
-  border: none;
-  padding: 20px;
-  width: 100%;
+  background: #f9f9f9;
+  border: none !important;
+  border-top: #e1e1e1 1px solid !important;
+  border-bottom: #e1e1e1 1px solid !important;
+  font-size: 16px;
+  font-weight: 300;
+  outline: 0;
+  padding: 20px !important;
+  width: 100% !important;
 }
 .drawer #button-close-drawer {
   line-height: 50px;

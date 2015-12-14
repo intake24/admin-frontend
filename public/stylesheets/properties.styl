@@ -47,6 +47,9 @@
 					padding 10px 12px
 					width 200px 
 					
+				input[type="checkbox"]
+					width auto
+					
 				input[type="range"]
 					padding 0
 
@@ -60,6 +63,14 @@
 					width 320px
 					outline 0
 					padding 8px 10px
+				
+				&.overridable
+					input
+						margin-right 10px 
+					.override-button
+						margin-right 10px
+						&.overriding
+							color #CCC
 		
 		.property:last-child
 			margin-bottom 0px
@@ -88,4 +99,8 @@ html[dir="rtl"]
 
 					label
 						margin-left 20px
+						margin-right auto
+						
+					.override-button
+						margin-left 10px
 						margin-right auto

@@ -109,6 +109,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	$scope.removeFromCategory = function() {
 
+		$scope.reloadCategories();
+
 		$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
 
 			if (value.remove) {
@@ -217,9 +219,6 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 			$scope.SharedData.currentItem = response.data;
 
-			console.log('Properties fetched:');
-			console.log($scope.SharedData.currentItem);
-
 			unpackCurrentItemService.broadcast();
 
 			if ($scope.SharedData.currentItem.type == 'category') {
@@ -283,11 +282,32 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
-			$.each(response.data, function(index, value) { value.remove = false; });
+			$.each($scope.SharedData.allCategories, function(ac_index, ac_value) {
+
+				ac_value.state = 'none';
+
+				$.each(response.data, function(index, value) {
+					if (value.code == ac_value.code) {
+
+						ac_value.state = 'existing';
+
+					};
+				});
+				
+			});
 			
 			$scope.SharedData.currentItem.parentCategories = response.data;
 
 		}, function errorCallback(response) { handleError(response); });		
+	}
+
+	$scope.updateState = function(state) {
+		
+		var new_state = '';
+		
+		if (state == "existing") { new_state = "remove"; } if (state == "remove") { new_state = "existing"; } if (state == "none") { new_state = "add"; } if (state == "add") { new_state = "none"; };
+		
+		return new_state;
 	}
 
 	$scope.reloadCategories = function() {
@@ -300,7 +320,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			if (value.isParentCategory) {
 				value.add = true;
 				$scope.SharedData.currentItem.parentCategories.push(value);
-			};
+			}
 		});
 	}
 
@@ -383,11 +403,35 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
+				
+			$.each($scope.SharedData.allCategories, function(index, value) {
 
-			$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
-				if (value.add) {
-					addFoodToCategory($scope.SharedData.currentItem.code, value.code);
+				if (value.state == 'add') {
+					addFoodToCategory($scope.SharedData.originalCode, value.code);
 				}
+
+				if (value.state == 'remove') {
+					
+					var food_code = $scope.SharedData.originalCode;
+					var category_code = value.code;
+
+					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
+
+					$http({
+						method: 'DELETE',
+						url: api_endpoint,
+						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+					}).then(function successCallback(response) {
+
+						showMessage(gettext('Removed from selected categories'), 'success');
+						
+					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
+
+				}
+
+				// if (value.state == 'existing') { }
+				// if (value.state == 'none') { }
+
 			});
 
 			showMessage(gettext('Food updated'), 'success');

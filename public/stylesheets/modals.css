@@ -14,7 +14,7 @@
   position: absolute;
   top: 200px;
   width: 600px;
-  z-index: 12;
+  z-index: 50;
 }
 @media (max-width: 600px) {
   .modal {

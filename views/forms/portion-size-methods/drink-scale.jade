@@ -9,8 +9,9 @@
 			{{ portionSize.selected_drinkware_image_set.description }}
 
 .input-wrapper
-	label #{ gettext("Initial fill level") }
+	label #{ gettext("Initial fill level") } ({{portionSize.temp.parameters.initial_fill_level}})
 	input(type='range' min='0' max='1' step='0.05' ng-model='portionSize.temp.parameters.initial_fill_level')
+
 .input-wrapper
 	label #{ gettext("Skip fill level prompt") }
 	input(type='checkbox' ng-model='portionSize.temp.parameters.skip_fill_level')

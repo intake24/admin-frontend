@@ -1,3 +1,6 @@
+## Intake24 Admin Panel
+    A node/angular web application that interfaces with the Intake24 backend to allow users to manage food databases for multiple languages.
+
 ## i18n
 	i18n is implemented using 'i18n-abide' by Mozilla ('https://github.com/mozilla/i18n-abide')
 

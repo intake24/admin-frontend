@@ -1,164 +1,8 @@
 ;var json_locale_data = {
    "messages": {
-      "600": [
-         null,
-         "600"
-      ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-07 13:40+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-07 13:40+0000\nLast-Translator: Edward Jenkins <edjenkins@sienda-adapter1.ncl.ac.uk>\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: Arabic\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2016-01-22 09:44+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2016-01-22 09:42+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
       },
-      "Failed to log you in": [
-         null,
-         "فشل في تسجيل دخولك في"
-      ],
-      "Removed from selected categories": [
-         null,
-         "إزالة من الفئات المحددة"
-      ],
-      "Failed to remove from categories": [
-         null,
-         "فشل لإزالة من الفئات"
-      ],
-      "Food added": [
-         null,
-         "وأضاف الغذاء"
-      ],
-      "Failed to add food": [
-         null,
-         "فشل في إضافة المواد الغذائية"
-      ],
-      "Changes discarded": [
-         null,
-         "تغييرات التخلص منها"
-      ],
-      "Food deleted": [
-         null,
-         "حذف المواد الغذائية"
-      ],
-      "Failed to delete food": [
-         null,
-         "فشل في حذف المواد الغذائية"
-      ],
-      "Food updated": [
-         null,
-         "الغذاء تحديث"
-      ],
-      "Failed to update food": [
-         null,
-         "فشل تحديث الغذائية"
-      ],
-      "Local food updated": [
-         null,
-         "الأغذية المحلية تحديثها"
-      ],
-      "Failed to update local food": [
-         null,
-         "فشل تحديث الغذائية المحلية"
-      ],
-      "Category added": [
-         null,
-         "فئة بإضافة"
-      ],
-      "Failed to add category": [
-         null,
-         "فشل لإضافة فئة"
-      ],
-      "Category deleted": [
-         null,
-         "فئة المحذوفة"
-      ],
-      "Failed to delete category": [
-         null,
-         "فشل في حذف الفئة"
-      ],
-      "Category updated": [
-         null,
-         "فئة تحديثها"
-      ],
-      "Failed to update category": [
-         null,
-         "فشل تحديث الفئة"
-      ],
-      "Local category updated": [
-         null,
-         "الفئة المحلية تجديد"
-      ],
-      "Failed to update local category": [
-         null,
-         "فشل تحديث الفئة المحلية"
-      ],
-      "Food added to category": [
-         null,
-         "وأضاف الغذائية لفئة"
-      ],
-      "Failed to add to category": [
-         null,
-         "فشل إضافة إلى فئة"
-      ],
-      "Category added to category": [
-         null,
-         "الفئة تضاف إلى الفئة"
-      ],
-      "You are not authorized": [
-         null,
-         "لا يحق لك"
-      ],
-      "Arabic": [
-         null,
-         "العربية"
-      ],
-      "English": [
-         null,
-         "الإنجليزية"
-      ],
-      "As served": [
-         null,
-         "كما خدم"
-      ],
-      "Guide Image": [
-         null,
-         "دليل صورة"
-      ],
-      "Drink scale": [
-         null,
-         "على نطاق وشراب"
-      ],
-      "Standard portion": [
-         null,
-         "جزء القياسية"
-      ],
-      "Cereal": [
-         null,
-         "حبوب"
-      ],
-      "Milk on cereal": [
-         null,
-         "الحليب على الحبوب"
-      ],
-      "Milk in a hot drink": [
-         null,
-         "الحليب في المشروبات الساخنة"
-      ],
-      "Pizza": [
-         null,
-         "البيتزا"
-      ],
-      "Hoop": [
-         null,
-         "طارة"
-      ],
-      "Flake": [
-         null,
-         "تقشر"
-      ],
-      "Rice krispie": [
-         null,
-         "krispie الأرز"
-      ],
-      "Dashboard": [
-         null,
-         "لوحة أجهزة القياس"
-      ],
       "Add new category": [
          null,
          "إضافة فئة جديدة"
@@ -195,13 +39,17 @@
          null,
          "حذف "
       ],
-      "Add Category": [
+      "Manage Categories": [
          null,
-         "إضافة فئة"
+         "إدارة الفئات"
       ],
       "Search categories": [
          null,
          "فئات بحث"
+      ],
+      "Done": [
+         null,
+         "تم"
       ],
       "Food": [
          null,
@@ -213,7 +61,7 @@
       ],
       "Description": [
          null,
-         "وصف"
+         "الوصف"
       ],
       "Beans on toast": [
          null,
@@ -231,6 +79,14 @@
          null,
          "البو"
       ],
+      "NDNS code": [
+         null,
+         "كود NDNS"
+      ],
+      "e.g. 10968": [
+         null,
+         "على سبيل المثال 10968"
+      ],
       "Hidden": [
          null,
          "مخفي"
@@ -247,21 +103,21 @@
          null,
          "نفسه كما كان من قبل الخيار"
       ],
+      "e.g. 600": [
+         null,
+         "على سبيل المثال 600"
+      ],
       "Reasonable amount (g/ml)": [
          null,
          "قدر معقول (ز / مل)"
       ],
       "Categories": [
          null,
-         "الفئات"
+         "أقسام"
       ],
-      "Add to category": [
+      "Manage categories": [
          null,
-         "إضافة إلى فئة"
-      ],
-      "Remove from selected category": [
-         null,
-         "إزالة من فئة المختارة"
+         "إدارة الفئات"
       ],
       "Portion size estimation": [
          null,
@@ -291,6 +147,10 @@
          null,
          "إضافة أسلوب حجم الجزء"
       ],
+      "Copy English methods": [
+         null,
+         "طرق نسخة الإنجليزية"
+      ],
       "e.g. Beans on toast": [
          null,
          "مثل الفول على نخب"
@@ -299,21 +159,9 @@
          null,
          "على سبيل المثال البو"
       ],
-      "NDNS code": [
-         null,
-         "كود NDNS"
-      ],
-      "e.g. 10968": [
-         null,
-         "على سبيل المثال 10968"
-      ],
       "Food group": [
          null,
          "مجموعة الطعام"
-      ],
-      "e.g. 600": [
-         null,
-         "على سبيل المثال 600"
       ],
       "Serving image set": [
          null,
@@ -334,6 +182,10 @@
       "Select Image Set": [
          null,
          "حدد مجموعة صورة"
+      ],
+      "Search image sets": [
+         null,
+         "مجموعات الصور بحث"
       ],
       "Type": [
          null,
@@ -431,29 +283,9 @@
          null,
          "الغذاء استنساخ"
       ],
-      "Manage categories": [
-         null,
-         "إدارة الفئات"
-      ],
       "Clone category": [
          null,
          "فئة استنساخ"
-      ],
-      "Image Sets": [
-         null,
-         "مجموعات صورة"
-      ],
-      "'As served' images": [
-         null,
-         "صور 'كما خدم \""
-      ],
-      "'Guide' images": [
-         null,
-         "'دليل' الصور"
-      ],
-      "'Sliding scale' images": [
-         null,
-         "صور \"على نطاق وانزلاق\""
       ]
    }
 }

@@ -1,11 +1,7 @@
 {
    "messages": {
-      "600": [
-         null,
-         "600"
-      ],
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: English\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2015-12-07 11:31+0000\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-12-07 11:31+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: English\nReport-Msgid-Bugs-To: \nPO-Revision-Date: 2016-01-22 09:48+0000\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2016-01-22 09:42+0000\nLast-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
       },
       "Add new category": [
          null,
@@ -43,13 +39,17 @@
          null,
          "Delete"
       ],
-      "Add Category": [
+      "Manage Categories": [
          null,
-         "Add Category"
+         "Manage Categories"
       ],
       "Search categories": [
          null,
          "Search categories"
+      ],
+      "Done": [
+         null,
+         "Done"
       ],
       "Food": [
          null,
@@ -79,6 +79,14 @@
          null,
          "ALBU"
       ],
+      "NDNS code": [
+         null,
+         "NDNS code"
+      ],
+      "e.g. 10968": [
+         null,
+         "e.g. 10968"
+      ],
       "Hidden": [
          null,
          "Hidden"
@@ -95,6 +103,10 @@
          null,
          "Same as before option"
       ],
+      "e.g. 600": [
+         null,
+         "e.g. 600"
+      ],
       "Reasonable amount (g/ml)": [
          null,
          "Reasonable amount (g/ml)"
@@ -103,13 +115,9 @@
          null,
          "Categories"
       ],
-      "Add to category": [
+      "Manage categories": [
          null,
-         "Add to category"
-      ],
-      "Remove from selected category": [
-         null,
-         "Remove from selected category"
+         "Manage categories"
       ],
       "Portion size estimation": [
          null,
@@ -139,6 +147,10 @@
          null,
          "Add a portion size method"
       ],
+      "Copy English methods": [
+         null,
+         "Copy English methods"
+      ],
       "e.g. Beans on toast": [
          null,
          "e.g. Beans on toast"
@@ -147,21 +159,9 @@
          null,
          "e.g. ALBU"
       ],
-      "NDNS code": [
-         null,
-         "NDNS code"
-      ],
-      "e.g. 10968": [
-         null,
-         "e.g. 10968"
-      ],
       "Food group": [
          null,
          "Food group"
-      ],
-      "e.g. 600": [
-         null,
-         "e.g. 600"
       ],
       "Serving image set": [
          null,
@@ -182,6 +182,10 @@
       "Select Image Set": [
          null,
          "Select Image Set"
+      ],
+      "Search image sets": [
+         null,
+         "Search image sets"
       ],
       "Type": [
          null,
@@ -279,29 +283,9 @@
          null,
          "Clone food"
       ],
-      "Manage categories": [
-         null,
-         "Manage categories"
-      ],
       "Clone category": [
          null,
          "Clone category"
-      ],
-      "Image Sets": [
-         null,
-         "Image Sets"
-      ],
-      "'As served' images": [
-         null,
-         "'As served' images"
-      ],
-      "'Guide' images": [
-         null,
-         "'Guide' images"
-      ],
-      "'Sliding scale' images": [
-         null,
-         "'Sliding scale' images"
       ]
    }
 }

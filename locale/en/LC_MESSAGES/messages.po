@@ -3,21 +3,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: English\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2015-12-07 11:31+0000\n"
+"PO-Revision-Date: 2016-01-22 09:48+0000\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2015-12-07 11:31+0000\n"
+"POT-Creation-Date: 2016-01-22 09:42+0000\n"
 "Last-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:26
-msgid "600"
-msgstr "600"
-
 #: /Users/edjenkins/MAMP/intake-node/views/add-new-category.jade:6
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:24
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:26
 msgid "Add new category"
 msgstr "Add new category"
 
@@ -26,17 +22,16 @@ msgid "Add category"
 msgstr "Add category"
 
 #: /Users/edjenkins/MAMP/intake-node/views/add-new-category.jade:15
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:14
-#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:16
 msgid "Cancel"
 msgstr "Cancel"
 
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:5
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:16
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:7
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:18
 msgid "Add new food"
 msgstr "Add new food"
 
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:12
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:14
 msgid "Add food"
 msgstr "Add food"
 
@@ -60,14 +55,16 @@ msgid "Delete"
 msgstr "Delete"
 
 #: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:4
-#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:12
-msgid "Add Category"
-msgstr "Add Category"
+msgid "Manage Categories"
+msgstr "Manage Categories"
 
 #: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:7
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:29
 msgid "Search categories"
 msgstr "Search categories"
+
+#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:12
+msgid "Done"
+msgstr "Done"
 
 #: /Users/edjenkins/MAMP/intake-node/views/food-properties.jade:6
 msgid "Food"
@@ -79,11 +76,11 @@ msgid "Definition"
 msgstr "Definition"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:4
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:46
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:47
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:56
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:57
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:5
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:50
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:51
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:57
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:58
 msgid "Description"
 msgstr "Description"
 
@@ -106,78 +103,94 @@ msgid "ALBU"
 msgstr "ALBU"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:14
+msgid "NDNS code"
+msgstr "NDNS code"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:14
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:15
+msgid "e.g. 10968"
+msgstr "e.g. 10968"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:16
 msgid "Hidden"
 msgstr "Hidden"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:17
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:20
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:21
 msgid "Attributes"
 msgstr "Attributes"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:19
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:23
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:27
 msgid "Ready meal option"
 msgstr "Ready meal option"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:22
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:32
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:33
 msgid "Same as before option"
 msgstr "Same as before option"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:25
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:29
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:37
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:38
+msgid "e.g. 600"
+msgstr "e.g. 600"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:38
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:39
 msgid "Reasonable amount (g/ml)"
 msgstr "Reasonable amount (g/ml)"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:29
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:33
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:41
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:42
 msgid "Categories"
 msgstr "Categories"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:36
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:40
-msgid "Add to category"
-msgstr "Add to category"
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:48
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:49
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:23
+msgid "Manage categories"
+msgstr "Manage categories"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:38
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:42
-msgid "Remove from selected category"
-msgstr "Remove from selected category"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:42
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:46
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:52
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:53
 msgid "Portion size estimation"
 msgstr "Portion size estimation"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:49
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:53
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:59
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:60
 msgid "Image"
 msgstr "Image"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:50
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:54
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:60
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:61
 msgid "e.g. path/filename.jpg"
 msgstr "e.g. path/filename.jpg"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:52
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:56
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:62
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:63
 msgid "Use for recipes"
 msgstr "Use for recipes"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:55
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:59
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:65
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:66
 msgid "Estimation method"
 msgstr "Estimation method"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:77
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:81
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:87
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:88
 msgid "Delete this method"
 msgstr "Delete this method"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:83
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:87
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:93
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:94
 msgid "Add a portion size method"
 msgstr "Add a portion size method"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:95
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:96
+msgid "Copy English methods"
+msgstr "Copy English methods"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:6
 msgid "e.g. Beans on toast"
@@ -187,21 +200,9 @@ msgstr "e.g. Beans on toast"
 msgid "e.g. ALBU"
 msgstr "e.g. ALBU"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:14
-msgid "NDNS code"
-msgstr "NDNS code"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:15
-msgid "e.g. 10968"
-msgstr "e.g. 10968"
-
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:17
 msgid "Food group"
 msgstr "Food group"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:30
-msgid "e.g. 600"
-msgstr "e.g. 600"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:4
 msgid "Serving image set"
@@ -224,10 +225,17 @@ msgstr "Leftover image set"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:28
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:39
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:24
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:25
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/guide-image.jade:17
 msgid "Select Image Set"
 msgstr "Select Image Set"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:29
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:40
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/guide-image.jade:18
+msgid "Search image sets"
+msgstr "Search image sets"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/cereal.jade:4
 msgid "Type"
@@ -241,7 +249,7 @@ msgstr "Drinkware set"
 msgid "Initial fill level"
 msgstr "Initial fill level"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:15
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:16
 msgid "Skip fill level prompt"
 msgstr "Skip fill level prompt"
 
@@ -316,38 +324,18 @@ msgstr "Logout"
 msgid "Set Language"
 msgstr "Set Language"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:10
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:12
 msgid "Manage foods"
 msgstr "Manage foods"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:15
 msgid "Browse foods"
 msgstr "Browse foods"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:18
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:20
 msgid "Clone food"
 msgstr "Clone food"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:21
-msgid "Manage categories"
-msgstr "Manage categories"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:28
 msgid "Clone category"
 msgstr "Clone category"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:61
-msgid "Image Sets"
-msgstr "Image Sets"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:64
-msgid "'As served' images"
-msgstr "'As served' images"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:66
-msgid "'Guide' images"
-msgstr "'Guide' images"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:68
-msgid "'Sliding scale' images"
-msgstr "'Sliding scale' images"

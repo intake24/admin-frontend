@@ -3,175 +3,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: Arabic\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2015-12-07 13:40+0000\n"
+"PO-Revision-Date: 2016-01-22 09:44+0000\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2015-12-07 13:40+0000\n"
-"Last-Translator: Edward Jenkins <edjenkins@sienda-adapter1.ncl.ac.uk>\n"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:26
-msgid "600"
-msgstr "600"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/auth.js:69
-msgid "Failed to log you in"
-msgstr "فشل في تسجيل دخولك في"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:120
-msgid "Removed from selected categories"
-msgstr "إزالة من الفئات المحددة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:127
-msgid "Failed to remove from categories"
-msgstr "فشل لإزالة من الفئات"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:312
-msgid "Food added"
-msgstr "وأضاف الغذاء"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:316
-msgid "Failed to add food"
-msgstr "فشل في إضافة المواد الغذائية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:324
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:420
-msgid "Changes discarded"
-msgstr "تغييرات التخلص منها"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:338
-msgid "Food deleted"
-msgstr "حذف المواد الغذائية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:344
-msgid "Failed to delete food"
-msgstr "فشل في حذف المواد الغذائية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:367
-msgid "Food updated"
-msgstr "الغذاء تحديث"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:373
-msgid "Failed to update food"
-msgstr "فشل تحديث الغذائية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:385
-msgid "Local food updated"
-msgstr "الأغذية المحلية تحديثها"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:389
-msgid "Failed to update local food"
-msgstr "فشل تحديث الغذائية المحلية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:407
-msgid "Category added"
-msgstr "فئة بإضافة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:412
-msgid "Failed to add category"
-msgstr "فشل لإضافة فئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:435
-msgid "Category deleted"
-msgstr "فئة المحذوفة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:439
-msgid "Failed to delete category"
-msgstr "فشل في حذف الفئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:460
-msgid "Category updated"
-msgstr "فئة تحديثها"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:466
-msgid "Failed to update category"
-msgstr "فشل تحديث الفئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:478
-msgid "Local category updated"
-msgstr "الفئة المحلية تجديد"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:482
-msgid "Failed to update local category"
-msgstr "فشل تحديث الفئة المحلية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:505
-msgid "Food added to category"
-msgstr "وأضاف الغذائية لفئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:509
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:524
-msgid "Failed to add to category"
-msgstr "فشل إضافة إلى فئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:520
-msgid "Category added to category"
-msgstr "الفئة تضاف إلى الفئة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/explorer.js:552
-msgid "You are not authorized"
-msgstr "لا يحق لك"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:84
-msgid "Arabic"
-msgstr "العربية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:84
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:85
-msgid "English"
-msgstr "الإنجليزية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "As served"
-msgstr "كما خدم"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Guide Image"
-msgstr "دليل صورة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Drink scale"
-msgstr "على نطاق وشراب"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Standard portion"
-msgstr "جزء القياسية"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Cereal"
-msgstr "حبوب"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Milk on cereal"
-msgstr "الحليب على الحبوب"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Milk in a hot drink"
-msgstr "الحليب في المشروبات الساخنة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:86
-msgid "Pizza"
-msgstr "البيتزا"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:87
-msgid "Hoop"
-msgstr "طارة"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:87
-msgid "Flake"
-msgstr "تقشر"
-
-#: /Users/edjenkins/MAMP/intake-node/public/scripts/main.js:87
-msgid "Rice krispie"
-msgstr "krispie الأرز"
-
-#: /Users/edjenkins/MAMP/intake-node/routes/index.js:4
-msgid "Dashboard"
-msgstr "لوحة أجهزة القياس"
+"POT-Creation-Date: 2016-01-22 09:42+0000\n"
+"Last-Translator: Edward Jenkins <edward.jenkins@newcastle.ac.uk>\n"
 
 #: /Users/edjenkins/MAMP/intake-node/views/add-new-category.jade:6
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:24
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:26
 msgid "Add new category"
 msgstr "إضافة فئة جديدة"
 
@@ -180,17 +21,16 @@ msgid "Add category"
 msgstr "إضافة فئة"
 
 #: /Users/edjenkins/MAMP/intake-node/views/add-new-category.jade:15
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:14
-#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:16
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:5
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:16
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:7
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:18
 msgid "Add new food"
 msgstr "إضافة طعام جديد"
 
-#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:12
+#: /Users/edjenkins/MAMP/intake-node/views/add-new-food.jade:14
 msgid "Add food"
 msgstr "إضافة الغذائية"
 
@@ -214,14 +54,16 @@ msgid "Delete"
 msgstr "حذف "
 
 #: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:4
-#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:12
-msgid "Add Category"
-msgstr "إضافة فئة"
+msgid "Manage Categories"
+msgstr "إدارة الفئات"
 
 #: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:7
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:29
 msgid "Search categories"
 msgstr "فئات بحث"
+
+#: /Users/edjenkins/MAMP/intake-node/views/drawers.jade:12
+msgid "Done"
+msgstr "تم"
 
 #: /Users/edjenkins/MAMP/intake-node/views/food-properties.jade:6
 msgid "Food"
@@ -233,13 +75,13 @@ msgid "Definition"
 msgstr "تعريف"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:4
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:46
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:47
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:56
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:57
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:5
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:50
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:51
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:57
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:58
 msgid "Description"
-msgstr "وصف"
+msgstr "الوصف"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:5
 msgid "Beans on toast"
@@ -260,78 +102,94 @@ msgid "ALBU"
 msgstr "البو"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:14
+msgid "NDNS code"
+msgstr "كود NDNS"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:14
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:15
+msgid "e.g. 10968"
+msgstr "على سبيل المثال 10968"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:16
 msgid "Hidden"
 msgstr "مخفي"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:17
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:20
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:21
 msgid "Attributes"
 msgstr "الصفات"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:19
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:23
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:27
 msgid "Ready meal option"
 msgstr "خيار وجبة جاهزة"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:22
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:32
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:33
 msgid "Same as before option"
 msgstr "نفسه كما كان من قبل الخيار"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:25
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:29
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:37
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:38
+msgid "e.g. 600"
+msgstr "على سبيل المثال 600"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:38
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:39
 msgid "Reasonable amount (g/ml)"
 msgstr "قدر معقول (ز / مل)"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:29
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:33
-msgid "Categories"
-msgstr "الفئات"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:36
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:40
-msgid "Add to category"
-msgstr "إضافة إلى فئة"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:38
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:41
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:42
-msgid "Remove from selected category"
-msgstr "إزالة من فئة المختارة"
+msgid "Categories"
+msgstr "أقسام"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:42
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:46
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:48
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:49
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:23
+msgid "Manage categories"
+msgstr "إدارة الفئات"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:52
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:53
 msgid "Portion size estimation"
 msgstr "جزء حجم تقدير"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:49
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:53
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:59
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:60
 msgid "Image"
 msgstr "صورة"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:50
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:54
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:60
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:61
 msgid "e.g. path/filename.jpg"
 msgstr "على سبيل المثال مسار / filename.jpg"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:52
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:56
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:62
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:63
 msgid "Use for recipes"
 msgstr "استخدام وصفات"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:55
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:59
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:65
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:66
 msgid "Estimation method"
 msgstr "طريقة تقدير"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:77
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:81
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:87
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:88
 msgid "Delete this method"
 msgstr "حذف هذه الطريقة"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:83
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:87
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:93
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:94
 msgid "Add a portion size method"
 msgstr "إضافة أسلوب حجم الجزء"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:95
+#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:96
+msgid "Copy English methods"
+msgstr "طرق نسخة الإنجليزية"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:6
 msgid "e.g. Beans on toast"
@@ -341,21 +199,9 @@ msgstr "مثل الفول على نخب"
 msgid "e.g. ALBU"
 msgstr "على سبيل المثال البو"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:14
-msgid "NDNS code"
-msgstr "كود NDNS"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:15
-msgid "e.g. 10968"
-msgstr "على سبيل المثال 10968"
-
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:17
 msgid "Food group"
 msgstr "مجموعة الطعام"
-
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:30
-msgid "e.g. 600"
-msgstr "على سبيل المثال 600"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:4
 msgid "Serving image set"
@@ -378,10 +224,17 @@ msgstr "بقايا مجموعة صورة"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:28
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:39
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:24
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:25
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/guide-image.jade:17
 msgid "Select Image Set"
 msgstr "حدد مجموعة صورة"
+
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:29
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:40
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/guide-image.jade:18
+msgid "Search image sets"
+msgstr "مجموعات الصور بحث"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/cereal.jade:4
 msgid "Type"
@@ -395,7 +248,7 @@ msgstr "مجموعة Drinkware"
 msgid "Initial fill level"
 msgstr "مستوى التعبئة الأولي"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:15
+#: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/drink-scale.jade:16
 msgid "Skip fill level prompt"
 msgstr "تخطي مستوى التعبئة موجه"
 
@@ -470,39 +323,19 @@ msgstr "تسجيل الخروج"
 msgid "Set Language"
 msgstr "مجموعة اللغة"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:10
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:12
 msgid "Manage foods"
 msgstr "إدارة الأغذية"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:13
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:15
 msgid "Browse foods"
 msgstr "تصفح الأطعمة"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:18
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:20
 msgid "Clone food"
 msgstr "الغذاء استنساخ"
 
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:21
-msgid "Manage categories"
-msgstr "إدارة الفئات"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:26
+#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:28
 msgid "Clone category"
 msgstr "فئة استنساخ"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:61
-msgid "Image Sets"
-msgstr "مجموعات صورة"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:64
-msgid "'As served' images"
-msgstr "صور 'كما خدم ""
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:66
-msgid "'Guide' images"
-msgstr "'دليل' الصور"
-
-#: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:68
-msgid "'Sliding scale' images"
-msgstr "صور "على نطاق وانزلاق""
 

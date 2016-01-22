@@ -165,6 +165,7 @@ app.factory('SharedData', function () {
       foodGroups: new Object(), 
       selectedFoodGroup: new Object(),
       allCategories: Array(),
+      topLevelCategories: Array(),
       treeData: new Object(),
       portionSizes: new Object()
     }

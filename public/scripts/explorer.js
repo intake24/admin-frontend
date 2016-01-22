@@ -164,6 +164,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	$scope.fetchCategories = function() {
 
+		$scope.fetchAllCategories();
+
 		loadUncategorised();
 
 		$http({
@@ -177,9 +179,24 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 				$scope.SharedData.treeData[value.code] = value;
 			})
 
-			$scope.SharedData.allCategories = response.data;
+			$scope.SharedData.topLevelCategories = response.data;
 
 			fetchFoodGroups();
+
+		}, function errorCallback(response) { handleError(response); });
+	}
+
+	$scope.fetchAllCategories = function() {
+
+		loadUncategorised();
+
+		$http({
+			method: 'GET',
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/all',
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$scope.SharedData.allCategories = response.data;
 
 		}, function errorCallback(response) { handleError(response); });
 	}
@@ -282,7 +299,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(function successCallback(response) {
 
-			$.each($scope.SharedData.allCategories, function(ac_index, ac_value) {
+			$.each($scope.SharedData.topLevelCategories, function(ac_index, ac_value) {
 
 				ac_value.state = 'none';
 
@@ -316,7 +333,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			$scope.SharedData.currentItem.parentCategories = [];
 		}
 
-		$.each($scope.SharedData.allCategories, function(index, value) {
+		$.each($scope.SharedData.topLevelCategories, function(index, value) {
 			if (value.isParentCategory) {
 				value.add = true;
 				$scope.SharedData.currentItem.parentCategories.push(value);
@@ -341,7 +358,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 				
-			$.each($scope.SharedData.allCategories, function(index, value) {
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 				if (value.state == 'add') {
 					addFoodToCategory($scope.SharedData.currentItem.code, value.code);
@@ -407,7 +424,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 				
-			$.each($scope.SharedData.allCategories, function(index, value) {
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 				if (value.state == 'add') {
 					addFoodToCategory($scope.SharedData.originalCode, value.code);
@@ -475,7 +492,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 
-			$.each($scope.SharedData.allCategories, function(index, value) {
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 				if (value.state == 'add') {
 					addCategoryToCategory($scope.SharedData.currentItem.code, value.code);
@@ -537,7 +554,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			data: $scope.SharedData.currentItem
 		}).then(function successCallback(response) {
 				
-			$.each($scope.SharedData.allCategories, function(index, value) {
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 				if (value.state == 'add') {
 					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);

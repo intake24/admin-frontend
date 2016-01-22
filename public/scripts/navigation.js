@@ -65,7 +65,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	// Add new food
 	$scope.addNewFood = function() {
 		
-		$.each($scope.SharedData.allCategories, function(index, value) {
+		$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 			value.state = 'none';
 
@@ -125,7 +125,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 	// Add new category
 	$scope.addNewCategory = function() {
 
-		$.each($scope.SharedData.allCategories, function(index, value) {
+		$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 			value.state = 'none';
 

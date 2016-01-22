@@ -40,7 +40,7 @@
 .property
 	h3 #{ gettext("Categories") }
 	.categories-container
-		ul(ng-model='SharedData.allCategories' ng-repeat='parentCategory in SharedData.allCategories | selectedCategoryFilter')
+		ul(ng-model='SharedData.topLevelCategories' ng-repeat='parentCategory in SharedData.topLevelCategories | selectedCategoryFilter')
 			li {{parentCategory.englishDescription}}
 
 	.input-wrapper

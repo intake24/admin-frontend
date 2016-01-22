@@ -183,6 +183,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 			fetchFoodGroups();
 
+			fetchNutrientTables();
+
 		}, function errorCallback(response) { handleError(response); });
 	}
 
@@ -304,6 +306,19 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		}).then(function successCallback(response) {
 
 			$scope.SharedData.foodGroups = response.data;
+
+		}, function errorCallback(response) { handleError(response); });
+	}
+
+	function fetchNutrientTables()
+	{
+		$http({
+			method: 'GET',
+			url: api_base_url + 'nutrient-tables',
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$scope.SharedData.nutrientTables = response.data;
 
 		}, function errorCallback(response) { handleError(response); });
 	}

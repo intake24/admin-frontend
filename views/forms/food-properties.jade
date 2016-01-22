@@ -10,9 +10,9 @@ form(id='food-properties-form')
 	.input-wrapper
 		label #{ gettext("Intake24 code") }
 		input(id='input-food-code' type='text' placeholder='#{ gettext("e.g. ALBU") }' ng-model='SharedData.currentItem.temp.code')
-	.input-wrapper
-		label #{ gettext("NDNS code") }
-		input(id='input-NDNS-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='SharedData.currentItem.localData.nutrientTableCodes.NDNS')
+	.input-wrapper(ng-model='SharedData.nutrientTables' ng-repeat='nutrientTable in SharedData.nutrientTables')
+		label {{ nutrientTable.id }}
+		input(id='input-{{ nutrientTable.id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='SharedData.currentItem.localData.nutrientTableCodes[nutrientTable.id]')
 	.input-wrapper
 		label #{ gettext("Food group") }
 		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.englishDescription for fg in SharedData.foodGroups" data-ng-model="SharedData.selectedFoodGroup")

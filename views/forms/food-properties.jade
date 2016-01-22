@@ -92,4 +92,6 @@ form(id='food-properties-form')
 	.input-wrapper
 		.btn.success(ng-click='addPortionSize(SharedData.currentItem.localData.portionSize)')
 			span #{ gettext("Add a portion size method") }
+		.btn.success(ng-hide='SharedData.locale.intake_locale=="en_GB"' ng-click='copyEnglishMethods()')
+			span #{ gettext("Copy English methods") }
 		.clearfloat

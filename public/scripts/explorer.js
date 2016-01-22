@@ -257,6 +257,23 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 		}, function errorCallback(response) { handleError(response); });
 	}
+
+	$scope.copyEnglishMethods = function() {
+
+		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/en_GB/' + $scope.SharedData.originalCode + '/definition' : api_base_url + 'foods/en_GB/' + $scope.SharedData.originalCode + '/definition';
+
+		$http({
+			method: 'GET',
+			url: api_endpoint,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+		}).then(function successCallback(response) {
+
+			$scope.SharedData.currentItem.localData = response.data.localData;
+
+			unpackCurrentItemService.broadcast();
+
+		}, function errorCallback(response) { handleError(response); });
+	}
 	
 	$scope.getChildren = function(value) {
 

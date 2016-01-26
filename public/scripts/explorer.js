@@ -279,6 +279,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	
 	$scope.getChildren = function(value) {
 
+		var rememberCurrentItem = $scope.SharedData.currentItem;
+
 		$http({
 			method: 'GET',
 			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + value.code,
@@ -290,8 +292,8 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			$.each(response.data.foods, function(index, value) { value.type = 'food'; })
 
 			var children = response.data.subcategories.concat(response.data.foods);
-
-			$scope.SharedData.currentItem.children = children;
+			
+			rememberCurrentItem.children = children;
 
 			$scope.fetchProperties();
 		});
@@ -712,3 +714,4 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 });
+

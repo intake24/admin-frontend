@@ -322,7 +322,7 @@ msgstr "Logout"
 
 #: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:5
 msgid "Set Language"
-msgstr "Set Language"
+msgstr "Set Locale"
 
 #: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:12
 msgid "Manage foods"

@@ -269,7 +269,7 @@
       ],
       "Set Language": [
          null,
-         "Set Language"
+         "Set Locale"
       ],
       "Manage foods": [
          null,

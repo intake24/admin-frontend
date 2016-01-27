@@ -24,7 +24,7 @@
   padding-top: 50px;
   position: absolute;
   top: 0;
-  width: 240px;
+  width: 280px;
   z-index: 9;
 }
 .sidebar ul {
@@ -85,7 +85,7 @@
     display: block;
   }
   .sidebar {
-    left: -240px;
+    left: -280px;
   }
   .sidebar.active {
     left: 0px;
@@ -126,7 +126,7 @@ html[dir="rtl"] .sidebar ul li.active .nested-li {
 @media (max-width: 1080px) {
   html[dir="rtl"] .sidebar {
     left: auto;
-    right: -240px;
+    right: -280px;
   }
   html[dir="rtl"] .sidebar.active {
     left: auto;

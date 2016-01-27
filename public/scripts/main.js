@@ -13,7 +13,7 @@ setInterval(function() {
 
 }, 500);
 
-var app = angular.module('app', ['ngCookies']);
+var app = angular.module('app', ['ngCookies', 'ui.bootstrap']);
 
 app.service("fetchCategoriesService", function($rootScope) {
     this.broadcast = function() { $rootScope.$broadcast("fetchCategories")}
@@ -57,7 +57,7 @@ app.directive('jfbFormModel', function() {
         }
     };
 });
-  
+
 
 app.filter('selectedCategoryFilter', function() {
 
@@ -88,7 +88,7 @@ app.filter('categoryFilter', function() {
     return result;
   }
 });
-  
+
 app.filter('asServedFilter', function() {
   return function(input, search) {
     if (!input) return input;
@@ -104,7 +104,7 @@ app.filter('asServedFilter', function() {
     return result;
   }
 });
-  
+
 app.filter('guideImageFilter', function() {
   return function(input, search) {
     if (!input) return input;
@@ -120,7 +120,7 @@ app.filter('guideImageFilter', function() {
     return result;
   }
 });
-  
+
 app.filter('drinkScaleFilter', function() {
   return function(input, search) {
     if (!input) return input;
@@ -141,7 +141,7 @@ app.filter('drinkScaleFilter', function() {
 
 // Serving method filters
 
-app.filter('serving-image-set-filter', function () {  
+app.filter('serving-image-set-filter', function () {
    return function(inputs, filterValues) {
       var output = [];
       angular.forEach(inputs, function (input) {
@@ -178,4 +178,3 @@ app.factory('SharedData', function () {
       portionSizes: new Object()
     }
 });
-

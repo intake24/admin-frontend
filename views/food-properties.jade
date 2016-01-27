@@ -9,10 +9,10 @@
 
 	.properties-footer
 		.input-wrapper
-			.btn.success(ng-click='updateFood()')
+			.intake-btn.success(ng-click='updateFood()')
 				span #{ gettext("Accept changes") }
-			.btn.warning(ng-click='discardFoodChanges()')
+			.intake-btn.warning(ng-click='discardFoodChanges()')
 				span #{ gettext("Discard changes") }
-			.btn.danger(ng-click='deleteFood()')
+			.intake-btn.danger(ng-click='deleteFood()')
 				span #{ gettext("Delete") }
 			.clearfloat

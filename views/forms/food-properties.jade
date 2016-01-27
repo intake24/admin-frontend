@@ -45,7 +45,7 @@ form(id='food-properties-form')
 			li {{parentCategory.englishDescription}}
 
 	.input-wrapper
-		.btn.success(onClick='showDrawer("drawer-manage-categories")')
+		.intake-btn.success(onClick='showDrawer("drawer-manage-categories")')
 			span #{ gettext("Manage categories") }
 		.clearfloat
 
@@ -84,14 +84,14 @@ form(id='food-properties-form')
 			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
 				include portion-size-methods/pizza
 
-			.btn.danger(ng-click='deletePortionSize(SharedData.currentItem.localData.portionSize, $index)')
+			.intake-btn.danger(ng-click='deletePortionSize(SharedData.currentItem.localData.portionSize, $index)')
 				span #{ gettext("Delete this method") }
 			.clearfloat
 				
 
 	.input-wrapper
-		.btn.success(ng-click='addPortionSize(SharedData.currentItem.localData.portionSize)')
+		.intake-btn.success(ng-click='addPortionSize(SharedData.currentItem.localData.portionSize)')
 			span #{ gettext("Add a portion size method") }
-		.btn.success(ng-hide='SharedData.locale.intake_locale=="en_GB"' ng-click='copyEnglishMethods()')
+		.intake-btn.success(ng-hide='SharedData.locale.intake_locale=="en_GB"' ng-click='copyEnglishMethods()')
 			span #{ gettext("Copy English methods") }
 		.clearfloat

@@ -4,7 +4,7 @@
   float: none;
 }
 /* Import variables */
-.btn {
+.intake-btn {
   background-color: #fafafa;
   border: 1px solid #ededed;
   border-radius: 4px;
@@ -17,12 +17,12 @@
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
 }
-.btn:hover {
+.intake-btn:hover {
   background-color: #ededed;
   border: 1px solid #ededed;
   cursor: pointer;
 }
-.btn:active {
+.intake-btn:active {
   background-color: #d4d4d4;
   border: 1px solid #d4d4d4;
 }
@@ -54,7 +54,7 @@
   border: 1px solid #ff0808;
 }
 /* RTL Styles */
-html[dir="rtl"] .btn {
+html[dir="rtl"] .intake-btn {
   float: right;
   margin: 10px 0 10px 10px;
 }

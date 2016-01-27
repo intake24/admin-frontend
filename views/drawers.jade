@@ -9,7 +9,7 @@
 				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | categoryFilter: searchQuery | orderBy:englishDescription' ng-click='category.state = updateState(category.state)' ng-class='((category.state == "existing") || (category.state == "add")) ? "selected" : "unselected"') {{category.englishDescription}}
 
 	.drawer-footer
-		button(class="btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Done") }
+		button(class="intake-btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Done") }
 		.clearfloat
 	
 #drawer-backdrop

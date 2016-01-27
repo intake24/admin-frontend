@@ -19,6 +19,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		link(rel='stylesheet', href='/stylesheets/portion-size-methods.css')
 		link(rel='stylesheet', href='/stylesheets/search.css')
 		link(rel='stylesheet', href='/stylesheets/flags.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
 
 		script(type="text/javascript" src="/scripts/jquery.min.js")
 		script(type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
@@ -26,6 +27,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		script(type="text/javascript" src="/scripts/angular.js")
 		script(type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js")
 		script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-cookies.js")
+		script(type="text/javascript" src="/scripts/ui-bootstrap-tpls-1.1.1.js")
 
 		//- Load current translation file
 		script(type="text/javascript" src='/i18n/#{lang}/messages.js')
@@ -49,7 +51,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
 				i.fa.fa-bars
 			a(href='/')
 				h4 <strong>Intake24</strong> Admin
-			a(href='#' class='btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
+			a(href='#' class='intake-btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
 				i.fa.fa-user
 				p Login / Register
 

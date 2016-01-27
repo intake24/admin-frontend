@@ -305,7 +305,7 @@ header a.auth-menu:active {
 }
 .main-content {
   background-color: #f9f9f9;
-  padding-left: 240px;
+  padding-left: 280px;
 }
 .col {
   bottom: 0px;
@@ -316,21 +316,21 @@ header a.auth-menu:active {
 }
 #food-list-col {
   background-color: #fff;
-  width: 340px;
+  width: 380px;
 }
 #properties-col {
   background-color: #fff;
   border-left: #e1e1e1 1px solid;
-  left: 580px;
+  left: 660px;
   right: 0;
 }
 @media (max-width: 1080px) {
   #properties-col {
-    left: 340px;
+    left: 380px;
   }
 }
 #properties-col.fullwidth {
-  left: 240px;
+  left: 280px;
 }
 @media (max-width: 800px) {
   .col {
@@ -482,17 +482,17 @@ html[dir="rtl"] .flash-message #flash-dismiss-btn {
 }
 html[dir="rtl"] .main-content {
   padding-left: 0;
-  padding-right: 240px;
+  padding-right: 280px;
 }
 html[dir="rtl"] #properties-col {
   border-left: none;
   border-right: #e1e1e1 1px solid;
   left: 0;
-  right: 580px;
+  right: 660px;
 }
 @media (max-width: 1080px) {
   html[dir="rtl"] #properties-col {
-    right: 340px;
+    right: 380px;
   }
 }
 @media (max-width: 800px) {
@@ -502,7 +502,7 @@ html[dir="rtl"] #properties-col {
 }
 html[dir="rtl"] #properties-col.fullwidth {
   left: 0;
-  right: 240px;
+  right: 280px;
 }
 @media (max-width: 1080px) {
   html[dir="rtl"] .main-content {

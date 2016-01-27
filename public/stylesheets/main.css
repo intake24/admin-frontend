@@ -116,8 +116,8 @@ body.modal-open {
 html, body
     height 100%
     overflow hidden
-    
-.container
+
+.intake-container
 	position absolute
     top 0
     bottom 0

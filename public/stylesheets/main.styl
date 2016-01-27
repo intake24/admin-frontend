@@ -15,7 +15,7 @@ global-reset()
 
 *::-webkit-scrollbar
     display none
-    
+
 html
 	background-color light-grey
 
@@ -30,8 +30,8 @@ body.modal-open
 html, body
     height 100%
     overflow hidden
-    
-.container
+
+.intake-container
 	position absolute
     top 0
     bottom 0
@@ -42,7 +42,7 @@ html, body
 
 .hidden
 	display none
-	
+
 header
 	background-color rgba(255, 255, 255, 0.1)
 	background-color main-color
@@ -105,11 +105,11 @@ header
 	height 50px
 	line-height 50px
 	opacity 1
-	padding 0 50px 
+	padding 0 50px
 	position fixed
 	text-align center
 	top -50px
-	z-index 1000 
+	z-index 1000
 	left 0
 	right 0
 	transition(all 0.5s ease-in-out)
@@ -119,7 +119,7 @@ header
 		line-height 50px
 		position absolute
 		right 0
-		text-align center 
+		text-align center
 		top 0
 		width 50px
 	&.active
@@ -131,7 +131,7 @@ header
 		background-color flash-warning-color
 	&.danger
 		background-color flash-danger-color
-		 
+
 @media(max-width:568px)
 	.flash-message
 		padding 0 50px 0 0
@@ -140,14 +140,14 @@ header
 	padding 0 0 30px 0
 	h2
 		color main-color
-		font-size 26px 
-		font-weight 100 
-			
+		font-size 26px
+		font-weight 100
+
 .authenticated
 	a.auth-menu
 		i
 			display block
-			
+
 #authenticate-overlay
 	background-color main-color
 	background-image url('../images/web.png')
@@ -181,7 +181,7 @@ header
 	#authenticate-overlay
 		display none
 		opacity 0
-		
+
 .main-content
 	background-color light-grey
 	padding-left sidebar-width
@@ -206,7 +206,7 @@ header
 		left food-list-width
 #properties-col.fullwidth
 	left sidebar-width
-		
+
 @media (max-width: 800px)
 	.col
 		position relative
@@ -242,27 +242,27 @@ header
 			i
 				display block
 				margin-right 0
-		
+
 input
 	&.valid
 		border-color border-valid-color !important
 	&.invalid
 		border-color border-invalid-color !important
-		
+
 
 /* Sortable */
 
 .categories-container
-	overflow scroll 
+	overflow scroll
 	input
-		background #f9f9f9 
+		background #f9f9f9
 		border #e1e1e1 !important
 		font-size 15px
-		font-weight 300 
+		font-weight 300
 		outline 0
-		padding 15px 20px 
+		padding 15px 20px
 		width 100%
-		
+
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
@@ -270,7 +270,7 @@ input
 		list-style-type none
 		margin 0
 		padding 0
-			
+
 		li
 			border-left #e1e1e1 3px solid
 			height 50px
@@ -283,25 +283,25 @@ input
 				cursor pointer
 			&.selected
 				background #f9f9f9
-				border-left warning-color 3px solid 
+				border-left warning-color 3px solid
 			span
 				position absolute
-			
+
 .modal
 	.categories-container
 		li
 			margin 0
-			
+
 .drawer
 	.list-container
-		overflow scroll 
+		overflow scroll
 		input
-			background #f9f9f9 
+			background #f9f9f9
 			border #e1e1e1 !important
 			font-size 15px
-			font-weight 300 
+			font-weight 300
 			outline 0
-			padding 15px 20px 
+			padding 15px 20px
 			width 100%
 			-webkit-box-sizing: border-box;
 			-moz-box-sizing: border-box;
@@ -366,9 +366,9 @@ html[dir="rtl"]
 			a.auth-menu
 				i
 					margin-left 0
-					margin-right auto			
+					margin-right auto
 	.categories-container
-		ul		
+		ul
 			li
 				border-left none
 				border-right none

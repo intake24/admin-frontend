@@ -48,6 +48,11 @@
   color: #38d075;
   margin-right: 5px;
 }
+.food-list-container .food-list ul li .fa-circle.problems,
+.food-list-container .food-list ul li .fa-circle-o.problems,
+.food-list-container .food-list ul li .fa-spin.problems {
+  color: #ff3636;
+}
 .food-list-container .food-list ul li .fa-circle.editing,
 .food-list-container .food-list ul li .fa-circle-o.editing,
 .food-list-container .food-list ul li .fa-spin.editing {

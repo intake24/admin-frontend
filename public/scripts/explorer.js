@@ -145,28 +145,30 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 	$scope.nodeMarkerClass = function(node, lang_dir) {
-		var cls = 'fa fa-fw';
+		var cls = ['fa', 'fa-fw'];
 
 		if (node.type == 'food') {
-			cls += ' fa-circle-o';
-			if (node.problems != null)
-				if (node.problems.length != 0)
-					cls += ' problems';
-		} else if (node.type == 'category') {
-			cls += ' fa-circle';
-
-			if (node.recursiveProblems != null)
-				if (node.recursiveProblems.ownProblems.length != 0
-					|| node.recursiveProblems.subcategoryProblems.length != 0
-					|| node.recursiveProblems.foodProblems.length != 0)
-					cls += ' problems';
+			cls.push('fa-circle-o');
 		} else
-			cls += ' fa-circle';
+			cls.push('fa-circle');
+
+		if ($scope.hasProblems(node))
+			cls.push('problems');
 
 		if (node.editing)
-			cls += ' editing';
+			cls.push('editing');
 
 		return cls;
+	}
+
+	$scope.hasProblems = function (node) {
+		if (node.type == 'food')
+			return (node.problems != null && node.problems.length > 0);
+		else if (node.type == 'category')
+			return (node.recursiveProblems != null &&
+				(node.recursiveProblems.ownProblems.length > 0 ||
+				node.recursiveProblems.subcategoryProblems.length > 0 ||
+				node.recursiveProblems.foodProblems.length > 0));
 	}
 
 	function resetProperties()

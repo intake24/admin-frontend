@@ -99,6 +99,15 @@ td {
 a img {
   border: none;
 }
+/* Override bootstrap's settings */
+a {
+  color: inherit;
+}
+a:focus,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
 *::-webkit-scrollbar {
   display: none;
 }
@@ -114,16 +123,16 @@ body.modal-open {
 }
 /* This snippet prevents bouncing but fails on small screen sizes
 html, body
-    height 100%
-    overflow hidden
+		height 100%
+		overflow hidden
 
 .intake-container
 	position absolute
-    top 0
-    bottom 0
-    left 0
-    right 0
-    overflow auto
+		top 0
+		bottom 0
+		left 0
+		right 0
+		overflow auto
 */
 .hidden {
   display: none;
@@ -149,6 +158,7 @@ header a h4 {
   font-size: 18px;
   font-weight: 300;
   padding: 0 15px;
+  line-height: 50px;
 }
 @media (max-width: 800px) {
   header a h4 {

@@ -22,13 +22,13 @@ function showModal(modal_id) {
 
 	$('body').addClass('modal-open');
 	$('#modal-backdrop').show().animate({'opacity': 1.0}, 300);
-	$('.modal#' + modal_id).show().removeClass('fadeOutDown').addClass('fadeInUp');
+	$('.intake-modal#' + modal_id).show().removeClass('fadeOutDown').addClass('fadeInUp');
 }
 
 function hideModal() {
 
 	$('body').removeClass('modal-open');
-	$('.modal').removeClass('fadeInUp').addClass('fadeOutDown').hide();
+	$('.intake-modal').removeClass('fadeInUp').addClass('fadeOutDown').hide();
 
 	$('#modal-backdrop').animate({'opacity': 0.0}, 300, function() {
 		$('#modal-backdrop').hide();

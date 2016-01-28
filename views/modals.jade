@@ -1,16 +1,16 @@
-.modal.modal-narrow.animated#modal-authenticate
-		.modal-title #{ gettext("Login") }
-		.modal-content(ng-controller='AuthController')
+.intake-modal.modal-narrow.animated#modal-authenticate
+		.intake-modal-title #{ gettext("Login") }
+		.intake-modal-content(ng-controller='AuthController')
 			input(id="form-login-username" type="text" placeholder="#{ gettext('Username') }")
 			input(id="form-login-password" type="password" placeholder="#{ gettext('Password') }")
 			button(class="modal-form-button" id="button-login") #{ gettext("Login") }
 			.clearfloat
 
-.modal.modal-narrow.animated#modal-logout
+.intake-modal.modal-narrow.animated#modal-logout
 	#button-close-modal.button-close-modal
 		i.fa.fa-times
-	.modal-title #{ gettext("Are you sure?") }
-	.modal-content
+	.intake-modal-title #{ gettext("Are you sure?") }
+	.intake-modal-content
 		button(class="modal-form-button" id="button-logout") #{ gettext("Logout") }
 		.clearfloat
 	

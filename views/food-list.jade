@@ -9,21 +9,7 @@
 			ul(ng-model='SharedData.treeData')
 				li(ng-repeat='(index, value) in SharedData.treeData | orderBy:["type", "englishDescription"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
 
-script(id='problems-popover-template', type='text/ng-template')
-	div
-		ul(class='intake-problems-list')
-			li(ng-repeat='problem in value.problems', ng-if='value.type=="food"')
-				span(class='intake-problems-list-name') {{problem.foodName}} ({{problem.foodCode}}): 
-				{{getText(problem.problemCode)}}
-			li(ng-repeat='problem in value.recursiveProblems.ownProblems', ng-if='value.type=="category"')
-				span(class='intake-problems-list-name') {{problem.categoryName}} ({{problem.categoryCode}}): 
-				{{getText(problem.problemCode)}}
-			li(ng-repeat='problem in value.recursiveProblems.foodProblems', ng-if='value.type=="category"')
-				span(class='intake-problems-list-name') {{problem.foodName}} ({{problem.foodCode}}): 
-				{{getText(problem.problemCode)}}
-			li(ng-repeat='problem in value.recursiveProblems.subcategoryProblems', ng-if='value.type=="category"')
-				span(class='intake-problems-list-name') {{problem.categoryName}} ({{problem.categoryCode}}): 
-				{{getText(problem.problemCode)}}
+include food-problems
 
 script(type="text/ng-template", id="node")
 	include node

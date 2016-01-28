@@ -286,6 +286,38 @@
       "Clone category": [
          null,
          "فئة استنساخ"
+      ],
+      "no_local_data": [
+         null,
+         "Food name translation missing"
+      ],
+      "nutrient_code_missing": [
+         null,
+         "No nutrient table code assigned"
+      ],
+      "not_assigned_to_group": [
+         null,
+         "Not assigned to food group"
+      ],
+      "not_assigned_to_category": [
+         null,
+         "Not assigned to any category"
+      ],
+      "no_portion_size_methods": [
+         null,
+         "No portion size estimation methods are defined"
+      ],
+      "no_method_desc_or_image": [
+         null,
+         "Portion size estimation method needs description and/or image"
+      ],
+      "empty_category": [
+         null,
+         "Category is empty, consider deleting"
+      ],
+      "single_item_in_category": [
+         null,
+         "Category contains only one item, consider merging with another category"
       ]
    }
 }

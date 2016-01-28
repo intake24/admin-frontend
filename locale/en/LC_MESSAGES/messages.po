@@ -339,3 +339,27 @@ msgstr "Clone food"
 #: /Users/edjenkins/MAMP/intake-node/views/sidebar.jade:28
 msgid "Clone category"
 msgstr "Clone category"
+
+msgid "no_local_data"
+msgstr "Food name translation missing"
+
+msgid "nutrient_code_missing"
+msgstr "No nutrient table code assigned"
+
+msgid "not_assigned_to_group"
+msgstr "Not assigned to food group"
+
+msgid "not_assigned_to_category"
+msgstr "Not assigned to any category"
+
+msgid "no_portion_size_methods"
+msgstr "No portion size estimation methods are defined"
+
+msgid "no_method_desc_or_image"
+msgstr "Portion size estimation method needs description and/or image"
+
+msgid "empty_category"
+msgstr "Category is empty, consider deleting"
+
+msgid "single_item_in_category"
+msgstr "Category contains only one item, consider merging with another category"

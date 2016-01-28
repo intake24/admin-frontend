@@ -6,20 +6,23 @@
 
 .food-list-container
 	display none
-	padding 15px 10px 
+	padding 15px 10px
 	&.visible
 		display flex
 	.food-list
 		overflow hidden
+		ul.intake-problems-list
+			li
+				font-size 12px
 		ul
 			margin 0
 			padding 0
 			li
-				font-size 16px 
+				font-size 16px
 				margin 0
 				padding 0
 				.fa-circle-o, .fa-spin
-					margin-left 20px 
+					margin-left 20px
 				a
 					border-radius 4px
 					display block
@@ -27,10 +30,10 @@
 					white-space nowrap
 					&.active
 						background-color #f2f2f2
-					&:hover 
+					&:hover
 						cursor pointer
 				i
-					color #999 
+					color #999
 				.fa-circle, .fa-circle-o, .fa-spin
 					color success-color
 					margin-right 5px
@@ -44,21 +47,23 @@
 				display none
 			.node-open > ul
 				display block !important
+		.intake-problems-list-name
+			font-weight bold
 
 @media (max-width: 1080px)
 	.food-list-container
 		border-right none
 		border-bottom 1px solid #f2f2f2
-		
+
 .fa-caret-right, .fa-caret-left
-	display inline-block 
+	display inline-block
 .fa-caret-down
 	display none
 .node-open > a .fa-caret-right, .node-open > a .fa-caret-left
-	display none 
+	display none
 .node-open > a .fa-caret-down
 	display inline-block
-			
+
 /* RTL Styles */
 
 html[dir="rtl"]

@@ -22,6 +22,10 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	}, true);
 
+	$scope.getText = function(s) {
+		return gettext(s);
+	}
+
 	$scope.fetchImageSets = function() {
 
 		// Get all as served image sets

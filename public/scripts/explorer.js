@@ -1,6 +1,10 @@
 // Explorer (ExplorerController)
 
-app.controller('ExplorerController', function($scope, $http, fetchCategoriesService, fetchImageSetsService, fetchPropertiesService, packCurrentItemService, unpackCurrentItemService, SharedData) {
+app.controller('ExplorerController',
+	['$scope', '$http', 'fetchCategoriesService', 'fetchImageSetsService', 'fetchPropertiesService',
+ 	'packCurrentItemService', 'unpackCurrentItemService', 'SharedData', 'ProblemChecker',
+	function($scope, $http, fetchCategoriesService, fetchImageSetsService, fetchPropertiesService,
+		packCurrentItemService, unpackCurrentItemService, SharedData, problemChecker) {
 
 	// Listen for boradcasts
 	fetchCategoriesService.listen(function(event, data) { $scope.fetchCategories(); });
@@ -166,8 +170,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			return (node.problems != null && node.problems.length > 0);
 		else if (node.type == 'category')
 			return (node.recursiveProblems != null &&
-				(node.recursiveProblems.ownProblems.length > 0 ||
-				node.recursiveProblems.subcategoryProblems.length > 0 ||
+				(node.recursiveProblems.categoryProblems.length > 0 ||
 				node.recursiveProblems.foodProblems.length > 0));
 	}
 
@@ -193,29 +196,7 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		}, function errorCallback(response) { handleError(response); });
 	}
 
-	function categoryProblemsRecursive(code, successCallback)
-	{
-		$http({
-				method: 'GET',
-				url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale +
-					'/' + code + '/problems/recursive',
-				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-			}).then(function (response) {
-				successCallback(response.data);
-			}, function (response) { handleError(response); });
-	}
 
-	function foodProblems(code, successCallback)
-	{
-		$http({
-				method: 'GET',
-				url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale +
-					'/' + code + '/problems',
-				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-			}).then(function (response) {
-				successCallback(response.data);
-			}, function (response) { handleError(response); });
-	}
 
 
 	$scope.fetchCategories = function() {
@@ -233,6 +214,10 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 			$.each(response.data, function(index, value) {
 				value.type = 'category';
 				$scope.SharedData.treeData[value.code] = value;
+				problemChecker.getCategoryProblemsRecursive(value.code,
+					function(problems) { value.recursiveProblems = problems; },
+					function(response) { handleError(response);}
+				);
 			})
 
 			$scope.SharedData.topLevelCategories = response.data;
@@ -260,21 +245,28 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 	}
 
 	$scope.nodeSelected = function($event, value) {
+		var node = $($event.target).parent();
 
-		$scope.selected_node = $($event.target).parent();
+		$scope.selected_node = node;
 
-		$($event.target).parent().toggleClass('node-open');
+		// Move the selection highlight to the clicked node
 		$('.food-list ul li a').removeClass('active');
-		$($event.target).addClass('active');
+		node.addClass('active');
 
 		if (value.type == 'uncategorised') {
 
 		} else {
-
 			$scope.SharedData.currentItem = value;
-			$scope.SharedData.originalCode = value.code;
-			$scope.getChildren(value);
+			$scope.SharedData.originalCode = value.code; // ? what's the originalCode for
 		}
+
+		// Refresh children if the node is about to be expanded
+		// No need to refresh if the node is being collapsed
+		if (!node.hasClass('node-open')) {
+				$scope.getChildren(value);
+		}
+
+		node.toggleClass('node-open');
 	}
 
 	$scope.fetchProperties = function() {
@@ -335,8 +327,9 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 	$scope.getChildren = function(value) {
 
-	    // This will remember the currentItem at the time of async HTTP request
-
+	  // This will remember the currentItem at the time of async HTTP request
+		// so that the correct node is updated
+		// FIXME: handle deletion
 		var currentItem = $scope.SharedData.currentItem;
 
 		$http({
@@ -347,12 +340,18 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 
 			$.each(response.data.subcategories, function(index, value) {
 				value.type = 'category';
-				categoryProblemsRecursive(value.code, function(p) { currentItem.recursiveProblems = p; });
+				problemChecker.getCategoryProblemsRecursive(value.code,
+					function(problems) { value.recursiveProblems = problems; },
+					function(response) { handleError (response); }
+				);
 			});
 
 			$.each(response.data.foods, function(index, value) {
 				value.type = 'food';
-				foodProblems(value.code, function(p) { currentItem.problems = p; });
+				problemChecker.getFoodProblems(value.code,
+					function(problems) { value.problems = problems; },
+					function(response) { handleError (response); }
+				);
 			});
 
 			var children = response.data.subcategories.concat(response.data.foods);
@@ -777,4 +776,4 @@ app.controller('ExplorerController', function($scope, $http, fetchCategoriesServ
 		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
 	}
 
-});
+}]);

@@ -34,18 +34,23 @@ html(lang='#{lang}' dir='#{lang_dir}')
 		script(type="text/javascript" src='/scripts/gettext.js')
 
 		script(type="text/javascript" src='/scripts/jstree.min.js')
+		script(type="text/javascript" src='/scripts/problemchecker.js')
+		
 		script(type="text/javascript" src='/scripts/modals.js')
 		script(type="text/javascript" src='/scripts/drawers.js')
+		
 		script(type="text/javascript" src='/scripts/main.js')
 		script(type="text/javascript" src='/scripts/flash.js')
 		script(type="text/javascript" src='/scripts/auth.js')
 		script(type="text/javascript" src='/scripts/search.js')
 		script(type="text/javascript" src='/scripts/explorer.js')
 		script(type="text/javascript" src='/scripts/transform.js')
+		script(type="text/javascript" src='/scripts/shareddata.js')
+		
 
 		script(type="text/javascript" src='/scripts/navigation.js')
 
-	body.animated.fadeIn(ng-app='app' ng-controller='ExplorerController')
+	body.animated.fadeIn(ng-app='intake24.admin' ng-controller='ExplorerController')
 		header
 			#sidebar-button(ng-click="sidebaropen=!sidebaropen")
 				i.fa.fa-bars

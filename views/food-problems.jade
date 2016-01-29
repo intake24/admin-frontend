@@ -4,12 +4,9 @@ script(id='problems-popover-template', type='text/ng-template')
 			li(ng-repeat='problem in value.problems', ng-if='value.type=="food"')
 				span(class='intake-problems-list-name') {{problem.foodName}} ({{problem.foodCode}}): 
 				{{getText(problem.problemCode)}}
-			li(ng-repeat='problem in value.recursiveProblems.ownProblems', ng-if='value.type=="category"')
-				span(class='intake-problems-list-name') {{problem.categoryName}} ({{problem.categoryCode}}): 
-				{{getText(problem.problemCode)}}
 			li(ng-repeat='problem in value.recursiveProblems.foodProblems', ng-if='value.type=="category"')
 				span(class='intake-problems-list-name') {{problem.foodName}} ({{problem.foodCode}}): 
 				{{getText(problem.problemCode)}}
-			li(ng-repeat='problem in value.recursiveProblems.subcategoryProblems', ng-if='value.type=="category"')
+			li(ng-repeat='problem in value.recursiveProblems.categoryProblems', ng-if='value.type=="category"')
 				span(class='intake-problems-list-name') {{problem.categoryName}} ({{problem.categoryCode}}): 
 				{{getText(problem.problemCode)}}

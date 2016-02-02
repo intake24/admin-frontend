@@ -1,21 +1,23 @@
 // Explorer (ExplorerController)
 
-app.controller('ExplorerController',
-	['$scope', '$http', 'fetchCategoriesService', 'fetchImageSetsService', 'fetchPropertiesService',
- 	'packCurrentItemService', 'unpackCurrentItemService', 'SharedData', 'ProblemChecker',
-	function($scope, $http, fetchCategoriesService, fetchImageSetsService, fetchPropertiesService,
-		packCurrentItemService, unpackCurrentItemService, SharedData, problemChecker) {
+angular.module('intake24.admin.food_db').controller('ExplorerController',
+	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
+	function($scope, $http, sharedData, problems, currentItem, foodDataReader) {
 
 	// Listen for boradcasts
-	fetchCategoriesService.listen(function(event, data) { $scope.fetchCategories(); });
-	fetchImageSetsService.listen(function(event, data) { $scope.fetchImageSets(); });
-	fetchPropertiesService.listen(function(event, data) { $scope.fetchProperties(); });
+	//fetchCategoriesService.listen(function(event, data) { $scope.fetchCategories(); });
+	//fetchImageSetsService.listen(function(event, data) { $scope.fetchImageSets(); });
+	//fetchPropertiesService.listen(function(event, data) { $scope.fetchProperties(); });
 
 	// Load shared data
-	$scope.SharedData = SharedData;
+	$scope.SharedData = sharedData;
+
+	$scope.treeData = {};
+
+	$scope.uncategorisedFoods = [];
 
 	// Watch the current item for changes
-	$scope.$watch('SharedData.currentItem', function(newItem) {
+	/*$scope.$watch('SharedData.currentItem', function(newItem) {
 
 		$.each($scope.SharedData.treeData, function(key, value) {
 
@@ -24,7 +26,9 @@ app.controller('ExplorerController',
 
 		});
 
-	}, true);
+	}, true);*/
+
+
 
 	$scope.getText = function(s) {
 		return gettext(s);
@@ -148,7 +152,14 @@ app.controller('ExplorerController',
 
 	}
 
-	$scope.nodeMarkerClass = function(node, lang_dir) {
+	$scope.uncategorisedNodeMarkerClass = function() {
+		var cls = ['fa', 'fa-fw', 'fa-circle'];
+		if ($scope.uncategorisedFoodsExist())
+			cls.push('problems');
+		return cls;
+	}
+
+	$scope.nodeMarkerClass = function(node) {
 		var cls = ['fa', 'fa-fw'];
 
 		if (node.type == 'food') {
@@ -181,57 +192,63 @@ app.controller('ExplorerController',
 		$('input').removeClass('valid invalid');
 	}
 
-	function loadUncategorised()
+	function reloadUncategorisedFoods()
 	{
-		$http({
-			method: 'GET',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/uncategorised',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$.each(response.data, function(index, value) { value.type = 'food'; })
-
-			$scope.SharedData.treeData['UCAT'] = {code: 'UCAT', type: 'uncategorised', englishDescription: 'Uncategorised foods', children: response.data};
-
-		}, function errorCallback(response) { handleError(response); });
+		foodDataReader.getUncategorisedFoods( function (foods) {
+			$.each(foods, function (index, node) { node.type = 'food' })
+			$scope.uncategorisedFoods = foods;
+			},
+			handleError
+		);
 	}
 
+	function loadProblemsForNode(node) {
+		if (node.type == 'category') {
+			problems.getCategoryProblemsRecursive(node.code,
+				function(problems) { node.recursiveProblems = problems; },
+				function(response) { handleError(response);}
+			);
+		} else if (node.type == 'food') {
+			problems.getFoodProblems(node.code,
+				function(problems) {node.problems = problems; },
+				function(response) { handleError (response); }
+			);
+		}
+	}
 
+	function reloadRootCategories() {
+		foodDataReader.getRootCategories( function(categories) {
+			$scope.treeData = {};
+			$.each(categories, function (index, node) {
+				node.type = 'category';
+				loadProblemsForNode(node);
+				$scope.treeData[node.code] = node;
+			});
+		},
+		handleError);
+	}
 
+	function loadChildren(node) {
+		if (node.type != 'category')
+			console.error("Attempt to load children of a non-category node: " + node.code);
 
-	$scope.fetchCategories = function() {
-
-		$scope.fetchAllCategories();
-
-		loadUncategorised();
-
-		$http({
-			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$.each(response.data, function(index, value) {
+		foodDataReader.getCategoryContents(node.code, function(contents) {
+			$.each(contents.subcategories, function(index, value) {
 				value.type = 'category';
-				$scope.SharedData.treeData[value.code] = value;
-				problemChecker.getCategoryProblemsRecursive(value.code,
-					function(problems) { value.recursiveProblems = problems; },
-					function(response) { handleError(response);}
-				);
-			})
+				loadProblemsForNode(value);
+			});
 
-			$scope.SharedData.topLevelCategories = response.data;
+			$.each(contents.foods, function(index, value) {
+				value.type = 'food';
+				loadProblemsForNode(value);
+			});
 
-			fetchFoodGroups();
-
-			fetchNutrientTables();
-
-		}, function errorCallback(response) { handleError(response); });
+			node.children = contents.subcategories.concat(contents.foods);
+		},
+		handleError);
 	}
 
 	$scope.fetchAllCategories = function() {
-
-		loadUncategorised();
 
 		$http({
 			method: 'GET',
@@ -244,68 +261,53 @@ app.controller('ExplorerController',
 		}, function errorCallback(response) { handleError(response); });
 	}
 
-	$scope.nodeSelected = function($event, value) {
-		var node = $($event.target).parent();
+	$scope.uncategorisedFoodsExist = function() {
+		return $scope.uncategorisedFoods.length > 0;
+	}
 
-		$scope.selected_node = node;
+	function nodeClicked($event) {
+		var nodeAnchor = $($event.target).closest('a');
+		var nodeLi = nodeAnchor.parent();
 
-		// Move the selection highlight to the clicked node
+		// Selection highlight
+
 		$('.food-list ul li a').removeClass('active');
-		node.addClass('active');
+		nodeAnchor.addClass('active');
 
-		if (value.type == 'uncategorised') {
+		nodeLi.toggleClass('node-open');
+
+		return nodeLi.hasClass('node-open');
+	}
+
+	$scope.nodeSelected = function($event, node) {
+		var nodeOpen = nodeClicked($event);
+
+		if (nodeOpen && node.type == 'category')
+			loadChildren(node);
+
+		currentItem.setCurrentItem(node);
+
+
+
+
+/*		if (value.type == 'uncategorised') {
 
 		} else {
 			$scope.SharedData.currentItem = value;
 			$scope.SharedData.originalCode = value.code; // ? what's the originalCode for
-		}
+		}*/
 
 		// Refresh children if the node is about to be expanded
 		// No need to refresh if the node is being collapsed
-		if (!node.hasClass('node-open')) {
-				$scope.getChildren(value);
-		}
-
-		node.toggleClass('node-open');
+		//if (nodeOpen) {
+				//$scope.getChildren(value);
+		//}
 	}
 
-	$scope.fetchProperties = function() {
-
-		$('#properties-col').addClass('active');
-		$('input').removeClass('valid invalid');
-
-		var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode + '/definition' : api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode + '/definition';
-
-		$http({
-			method: 'GET',
-			url: api_endpoint,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			response.data.type = $scope.SharedData.currentItem.type;
-
-			$scope.SharedData.currentItem = response.data;
-
-			unpackCurrentItemService.broadcast();
-
-			if ($scope.SharedData.currentItem.type == 'category') {
-
-				fetchParentCategories('categories', $scope.SharedData.currentItem.code);
-				$('.properties-container').not('#category-properties-container').hide();
-
-				$('#category-properties-container').css({'display':'block'});
-
-			} else {
-
-				$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[response.data.groupCode];
-
-				fetchParentCategories('foods', $scope.SharedData.currentItem.code);
-				$('.properties-container').not('#food-properties-container').hide();
-
-				$('#food-properties-container').css({'display':'block'});
-			}
-
-		}, function errorCallback(response) { handleError(response); });
+	$scope.uncategorisedNodeSelected = function($event) {
+		if (nodeClicked($event)) {
+			reloadUncategorisedFoods();
+		}
 	}
 
 	$scope.copyEnglishMethods = function() {
@@ -325,44 +327,7 @@ app.controller('ExplorerController',
 		}, function errorCallback(response) { handleError(response); });
 	}
 
-	$scope.getChildren = function(value) {
-
-	  // This will remember the currentItem at the time of async HTTP request
-		// so that the correct node is updated
-		// FIXME: handle deletion
-		var currentItem = $scope.SharedData.currentItem;
-
-		$http({
-			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + value.code,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$.each(response.data.subcategories, function(index, value) {
-				value.type = 'category';
-				problemChecker.getCategoryProblemsRecursive(value.code,
-					function(problems) { value.recursiveProblems = problems; },
-					function(response) { handleError (response); }
-				);
-			});
-
-			$.each(response.data.foods, function(index, value) {
-				value.type = 'food';
-				problemChecker.getFoodProblems(value.code,
-					function(problems) { value.problems = problems; },
-					function(response) { handleError (response); }
-				);
-			});
-
-			var children = response.data.subcategories.concat(response.data.foods);
-
-			currentItem.children = children;
-
-			$scope.fetchProperties();
-		});
-	}
-
-	function fetchFoodGroups()
+		function fetchFoodGroups()
 	{
 		$http({
 			method: 'GET',
@@ -775,5 +740,9 @@ app.controller('ExplorerController',
 		console.log(response);
 		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
 	}
+
+	reloadRootCategories();
+
+	reloadUncategorisedFoods();
 
 }]);

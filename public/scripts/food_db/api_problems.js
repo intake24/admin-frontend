@@ -1,4 +1,4 @@
-angular.module('intake24.admin.foods.problemchecker', []).factory('ProblemChecker', ['$http', 'SharedData', function($http, sharedData) {
+angular.module('intake24.admin.food_db').factory('Problems', ['$http', 'SharedData', function($http, sharedData) {
 	return {
 		getCategoryProblemsRecursive: function(code, onSuccess, onFailure)
 		{

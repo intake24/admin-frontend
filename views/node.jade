@@ -5,5 +5,5 @@ a(ng-click='value.open = !value.open; nodeSelected($event, value)')
 	i(ng-class='nodeMarkerClass(value, #{lang_dir})' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='hasProblems(value)')
 	i(ng-class='nodeMarkerClass(value, #{lang_dir})' ng-if='!hasProblems(value)')
 	{{ value.englishDescription }}
-ul(ng-if='value.children' ng-model='SharedData.treeData')
+ul(ng-if='value.children')
 	li(ng-repeat='(index, value) in value.children | orderBy:["type", "englishDescription"]' ng-include='"node"')

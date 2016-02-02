@@ -3,7 +3,7 @@ var token = '';
 
 var showingFlashMessage = false;
 
-setInterval(function() {
+/*setInterval(function() {
 
   if (($(window).height() + $(window).scrollTop()) > ($('#food-list-col').height() + $('header').height())) {
     $('.view-toggle').fadeOut();
@@ -11,9 +11,9 @@ setInterval(function() {
     $('.view-toggle').fadeIn();
   }
 
-}, 500);
+}, 500);*/
 
-var app = angular.module('intake24.admin', ['ngCookies', 'ui.bootstrap', 'intake24.admin.foods.problemchecker']);
+var app = angular.module('intake24.admin', ['ngCookies', 'ui.bootstrap', 'intake24.admin.food_db']);
 
 app.service("fetchCategoriesService", function($rootScope) {
     this.broadcast = function() { $rootScope.$broadcast("fetchCategories")}

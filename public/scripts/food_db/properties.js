@@ -1,94 +1,157 @@
-// Transform (TransformController)
+/* Controller responsible for the property editor on the right-hand side of
+* the page
+*/
 
 angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', function ($scope, $http, currentItem, sharedData, foodDataReader) {
 
-	// Listen for boradcasts
-	//packCurrentItemService.listen(function(event, data) { packCurrentItem(); });
-	//unpackCurrentItemService.listen(function(event, data) { unpackCurrentItem(); });
+	$scope.sharedData = sharedData;
 
-	$scope.SharedData = sharedData;
+	// Currently selected item's header
+	// Used for reference and should not be changed in this controller
+	$scope.currentItem = null;
+
+	// Current state of the selected item's properties
+	// Loaded from the server when the currentItem changes,
+	// then bound to page controls and can be edited
+	$scope.itemDefinition = null;
+
+  // A snapshot of the initial parent categories state
+	// Loaded from the server when the currentItem changes
+	// Used to generate add/remove category API calls when the item is saved
+	$scope.currentParentCategories = null;
+
+	// Current state of the selected item's parent categories list
+	// Can be edited using the "Manage categories" drawer
+	$scope.parentCategories = null;
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
-		// this is just the basic header, useful data will go to currentItemDefinition
+		// This is just the basic header received from the tree control
+		// Editable data will be stored in itemDefinition
 		$scope.currentItem = newItem;
 		loadProperties();
+		loadParentCategories();
 	});
 
 	// Pack current item for server
-	function packItemDefinition(unpackedItem)
+	function packItemDefinition(unpacked)
 	{
-		var packedItem = Object();
+		var packed = Object();
 
-		packedItem.code = unpackedItem.code;
+		packed.code = unpacked.code;
 
-		unpackedItem.update_code = true; // What's this for?
+		unpacked.update_code = true; // What's this for?
 
 		// Ready meal option
-		if (unpackedItem.overrideReadyMealOption) {
-			packedItem.attributes.readyMealOption = Array(unpackedItem.booleanReadyMealOption);
+		if (unpacked.overrideReadyMealOption) {
+			packed.attributes.readyMealOption = Array(unpacked.booleanReadyMealOption);
 		} else {
-			packedItem.attributes.readyMealOption = Array();
+			packed.attributes.readyMealOption = Array();
 		}
 
 		// Same as before option
-		if (unpackedItem.overrideSameAsBeforeOption) {
-			packedItem.attributes.sameAsBeforeOption = Array(unpackedItem.booleanSameAsBeforeOption);
+		if (unpacked.overrideSameAsBeforeOption) {
+			packed.attributes.sameAsBeforeOption = Array(unpacked.booleanSameAsBeforeOption);
 		} else {
-			packedItem.attributes.sameAsBeforeOption = Array();
+			packed.attributes.sameAsBeforeOption = Array();
 		}
 
 		// Reasonable amount
-		if (unpackedItem.overrideReasonableAmount) {
-			packedItem.attributes.reasonableAmount = Array(unpackedItem.reasonableAmount);
+		if (unpacked.overrideReasonableAmount) {
+			packed.attributes.reasonableAmount = Array(unpacked.reasonableAmount);
 		} else {
-			packedItem.attributes.reasonableAmount = Array();
+			packed.attributes.reasonableAmount = Array();
 		}
 
-		packedItem.localData.portionSize = packPortionSizes(unpackedItem.portionSize);
+		packed.localData.portionSize = packPortionSizes(unpacked.portionSize);
+
+		return packed;
 	}
 
-	function unpackItemDefinition(packedItem)
+	function unpackOption(option) {
+		if (option.length == 1)
+			return { defined: true, value: option[0] };
+		else
+			return { defined: false, value: null };
+	}
+
+	function packOption(option) {
+		if (option.defined)
+			return [option.value];
+		else
+			return [];
+	}
+
+	function unpackCommonDefinitionFields(packed) {
+		var unpacked = Object();
+
+		unpacked.version = packed.version;
+		unpacked.code = packed.code;
+		unpacked.englishDescription = packed.englishDescription;
+
+		unpacked.attributes = Object();
+
+		unpacked.attributes.readyMealOption = unpackOption(packed.attributes.readyMealOption);
+		unpacked.attributes.sameAsBeforeOption = unpackOption(packed.attributes.sameAsBeforeOption);
+		unpacked.attributes.reasonableAmount = unpackOption(packed.attributes.reasonableAmount);
+
+		unpacked.localData = Object();
+
+		unpacked.localData.version = unpackOption(packed.localData.version);
+		unpacked.localData.localDescription = unpackOption(packed.localData.localDescription);
+
+		unpacked.localData.portionSize = unpackPortionSizes(packed.localData.portionSize);
+
+		return unpacked;
+	}
+
+	function unpackFoodDefinition(packed)
 	{
-		var unpackedItem = Object();
+		var unpacked = unpackCommonDefinitionFields(packed);
 
-		unpackedItem.code = packedItem.code;
+		unpacked.groupCode = packed.groupCode;
+		unpacked.localData.nutrientTableCodes = packed.localData.nutrientTableCodes;
 
-		// Ready meal option
-		if (packedItem.attributes.readyMealOption.length) {
-			unpackedItem.overrideReadyMealOption = true;
-			unpackedItem.booleanReadyMealOption = packedItem.attributes.readyMealOption[0];
-		} else {
-			unpackedItem.overrideReadyMealOption = false;
-			unpackedItem.booleanReadyMealOption = false;
-		}
+		return unpacked;
+	}
 
-		// Same as before option
-		if (packedItem.attributes.sameAsBeforeOption.length) {
-			unpackedItem.overrideSameAsBeforeOption = true;
-			unpackedItem.booleanSameAsBeforeOption = packedItem.attributes.sameAsBeforeOption[0];
-		} else {
-			unpackedItem.overrideSameAsBeforeOption = false;
-			unpackedItem.booleanSameAsBeforeOption = false;
-		}
+	function unpackCategoryDefinition(packed)
+	{
+		var unpacked = unpackCommonDefinitionFields(packed);
 
-		// Reasonable amount
-		if (packedItem.attributes.reasonableAmount.length) {
-			unpackedItem.overrideReasonableAmount = true;
-			unpackedItem.reasonableAmount = packedItem.attributes.reasonableAmount[0];
-		} else {
-			unpackedItem.overrideReasonableAmount = false;
-			unpackedItem.reasonableAmount = 0;
-		}
+		unpacked.isHidden = packed.isHidden;
 
-		unpackedItem.portionSize = unpackPortionSizes(packedItem.localData.portionSize);
+		return unpacked;
+	}
 
-		return unpackedItem;
+	function unpackCommonHeaderFields(packed)
+	{
+		var unpacked = Object();
+
+		unpacked.code = packed.code;
+		unpacked.englishDescription = packed.englishDescription;
+		unpacked.localDescription = unpackOption(packed.localDescription);
+
+		// Try to use local description but fall back to English if it is
+		// not defined
+		unpacked.displayName = unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription;
+
+		return unpacked;
+	}
+
+	function unpackCategoryHeader(packed)
+	{
+		var unpacked = unpackCommonHeaderFields(packed);
+		unpacked.isHidden = packed.isHidden;
+		return unpacked;
+	}
+
+	function unpackFoodHeader(packed)
+	{
+		return unpackCommonHeaderFields(packed);
 	}
 
 	function unpackPortionSizes(packedPortionSizes) {
 		return $.map(packedPortionSizes, function(index, portionSize) {
-
-			// console.log(portionSize);
 
 			var unpackedPortionSize = new Object();
 
@@ -324,31 +387,49 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			foodDataReader.getCategoryDefinition($scope.currentItem.code,
 				function(definition) {
 
-					$scope.currentItemDefinition = unpackItemDefinition(definition);
-					// fetchParentCategories('categories', $scope.SharedData.currentItem.code);
+					$scope.itemDefinition = unpackCategoryDefinition(definition);
 
-					console.log("PACKED");
+					/* console.log("PACKED");
 					console.log(definition);
 					console.log("UNPACKED");
-					console.log($scope.currentItemDefinition);
+					console.log($scope.itemDefinition);*/
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#category-properties-container').hide();
 					$('#category-properties-container').css({'display':'block'});
 				},
-				handleError
+				$scope.handleError
 			);
 		} else if ($scope.currentItem.type == 'food') {
 			foodDataReader.getFoodDefinition($scope.currentItem.code,
 				function(definition) {
-					$scope.currentItemDefinition = unpackItemDefinition(definition);
-					//fetchParentCategories('foods', $scope.SharedData.currentItem.code);
+					$scope.itemDefinition = unpackFoodDefinition(definition);
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
 					$('#food-properties-container').css({'display':'block'});
 				},
-				handleError
+				$scope.handleError
+			);
+		}
+	}
+
+	function loadParentCategories() {
+		if ($scope.currentItem.type == 'food') {
+			foodDataReader.getFoodParentCategories($scope.currentItem.code,
+				function(categories) {
+					$scope.currentParentCategories = $.map(categories, unpackFoodHeader);
+					$scope.parentCategories = $scope.currentParentCategories;
+				},
+				$scope.handleError
+			);
+		} else if ($scope.currentItem.type == 'category') {
+			foodDataReader.getCategoryParentCategories($scope.currentItem.code,
+				function(categories) {
+					$scope.currentParentCategories = $.map(categories, unpackCategoryHeader);
+					$scope.parentCategories = $scope.currentParentCategories;
+				},
+				$scope.handleError
 			);
 		}
 	}
@@ -396,7 +477,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 			hideDrawer();
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	$scope.setGuideImageSet = function(id, portionSize) {
@@ -421,7 +502,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 			hideDrawer();
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	$scope.setDrinkwareSet = function(id, portionSize) {
@@ -438,13 +519,28 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 			hideDrawer();
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	function handleError(response)
-	{
-		console.log(response);
-		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
+	$scope.localDescriptionGetOrSet = function(description) {
+		if (arguments.length == 1) {
+			if (description.length > 0) {
+				$scope.itemDefinition.localData.localDescription.defined = true;
+				$scope.itemDefinition.localData.localDescription.value = description;
+			} else {
+				$scope.itemDefinition.localData.localDescription.defined = false;
+				$scope.itemDefinition.localData.localDescription.value = null;
+			}
+		} else {
+			if ($scope.itemDefinition != null && $scope.itemDefinition.localData.localDescription.defined)
+				return $scope.itemDefinition.localData.localDescription.value;
+			else
+				return "";
+		}
 	}
+
+	// Export functions to child scopes
+
+	$scope.unpackCategoryHeader = unpackCategoryHeader;
 
 }]);

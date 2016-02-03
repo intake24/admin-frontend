@@ -1,12 +1,14 @@
-.drawer.drawer-narrow.no-padding.animated#drawer-manage-categories
+.drawer.drawer-narrow.no-padding.animated#drawer-manage-categories(ng-controller='CategoryManagerController')
 	#button-close-drawer.button-close-drawer
 		i.fa.fa-times
 	.drawer-title #{ gettext("Manage Categories") }
 	.drawer-content
 		.categories-container
-			input(type='text' ng-model='searchQuery' placeholder='#{ gettext("Search categories") }')
-			ul
-				li(ng-model='SharedData.allCategories' ng-repeat='category in SharedData.allCategories | categoryFilter: searchQuery | orderBy:englishDescription' ng-click='category.state = updateState(category.state)' ng-class='((category.state == "existing") || (category.state == "add")) ? "selected" : "unselected"') {{category.englishDescription}}
+			input(type='text' ng-model='searchQuery' ng-model-options='{getterSetter : true}' placeholder='#{ gettext("Search categories") }')
+			ul(ng-if="searchQuery()")
+				li(ng-repeat='category in searchResults | orderBy:"displayName"' ng-click='toggleParentCategory(category)' ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
+			ul(ng-if="!searchQuery()")
+				li(ng-repeat='category in fixedCategories | orderBy:"displayName"' ng-click='toggleParentCategory(category)' ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 
 	.drawer-footer
 		button(class="intake-btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Done") }

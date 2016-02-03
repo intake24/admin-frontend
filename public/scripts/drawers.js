@@ -28,12 +28,16 @@ function showDrawer(drawer_id) {
 	} else {
 		$('.drawer#' + drawer_id).show().removeClass('fadeOutLeft').addClass('fadeInLeft');
 	}
+
+	// Black magic to make sure Angular picks up object changes from non-Angular code
+	var scope = angular.element($('.drawer#' + drawer_id)).scope();
+	scope.$apply(function() { scope.onShow(); });
 }
 
 function hideDrawer() {
 
 	$('body').removeClass('drawer-open');
-	
+
 	if ($('html').attr('dir') == 'ltr') {
 		$('.drawer').removeClass('fadeInRight').addClass('fadeOutRight');
 	} else {

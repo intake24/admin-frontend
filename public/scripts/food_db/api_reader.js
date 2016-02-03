@@ -30,6 +30,18 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Sh
 
 		getFoodDefinition: function(code, onSuccess, onFailure) {
 			authApiCall('GET', 'foods/' + sharedData.locale.intake_locale + '/' + code + '/definition', onSuccess, onFailure);
+		},
+
+		getCategoryParentCategories: function(code, onSuccess, onFailure) {
+			authApiCall('GET', 'categories/' + sharedData.locale.intake_locale + '/' + code + '/parent-categories', onSuccess, onFailure);
+		},
+
+		getFoodParentCategories: function(code, onSuccess, onFailure) {
+			authApiCall('GET', 'foods/' + sharedData.locale.intake_locale + '/' + code + '/parent-categories', onSuccess, onFailure);
+		},
+
+		searchCategories: function(query, onSuccess, onFailure) {
+			authApiCall('GET', 'categories/' + sharedData.locale.intake_locale + '/search/' + query, onSuccess, onFailure);
 		}
 	};
 }]);

@@ -45,7 +45,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.portionSizes.as_served_image_sets = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 
 		// Get all guide image sets
 		$http({
@@ -56,7 +56,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.portionSizes.guide_image_sets = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 
 		// Get all guide image sets
 		$http({
@@ -67,7 +67,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.portionSizes.drinkware_sets = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	// Update items in the food list as they are modified
@@ -198,7 +198,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			$.each(foods, function (index, node) { node.type = 'food' })
 			$scope.uncategorisedFoods = foods;
 			},
-			handleError
+			$scope.handleError
 		);
 	}
 
@@ -206,12 +206,12 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		if (node.type == 'category') {
 			problems.getCategoryProblemsRecursive(node.code,
 				function(problems) { node.recursiveProblems = problems; },
-				function(response) { handleError(response);}
+				function(response) { $scope.handleError(response);}
 			);
 		} else if (node.type == 'food') {
 			problems.getFoodProblems(node.code,
 				function(problems) {node.problems = problems; },
-				function(response) { handleError (response); }
+				function(response) { $scope.handleError (response); }
 			);
 		}
 	}
@@ -225,7 +225,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				$scope.treeData[node.code] = node;
 			});
 		},
-		handleError);
+		$scope.handleError);
 	}
 
 	function loadChildren(node) {
@@ -245,7 +245,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			node.children = contents.subcategories.concat(contents.foods);
 		},
-		handleError);
+		$scope.handleError);
 	}
 
 	$scope.fetchAllCategories = function() {
@@ -258,7 +258,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.allCategories = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	$scope.uncategorisedFoodsExist = function() {
@@ -324,7 +324,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			unpackCurrentItemService.broadcast();
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 		function fetchFoodGroups()
@@ -337,7 +337,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.foodGroups = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	function fetchNutrientTables()
@@ -350,7 +350,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.nutrientTables = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	function fetchParentCategories(type, item_code)
@@ -377,17 +377,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			$scope.SharedData.currentItem.parentCategories = response.data;
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	$scope.updateState = function(state) {
 
-		var new_state = '';
-
-		if (state == "existing") { new_state = "remove"; } if (state == "remove") { new_state = "existing"; } if (state == "none") { new_state = "add"; } if (state == "add") { new_state = "none"; };
-
-		return new_state;
-	}
 
 	$scope.reloadCategories = function() {
 
@@ -732,10 +725,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				$(input).removeClass('valid').addClass('invalid');
 			}
 
-		}, function errorCallback(response) { handleError(response); });
+		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	function handleError(response)
+	$scope.handleError = function(response)
 	{
 		console.log(response);
 		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }

@@ -15,7 +15,7 @@ form(id='food-properties-form')
 		input(id='input-{{ nutrientTable.id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='currentItemDefinition.localData.nutrientTableCodes[nutrientTable.id]')
 	.input-wrapper
 		label #{ gettext("Food group") }
-		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.localDescription for fg in SharedData.foodGroups" data-ng-model="SharedData.selectedFoodGroup")
+		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
 
 .property
 	h3 #{ gettext("Attributes") }

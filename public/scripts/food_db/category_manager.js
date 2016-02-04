@@ -13,7 +13,7 @@
 * open.
 */
 
-angular.module('intake24.admin.food_db').controller('CategoryManagerController', ['$scope', 'FoodDataReader', function ($scope, foodDataReader) {
+angular.module('intake24.admin.food_db').controller('CategoryManagerController', ['$scope', 'FoodDataReader', 'Packer', function ($scope, foodDataReader, packer) {
 
 	// Backing variable for the currentSearch model getter/setter
 	var currentSearchQuery = null;
@@ -32,12 +32,15 @@ angular.module('intake24.admin.food_db').controller('CategoryManagerController',
 
 	function loadSearchResults() {
 		foodDataReader.searchCategories(currentSearchQuery, function(categories) {
-				$scope.searchResults = $.map(categories, $scope.unpackCategoryHeader);
+				$scope.searchResults = $.map(categories, packer.unpackCategoryHeader);
 			},
 			$scope.handleError
 		);
 	}
 
+	// This function is called from outside Angular code each time the drawer is
+	// opened to reset the controller.
+	// See scripts/drawer.js
 	$scope.onShow = function() {
 		$scope.fixedCategories = $scope.parentCategories;
 	}

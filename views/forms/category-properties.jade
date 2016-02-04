@@ -25,13 +25,13 @@
 		button.override-button(ng-click='itemDefinition.attributes.sameAsBeforeOption.defined = !itemDefinition.attributes.sameAsBeforeOption.defined')
 			span(ng-if='!(itemDefinition.attributes.sameAsBeforeOption.defined)') Override
 			span(ng-if='(itemDefinition.attributes.sameAsBeforeOption.defined)') Use inherited
-		input(ng-disabled='!itemDefinition.sameAsBeforeOption.defined' id='input-same-as-before-option' type='checkbox' ng-model='itemDefinition.sameAsBeforeOption.value')
+		input(ng-disabled='!itemDefinition.attributes.sameAsBeforeOption.defined' id='input-same-as-before-option' type='checkbox' ng-model='itemDefinition.attributes.sameAsBeforeOption.value')
 		label #{ gettext("Same as before option") }
 	.input-wrapper.overridable
-		button.override-button(ng-click='itemDefinition.attributes.reasonableAmountOption = !itemDefinition.attributes.reasonableAmountOption')
-			span(ng-if='!(itemDefinition.reasonableAmountOption.defined)') Override
-			span(ng-if='(itemDefinition.reasonableAmountOption.defined)') Use inherited
-		input(ng-disabled='!itemDefinition.attributes.reasonableAmountOption.defined' id='input-reasonable-amount' type='text' placeholder='#{ gettext("e.g. 600") }' style='min-width:60px; width:60px' ng-model='itemDefinition.attributes.reasonableAmountOption.value')
+		button.override-button(ng-click='itemDefinition.attributes.reasonableAmount.defined = !itemDefinition.attributes.reasonableAmount.defined')
+			span(ng-if='!(itemDefinition.attributes.reasonableAmount.defined)') Override
+			span(ng-if='(itemDefinition.attributes.reasonableAmount.defined)') Use inherited
+		input(ng-disabled='!itemDefinition.attributes.reasonableAmount.defined' id='input-reasonable-amount' type='text' placeholder='#{ gettext("e.g. 600") }' style='min-width:60px; width:60px' ng-model='itemDefinition.attributes.reasonableAmount.value')
 		label #{ gettext("Reasonable amount (g/ml)") }
 
 .property

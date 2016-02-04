@@ -2,7 +2,7 @@
 
 angular.module('intake24.admin.food_db').controller('ExplorerController',
 	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
-	function($scope, $http, sharedData, problems, currentItem, foodDataReader) {
+	'Packer',	function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer) {
 
 	// Listen for boradcasts
 	//fetchCategoriesService.listen(function(event, data) { $scope.fetchCategories(); });
@@ -213,14 +213,18 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				function(problems) {node.problems = problems; },
 				function(response) { $scope.handleError (response); }
 			);
+		} else {
+			console.error("Node has no type tag -- probably incorrect argument");
 		}
 	}
 
 	function reloadRootCategories() {
 		foodDataReader.getRootCategories( function(categories) {
 			$scope.treeData = {};
-			$.each(categories, function (index, node) {
-				node.type = 'category';
+
+			var unpacked = $.map(categories, packer.unpackCategoryHeader);
+
+			$.each(unpacked, function (index, node) {
 				loadProblemsForNode(node);
 				$scope.treeData[node.code] = node;
 			});
@@ -233,17 +237,13 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			console.error("Attempt to load children of a non-category node: " + node.code);
 
 		foodDataReader.getCategoryContents(node.code, function(contents) {
-			$.each(contents.subcategories, function(index, value) {
-				value.type = 'category';
-				loadProblemsForNode(value);
-			});
+			var subcategories = $.map(contents.subcategories, packer.unpackCategoryHeader);
+			var foods = $.map(contents.foods, packer.unpackFoodHeader);
+			var children = subcategories.concat(foods);
 
-			$.each(contents.foods, function(index, value) {
-				value.type = 'food';
-				loadProblemsForNode(value);
-			});
+			$.each(children, function (index, node) { loadProblemsForNode(node); });
 
-			node.children = contents.subcategories.concat(contents.foods);
+			node.children = children;
 		},
 		$scope.handleError);
 	}

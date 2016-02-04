@@ -3,21 +3,21 @@
 .input-wrapper
 	label #{ gettext("Serving image set") }
 	.inline-link(onClick='showDrawer("drawer-served-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
-		span(ng-if='!portionSize.selected_serving_image_set.description')
+		span(ng-if='!portionSize.parameters.serving_image_set')
 			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.selected_serving_image_set.description != ""')
-			{{ portionSize.selected_serving_image_set.description }}
+		span(ng-if='portionSize.parameters.serving_image_set')
+			{{ portionSize.parameters.serving_image_set }}
 .input-wrapper
 	label #{ gettext("Use leftover images") }
-	input(type='checkbox' ng-model='portionSize.useLeftoverImages')
+	input(type='checkbox' ng-model='portionSize.parameters.useLeftoverImages')
 
 .input-wrapper
 	label #{ gettext("Leftover image set") }
 	.inline-link(onClick='showDrawer("drawer-leftovers-image-set")' ng-click='SharedData.currentPortionSize = portionSize') 
-		span(ng-if='!portionSize.selected_leftovers_image_set.description')
+		span(ng-if='!portionSize.parameters.leftovers_image_set')
 			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.selected_leftovers_image_set.description != ""')
-			{{ portionSize.selected_leftovers_image_set.description }}
+		span(ng-if='portionSize.parameters.leftovers_image_set')
+			{{ portionSize.parameters.leftovers_image_set }}
 .clearfloat
 
 //- Drawers

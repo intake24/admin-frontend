@@ -9,7 +9,7 @@
 		.column
 			.unit-cell #{ gettext("Omit food description") }
 		.clearfloat
-	.row(ng-model='portionSize.temp.parameters' ng-repeat='unit in portionSize.temp.parameters')
+	.row(ng-repeat='unit in portionSize.parameters')
 		.column
 			.unit-cell
 				input(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
@@ -20,13 +20,13 @@
 			.unit-cell
 				input(type='checkbox' ng-model='unit.omitFoodDescription')
 		.clearfloat
-		.delete-unit(ng-click='removeItem(portionSize.temp.parameters, $index)')
+		.delete-unit(ng-click='removeItem(portionSize.parameters, $index)')
 				i.fa.fa-minus-circle
 
 .intake-btn.hidden
 	span #{ gettext("Move up") }
 .intake-btn.hidden
 	span #{ gettext("Move down") }
-.intake-btn(ng-click='portionSize.temp.parameters.push({name:"", value:"", omitFoodDescription:false})')
+.intake-btn(ng-click='portionSize.parameters.push({name:"", value:"", omitFoodDescription:false})')
 	span #{ gettext("Add unit") }
 .clearfloat

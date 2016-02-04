@@ -1,6 +1,7 @@
 .property
 	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-model='itemDefinition.localData.portionSize' ng-repeat='portionSize in itemDefinition.localData.portionSize')
+	.input-wrapper(ng-repeat='portionSize in itemDefinition.localData.portionSize')
+		{{ portionSize }}
 		.portion-size-method
 			.input-wrapper
 				label #{ gettext("Description") }

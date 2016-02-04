@@ -160,19 +160,23 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 	}
 
 	instance.unpackPortionSizes = function(packedPortionSizes) {
-		return $.map(packedPortionSizes, function(index, portionSize) {
 
-			var unpackedPortionSize = new Object();
+		return $.map(packedPortionSizes, function(packed) {
 
-			unpackedPortionSize.method = portionSize.method;
+			var unpacked = {
+				method: packed.method,
+				description: packed.description,
+				imageUrl: packed.imageUrl,
+				useForRecipes: packed.useForRecipes
+			};
 
-			switch (portionSize.method) {
+			switch (packed.method) {
 
 				case "standard-portion":
 
-					unpackedPortionSize.parameters = [];
+					unpacked.parameters = [];
 
-					$.each(portionSize.parameters, function(index, parameter) {
+					$.each(packed.parameters, function(index, parameter) {
 
 						var name = parameter.name;
 						var indexArray = name.match(/\d+/);
@@ -181,14 +185,14 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 						if (indexArray) {
 							index = indexArray[0];
 
-							if (!unpackedPortionSize.parameters[index]) { unpackedPortionSize.parameters[index] = new Object(); }
+							if (!unpacked.parameters[index]) { unpacked.parameters[index] = new Object(); }
 
 							if (parameter.name.indexOf("name") > -1) {
-								unpackedPortionSize.parameters[index].name = parameter.value; // name
+								unpacked.parameters[index].name = parameter.value; // name
 							} else if (parameter.name.indexOf("weight") > -1) {
-								unpackedPortionSize.parameters[index].value = parameter.value; // value
+								unpacked.parameters[index].value = parameter.value; // value
 							} else if (parameter.name.indexOf("omit-food-description") > -1) {
-								unpackedPortionSize.parameters[index].omitFoodDescription = (parameter.value == "true") ? true : false; // omit food description
+								unpacked.parameters[index].omitFoodDescription = (parameter.value == "true") ? true : false; // omit food description
 							}
 						};
 					})
@@ -196,12 +200,12 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "guide-image":
 
-				unpackedPortionSize.parameters = new Object();
+				unpacked.parameters = new Object();
 
-					$.each(portionSize.parameters, function(index, param) {
+					$.each(packed.parameters, function(index, param) {
 						if (param.name == 'guide-image-id') {
-							unpackedPortionSize.parameters.guide_image_id = param.value;
-							//$scope.setGuideImageSet(value.value, portionSize);
+							unpacked.parameters.guide_image_id = param.value;
+							//$scope.setGuideImageSet(value.value, packed);
 						}
 					});
 
@@ -209,17 +213,20 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "as-served":
 
-				unpackedPortionSize.parameters = new Object();
+				unpacked.parameters = new Object();
 
-					$.each(portionSize.parameters, function(index, param) {
+					$.each(packed.parameters, function(index, param) {
+
+						unpacked.parameters.useLeftoverImages = false;
 
 						if (param.name == 'serving-image-set') {
-							unpackedPortionSize.parameters.serving_image_set = param.value;
+							unpacked.parameters.serving_image_set = param.value;
 						} else if (param.name == 'leftovers-image-set') {
-							unpackedPortionSize.parameters.leftovers_image_set = param.value;
+							unpacked.parameters.leftovers_image_set = param.value;
+							unpacked.parameters.useLeftoverImages = true;
 						}
 
-						//$scope.setAsServedImageSet(value.value, 'serving', portionSize);
+						//$scope.setAsServedImageSet(value.value, 'serving', packed);
 
 					});
 
@@ -227,18 +234,18 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "drink-scale":
 
-					unpackedPortionSize.parameters = new Object();
+					unpacked.parameters = new Object();
 
-					$.each(portionSize.parameters, function(index, param) {
+					$.each(packed.parameters, function(index, param) {
 
 						console.log(value);
 
 						if (param.name == 'drinkware-id') {
-							// $scope.setDrinkwareSet(value.value, portionSize);
+							// $scope.setDrinkwareSet(value.value, packed);
 						} else if (param.name == 'initial-fill-level') {
-							unpackedPortionSize.parameters.initial_fill_level = value.value;
+							unpacked.parameters.initial_fill_level = value.value;
 						} else if (param.name == 'skip-fill-level') {
-							unpackedPortionSize.parameters.skip_fill_level = (value.value == "true") ? true : false;
+							unpacked.parameters.skip_fill_level = (value.value == "true") ? true : false;
 						}
 
 					});
@@ -247,12 +254,12 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "cereal":
 
-					unpackedPortionSize.parameters = new Object();
+					unpacked.parameters = new Object();
 
-					$.each(portionSize.parameters, function(index, param) {
+					$.each(packed.parameters, function(index, param) {
 
 						if (param.name == 'type') {
-							unpackedPortionSize.parameters.cereal_type = value.value;
+							unpacked.parameters.cereal_type = value.value;
 						}
 
 					});
@@ -263,11 +270,11 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					break;
 
 				default:
-					console.log("Other portion size method: " + portionSize.method);
+					console.log("Other portion size method: " + packed.method);
 					break;
 			}
 
-			return unpackedPortionSize;
+			return unpacked;
 		});
 	};
 
@@ -352,7 +359,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 								value: value.toString()
 							});
 						}
-
+x
 					})
 
 					break;

@@ -43,15 +43,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		if ($scope.currentItem.type == 'category') {
 			foodDataReader.getCategoryDefinition($scope.currentItem.code,
 				function(definition) {
-
 					$scope.itemDefinition = packer.unpackCategoryDefinition(definition);
-
-					console.log($scope.itemDefinition);
-
-					/* console.log("PACKED");
-					console.log(definition);
-					console.log("UNPACKED");
-					console.log($scope.itemDefinition);*/
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#category-properties-container').hide();
@@ -63,8 +55,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			foodDataReader.getFoodDefinition($scope.currentItem.code,
 				function(definition) {
 					$scope.itemDefinition = packer.unpackFoodDefinition(definition);
-
-					console.log($scope.itemDefinition);
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
@@ -98,7 +88,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	function reloadFoodGroups() {
 		foodDataReader.getFoodGroups(function(groups) {
 			$scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
-			console.log($scope.foodGroups);
 		},
 		$scope.handleError);
 	}

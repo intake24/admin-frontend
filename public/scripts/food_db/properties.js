@@ -24,7 +24,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	// Can be edited using the "Manage categories" drawer
 	$scope.parentCategories = null;
 
-	// Food groups list. Loaded once on controller instantiation.
+	// List of all food groups. Loaded once on controller instantiation.
 	$scope.foodGroups = null;
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -46,6 +46,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 					$scope.itemDefinition = packer.unpackCategoryDefinition(definition);
 
+					console.log($scope.itemDefinition);
+
 					/* console.log("PACKED");
 					console.log(definition);
 					console.log("UNPACKED");
@@ -61,6 +63,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			foodDataReader.getFoodDefinition($scope.currentItem.code,
 				function(definition) {
 					$scope.itemDefinition = packer.unpackFoodDefinition(definition);
+
+					console.log($scope.itemDefinition);
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
@@ -94,6 +98,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	function reloadFoodGroups() {
 		foodDataReader.getFoodGroups(function(groups) {
 			$scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
+			console.log($scope.foodGroups);
 		},
 		$scope.handleError);
 	}
@@ -186,7 +191,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	$scope.localDescriptionGetOrSet = function(description) {
+	$scope.localDescriptionModel = function(description) {
 		if (arguments.length == 1) {
 			if (description.length > 0) {
 				$scope.itemDefinition.localData.localDescription.defined = true;

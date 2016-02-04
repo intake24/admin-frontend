@@ -1,97 +1,16 @@
 form(id='food-properties-form')
 .property
 	h3 #{ gettext("Definition") }
-	.input-wrapper
-		label #{ gettext("Description") }
-		input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("e.g. Beans on toast") }' ng-model='currentItemDefinition.englishDescription')
-	.input-wrapper(ng-hide='SharedData.locale.intake_locale=="en_GB"')
-		label #{ gettext("Local Description") }
-		input(id='input-food-localeDescription' type='text' ng-model='currentItemDefinition.localData.localDescription[0]')
-	.input-wrapper
-		label #{ gettext("Intake24 code") }
-		input(id='input-food-code' type='text' placeholder='#{ gettext("e.g. ALBU") }' ng-model='currentItemDefinition.code')
-	.input-wrapper(ng-repeat='nutrientTable in SharedData.nutrientTables')
+	include basic-fields
+	.input-wrapper(ng-repeat='nutrientTable in itemDefinition.localData.nutrientTableCodes')
 		label {{ nutrientTable.id }}
-		input(id='input-{{ nutrientTable.id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='currentItemDefinition.localData.nutrientTableCodes[nutrientTable.id]')
+		input(id='input-{{ nutrientTable.id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='itemDefinition.localData.nutrientTableCodes[nutrientTable.id]')
 	.input-wrapper
 		label #{ gettext("Food group") }
-		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
+		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
 
-.property
-	h3 #{ gettext("Attributes") }
-	.input-wrapper.overridable
-		button.override-button(ng-click='currentItemDefinition.overrideReadyMealOption = !currentItemDefinition.overrideReadyMealOption')
-			span(ng-if='!(currentItemDefinition.overrideReadyMealOption)') Override
-			span(ng-if='(currentItemDefinition.overrideReadyMealOption)') Use inherited
-		input(ng-disabled='!currentItemDefinition.overrideReadyMealOption' id='input-ready-meal-option' type='checkbox' ng-model='currentItemDefinition.booleanReadyMealOption')
-		label #{ gettext("Ready meal option") }
-	.input-wrapper.overridable
-		button.override-button(ng-click='currentItemDefinition.overrideSameAsBeforeOption = !currentItemDefinition.overrideSameAsBeforeOption')
-			span(ng-if='!(currentItemDefinition.overrideSameAsBeforeOption)') Override
-			span(ng-if='(currentItemDefinition.overrideSameAsBeforeOption)') Use inherited
-		input(ng-disabled='!currentItemDefinition.overrideSameAsBeforeOption' id='input-same-as-before-option' type='checkbox' ng-model='currentItemDefinition.booleanSameAsBeforeOption')
-		label #{ gettext("Same as before option") }
-	.input-wrapper.overridable
-		button.override-button(ng-click='currentItemDefinition.overrideReasonableAmount = !currentItemDefinition.overrideReasonableAmount')
-			span(ng-if='!(currentItemDefinition.overrideReasonableAmount)') Override
-			span(ng-if='(currentItemDefinition.overrideReasonableAmount)') Use inherited
-		input(ng-disabled='!currentItemDefinition.overrideReasonableAmount' id='input-reasonable-amount' type='text' placeholder='#{ gettext("e.g. 600") }' style='min-width:60px; width:60px' ng-model='currentItemDefinition.reasonableAmount')
-		label #{ gettext("Reasonable amount (g/ml)") }
+include inheritable-properties
 
-.property
-	h3 #{ gettext("Categories") }
-	.categories-container
-		ul(ng-model='SharedData.topLevelCategories' ng-repeat='parentCategory in SharedData.topLevelCategories | selectedCategoryFilter')
-			li {{parentCategory.englishDescription}}
+include parent-categories
 
-	.input-wrapper
-		.intake-btn.success(onClick='showDrawer("drawer-manage-categories")')
-			span #{ gettext("Manage categories") }
-		.clearfloat
-
-.property
-	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-model='currentItemDefinition.localData.portionSize' ng-repeat='portionSize in currentItemDefinition.localData.portionSize')
-		.portion-size-method
-			.input-wrapper
-				label #{ gettext("Description") }
-				input(placeholder='#{ gettext("Description") }' ng-model='portionSize.description')
-			.input-wrapper
-				label #{ gettext("Image") }
-				input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
-			.input-wrapper
-				label #{ gettext("Use for recipes") }
-				input(type='checkbox' ng-model='portionSize.useForRecipes')
-			.input-wrapper
-				label #{ gettext("Estimation method") }
-				select(class='estimation-method-dropdown' id='estimation-method-dropdown' data-ng-model="portionSize.method")
-					option(ng-repeat="estimationMethod in SharedData.estimationMethods" value="{{estimationMethod.slug}}") {{estimationMethod.name}}
-
-			.as-served(ng-if='portionSize.method == "as-served"')
-				include portion-size-methods/as-served
-			.guide-image(ng-if='portionSize.method == "guide-image"')
-				include portion-size-methods/guide-image
-			.drink-scale(ng-if='portionSize.method == "drink-scale"')
-				include portion-size-methods/drink-scale
-			.standard-portion(ng-if='portionSize.method == "standard-portion"')
-				include portion-size-methods/standard-portion
-			.cereal(ng-if='portionSize.method == "cereal"')
-				include portion-size-methods/cereal
-			.milk-on-cereal(ng-if='portionSize.method == "milk-on-cereal"')
-				include portion-size-methods/milk-on-cereal
-			.milk-on-cereal(ng-if='portionSize.method == "milk-in-a-hot-drink"')
-				include portion-size-methods/milk-in-a-hot-drink
-			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
-				include portion-size-methods/pizza
-
-			.intake-btn.danger(ng-click='deletePortionSize(currentItemDefinition.localData.portionSize, $index)')
-				span #{ gettext("Delete this method") }
-			.clearfloat
-				
-
-	.input-wrapper
-		.intake-btn.success(ng-click='addPortionSize(currentItemDefinition.localData.portionSize)')
-			span #{ gettext("Add a portion size method") }
-		.intake-btn.success(ng-hide='SharedData.locale.intake_locale=="en_GB"' ng-click='copyEnglishMethods()')
-			span #{ gettext("Copy English methods") }
-		.clearfloat
+include portion-size

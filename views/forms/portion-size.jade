@@ -1,24 +1,4 @@
 .property
-	h3 #{ gettext("Definition") }
-	include basic-fields
-	.input-wrapper
-		label #{ gettext("Hidden") }
-		input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.isHidden')
-
-include inheritable-properties
-
-.property
-	h3 #{ gettext("Categories") }
-	.categories-container
-		ul(ng-repeat='category in parentCategories | orderBy:"displayName"')
-			li {{category.displayName}}
-
-	.input-wrapper
-		.intake-btn.success(onClick='showDrawer("drawer-manage-categories")')
-			span #{ gettext("Manage categories") }
-		.clearfloat
-
-.property
 	h3 #{ gettext("Portion size estimation") }
 	.input-wrapper(ng-model='itemDefinition.localData.portionSize' ng-repeat='portionSize in itemDefinition.localData.portionSize')
 		.portion-size-method

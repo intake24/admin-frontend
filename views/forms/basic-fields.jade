@@ -1,0 +1,9 @@
+.input-wrapper
+	label #{ gettext("Description") }
+	input(id='input-food-englishDescription' type='text' placeholder='#{ gettext("e.g. Beans on toast") }' ng-model='itemDefinition.englishDescription')
+.input-wrapper(ng-hide='SharedData.locale.intake_locale=="en_GB"')
+	label #{ gettext("Local Description") }
+	input(id='input-food-localeDescription' type='text' ng-model='localDescriptionModel' ng-model-options='{ getterSetter : true }')
+.input-wrapper
+	label #{ gettext("Intake24 code") }
+	input(id='input-category-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='itemDefinition.code')

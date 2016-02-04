@@ -1,0 +1,10 @@
+.property
+	h3 #{ gettext("Categories") }
+	.categories-container
+		ul(ng-repeat='category in parentCategories | orderBy:"displayName"')
+			li {{category.displayName}}
+
+	.input-wrapper
+		.intake-btn.success(onClick='showDrawer("drawer-manage-categories")')
+			span #{ gettext("Manage categories") }
+		.clearfloat

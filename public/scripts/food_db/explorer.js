@@ -664,18 +664,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });
 	}
 
-	$scope.removeItem = function(array, index) {
-	    array.splice(index, 1);
-	}
-
-	$scope.addPortionSize = function(array) {
-		array.push({description:'', imageUrl:'', useForRecipes:false, parameters:[]});
-	}
-
-	$scope.deletePortionSize = function(array, index) {
-		array.splice(index, 1);
-	}
-
 	function addFoodToCategory(food_code, category_code)
 	{
 		$http({

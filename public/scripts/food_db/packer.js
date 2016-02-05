@@ -205,7 +205,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					$.each(packed.parameters, function(index, param) {
 						if (param.name == 'guide-image-id') {
 							unpacked.parameters.guide_image_id = param.value;
-							//$scope.setGuideImageSet(value.value, packed);
 						}
 					});
 
@@ -223,8 +222,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 							unpacked.parameters.leftovers_image_set = param.value;
 							unpacked.parameters.useLeftoverImages = true;
 						}
-
-						//$scope.setAsServedImageSet(value.value, 'serving', packed);
 
 					});
 

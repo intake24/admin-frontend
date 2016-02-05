@@ -161,7 +161,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 				if (!portionSize.cachedParameters)
 					portionSize.cachedParameters = {};
-				portionSize.cachedParameters[portionSize.method] = portionSize.parameters;
+
+				// Ignore default undefined selection
+				if (portionSize.method)
+					portionSize.cachedParameters[portionSize.method] = portionSize.parameters;
 
 				if (portionSize.cachedParameters[new_method_id])
 					portionSize.parameters = portionSize.cachedParameters[new_method_id];
@@ -188,8 +191,13 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.showAsServedImageSetDrawer = function(resultObj, resultField) {
-		$scope.$broadcast("intake24.admin.food_db.AsServedSetDrawerOpened", resultObj, resultField)
+		$scope.$broadcast("intake24.admin.food_db.AsServedSetDrawerOpened", resultObj, resultField);
 		drawers.showDrawer("drawer-as-served-image-set");
+	}
+
+	$scope.showGuideImageDrawer = function(resultObj, resultField) {
+		$scope.$broadcast("intake24.admin.food_db.GuideImageDrawerOpened", resultObj, resultField);
+		drawers.showDrawer("drawer-guide-image");
 	}
 
 	$scope.removeItem = function(array, index) {

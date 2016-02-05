@@ -48,6 +48,10 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Sh
 			authApiCall('GET', 'portion-size/as-served', onSuccess, onFailure);
 		},
 
+		getGuideImages: function(onSuccess, onFailure) {
+			authApiCall('GET', 'portion-size/guide-image', onSuccess, onFailure);
+		},
+
 		searchCategories: function(query, onSuccess, onFailure) {
 			authApiCall('GET', 'categories/' + sharedData.locale.intake_locale + '/search/' + query, onSuccess, onFailure);
 		}

@@ -1,23 +1,8 @@
-//- Incomplete
-
 .input-wrapper
 	label #{ gettext("Guide image") }
-	.inline-link(onClick='showDrawer("drawer-guide-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
-		span(ng-if='!portionSize.selected_guide_image_set.id')
+	.inline-link(ng-click='showGuideImageDrawer(portionSize.parameters, "guide_image_id")')
+		span(ng-if='!portionSize.parameters.guide_image_id')
 			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.selected_guide_image_set.id != ""')
-			{{ portionSize.selected_guide_image_set.id }}
+		span(ng-if='portionSize.parameters.guide_image_id')
+			{{ portionSize.parameters.guide_image_id }}
 .clearfloat
-
-//- Drawers
-
-.drawer.drawer-narrow.no-padding.animated#drawer-guide-image-set
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Image Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setGuideImageSet(guide_image_set.id, SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.guide_image_sets' ng-repeat='guide_image_set in SharedData.portionSizes.guide_image_sets | guideImageFilter:query | orderBy: "id"')
-					{{ guide_image_set.id }}

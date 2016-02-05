@@ -9,7 +9,7 @@
 		.column
 			.unit-cell #{ gettext("Omit food description") }
 		.clearfloat
-	.row(ng-repeat='unit in portionSize.parameters')
+	.row(ng-repeat='unit in portionSize.parameters.units')
 		.column
 			.unit-cell
 				input(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
@@ -27,6 +27,6 @@
 	span #{ gettext("Move up") }
 .intake-btn.hidden
 	span #{ gettext("Move down") }
-.intake-btn(ng-click='portionSize.parameters.push({name:"", value:"", omitFoodDescription:false})')
+.intake-btn(ng-click='portionSize.parameters.units.push({name:"", value:"", omitFoodDescription:false})')
 	span #{ gettext("Add unit") }
 .clearfloat

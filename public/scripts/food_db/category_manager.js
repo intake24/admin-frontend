@@ -38,12 +38,9 @@ angular.module('intake24.admin.food_db').controller('CategoryManagerController',
 		);
 	}
 
-	// This function is called from outside Angular code each time the drawer is
-	// opened to reset the controller.
-	// See scripts/drawer.js
-	$scope.onShow = function() {
+	$scope.$on("intake24.admin.food_db.CategoryManagerDrawerOpened", function(event) {
 		$scope.fixedCategories = $scope.parentCategories;
-	}
+	});
 
 	$scope.toggleParentCategory = function(categoryHeader) {
 		// Try to remove the category first

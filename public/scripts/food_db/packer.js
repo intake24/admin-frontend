@@ -170,11 +170,13 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 				useForRecipes: packed.useForRecipes
 			};
 
+			unpacked.parameters = {};
+
 			switch (packed.method) {
 
 				case "standard-portion":
 
-					unpacked.parameters = [];
+					unpacked.parameters.units = [];
 
 					$.each(packed.parameters, function(index, parameter) {
 
@@ -185,22 +187,20 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 						if (indexArray) {
 							index = indexArray[0];
 
-							if (!unpacked.parameters[index]) { unpacked.parameters[index] = new Object(); }
+							if (!unpacked.parameters.units[index]) { unpacked.parameters.units[index] = new Object(); }
 
 							if (parameter.name.indexOf("name") > -1) {
-								unpacked.parameters[index].name = parameter.value; // name
+								unpacked.parameters.units[index].name = parameter.value; // name
 							} else if (parameter.name.indexOf("weight") > -1) {
-								unpacked.parameters[index].value = parameter.value; // value
+								unpacked.parameters.units[index].value = parameter.value; // value
 							} else if (parameter.name.indexOf("omit-food-description") > -1) {
-								unpacked.parameters[index].omitFoodDescription = (parameter.value == "true") ? true : false; // omit food description
+								unpacked.parameters.units[index].omitFoodDescription = (parameter.value == "true") ? true : false; // omit food description
 							}
 						};
 					})
 					break;
 
 				case "guide-image":
-
-				unpacked.parameters = new Object();
 
 					$.each(packed.parameters, function(index, param) {
 						if (param.name == 'guide-image-id') {
@@ -212,8 +212,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					break;
 
 				case "as-served":
-
-				unpacked.parameters = new Object();
 
 					$.each(packed.parameters, function(index, param) {
 
@@ -234,8 +232,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "drink-scale":
 
-					unpacked.parameters = new Object();
-
 					$.each(packed.parameters, function(index, param) {
 
 						console.log(value);
@@ -253,8 +249,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					break;
 
 				case "cereal":
-
-					unpacked.parameters = new Object();
 
 					$.each(packed.parameters, function(index, param) {
 

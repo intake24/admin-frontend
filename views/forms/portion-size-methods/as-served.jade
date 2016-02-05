@@ -2,7 +2,7 @@
 
 .input-wrapper
 	label #{ gettext("Serving image set") }
-	.inline-link(onClick='showDrawer("drawer-served-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
+	.inline-link(ng-click='showAsServedImageSetDrawer(portionSize.parameters, "serving_image_set")')
 		span(ng-if='!portionSize.parameters.serving_image_set')
 			p #{ gettext("Select image set") }
 		span(ng-if='portionSize.parameters.serving_image_set')
@@ -13,33 +13,9 @@
 
 .input-wrapper
 	label #{ gettext("Leftover image set") }
-	.inline-link(onClick='showDrawer("drawer-leftovers-image-set")' ng-click='SharedData.currentPortionSize = portionSize') 
+	.inline-link(ng-click='showAsServedImageSetDrawer(portionSize.parameters, "leftovers_image_set")')
 		span(ng-if='!portionSize.parameters.leftovers_image_set')
 			p #{ gettext("Select image set") }
 		span(ng-if='portionSize.parameters.leftovers_image_set')
 			{{ portionSize.parameters.leftovers_image_set }}
 .clearfloat
-
-//- Drawers
-
-.drawer.drawer-narrow.no-padding.animated#drawer-served-image-set
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Image Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setAsServedImageSet(as_served_image_set.id, "serving", SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets | asServedFilter:query | orderBy:description')
-					{{ as_served_image_set.description }}
-
-.drawer.drawer-narrow.no-padding.animated#drawer-leftovers-image-set
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Image Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setAsServedImageSet(as_served_image_set.id, "leftovers", SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.as_served_image_sets' ng-repeat='as_served_image_set in SharedData.portionSizes.as_served_image_sets | asServedFilter:query | orderBy:description')
-					{{ as_served_image_set.description }}

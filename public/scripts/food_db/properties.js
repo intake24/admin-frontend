@@ -2,7 +2,7 @@
 * the page
 */
 
-angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'Packer', function ($scope, $http, currentItem, sharedData, foodDataReader, packer) {
+angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, packer, drawers) {
 
 	$scope.sharedData = sharedData;
 
@@ -92,52 +92,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		$scope.handleError);
 	}
 
-	$scope.setAsServedImageSet = function(id, type, portionSize) {
-
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/as-served/' + id,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			switch (type) {
-
-				case 'serving':
-					portionSize.selected_serving_image_set = response.data;
-
-					var found = false;
-
-					$.each(portionSize.parameters, function(index, value) {
-
-						if (value.name == 'serving-image-set') { value.value = response.data.id; found = true; }
-
-					});
-
-					if (!found) { portionSize.parameters.push({name: 'serving-image-set', value: response.data.id}); };
-
-					break;
-
-				case 'leftovers':
-					portionSize.selected_leftovers_image_set = response.data;
-
-					var found = false;
-
-					$.each(portionSize.parameters, function(index, value) {
-
-						if (value.name == 'leftovers-image-set') { value.value = response.data.id; found = true; }
-
-					});
-
-					if (!found) { portionSize.parameters.push({name: 'leftovers-image-set', value: response.data.id}); };
-
-					break;
-			}
-
-			hideDrawer();
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-	}
-
 	$scope.setGuideImageSet = function(id, portionSize) {
 
 		$http({
@@ -195,6 +149,59 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			else
 				return "";
 		}
+	}
+
+	$scope.portionSizeMethodModel = function(portionSize) {
+		return function(new_method_id) {
+			if (arguments.length == 0) {
+				return portionSize.method;
+			} else {
+				// Remember current parameters so that data isn't lost when user
+				// switches portion size methods
+
+				if (!portionSize.cachedParameters)
+					portionSize.cachedParameters = {};
+				portionSize.cachedParameters[portionSize.method] = portionSize.parameters;
+
+				if (portionSize.cachedParameters[new_method_id])
+					portionSize.parameters = portionSize.cachedParameters[new_method_id];
+				else {
+					// Use default parameters
+					var parameters = { description : "", useForRecipes : false, imageUrl : "images/placeholder.jpg" }
+
+					// Add method-specific default parameters if required
+					switch(new_method_id) {
+						case "as-served": parameters.useLeftoverImages = false; break;
+						case "standard-portion": parameters.units = []; break;
+						default: break;
+					}
+					portionSize.parameters = parameters;
+				}
+				portionSize.method = new_method_id;
+			}
+		}
+	}
+
+	$scope.showParentCategoriesDrawer = function() {
+		$scope.$broadcast("intake24.admin.food_db.CategoryManagerDrawerOpened");
+		drawers.showDrawer("drawer-manage-categories");
+	}
+
+	$scope.showAsServedImageSetDrawer = function(resultObj, resultField) {
+		$scope.$broadcast("intake24.admin.food_db.AsServedSetDrawerOpened", resultObj, resultField)
+		drawers.showDrawer("drawer-as-served-image-set");
+	}
+
+	$scope.removeItem = function(array, index) {
+		array.splice(index, 1);
+	}
+
+	$scope.addPortionSize = function(array) {
+		array.push({description:'', imageUrl:'', useForRecipes:false, parameters:{}});
+	}
+
+	$scope.deletePortionSize = function(array, index) {
+		array.splice(index, 1);
 	}
 
 	reloadFoodGroups();

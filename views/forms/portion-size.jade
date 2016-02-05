@@ -14,7 +14,8 @@
 				input(type='checkbox' ng-model='portionSize.useForRecipes')
 			.input-wrapper
 				label #{ gettext("Estimation method") }
-				select(class='estimation-method-dropdown' id='estimation-method-dropdown' data-ng-model="portionSize.method")
+
+				select(class='estimation-method-dropdown' id='estimation-method-dropdown' ng-model="portionSizeMethodModel(portionSize)" ng-model-options="{getterSetter : true}")
 					option(ng-repeat="estimationMethod in sharedData.estimationMethods" value="{{estimationMethod.slug}}") {{estimationMethod.name}}
 
 			.as-served(ng-if='portionSize.method == "as-served"')
@@ -37,7 +38,7 @@
 			.intake-btn.danger(ng-click='deletePortionSize(itemDefinition.localData.portionSize, $index)')
 				span #{ gettext("Delete this method") }
 			.clearfloat
-				
+
 
 	.input-wrapper
 		.intake-btn.success(ng-click='addPortionSize(itemDefinition.localData.portionSize)')

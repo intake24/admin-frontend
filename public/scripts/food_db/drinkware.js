@@ -1,0 +1,28 @@
+angular.module('intake24.admin.food_db').controller('DrinkwareController', ['$scope', 'FoodDataReader', 'Drawers', function ($scope, foodDataReader, drawers) {
+
+	var _resultObj = null;
+
+	var _resultField = null;
+
+	$scope.drinkwareSets = null;
+
+	function reloadDrinkwareSets() {
+		foodDataReader.getDrinkwareSets(function(drinkwareSets) {
+			$scope.drinkwareSets = drinkwareSets;
+		},
+		$scope.handleError);
+	}
+
+	$scope.$on("intake24.admin.food_db.DrinkwareDrawerOpened", function(event, resultObj, resultField) {
+		_resultObj = resultObj;
+		_resultField = resultField;
+	});
+
+	$scope.setDrinkwareSet = function(drinkware_set_id) {
+		_resultObj[_resultField] = drinkware_set_id;
+		drawers.hideDrawer();
+	}
+
+	reloadDrinkwareSets();
+
+}]);

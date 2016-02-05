@@ -231,14 +231,12 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 					$.each(packed.parameters, function(index, param) {
 
-						console.log(value);
-
 						if (param.name == 'drinkware-id') {
-							// $scope.setDrinkwareSet(value.value, packed);
+							unpacked.parameters.drinkware_id = param.value;
 						} else if (param.name == 'initial-fill-level') {
-							unpacked.parameters.initial_fill_level = value.value;
+							unpacked.parameters.initial_fill_level = param.value;
 						} else if (param.name == 'skip-fill-level') {
-							unpacked.parameters.skip_fill_level = (value.value == "true") ? true : false;
+							unpacked.parameters.skip_fill_level = (param.value == "true") ? true : false;
 						}
 
 					});

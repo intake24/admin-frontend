@@ -176,6 +176,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					switch(new_method_id) {
 						case "as-served": parameters.useLeftoverImages = false; break;
 						case "standard-portion": parameters.units = []; break;
+						case "drink-scale": parameters.initial_fill_level = 0.9;
 						default: break;
 					}
 					portionSize.parameters = parameters;
@@ -198,6 +199,11 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	$scope.showGuideImageDrawer = function(resultObj, resultField) {
 		$scope.$broadcast("intake24.admin.food_db.GuideImageDrawerOpened", resultObj, resultField);
 		drawers.showDrawer("drawer-guide-image");
+	}
+
+	$scope.showDrinkwareDrawer = function(resultObj, resultField) {
+		$scope.$broadcast("intake24.admin.food_db.DrinkwareDrawerOpened", resultObj, resultField);
+		drawers.showDrawer("drawer-drinkware");
 	}
 
 	$scope.removeItem = function(array, index) {

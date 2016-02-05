@@ -1,31 +1,16 @@
-//- Incomplete
-
 .input-wrapper
 	label #{ gettext("Drinkware set") }
-	.inline-link(onClick='showDrawer("drawer-drinkware-image-set")' ng-click='SharedData.currentPortionSize = portionSize')
-		span(ng-if='!portionSize.selected_drinkware_image_set.description')
-			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.selected_drinkware_image_set.description != ""')
-			{{ portionSize.selected_drinkware_image_set.description }}
+	.inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters, "drinkware_id")')
+		span(ng-if='!portionSize.parameters.drinkware_id')
+			p #{ gettext("Select drinkware set") }
+		span(ng-if='portionSize.parameters.drinkware_id')
+			{{ portionSize.parameters.drinkware_id }}
 
 .input-wrapper
-	label #{ gettext("Initial fill level") } ({{portionSize.temp.parameters.initial_fill_level}})
-	input(type='range' min='0' max='1' step='0.05' ng-model='portionSize.temp.parameters.initial_fill_level')
+	label #{ gettext("Initial fill level") } ({{portionSize.parameters.initial_fill_level}})
+	input(type='range' min='0' max='1' step='0.05' ng-model='portionSize.parameters.initial_fill_level')
 
 .input-wrapper
 	label #{ gettext("Skip fill level prompt") }
-	input(type='checkbox' ng-model='portionSize.temp.parameters.skip_fill_level')
+	input(type='checkbox' ng-model='portionSize.parameters.skip_fill_level')
 .clearfloat
-
-//- Drawers
-
-.drawer.drawer-narrow.no-padding.animated#drawer-drinkware-image-set
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Image Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setDrinkwareSet(drinkware_set.id, SharedData.currentPortionSize)' ng-model='SharedData.portionSizes.drinkware_sets' ng-repeat='drinkware_set in SharedData.portionSizes.drinkware_sets | drinkScaleFilter:query | orderBy: "id"')
-					{{ drinkware_set.description }}

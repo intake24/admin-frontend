@@ -177,6 +177,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 						case "as-served": parameters.useLeftoverImages = false; break;
 						case "standard-portion": parameters.units = []; break;
 						case "drink-scale": parameters.initial_fill_level = 0.9;
+						case "cereal": parameters.cereal_type = "hoop";
 						default: break;
 					}
 					portionSize.parameters = parameters;

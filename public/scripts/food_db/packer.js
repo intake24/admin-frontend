@@ -248,7 +248,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					$.each(packed.parameters, function(index, param) {
 
 						if (param.name == 'type') {
-							unpacked.parameters.cereal_type = value.value;
+							unpacked.parameters.cereal_type = param.value;
 						}
 
 					});

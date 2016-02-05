@@ -2,6 +2,6 @@
 
 .input-wrapper
 	label #{ gettext("Type") }
-	select(class='cereal-type-dropdown' id='cereal-type-dropdown' data-ng-model="portionSize.temp.parameters.cereal_type")
+	select(class='cereal-type-dropdown' id='cereal-type-dropdown' data-ng-model="portionSize.parameters.cereal_type")
 		option(ng-repeat="cerealType in SharedData.cerealTypes" value="{{cerealType.slug}}") {{cerealType.name}}
 .clearfloat

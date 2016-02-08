@@ -5,6 +5,6 @@
 			input(type='text' id='search-field')
 	#search-results
 		ul(ng-model='search')
-			li(ng-repeat='value in search | orderBy:["type", "englishDescription"]' ng-class='' ng-click='resultSelected($event, value)')
+			li(ng-repeat='value in searchResults | orderBy:["type", "englishDescription"]' ng-class='' ng-click='resultSelected($event, value)')
 				i.fa.fa-folder-o(ng-if='value.type == "category"' style='margin-right: 8px')
 				{{ value.englishDescription }}

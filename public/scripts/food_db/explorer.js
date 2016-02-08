@@ -304,6 +304,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		//}
 	}
 
+	$scope.searchResultSelected = function($event, node) {
+		
+	}
+
 	$scope.uncategorisedNodeSelected = function($event) {
 		if (nodeClicked($event)) {
 			reloadUncategorisedFoods();

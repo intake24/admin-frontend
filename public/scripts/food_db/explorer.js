@@ -4,11 +4,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
 	'Packer',	function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer) {
 
-	// Listen for boradcasts
-	//fetchCategoriesService.listen(function(event, data) { $scope.fetchCategories(); });
-	//fetchImageSetsService.listen(function(event, data) { $scope.fetchImageSets(); });
-	//fetchPropertiesService.listen(function(event, data) { $scope.fetchProperties(); });
-
 	// Load shared data
 	$scope.SharedData = sharedData;
 
@@ -35,42 +30,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.getText = function(s) {
 		return gettext(s);
-	}
-
-	$scope.fetchImageSets = function() {
-
-		// Get all as served image sets
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/as-served',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.portionSizes.as_served_image_sets = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-
-		// Get all guide image sets
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/guide-image',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.portionSizes.guide_image_sets = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-
-		// Get all guide image sets
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/drinkware',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.portionSizes.drinkware_sets = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	// Update items in the food list as they are modified
@@ -188,13 +147,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				node.recursiveProblems.foodProblems.length > 0));
 	}
 
-	function resetProperties()
-	{
-		$('.properties-container').hide();
-		$scope.SharedData.currentItem = new Object();
-		$('input').removeClass('valid invalid');
-	}
-
 	function reloadUncategorisedFoods()
 	{
 		foodDataReader.getUncategorisedFoods( function (foods) {
@@ -251,19 +203,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		$scope.handleError);
 	}
 
-	$scope.fetchAllCategories = function() {
-
-		$http({
-			method: 'GET',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/all',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.allCategories = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-	}
-
 	$scope.uncategorisedFoodsExist = function() {
 		return $scope.uncategorisedFoods.length > 0;
 	}
@@ -289,8 +228,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			loadChildren(node);
 
 		currentItem.setCurrentItem(node);
-
-
 
 
 /*		if (value.type == 'uncategorised') {
@@ -334,19 +271,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-		function fetchFoodGroups()
-	{
-		$http({
-			method: 'GET',
-			url: api_base_url + 'food-groups/' + $scope.SharedData.locale.intake_locale,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.foodGroups = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-	}
-
 	function fetchNutrientTables()
 	{
 		$http({
@@ -358,49 +282,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			$scope.SharedData.nutrientTables = response.data;
 
 		}, function errorCallback(response) { $scope.handleError(response); });
-	}
-
-	function fetchParentCategories(type, item_code)
-	{
-		$http({
-			method: 'GET',
-			url: api_base_url + type + '/' + $scope.SharedData.locale.intake_locale + '/' + item_code + '/parent-categories',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$.each($scope.SharedData.topLevelCategories, function(ac_index, ac_value) {
-
-				ac_value.state = 'none';
-
-				$.each(response.data, function(index, value) {
-					if (value.code == ac_value.code) {
-
-						ac_value.state = 'existing';
-
-					};
-				});
-
-			});
-
-			$scope.SharedData.currentItem.parentCategories = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-	}
-
-
-
-	$scope.reloadCategories = function() {
-
-		if (!$scope.SharedData.currentItem.parentCategories) {
-			$scope.SharedData.currentItem.parentCategories = [];
-		}
-
-		$.each($scope.SharedData.topLevelCategories, function(index, value) {
-			if (value.isParentCategory) {
-				value.add = true;
-				$scope.SharedData.currentItem.parentCategories.push(value);
-			}
-		});
 	}
 
 	// Food Actions
@@ -603,102 +484,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			}, function errorCallback(response) { showMessage(gettext('Failed to delete category'), 'danger'); });
 		}
-	}
-
-	$scope.updateCategory = function() {
-
-		packCurrentItemService.broadcast();
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'categories/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem
-		}).then(function successCallback(response) {
-
-			$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-				if (value.state == 'add') {
-					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
-				}
-
-				if (value.state == 'remove') {
-
-					var category_code = value.code;
-
-					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
-
-					$http({
-						method: 'DELETE',
-						url: api_endpoint,
-						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-					}).then(function successCallback(response) {
-
-						showMessage(gettext('Removed from selected categories'), 'success');
-
-					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
-
-				}
-
-			});
-
-			fetchCategoriesService.broadcast();
-
-			showMessage(gettext('Category updated'), 'success');
-
-			$scope.fetchProperties();
-
-			$scope.updateLocalCategory();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update category'), 'danger'); console.log(response); });
-	}
-
-	$scope.updateLocalCategory = function() {
-
-		$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem.localData
-		}).then(function successCallback(response) {
-
-			showMessage(gettext('Local category updated'), 'success');
-
-			$scope.fetchProperties();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });
-	}
-
-	function addFoodToCategory(food_code, category_code)
-	{
-		$http({
-			method: 'PUT',
-			url: api_base_url + 'categories/' + category_code + '/foods/' + food_code,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-		}).then(function successCallback(response) {
-
-			showMessage(gettext('Food added to category'), 'success');
-
-			fetchCategoriesService.broadcast();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to add to category'), 'danger'); console.log(response); });
-	}
-
-	function addCategoryToCategory(category_code, subcategory_code)
-	{
-		$http({
-			method: 'PUT',
-			url: api_base_url + 'categories/' + category_code + '/subcategories/' + subcategory_code,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-		}).then(function successCallback(response) {
-
-			showMessage(gettext('Category added to category'), 'success');
-
-			fetchCategoriesService.broadcast();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to add to category'), 'danger'); console.log(response); });
 	}
 
 	function checkCode(input, type)

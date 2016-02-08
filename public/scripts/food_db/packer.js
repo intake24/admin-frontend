@@ -124,7 +124,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		unpacked.englishDescription = packed.englishDescription;
 		unpacked.localDescription = instance.unpackOption(packed.localDescription);
 
-		// Try to use local description but fall back to English if it is
+		// Try to use the local description but fall back to English if it is
 		// not defined
 		unpacked.displayName = unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription;
 
@@ -267,6 +267,45 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		});
 	};
 
+	instance.packInheritableAttributes = function(unpacked) {
+		return {
+			readyMealOption: instance.packOption(unpacked.readyMealOption),
+			sameAsBeforeOption: instance.packOption(unpacked.sameAsBeforeOption),
+			reasonableAmount: instance.packOption(unpacked.reasonableAmount)
+		};
+	}
+
+	instance.packCategoryDefinition = function(unpacked) {
+		return {
+			version: unpacked.version,
+			code: unpacked.code,
+			englishDescription: unpacked.englishDescription,
+			isHidden: unpacked.isHidden;
+			attributes: instance.packInheritableAttributes(unpacked.attributes);
+		};
+	}
+
+	instance.packFoodDefinition = function(unpacked) {
+		return {
+			version: unpacked.version,
+			code: unpacked.code,
+			englishDescription: unpacked.englishDescription,
+			attributes: instance.packInheritableAttributes(unpacked.attributes)
+		};
+	}
+
+	instance.packCategoryLocalDefinition = function(unpacked) {
+		return {
+			version: instance.packOption(unpacked.localData.version),
+			localDescription: instance.packOption(unpacked.localData.localDescription),
+
+			unpacked.localData.localDescription = instance.unpackOption(packed.localData.localDescription);
+
+			unpacked.localData.portionSize = instance.unpackPortionSizes(packed.localData.portionSize);
+
+		};
+	}
+
 	instance.packPortionSizes = function(unpackedPortionSizes)
 	{
 		return $.map(unpackedPortionSizes, function(index, portionSize) {
@@ -348,7 +387,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 								value: value.toString()
 							});
 						}
-x
+
 					})
 
 					break;

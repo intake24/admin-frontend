@@ -2,26 +2,31 @@
 * the page
 */
 
-angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, packer, drawers) {
+angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'FoodDataWriter', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, packer, drawers) {
 
 	$scope.sharedData = sharedData;
 
-	// Currently selected item's header
-	// Used for reference and should not be changed in this controller
+	// Currently selected item's header.
+	// Used for reference and should not be changed in this controller.
 	$scope.currentItem = null;
 
-	// Current state of the selected item's properties
+	// A snapshot of the initial item definition.
+	// Loaded from the server when the currentItem changes.
+	// Used to determine if anything has changed to avoid making unneeded API calls.
+	$scope.originalItemDefinition = null;
+
+	// Current state of the selected item's properties.
 	// Loaded from the server when the currentItem changes,
-	// then bound to page controls and can be edited
+	// then bound to page controls and can be edited.
 	$scope.itemDefinition = null;
 
-  // A snapshot of the initial parent categories state
-	// Loaded from the server when the currentItem changes
-	// Used to generate add/remove category API calls when the item is saved
-	$scope.currentParentCategories = null;
+  // A snapshot of the initial parent categories state.
+	// Loaded from the server when the currentItem changes.
+	// Used to generate add/remove category API calls when the item is saved.
+	$scope.originalParentCategories = null;
 
-	// Current state of the selected item's parent categories list
-	// Can be edited using the "Manage categories" drawer
+	// Current state of the selected item's parent categories list.
+	// Can be edited using the "Manage categories" drawer.
 	$scope.parentCategories = null;
 
 	// List of all food groups. Loaded once on controller instantiation.
@@ -48,6 +53,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			foodDataReader.getCategoryDefinition($scope.currentItem.code,
 				function(definition) {
 					$scope.itemDefinition = packer.unpackCategoryDefinition(definition);
+					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#category-properties-container').hide();
@@ -59,6 +65,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			foodDataReader.getFoodDefinition($scope.currentItem.code,
 				function(definition) {
 					$scope.itemDefinition = packer.unpackFoodDefinition(definition);
+					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
@@ -73,16 +80,16 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		if ($scope.currentItem.type == 'food') {
 			foodDataReader.getFoodParentCategories($scope.currentItem.code,
 				function(categories) {
-					$scope.currentParentCategories = $.map(categories, packer.unpackFoodHeader);
-					$scope.parentCategories = $scope.currentParentCategories;
+					$scope.parentCategories = $.map(categories, packer.unpackFoodHeader);
+					$scope.originalParentCategories = angular.copy($scope.parentCategories);
 				},
 				$scope.handleError
 			);
 		} else if ($scope.currentItem.type == 'category') {
 			foodDataReader.getCategoryParentCategories($scope.currentItem.code,
 				function(categories) {
-					$scope.currentParentCategories = $.map(categories, packer.unpackCategoryHeader);
-					$scope.parentCategories = $scope.currentParentCategories;
+					$scope.parentCategories = $.map(categories, packer.unpackCategoryHeader);
+					$scope.originalParentCategories = angular.copy($scope.parentCategories);
 				},
 				$scope.handleError
 			);
@@ -96,46 +103,74 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		$scope.handleError);
 	}
 
-	$scope.setGuideImageSet = function(id, portionSize) {
-
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/guide-image/' + id,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			portionSize.selected_guide_image_set = response.data;
-
-			var found = false;
-
-			$.each(portionSize.parameters, function(index, value) {
-
-				if (value.name == 'guide-image-id') { value.value = response.data.id; found = true; }
-
-			});
-
-			if (!found) { portionSize.parameters.push({name: 'guide-image-id', value: response.data.id}); };
-
-			hideDrawer();
-
-		}, function errorCallback(response) { $scope.handleError(response); });
+	function exists(categoryList, categoryHeader) {
+		for (var i = 0; i < categoryList.length; i++) {
+			if (categoryList[i].code == categoryHeader.code)
+				return true;
+		}
+		return false;
 	}
 
-	$scope.setDrinkwareSet = function(id, portionSize) {
+	function parentCategoryChanges() {
+		return {
+			add_to: $.grep($scope.parentCategories, function(pc) { return !exists($scope.originalParentCategories, pc); });
+			remove_from: $.grep($scope.originalParentCategories, function (cpc) { return !exists($scope.parentCategories, cpc); });
+		};
+	}
 
-		$http({
-			method: 'GET',
-			url: api_base_url + 'portion-size/drinkware/' + id,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
+	function parentCategoriesChanged() {
+		var changes = parentCategoryChanges();
+		return ((changes.add_to.length + changes.remove_from.length) > 0);
+	}
 
-			portionSize.selected_drinkware_image_set = response.data;
+	function buildParentCategoryRequests() {
+		var changes = parentCategoryChanges();
 
-			portionSize.temp.parameters.drinkware_id = response.data.id;
+		var addRequests = $.map(changes.add_to, function (c) {
+			return foodDataWriter.addFoodToCategory($scope.currentItem.code, c.code);
+		});
 
-			hideDrawer();
+		var deleteRequests = $.map(changes.remove_from, function (c) {
+			return foodDataWriter.removeFromCategory($scope.currentItem.code, c.code);
+		});
 
-		}, function errorCallback(response) { $scope.handleError(response); });
+		return $.when.apply($, addRequests.concat(deleteRequests));
+	}
+
+	function categoryBasicDefinitionChanged() {
+		return !angular.equals(packer.packCategoryDefinition($scope.originalItemDefinition), packer.packCategoryDefinition($scope.itemDefinition));
+	}
+
+	function categoryLocalDefinitionChanged() {
+		return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition), packer.packCategoryLocalDefinition($scope.itemDefinition));
+	}
+
+	function foodBasicDefinitionChanged() {
+		return !angular.equals(packer.packFoodDefinition($scope.originalItemDefinition), packer.packFoodDefinition($scope.itemDefinition));
+	}
+
+	function foodLocalDefinitionChanged() {
+		return !angular.equals(packer.packFoodLocalDefinition($scope.originalItemDefinition), packer.packFoodLocalDefinition($scope.itemDefinition));
+	}
+
+	function commitCategory() {
+		if (categoryBasicDefinitionChanged()) {
+			foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packer.packCategoryDefinition($scope.itemDefinition)).fail($scope.handleError);
+		}
+
+		if (categoryLocalDefinitionChanged()) {
+			foodDataWriter.updateCategoryLocal($scope.originalItemDefinition.code, packer.packCategoryLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
+		}
+	}
+
+	function commitFood() {
+		if (foodBasicDefinitionChanged()) {
+			foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packer.packFoodDefinition($scope.itemDefinition)).fail($scope.handleError);
+		}
+
+		if (foodLocalDefinitionChanged()) {
+			foodDataWriter.updateFoodLocal($scope.originalItemDefinition.code, packer.packFoodLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
+		}
 	}
 
 	$scope.localDescriptionModel = function(description) {
@@ -222,4 +257,143 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	$scope.deletePortionSize = function(array, index) {
 		array.splice(index, 1);
 	}
+
+	$scope.updateCategory = function() {
+
+		console.log("Update category");
+		applyParentCategoryChanges();
+
+		/*packCurrentItemService.broadcast();
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'categories/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: $scope.SharedData.currentItem
+		}).then(function successCallback(response) {
+
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
+
+				if (value.state == 'add') {
+					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
+				}
+
+				if (value.state == 'remove') {
+
+					var category_code = value.code;
+
+					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
+
+					$http({
+						method: 'DELETE',
+						url: api_endpoint,
+						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+					}).then(function successCallback(response) {
+
+						showMessage(gettext('Removed from selected categories'), 'success');
+
+					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
+
+				}
+
+			});
+
+			fetchCategoriesService.broadcast();
+
+			showMessage(gettext('Category updated'), 'success');
+
+			$scope.fetchProperties();
+
+			$scope.updateLocalCategory();
+
+		}, function errorCallback(response) { showMessage(gettext('Failed to update category'), 'danger'); console.log(response); });*/
+	}
+
+	$scope.updateLocalCategory = function() {
+
+		applyParentCategoryChanges();
+
+	/*	$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: $scope.SharedData.currentItem.localData
+		}).then(function successCallback(response) {
+
+			showMessage(gettext('Local category updated'), 'success');
+
+			$scope.fetchProperties();
+
+		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });*/
+	}
+
+	$scope.updateFood = function() {
+
+	/*	packCurrentItemService.broadcast();
+
+		$scope.SharedData.currentItem.groupCode = $scope.SharedData.selectedFoodGroup.id;
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'foods/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: $scope.SharedData.currentItem
+		}).then(function successCallback(response) {
+
+			$.each($scope.SharedData.topLevelCategories, function(index, value) {
+
+				if (value.state == 'add') {
+					addFoodToCategory($scope.SharedData.originalCode, value.code);
+				}
+
+				if (value.state == 'remove') {
+
+					var category_code = value.code;
+
+					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
+
+					$http({
+						method: 'DELETE',
+						url: api_endpoint,
+						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
+					}).then(function successCallback(response) {
+
+						showMessage(gettext('Removed from selected categories'), 'success');
+
+					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
+
+				}
+
+			});
+
+			showMessage(gettext('Food updated'), 'success');
+
+			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
+
+			$scope.updateLocalFood();
+
+		}, function errorCallback(response) { showMessage(gettext('Failed to update food'), 'danger'); console.log(response); });*/
+	}
+
+	$scope.updateLocalFood = function() {
+
+		/*$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
+
+		$http({
+			method: 'POST',
+			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
+			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
+			data: $scope.SharedData.currentItem.localData
+		}).then(function successCallback(response) {
+
+			showMessage(gettext('Local food updated'), 'success');
+
+			$scope.fetchProperties();
+
+		}, function errorCallback(response) { showMessage(gettext('Failed to update local food'), 'danger'); console.log(response); $scope.fetchProperties(); });*/
+	}
+
+
 }]);

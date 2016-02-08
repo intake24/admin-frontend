@@ -18,11 +18,13 @@ angular.module('intake24.admin.food_db').controller('AsServedSetController', ['$
 		_resultField = resultField;
 	});
 
+	$scope.$on("intake24.admin.LoggedIn", function(event) {
+		reloadAsServedSets();
+	});
+
 	$scope.setAsServedImageSet = function(image_set_id) {
 		_resultObj[_resultField] = image_set_id;
 		drawers.hideDrawer();
 	}
-
-	reloadAsServedSets();
 
 }]);

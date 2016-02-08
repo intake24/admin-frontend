@@ -1,20 +1,18 @@
 // Authentication (AuthController)
 
-app.controller('AuthController', function($scope, $http, fetchCategoriesService, fetchImageSetsService) {
+app.controller('AuthController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
 
 	// Check authentication
 	if (Cookies.get('auth-token')) {
-		
-		fetchCategoriesService.broadcast();
-		fetchImageSetsService.broadcast();
 
+			$rootScope.$broadcast('intake24.admin.LoggedIn');
 	    hideModal();
 
 	    $('body').addClass('authenticated');
 	    $('#btn-authenticate p').html(Cookies.get('auth-username'));
 
 	} else {
-		
+
 		showModal('modal-authenticate');
 
 	}
@@ -50,15 +48,13 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService,
 		  url: api_base_url + 'signin',
 		  data: { survey_id: survey_id, username: username, password: password }
 		}).then(function successCallback(response) {
-		    
+
 		    Cookies.set('auth-token', response.data.token);
 
 		    Cookies.set('auth-username', username);
-    		
-    		fetchCategoriesService.broadcast();
 
-    		fetchImageSetsService.broadcast();
-    
+				$rootScope.$broadcast('intake24.admin.LoggedIn');
+
 		    hideModal();
 
 		    $('body').addClass('authenticated');
@@ -74,4 +70,4 @@ app.controller('AuthController', function($scope, $http, fetchCategoriesService,
 
 		if (response.status === 401) { Cookies.remove('auth-token'); }
 	}
-});
+}]);

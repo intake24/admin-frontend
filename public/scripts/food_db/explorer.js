@@ -28,7 +28,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	}, true);*/
 
-
+	$scope.$on("intake24.admin.LoggedIn", function(event) {
+		reloadRootCategories();
+		reloadUncategorisedFoods();
+	});
 
 	$scope.getText = function(s) {
 		return gettext(s);
@@ -305,7 +308,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	}
 
 	$scope.searchResultSelected = function($event, node) {
-		
+
 	}
 
 	$scope.uncategorisedNodeSelected = function($event) {
@@ -725,9 +728,4 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		console.log(response);
 		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
 	}
-
-	reloadRootCategories();
-
-	reloadUncategorisedFoods();
-
 }]);

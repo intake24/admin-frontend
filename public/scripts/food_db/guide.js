@@ -6,6 +6,10 @@ angular.module('intake24.admin.food_db').controller('GuideImageController', ['$s
 
 	$scope.guideImages = null;
 
+	$scope.$on("intake24.admin.LoggedIn", function(event) {
+		reloadGuideImages();
+	});
+
 	function reloadGuideImages() {
 		foodDataReader.getGuideImages(function(guideImages) {
 			$scope.guideImages = guideImages;
@@ -22,7 +26,4 @@ angular.module('intake24.admin.food_db').controller('GuideImageController', ['$s
 		_resultObj[_resultField] = guide_image_id;
 		drawers.hideDrawer();
 	}
-
-	reloadGuideImages();
-
 }]);

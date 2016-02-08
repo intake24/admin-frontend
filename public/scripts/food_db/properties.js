@@ -35,6 +35,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		loadParentCategories();
 	});
 
+	$scope.$on("intake24.admin.LoggedIn", function(event) {
+		reloadFoodGroups();
+	})
+
 	function loadProperties() {
 
 		$('#properties-col').addClass('active');
@@ -218,7 +222,4 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	$scope.deletePortionSize = function(array, index) {
 		array.splice(index, 1);
 	}
-
-	reloadFoodGroups();
-
 }]);

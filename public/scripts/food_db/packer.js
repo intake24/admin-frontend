@@ -280,8 +280,8 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 			version: unpacked.version,
 			code: unpacked.code,
 			englishDescription: unpacked.englishDescription,
-			isHidden: unpacked.isHidden;
-			attributes: instance.packInheritableAttributes(unpacked.attributes);
+			isHidden: unpacked.isHidden,
+			attributes: instance.packInheritableAttributes(unpacked.attributes)
 		};
 	}
 
@@ -298,11 +298,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		return {
 			version: instance.packOption(unpacked.localData.version),
 			localDescription: instance.packOption(unpacked.localData.localDescription),
-
-			unpacked.localData.localDescription = instance.unpackOption(packed.localData.localDescription);
-
-			unpacked.localData.portionSize = instance.unpackPortionSizes(packed.localData.portionSize);
-
+			portionSize: instance.packPortionSizes(unpacked.localData.portionSize)
 		};
 	}
 

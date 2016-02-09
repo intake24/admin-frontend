@@ -113,8 +113,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	function parentCategoryChanges() {
 		return {
-			add_to: $.grep($scope.parentCategories, function(pc) { return !exists($scope.originalParentCategories, pc); });
-			remove_from: $.grep($scope.originalParentCategories, function (cpc) { return !exists($scope.parentCategories, cpc); });
+			add_to: $.grep($scope.parentCategories, function(pc) { return !exists($scope.originalParentCategories, pc); }),
+			remove_from: $.grep($scope.originalParentCategories, function (cpc) { return !exists($scope.parentCategories, cpc); })
 		};
 	}
 
@@ -137,23 +137,23 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		return $.when.apply($, addRequests.concat(deleteRequests));
 	}
 
-	function categoryBasicDefinitionChanged() {
+	$scope.categoryBasicDefinitionChanged = function() {
 		return !angular.equals(packer.packCategoryDefinition($scope.originalItemDefinition), packer.packCategoryDefinition($scope.itemDefinition));
 	}
 
-	function categoryLocalDefinitionChanged() {
+	$scope.categoryLocalDefinitionChanged = function() {
 		return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition), packer.packCategoryLocalDefinition($scope.itemDefinition));
 	}
 
-	function foodBasicDefinitionChanged() {
+	$scope.foodBasicDefinitionChanged = function() {
 		return !angular.equals(packer.packFoodDefinition($scope.originalItemDefinition), packer.packFoodDefinition($scope.itemDefinition));
 	}
 
-	function foodLocalDefinitionChanged() {
+	$scope.foodLocalDefinitionChanged = function() {
 		return !angular.equals(packer.packFoodLocalDefinition($scope.originalItemDefinition), packer.packFoodLocalDefinition($scope.itemDefinition));
 	}
 
-	function commitCategory() {
+	$scope.commitCategory = function() {
 		if (categoryBasicDefinitionChanged()) {
 			foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packer.packCategoryDefinition($scope.itemDefinition)).fail($scope.handleError);
 		}
@@ -163,7 +163,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}
 	}
 
-	function commitFood() {
+	$scope.commitFood = function() {
 		if (foodBasicDefinitionChanged()) {
 			foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packer.packFoodDefinition($scope.itemDefinition)).fail($scope.handleError);
 		}

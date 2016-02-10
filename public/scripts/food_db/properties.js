@@ -44,6 +44,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		reloadFoodGroups();
 	})
 
+	$scope.$watch("itemChanged()", function(event) {
+		currentItem.setChangedState($scope.itemChanged());
+	});
+
 	function loadProperties() {
 
 		$('#properties-col').addClass('active');
@@ -112,13 +116,19 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	function parentCategoryChanges() {
-		return {
-			add_to: $.grep($scope.parentCategories, function(pc) { return !exists($scope.originalParentCategories, pc); }),
-			remove_from: $.grep($scope.originalParentCategories, function (cpc) { return !exists($scope.parentCategories, cpc); })
-		};
+		if ($scope.parentCategories && $scope.originalParentCategories)
+			return {
+				add_to: $.grep($scope.parentCategories, function(pc) { return !exists($scope.originalParentCategories, pc); }),
+				remove_from: $.grep($scope.originalParentCategories, function (cpc) { return !exists($scope.parentCategories, cpc); })
+			};
+		else
+			return {
+				add_to: [],
+				remove_from: []
+			};
 	}
 
-	function parentCategoriesChanged() {
+	$scope.parentCategoriesChanged = function() {
 		var changes = parentCategoryChanges();
 		return ((changes.add_to.length + changes.remove_from.length) > 0);
 	}
@@ -127,30 +137,62 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		var changes = parentCategoryChanges();
 
 		var addRequests = $.map(changes.add_to, function (c) {
-			return foodDataWriter.addFoodToCategory($scope.currentItem.code, c.code);
+			return foodDataWriter.addFoodToCategory($scope.itemDefinition.code, c.code);
 		});
 
 		var deleteRequests = $.map(changes.remove_from, function (c) {
-			return foodDataWriter.removeFromCategory($scope.currentItem.code, c.code);
+			return foodDataWriter.removeFromCategory($scope.itemDefinition.code, c.code);
 		});
 
 		return $.when.apply($, addRequests.concat(deleteRequests));
 	}
 
+	$scope.commitParentCategories = function() {
+		buildParentCategoryRequests().fail(function(response) { $scope.handleError (response); });
+	}
+
 	$scope.categoryBasicDefinitionChanged = function() {
-		return !angular.equals(packer.packCategoryDefinition($scope.originalItemDefinition), packer.packCategoryDefinition($scope.itemDefinition));
+		if ($scope.originalItemDefinition && $scope.itemDefinition)
+			return !angular.equals(packer.packCategoryDefinition($scope.originalItemDefinition), packer.packCategoryDefinition($scope.itemDefinition));
+		else
+			return false;
 	}
 
 	$scope.categoryLocalDefinitionChanged = function() {
-		return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition), packer.packCategoryLocalDefinition($scope.itemDefinition));
+		if ($scope.originalItemDefinition && $scope.itemDefinition)
+			return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition), packer.packCategoryLocalDefinition($scope.itemDefinition));
+		else
+			return false;
 	}
 
 	$scope.foodBasicDefinitionChanged = function() {
-		return !angular.equals(packer.packFoodDefinition($scope.originalItemDefinition), packer.packFoodDefinition($scope.itemDefinition));
+		if ($scope.originalItemDefinition && $scope.itemDefinition)
+			return !angular.equals(packer.packFoodDefinition($scope.originalItemDefinition), packer.packFoodDefinition($scope.itemDefinition));
+		else
+			return false;
 	}
 
 	$scope.foodLocalDefinitionChanged = function() {
-		return !angular.equals(packer.packFoodLocalDefinition($scope.originalItemDefinition), packer.packFoodLocalDefinition($scope.itemDefinition));
+		/*if ($scope.originalItemDefinition && $scope.itemDefinition)
+			return !angular.equals(packer.packFoodLocalDefinition($scope.originalItemDefinition), packer.packFoodLocalDefinition($scope.itemDefinition));
+		else*/
+			return false;
+	}
+
+	$scope.foodChanged = function() {
+		return $scope.foodBasicDefinitionChanged() || $scope.foodLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+	}
+
+	$scope.categoryChanged = function() {
+		return $scope.categoryBasicDefinitionChanged() || $scope.categoryLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+	}
+
+	$scope.itemChanged = function() {
+		if ($scope.currentItem && $scope.currentItem.type == 'food')
+			return $scope.foodChanged();
+		else if ($scope.currentItem && $scope.currentItem.type == 'category')
+			return $scope.categoryChanged();
+		return false;
 	}
 
 	$scope.commitCategory = function() {
@@ -161,6 +203,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		if (categoryLocalDefinitionChanged()) {
 			foodDataWriter.updateCategoryLocal($scope.originalItemDefinition.code, packer.packCategoryLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
 		}
+
+		$scope.commitParentCategories();
 	}
 
 	$scope.commitFood = function() {
@@ -171,6 +215,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		if (foodLocalDefinitionChanged()) {
 			foodDataWriter.updateFoodLocal($scope.originalItemDefinition.code, packer.packFoodLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
 		}
+
+		$scope.commitParentCategories();
 	}
 
 	$scope.localDescriptionModel = function(description) {

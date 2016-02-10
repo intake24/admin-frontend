@@ -11,6 +11,11 @@ angular.module('intake24.admin.food_db').factory('CurrentItem', ['$rootScope', f
 
 		getCurrentItem : function() {
 			return currentItem;
+		},
+
+		setChangedState : function(changed) {
+			if (currentItem)
+				currentItem.changed = changed;
 		}
 	};
 }]);

@@ -132,7 +132,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		if ($scope.hasProblems(node))
 			cls.push('problems');
 
-		if (node.editing)
+		if (node.changed)
 			cls.push('editing');
 
 		return cls;

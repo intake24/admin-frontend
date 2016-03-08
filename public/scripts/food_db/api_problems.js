@@ -4,7 +4,7 @@ angular.module('intake24.admin.food_db').factory('Problems', ['$http', 'SharedDa
 		{
 			$http({
 					method: 'GET',
-					url: api_base_url + 'categories/' + sharedData.locale.intake_locale + '/' + code + '/problems/recursive',
+					url: api_base_url + 'admin/categories/' + sharedData.locale.intake_locale + '/' + code + '/problems/recursive',
 					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 				}).then(function (response) {
 					onSuccess(response.data);
@@ -15,7 +15,7 @@ angular.module('intake24.admin.food_db').factory('Problems', ['$http', 'SharedDa
 		{
 			$http({
 					method: 'GET',
-					url: api_base_url + 'foods/' + sharedData.locale.intake_locale + '/' + code + '/problems',
+					url: api_base_url + 'admin/foods/' + sharedData.locale.intake_locale + '/' + code + '/problems',
 					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 				}).then(function (response) {
 					onSuccess(response.data);

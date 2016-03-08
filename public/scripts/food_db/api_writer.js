@@ -31,32 +31,32 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Sh
 	return {
 		addFoodToCategory: function(food_code, category_code)
 		{
-			return authApiCallFuture('PUT', 'categories/' + category_code + '/foods/' + food_code);
+			return authApiCallFuture('PUT', 'admin/categories/' + category_code + '/foods/' + food_code);
 		},
 
 		addCategoryToCategory: function (category_code, subcategory_code)
 		{
-			return authApiCallFuture('PUT', 'categories/' + category_code + '/subcategories/' + subcategory_code);
+			return authApiCallFuture('PUT', 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
 		},
 
 		deleteFoodFromCategory: function(food_code, category_code)
 		{
-			return authApiCallFuture('DELETE', 'categories/' + category_code + '/foods/' + food_code);
+			return authApiCallFuture('DELETE', 'admin/categories/' + category_code + '/foods/' + food_code);
 		},
 
 		deleteCategoryFromCategory: function (category_code, subcategory_code)
 		{
-			return authApiCallFuture('DELETE', 'categories/' + category_code + '/subcategories/' + subcategory_code);
+			return authApiCallFuture('DELETE', 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
 		},
 
 		updateCategoryBase: function (category_code, definition)
 		{
-			return authApiPostFuture('categories/' + category_code, definition);
+			return authApiPostFuture('admin/categories/' + category_code, definition);
 		},
 
 		updateFoodBase: function (food_code, definition)
 		{
-			return authApiPostFuture('foods/' + food_code, definition);
+			return authApiPostFuture('admin/foods/' + food_code, definition);
 		}
 	};
 }]);

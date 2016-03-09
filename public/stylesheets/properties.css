@@ -23,6 +23,19 @@
 .properties-container .properties-padding .property {
   margin-bottom: 50px;
 }
+.properties-container .properties-padding .property #local-view-header {
+  cursor: pointer;
+}
+.properties-container .properties-padding .property #local-view-header:after {
+  font: normal normal normal 100% FontAwesome;
+  content: "\f0da";
+  color: #808080;
+  margin-left: 0.5em;
+  vertical-align: bottom;
+}
+.properties-container .properties-padding .property #local-view-header.open:after {
+  content: "\f0d7";
+}
 .properties-container .properties-padding .property h3 {
   color: #444;
   font-size: 20px;

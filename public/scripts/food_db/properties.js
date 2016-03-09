@@ -2,7 +2,7 @@
 * the page
 */
 
-angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'FoodDataWriter', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, packer, drawers) {
+angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData, packer, drawers) {
 
 	$scope.sharedData = sharedData;
 
@@ -32,12 +32,18 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	// List of all food groups. Loaded once on controller instantiation.
 	$scope.foodGroups = null;
 
+	// Local view of the current food/category in the current locale for debugging
+	$scope.localFoodData = null;
+
+	$scope.localViewOpen = false;
+
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
 		// This is just the basic header received from the tree control
 		// Editable data will be stored in itemDefinition
 		$scope.currentItem = newItem;
 		loadProperties();
 		loadParentCategories();
+		loadLocalFoodData();
 	});
 
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
@@ -96,6 +102,23 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					$scope.originalParentCategories = angular.copy($scope.parentCategories);
 				},
 				$scope.handleError
+			);
+		}
+	}
+
+	function loadLocalFoodData() {
+		if ($scope.currentItem.type == 'food') {
+			userFoodData.getFoodData($scope.currentItem.code,
+				function(data) {
+					$scope.localFoodData = data;
+				},
+				function(response) {
+					if (response.code == 404) {
+						// 404 is expected and means that local food data is not defined
+						$scope.localFoodData = null;
+					} // anything else is an error
+					else $scope.handleError(response);
+				}
 			);
 		}
 	}

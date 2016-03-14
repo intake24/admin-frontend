@@ -8,6 +8,9 @@
 	display none
 	position relative
 
+	.food-local-view-icon
+		float:right;
+
 	.properties-padding
 		padding 30px 30px 120px 30px
 		@media(max-width: 800px)
@@ -19,19 +22,6 @@
 
 		.property
 			margin-bottom 50px
-
-			#local-view-header
-				cursor pointer
-
-			#local-view-header:after
-				font normal normal normal 100% FontAwesome
-				content "\f0da"
-				color gray
-				margin-left 0.5em
-				vertical-align bottom
-
-			#local-view-header.open:after
-				content "\f0d7"
 
 			h3
 				color dark-font-color
@@ -98,7 +88,6 @@
 		@media(max-width: 800px)
 			position relative !important
 			width auto
-
 
 /* RTL Styles */
 

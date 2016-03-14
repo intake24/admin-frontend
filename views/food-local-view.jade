@@ -1,29 +1,28 @@
-.property
-	a(ng-click="localViewOpen = !localViewOpen")
-		h3(id="local-view-header" ng-class="localViewOpen ? 'open' : ''") #{ gettext("Local view") }
-	.local-view-container(ng-if="localViewOpen")
+script(id='food-local-view-popover-template', type='text/ng-template')
+	.local-view-container
+		h3 #{ gettext("Localised (user) view") }
 		p(ng-if="localFoodData == null") #{ gettext("Local view unavailable") }
 		.local-view(ng-if="localFoodData != null")
-			.input-wrapper
-				label #{ gettext("Local description") }
-				input(type='text' ng-model='localFoodData.localDescription' readonly="true")
+			label #{ gettext("Local description") }: 
+			{{ localFoodData.localDescription }}
 
-			.input-wrapper(ng-repeat='(id, code) in localFoodData.nutrientTableCodes')
-				label {{ id }}
-				input(type='text' ng-model='localFoodData.nutrientTableCodes[id]' readonly="true")
-			.input-wrapper
-				label #{ gettext("Food group") }
-				input(type='text' ng-model='localFoodData.groupCode' readonly="true")
-			.input-wrapper
-				label #{ gettext("Ready meal option") }
-				input(type="checkbox" ng-model='localFoodData.readyMealOption' disabled="true")
-			.input-wrapper
-				label #{ gettext("Same as before option") }
-				input(type="checkbox" ng-model='localFoodData.sameAsBeforeOption' disabled="true")
-			.input-wrapper
-				label #{ gettext("Reasonable amount (g/ml)") }
-				input(type="text" ng-model='localFoodData.reasonableAmount' readonly="true")
+			.div(ng-repeat='(id, code) in localFoodData.nutrientTableCodes')
+				label #{ gettext("Nutrient table code")}({{ id }}): 
+				{{ localFoodData.nutrientTableCodes[id] }}
+				
+			label #{ gettext("Food group") }: 
+			{{ localFoodData.groupCode }}
+				
+			label #{ gettext("Ready meal option") }: 
+			{{ localFoodData.readyMealOption }}
+
+			label #{ gettext("Same as before option") }: 
+			{{ localFoodData.sameAsBeforeOption }}
 			
-			label #{ gettext("Portion size estimation") }
-			.input-wrapper(ng-repeat='method in localFoodData.portionSize')
-				label(title="{{method.parameters}}") {{ method.method }} ({{method.description}})
+			label #{ gettext("Reasonable amount (g/ml)") }:
+			{{ localFoodData.reasonableAmount }}
+
+			label #{ gettext("Portion size estimation") }:
+			.div(ng-repeat='method in localFoodData.portionSize')
+				label {{ method.method }} ({{method.description}}): 
+				{{ method.parameters }}

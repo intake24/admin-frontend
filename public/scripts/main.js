@@ -15,31 +15,6 @@ var showingFlashMessage = false;
 
 var app = angular.module('intake24.admin', ['ngCookies', 'ui.bootstrap', 'intake24.admin.food_db']);
 
-app.service("fetchCategoriesService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("fetchCategories")}
-    this.listen = function(callback) { $rootScope.$on("fetchCategories", callback)}
-})
-
-app.service("fetchPropertiesService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("fetchProperties")}
-    this.listen = function(callback) { $rootScope.$on("fetchProperties", callback)}
-})
-
-app.service("fetchImageSetsService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("fetchImageSets")}
-    this.listen = function(callback) { $rootScope.$on("fetchImageSets", callback)}
-})
-
-app.service("packCurrentItemService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("packCurrentItem")}
-    this.listen = function(callback) { $rootScope.$on("packCurrentItem", callback)}
-})
-
-app.service("unpackCurrentItemService", function($rootScope) {
-    this.broadcast = function() { $rootScope.$broadcast("unpackCurrentItem")}
-    this.listen = function(callback) { $rootScope.$on("unpackCurrentItem", callback)}
-})
-
 app.directive('jfbFormModel', function() {
     'use strict';
 

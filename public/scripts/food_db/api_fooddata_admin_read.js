@@ -1,4 +1,4 @@
-angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'SharedData', function($http, sharedData) {
+angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Locales', function($http, locales) {
 
 	function authApiCall(method, url, onSuccess, onFailure) {
 		$http({
@@ -13,35 +13,35 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Sh
 
 	return {
 		getRootCategories: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + sharedData.locale.intake_locale, onSuccess, onFailure);
+			authApiCall('GET', 'admin/categories/' + locales.current(), onSuccess, onFailure);
 		},
 
 		getUncategorisedFoods: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + sharedData.locale.intake_locale + '/uncategorised', onSuccess, onFailure);
+			authApiCall('GET', 'admin/foods/' + locales.current() + '/uncategorised', onSuccess, onFailure);
 		},
 
 		getCategoryContents: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + sharedData.locale.intake_locale + '/' + code, onSuccess, onFailure);
+			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code, onSuccess, onFailure);
 		},
 
 		getCategoryDefinition: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + sharedData.locale.intake_locale + '/' + code + '/definition', onSuccess, onFailure);
+			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code + '/definition', onSuccess, onFailure);
 		},
 
 		getFoodDefinition: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + sharedData.locale.intake_locale + '/' + code + '/definition', onSuccess, onFailure);
+			authApiCall('GET', 'admin/foods/' + locales.current() + '/' + code + '/definition', onSuccess, onFailure);
 		},
 
 		getCategoryParentCategories: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + sharedData.locale.intake_locale + '/' + code + '/parent-categories', onSuccess, onFailure);
+			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code + '/parent-categories', onSuccess, onFailure);
 		},
 
 		getFoodParentCategories: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + sharedData.locale.intake_locale + '/' + code + '/parent-categories', onSuccess, onFailure);
+			authApiCall('GET', 'admin/foods/' + locales.current() + '/' + code + '/parent-categories', onSuccess, onFailure);
 		},
 
 		getFoodGroups: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/food-groups/' + sharedData.locale.intake_locale, onSuccess, onFailure);
+			authApiCall('GET', 'admin/food-groups/' + locales.current(), onSuccess, onFailure);
 		},
 
 		getAsServedImageSets: function(onSuccess, onFailure) {
@@ -57,11 +57,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Sh
 		},
 
 		searchCategories: function(query, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + sharedData.locale.intake_locale + '/search/' + query, onSuccess, onFailure);
+			authApiCall('GET', 'admin/categories/' + locales.current() + '/search/' + query, onSuccess, onFailure);
 		},
 
 		searchFoods: function(query, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + sharedData.locale.intake_locale + '/search/' + query, onSuccess, onFailure);
+			authApiCall('GET', 'admin/foods/' + locales.current() + '/search/' + query, onSuccess, onFailure);
 		}
 	};
 }]);

@@ -13,7 +13,7 @@ angular.module('intake24.admin.food_db').factory('LocaleData', ['$http', functio
 
 	return {
 		getAllLocales: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/locales' + code, onSuccess, onFailure);
+			authApiCall('GET', 'admin/locales', onSuccess, onFailure);
 		}
 	};
 

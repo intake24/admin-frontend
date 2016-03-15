@@ -1,4 +1,4 @@
-angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'SharedData', function($http, sharedData) {
+angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', function($http) {
 
 	function authApiCall(method, url, onSuccess, onFailure) {
 		$http({

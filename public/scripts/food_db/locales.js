@@ -1,6 +1,8 @@
-angular.module('intake24.admin.food_db').factory('Locales', ['$rootScope', 'LocaleData', 'Packer', function($rootScope, localeData, packer) {
+angular.module('intake24.admin.food_db').factory('Locales', ['$window', 'LocaleData', 'Packer', function($window, localeData, packer) {
 
 	var locales = [];
+
+	var currentLocale = $window.intake24_locale;
 
 	function unpackLocale(packed) {
 		return {
@@ -14,16 +16,20 @@ angular.module('intake24.admin.food_db').factory('Locales', ['$rootScope', 'Loca
 		}
 	}
 
-	localeData.getAllLocales( function(locales) {
-		locales = $.map(locales, unpackLocale);
+	localeData.getAllLocales( function(data) {
+		locales = $.map(data, unpackLocale);
 	},
 	function(response) {
 	// ???
-	})
+	});
 
 	return {
 		list : function() {
 			return locales;
+		},
+
+		current: function() {
+			return currentLocale;
 		}
 	};
 

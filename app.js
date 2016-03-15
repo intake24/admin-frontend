@@ -16,8 +16,7 @@ app.use(i18n.abide({
   supported_languages: ['ar', 'en'],
   translation_directory: 'public/i18n',
   template_engine: 'jade',
-  template_file_ext: 'jade',
-  locale_on_url: true
+  template_file_ext: 'jade'
 }));
 
 function compile(str, path) {
@@ -39,6 +38,7 @@ app.use(stylus.middleware(
 ))
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', routes.dashboard);
+app.get('/', routes.dashboardDefault);
+app.get('/:intake_locale/:ui_lang', routes.dashboard);
 
-app.listen(3002)
+app.listen(3002);

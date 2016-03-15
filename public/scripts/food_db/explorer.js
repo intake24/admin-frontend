@@ -2,7 +2,7 @@
 
 angular.module('intake24.admin.food_db').controller('ExplorerController',
 	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
-	'Packer',	function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer) {
+	'Packer', 'Locales', function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer, locales) {
 
 	// Load shared data
 	$scope.SharedData = sharedData;
@@ -404,11 +404,11 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.updateLocalFood = function() {
 
-		$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
+		$scope.SharedData.currentItem.localData.localDescription = (locales.current() == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
 
 		$http({
 			method: 'POST',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
+			url: api_base_url + 'foods/' + locales.current() + '/' + $scope.SharedData.originalCode,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
 			data: $scope.SharedData.currentItem.localData
 		}).then(function successCallback(response) {

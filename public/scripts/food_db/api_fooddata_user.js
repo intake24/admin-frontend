@@ -1,4 +1,4 @@
-angular.module('intake24.admin.food_db').factory('UserFoodData', ['$http', 'SharedData', function($http, sharedData) {
+angular.module('intake24.admin.food_db').factory('UserFoodData', ['$http', 'Locales', function($http, locales) {
 
 	function authApiCall(method, url, onSuccess, onFailure) {
 		$http({
@@ -13,7 +13,7 @@ angular.module('intake24.admin.food_db').factory('UserFoodData', ['$http', 'Shar
 
 	return {
 		getFoodData: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'user/foods/' + sharedData.locale.intake_locale + '/' + code, onSuccess, onFailure);
+			authApiCall('GET', 'user/foods/' + locales.current() + '/' + code, onSuccess, onFailure);
 		}
 	};
 

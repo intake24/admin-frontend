@@ -1,34 +1,24 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', function($scope, $http, $cookies, SharedData, fetchCategoriesService) {
+app.controller('NavigationController', ["$scope", "Locales", function($scope, locales) {
 
-	// Set sidebar defaults
-	$scope.set_language_active = $cookies.getObject("set_language_active");
-	
-	$scope.$watch($scope.set_language_active, function(newItem) {
-		
-		$cookies.putObject("set_language_active", newItem);
-
+	$scope.$watch(function() {
+			return locales.list();
+		}, function(event) {
+			$scope.locales = locales.list();
 	});
 
-	var locale = $cookies.getObject("locale");
+	$scope.currentLocale = locales.current();
 
-	if (locale) {
-		if (locale.changed) {
-			locale.changed = false;
-			showMessage(format('Language set to %s', [locale.language]), 'success');
-		}
+	/*if (locale) {
+		 showMessage(format('Language set to %s', [locale.language]), 'success');
+
 		SharedData.locale = locale;
 		$cookies.putObject("locale", locale);
-	}
-	
-	// Init shared data
-	$scope.SharedData = SharedData;
+	}*/;
 
-	$scope.setLocale = function(locale) {
-		locale.changed = true;
-		$cookies.putObject("locale", locale);
-		document.location = '/' + locale.locale;
+	$scope.setLocale = function(intake24_locale, ui_locale) {
+		document.location = '/' + intake24_locale + '/' + ui_locale;
 	}
 
 	$('.sidebar-btn').click(function() {
@@ -54,17 +44,17 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		$('#add-new-food-container').hide();
 		$('#add-new-category-container').hide();
 
-		fetchCategoriesService.broadcast();
-		
+		// fetchCategoriesService.broadcast();
+
 		$(".food-list-container").show();
-		$('#food-list-col').show().animate({'opacity':1}, function() { 
+		$('#food-list-col').show().animate({'opacity':1}, function() {
 			$('#properties-col').addClass('active');
 		});
 	});
 
 	// Add new food
 	$scope.addNewFood = function() {
-		
+
 		$.each($scope.SharedData.topLevelCategories, function(index, value) {
 
 			value.state = 'none';
@@ -100,7 +90,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 
 	// Clone food
 	$scope.cloneFood = function() {
-		
+
 		if ($scope.SharedData.currentItem.type != 'food') {
 
 			showMessage(gettext('Please select a food'), 'warning');
@@ -148,7 +138,7 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 			},
 			parentCategories:Array()
 		};
-	
+
 		$('#properties-col').show().addClass('fullwidth');
 
 		$('#food-list-col').hide();
@@ -158,11 +148,11 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 
 	// Clone category
 	$scope.cloneCategory = function() {
-		
+
 		if ($scope.SharedData.currentItem.type != 'category') {
 
 			showMessage(gettext('Please select a category'), 'warning');
-			
+
 			return;
 		}
 
@@ -173,4 +163,4 @@ app.controller('NavigationController', function($scope, $http, $cookies, SharedD
 		showContainer('#add-new-category-container');
 	}
 
-});
+}]);

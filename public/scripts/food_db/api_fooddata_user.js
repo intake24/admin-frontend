@@ -14,6 +14,10 @@ angular.module('intake24.admin.food_db').factory('UserFoodData', ['$http', 'Loca
 	return {
 		getFoodData: function(code, onSuccess, onFailure) {
 			authApiCall('GET', 'user/foods/' + locales.current() + '/' + code, onSuccess, onFailure);
+		},
+
+		getFoodDataWithSources: function(code, onSuccess, onFailure) {
+			authApiCall('GET', 'user/foods/' + locales.current() + '/' + code + '/with-sources', onSuccess, onFailure);
 		}
 	};
 

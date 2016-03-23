@@ -35,6 +35,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	// Local view of the current food/category in the current locale for debugging
 	$scope.localFoodData = null;
 
+	$scope.localFoodDataSources = null;
+
 	$scope.localViewOpen = false;
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -108,9 +110,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	function loadLocalFoodData() {
 		if ($scope.currentItem.type == 'food') {
-			userFoodData.getFoodData($scope.currentItem.code,
+			userFoodData.getFoodDataWithSources($scope.currentItem.code,
 				function(data) {
-					$scope.localFoodData = data;
+					$scope.localFoodData = data[0];
+					$scope.localFoodDataSources = data[1];
 				},
 				function(response) {
 					if (response.code == 404) {

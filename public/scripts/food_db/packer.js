@@ -258,6 +258,9 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 				case "milk-on-cereal":
 					break;
 
+				case "pizza":
+					break;
+
 				default:
 					console.log("Other portion size method: " + packed.method);
 					break;
@@ -286,11 +289,30 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 	}
 
 	instance.packFoodDefinition = function(unpacked) {
+		var basic = packFoodBasicDefinition(unpacked);
+		var local = packFoodLocalDefinition(unpacked.localData);
+
+		basic.localData = local;
+
+		return basic;
+	}
+
+	instance.packFoodBasicDefinition = function(unpacked) {
 		return {
 			version: unpacked.version,
 			code: unpacked.code,
+			groupCode: unpacked.groupCode,
 			englishDescription: unpacked.englishDescription,
-			attributes: instance.packInheritableAttributes(unpacked.attributes)
+			attributes: instance.packInheritableAttributes(unpacked.attributes),
+		};
+	}
+
+	instance.packFoodLocalDefinition = function(unpacked) {
+		return {
+			version: instance.packOption(unpacked.version),
+			localDescription: instance.packOption(unpacked.localDescription),
+			nutrientTableCodes: unpacked.nutrientTableCodes,
+			portionSize: instance.packPortionSizes(unpacked.portionSize)
 		};
 	}
 
@@ -304,11 +326,16 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 	instance.packPortionSizes = function(unpackedPortionSizes)
 	{
-		return $.map(unpackedPortionSizes, function(index, portionSize) {
+		return $.map(unpackedPortionSizes, function(portionSize, index) {
 
 			var packedPortionSize = Object();
 
 			packedPortionSize.method = portionSize.method;
+			packedPortionSize.description = portionSize.description;
+			packedPortionSize.imageUrl = portionSize.imageUrl;
+			packedPortionSize.useForRecipes = portionSize.useForRecipes;
+
+			console.log(portionSize);
 
 			switch (portionSize.method) {
 
@@ -318,10 +345,10 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 					packedPortionSize.parameters.push({
 						name: 'units-count',
-						value: portionSize.parameters.length.toString()
+						value: portionSize.parameters.units.length.toString()
 					});
 
-					$.each(portionSize.parameters, function(index, parameter) {
+					$.each(portionSize.parameters.units, function(index, parameter) {
 
 						var name;
 
@@ -349,67 +376,45 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "guide-image":
 
-				// id ??
+					packedPortionSize.parameters = [{ name: "guide-image-id", value: portionSize.parameters.guide_image_id}];
+
 					break;
 
 				case "as-served":
 
-				// id??
+					packedPortionSize.parameters = [{ name: "serving_image_set", value: portionSize.parameters.serving_image_set }];
+
+					if (portionSize.parameters.useLeftoverImages)
+						packedPortionSize.parameters.push({ name: "leftovers_image_set", value: portionSize.parameters.leftovers_image_set });
+
 					break;
 
 				case "drink-scale":
 
-					packedPortionSize.parameters = [];
-
-					$.each(portionSize.parameters, function(key, value) {
-
-						if (key == 'drinkware_id') {
-							packedPortionSize.parameters.push({
-								name: 'drinkware-id',
-								value: value.toString()
-							});
-						}
-
-						if (key == 'initial_fill_level') {
-							packedPortionSize.parameters.push({
-								name: 'initial-fill-level',
-								value: value.toString()
-							});
-						}
-
-						if (key == 'skip_fill_level') {
-							packedPortionSize.parameters.push({
-								name: 'skip-fill-level',
-								value: value.toString()
-							});
-						}
-
-					})
+					packedPortionSize.parameters = [
+						{ name: "drinkware-id", value: portionSize.parameters.drinkware_id },
+						{ name: "initial-fill-level", value: portionSize.parameters.initial_fill_level.toString() },
+						{ name: "skip_fill_level", value: portionSize.parameters.skip_fill_level.toString() }
+					];
 
 					break;
 
 				case "cereal":
 
-					packedPortionSize.parameters = [];
-
-					// Update local data
-					$.each(portionSize.parameters, function(key, value) {
-
-						if (key == 'cereal_type') {
-							packedPortionSize.parameters.push({
-								name: 'type',
-								value: value
-							});
-						}
-
-					})
+					packedPortionSize.parameters = [
+						{ name: "cereal_type", value: portionSize.parameters.cereal_type }
+					];
 
 					break;
 
 				case "milk-on-cereal":
 					break;
 
+				case "pizza":
+					break;
+
 				default:
+					console.error("Unexpected portion size method: " + portionSize.method);
 					break;
 			}
 

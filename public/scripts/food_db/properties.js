@@ -12,7 +12,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	// A snapshot of the initial item definition.
 	// Loaded from the server when the currentItem changes.
-	// Used to determine if anything has changed to avoid making unneeded API calls.
+	// Used to determine if anything changed to avoid making unneeded API calls.
 	$scope.originalItemDefinition = null;
 
 	// Current state of the selected item's properties.
@@ -193,15 +193,20 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.foodBasicDefinitionChanged = function() {
 		if ($scope.originalItemDefinition && $scope.itemDefinition)
-			return !angular.equals(packer.packFoodDefinition($scope.originalItemDefinition), packer.packFoodDefinition($scope.itemDefinition));
+			var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition);
+			var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition);
+			return !angular.equals(packedOriginalBasic, packedCurrentBasic);
 		else
 			return false;
 	}
 
 	$scope.foodLocalDefinitionChanged = function() {
-		/*if ($scope.originalItemDefinition && $scope.itemDefinition)
-			return !angular.equals(packer.packFoodLocalDefinition($scope.originalItemDefinition), packer.packFoodLocalDefinition($scope.itemDefinition));
-		else*/
+		if ($scope.originalItemDefinition && $scope.itemDefinition) {
+			var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.localData);
+			var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
+			return !angular.equals(packedOriginalLocal, packedCurrentLocal);
+		}
+		else
 			return false;
 	}
 
@@ -402,6 +407,16 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.updateFood = function() {
+
+		if ($scope.foodLocalDefinitionChanged()) {
+			console.log("Local definitino changed");
+			console.log(packer.packFoodLocalDefinition($scope.itemDefinition.localData));
+		}
+
+		if ($scope.foodBasicDefinitionChanged()) {
+
+		}
+
 
 	/*	packCurrentItemService.broadcast();
 

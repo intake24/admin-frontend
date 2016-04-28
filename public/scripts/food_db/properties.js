@@ -2,7 +2,7 @@
 * the page
 */
 
-angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', function ($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData, packer, drawers) {
+angular.module('intake24.admin.food_db').controller('PropertiesController', ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader', 'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', function ($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData, packer, drawers, $q) {
 
 	$scope.sharedData = sharedData;
 
@@ -192,10 +192,11 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.foodBasicDefinitionChanged = function() {
-		if ($scope.originalItemDefinition && $scope.itemDefinition)
+		if ($scope.originalItemDefinition && $scope.itemDefinition) {
 			var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition);
 			var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition);
 			return !angular.equals(packedOriginalBasic, packedCurrentBasic);
+		}
 		else
 			return false;
 	}
@@ -407,61 +408,51 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.updateFood = function() {
+		// These functions return a future ("promise" in angular terminology)
+		// that will generate an async HTTP request to update the basic/local food
+		// record if required.
+		// Will return a dummy 'true' value if no changes are detected.
+		// Resulting value is not important, but HTTP errors must be handled further.
 
-		if ($scope.foodLocalDefinitionChanged()) {
-			console.log("Local definitino changed");
-			console.log(packer.packFoodLocalDefinition($scope.itemDefinition.localData));
+		function updateLocal() {
+			if ($scope.foodLocalDefinitionChanged()) {
+				console.log("Local definition changed");
+				var packed = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
+				return foodDataWriter.updateFoodLocal($scope.itemDefinition.code, packed);
+			} else {
+				console.log("Won't update local");
+				return $q.when(true);
+			}
 		}
 
-		if ($scope.foodBasicDefinitionChanged()) {
-
+		function updateBasic() {
+			if ($scope.foodBasicDefinitionChanged()) {
+				console.log("Basic definition changed");
+				var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
+				return foodDataWriter.updateFoodBasic($scope.originalItemDefinition.code, packed)
+			} else {
+				console.log("Won't update basic");
+				return $q.when(true);
+			}
 		}
 
+		// Food code might have changed.
+		// Update local first (using the old code) and then basic to update the code.
+		// Race conditions are possible (someone else can manage to change the code
+		// between the two calls), but quite unlikely
 
-	/*	packCurrentItemService.broadcast();
-
-		$scope.SharedData.currentItem.groupCode = $scope.SharedData.selectedFoodGroup.id;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'foods/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem
-		}).then(function successCallback(response) {
-
-			$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-				if (value.state == 'add') {
-					addFoodToCategory($scope.SharedData.originalCode, value.code);
-				}
-
-				if (value.state == 'remove') {
-
-					var category_code = value.code;
-
-					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
-
-					$http({
-						method: 'DELETE',
-						url: api_endpoint,
-						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-					}).then(function successCallback(response) {
-
-						showMessage(gettext('Removed from selected categories'), 'success');
-
-					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
-
-				}
-
-			});
-
-			showMessage(gettext('Food updated'), 'success');
-
-			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
-
-			$scope.updateLocalFood();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update food'), 'danger'); console.log(response); });*/
+		updateLocal().then(function (res) {
+			return updateBasic();
+		}).then(
+			function (res) {
+				showMessage(gettext('Food updated'), 'success');
+			},
+			function (response) {
+				showMessage(gettext('Failed to update food'), 'danger');
+				// Check if this was caused by a 409, and show a better message
+				console.error(response);
+			}
+		);
 	}
 
 	$scope.updateLocalFood = function() {

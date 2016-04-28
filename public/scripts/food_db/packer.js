@@ -335,8 +335,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 			packedPortionSize.imageUrl = portionSize.imageUrl;
 			packedPortionSize.useForRecipes = portionSize.useForRecipes;
 
-			console.log(portionSize);
-
 			switch (portionSize.method) {
 
 				case "standard-portion":

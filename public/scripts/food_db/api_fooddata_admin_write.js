@@ -1,4 +1,4 @@
-angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', function($http) {
+angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Locales', function($http, locales) {
 
 	function authApiCall(method, url, onSuccess, onFailure) {
 		$http({
@@ -54,9 +54,15 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', fun
 			return authApiPostFuture('admin/categories/' + category_code, definition);
 		},
 
-		updateFoodBase: function (food_code, definition)
+		updateFoodBasic: function (food_code, definition)
 		{
 			return authApiPostFuture('admin/foods/' + food_code, definition);
+		},
+
+		updateFoodLocal: function(food_code, definition)
+		{
+			return authApiPostFuture('admin/foods/' + locales.current() + '/' + food_code, definition);
 		}
+
 	};
 }]);

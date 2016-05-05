@@ -7,7 +7,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	// Load shared data
 	$scope.SharedData = sharedData;
 
-	$scope.treeData = {};
+	$scope.rootCategories = [];
 
 	$scope.uncategorisedFoods = [];
 
@@ -175,13 +175,14 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	function reloadRootCategories() {
 		foodDataReader.getRootCategories( function(categories) {
-			$scope.treeData = {};
+
+			$scope.rootCategories = [];
 
 			var unpacked = $.map(categories, packer.unpackCategoryHeader);
 
 			$.each(unpacked, function (index, node) {
 				loadProblemsForNode(node);
-				$scope.treeData[node.code] = node;
+				$scope.rootCategories.push(node);
 			});
 		},
 		$scope.handleError);

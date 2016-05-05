@@ -18,7 +18,7 @@
 						ul(ng-if='uncategorisedFoods')
 							li(ng-repeat='(index, value) in uncategorisedFoods | orderBy:["type", "displayName"]' ng-include='"node"')
 			
-				li(ng-repeat='(index, value) in treeData | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
+				li(ng-repeat='(index, value) in rootCategories | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
 
 include food-problems
 

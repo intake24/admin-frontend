@@ -9,6 +9,10 @@ angular.module('intake24.admin.food_db').factory('CurrentItem', ['$rootScope', f
 			$rootScope.$broadcast('intake24.admin.food_db.CurrentItemChanged', newItem);
 		},
 
+		itemUpdated : function() {
+			$rootScope.$broadcast('intake24.admin.food_db.CurrentItemUpdated');
+		},
+
 		getCurrentItem : function() {
 			return currentItem;
 		},

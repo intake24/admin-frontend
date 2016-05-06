@@ -28,36 +28,23 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		reloadUncategorisedFoods();
 	});
 
+	$scope.$on("intake24.admin.food_db.CurrentItemUpdated", function(updateEvent) {
+
+		function
+
+		function updateItems(categoryNode) {
+			$.each(categoryNode.children, function (node) {
+
+			});
+		}
+
+		$.each ($scope.rootCategories, function (cat) {
+
+		});
+	});
+
 	$scope.getText = function(s) {
 		return gettext(s);
-	}
-
-	// Update items in the food list as they are modified
-	function updateItems(newItem, oldItem)
-	{
-		if (oldItem.code == $scope.SharedData.originalCode) {
-
-			if ($scope.SharedData.currentItem.hasOwnProperty('temp')) {
-				if ($scope.SharedData.currentItem.temp.hasOwnProperty('update_code')) {
-					delete $scope.SharedData.currentItem.temp.update_code;
-					oldItem.code = newItem.code = $scope.SharedData.currentItem.temp.code;
-				}
-			}
-		}
-
-		if (oldItem.code == newItem.code) {
-
-			oldItem.editing = !angular.equals(oldItem.englishDescription, newItem.englishDescription);
-
-			newItem.children = (oldItem.hasOwnProperty('children')) ? oldItem.children : [];
-
-			angular.merge(oldItem, newItem);
-		}
-
-		if (oldItem.hasOwnProperty('children')) {
-			$.each(oldItem.children, function(key, value) { updateItems(newItem, value); })
-		}
-
 	}
 
 	// Show a container and hide all others

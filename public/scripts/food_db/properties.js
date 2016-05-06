@@ -446,7 +446,15 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}).then(
 			function (res) {
 				showMessage(gettext('Food updated'), 'success');
-				currentItem.
+
+				var updateEvent = {
+					type: "food",
+					code: $scope.itemDefinition.code;
+					englishDescription: $scope.itemDefinition.englishDescription;
+					localDescription: $scope.itemDefinition.localData.localDescription;
+				};
+
+				currentItem.itemUpdated(updateEvent);
 			},
 			function (response) {
 				showMessage(gettext('Failed to update food'), 'danger');

@@ -28,18 +28,28 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		reloadUncategorisedFoods();
 	});
 
-	$scope.$on("intake24.admin.food_db.CurrentItemUpdated", function(updateEvent) {
-
-		function
-
-		function updateItems(categoryNode) {
-			$.each(categoryNode.children, function (node) {
-
-			});
+	$scope.$on("intake24.admin.food_db.CurrentItemUpdated", function(event, updateEvent) {
+		function maybeUpdateNode(node) {
+			if (node.code == updateEvent.originalCode && node.type == updateEvent.type) {
+				node.code = updateEvent.code;
+				node.englishDescription = updateEvent.englishDescription;
+				node.localDescription = updateEvent.localDescription;
+				node.displayName = node.localDescription.defined ? node.localDescription.value : node.englishDescription;
+			}
 		}
 
-		$.each ($scope.rootCategories, function (cat) {
+		function updateCategory(categoryNode) {
+			if (categoryNode.children) {
+				$.each(categoryNode.children, function (i, node) {
+					maybeUpdateNode(node);
+					if (node.type == 'category')
+						updateCategory(node);
+					});
+				}
+		}
 
+		$.each ($scope.rootCategories, function (i, cat) {
+			updateCategory(cat);
 		});
 	});
 
@@ -54,11 +64,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		$(container_id).show();
 	}
 
-	// Check if codes available
-	$('input').keyup(function() {
-		if ($(this).attr('id') == 'input-food-code') { checkCode(this, 'foods'); }
-		if ($(this).attr('id') == 'input-category-code') { checkCode(this, 'categories'); }
-	});
+
 
 	$scope.returnHome = function() {
 
@@ -310,14 +316,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { showMessage(gettext('Failed to add food'), 'danger'); console.log(response); });
 	}
 
-	$scope.discardFoodChanges = function() {
-
-		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
-		$scope.fetchProperties();
-
-		showMessage(gettext('Changes discarded'), 'success');
-	}
-
 	$scope.deleteFood = function() {
 
 		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
@@ -472,28 +470,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 			}, function errorCallback(response) { showMessage(gettext('Failed to delete category'), 'danger'); });
 		}
-	}
-
-	function checkCode(input, type)
-	{
-		var code = $(input).val();
-
-		if (code.length < 4) { $(input).removeClass('valid invalid'); return; }
-
-		$http({
-			method: 'GET',
-			url: api_base_url + type + '/code-available/' + code,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			if (response.data) {
-				$(input).removeClass('invalid').addClass('valid');
-			} else {
-
-				$(input).removeClass('valid').addClass('invalid');
-			}
-
-		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
 	$scope.handleError = function(response)

@@ -62,6 +62,14 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 		updateFoodLocal: function(food_code, definition)
 		{
 			return authApiPostFuture('admin/foods/' + locales.current() + '/' + food_code, definition);
+		},
+
+		checkFoodCode: function(food_code) {
+			return authApiCallFuture('GET', 'admin/foods/code-available/' + food_code );
+		},
+
+		checkCategoryCode: function(category_code) {
+			return authApiCallFuture('GET', 'admin/categories/code-available/' + category_code );
 		}
 
 	};

@@ -39,13 +39,34 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.localViewOpen = false;
 
+	// Override disabled state for footer buttons, e.g. while the update async
+	// request is pending
+	$scope.forceDisabledButtons = false;
+
+	function reloadData() {
+		loadProperties();
+		loadParentCategories();
+		loadLocalFoodData();
+	}
+
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
 		// This is just the basic header received from the tree control
 		// Editable data will be stored in itemDefinition
 		$scope.currentItem = newItem;
-		loadProperties();
-		loadParentCategories();
-		loadLocalFoodData();
+		reloadData();
+	});
+
+	$scope.$on('intake24.admin.food_db.CurrentItemUpdated', function(event, updateEvent) {
+		$scope.currentItem.code = updateEvent.code;
+		$scope.currentItem.localDescription = updateEvent.localDescription;
+		$scope.currentItem.englishDescription = updateEvent.englishDescription;
+		$scope.currentItem.displayName = updateEvent.localDescription.defined ? updateEvent.localDescription.value : updateEvent.englishDescription;
+
+		reloadData();
+	});
+
+	$scope.$on('intake24.admin.food_db.PropertiesLoaded', function(event) {
+		$('.input-intake-code').keyup(function() { checkCode(this); } );
 	});
 
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
@@ -58,6 +79,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	function loadProperties() {
 
+		function broadcastEvent() {
+			$scope.$broadcast('intake24.admin.food_db.PropertiesLoaded');
+		};
+
 		$('#properties-col').addClass('active');
 		$('input').removeClass('valid invalid');
 
@@ -66,6 +91,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 				function(definition) {
 					$scope.itemDefinition = packer.unpackCategoryDefinition(definition);
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
+
+					broadcastEvent();
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#category-properties-container').hide();
@@ -78,6 +105,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 				function(definition) {
 					$scope.itemDefinition = packer.unpackFoodDefinition(definition);
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
+
+					broadcastEvent();
 
 					// use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
@@ -152,6 +181,27 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 				add_to: [],
 				remove_from: []
 			};
+	}
+
+	function checkCode(input)
+	{
+		var code = $(input).val();
+
+		if (code.length < 4 || code == $scope.originalItemDefinition.code) { $(input).removeClass('valid invalid'); return; }
+
+		var future = ($scope.currentItem.type == 'food') ? foodDataWriter.checkFoodCode(code) : foodDataWriter.checkCategoryCode(code);
+
+		future.then(
+			function onSuccess(response) {
+				if (response.data) {
+					$(input).removeClass('invalid').addClass('valid');
+				} else {
+					$(input).removeClass('valid').addClass('invalid');
+				}
+			},
+			function onError(response) {
+				$scope.handleError(response);
+		});
 	}
 
 	$scope.parentCategoriesChanged = function() {
@@ -407,7 +457,18 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });*/
 	}
 
+	function disableButtons() {
+		$scope.forceDisabledButtons = true;
+	}
+
+	function enableButtons() {
+		$scope.forceDisabledButtons = false;
+	}
+
 	$scope.updateFood = function() {
+
+		disableButtons();
+
 		// These functions return a future ("promise" in angular terminology)
 		// that will generate an async HTTP request to update the basic/local food
 		// record if required.
@@ -449,19 +510,27 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 				var updateEvent = {
 					type: "food",
-					code: $scope.itemDefinition.code;
-					englishDescription: $scope.itemDefinition.englishDescription;
-					localDescription: $scope.itemDefinition.localData.localDescription;
+					originalCode: $scope.originalItemDefinition.code,
+					code: $scope.itemDefinition.code,
+					englishDescription: $scope.itemDefinition.englishDescription,
+					localDescription: $scope.itemDefinition.localData.localDescription
 				};
 
 				currentItem.itemUpdated(updateEvent);
+				enableButtons();
 			},
 			function (response) {
 				showMessage(gettext('Failed to update food'), 'danger');
 				// Check if this was caused by a 409, and show a better message
 				console.error(response);
+				enableButtons();
 			}
 		);
+	}
+
+	$scope.discardFoodChanges = function() {
+		reloadData();
+		showMessage(gettext('Changes discarded'), 'success');
 	}
 
 	$scope.updateLocalFood = function() {

@@ -8,7 +8,7 @@
 
 .intake-btn
 	background-color btn-default-color
-	border 1px solid darken(btn-default-color, 5%)
+	border 0px solid darken(btn-default-color, 5%)
 	border-radius 4px
 	float left
 	font-size 13px
@@ -17,35 +17,47 @@
 	transition(all .2s linear)
 	&:hover
 		background-color darken(btn-default-color, 5%)
-		border 1px solid darken(btn-default-color, 5%)
+		border 0px solid darken(btn-default-color, 5%)
 		cursor pointer
 	&:active
 		background-color darken(btn-default-color, 15%)
-		border 1px solid darken(btn-default-color, 15%)
+		border 0px solid darken(btn-default-color, 15%)
 .success
 	&:hover
 		background-color darken(btn-success-color, 5%)
-		border 1px solid darken(btn-success-color, 5%)
+		border 0px solid darken(btn-success-color, 5%)
 		color #FFF
 	&:active
 		background-color darken(btn-success-color, 15%)
-		border 1px solid darken(btn-success-color, 15%)
+		border 0px solid darken(btn-success-color, 15%)
+	&:disabled
+		opacity 0.4
+		background-color inherit
+		color inherit
 .warning
 	&:hover
 		background-color darken(btn-warning-color, 5%)
-		border 1px solid darken(btn-warning-color, 5%)
+		border 0px solid darken(btn-warning-color, 5%)
 		color #FFF
 	&:active
 		background-color darken(btn-warning-color, 15%)
-		border 1px solid darken(btn-warning-color, 15%)
+		border 0px solid darken(btn-warning-color, 15%)
+	&:disabled
+		opacity 0.4
+		background-color inherit
+		color inherit
 .danger
 	&:hover
 		background-color darken(btn-danger-color, 5%)
-		border 1px solid darken(btn-danger-color, 5%)
+		border 0px solid darken(btn-danger-color, 5%)
 		color #FFF
 	&:active
 		background-color darken(btn-danger-color, 15%)
 		border 1px solid darken(btn-danger-color, 15%)
+	&:disabled
+		opacity 0.4
+		background-color inherit
+		color inherit
 
 /* RTL Styles */
 

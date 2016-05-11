@@ -6,7 +6,7 @@
 /* Import variables */
 .intake-btn {
   background-color: #fafafa;
-  border: 1px solid #ededed;
+  border: 0px solid #ededed;
   border-radius: 4px;
   float: left;
   font-size: 13px;
@@ -19,39 +19,54 @@
 }
 .intake-btn:hover {
   background-color: #ededed;
-  border: 1px solid #ededed;
+  border: 0px solid #ededed;
   cursor: pointer;
 }
 .intake-btn:active {
   background-color: #d4d4d4;
-  border: 1px solid #d4d4d4;
+  border: 0px solid #d4d4d4;
 }
 .success:hover {
   background-color: #30cb6e;
-  border: 1px solid #30cb6e;
+  border: 0px solid #30cb6e;
   color: #fff;
 }
 .success:active {
   background-color: #2bb663;
-  border: 1px solid #2bb663;
+  border: 0px solid #2bb663;
+}
+.success:disabled {
+  opacity: 0.4;
+  background-color: inherit;
+  color: inherit;
 }
 .warning:hover {
   background-color: #f67e04;
-  border: 1px solid #f67e04;
+  border: 0px solid #f67e04;
   color: #fff;
 }
 .warning:active {
   background-color: #dc7104;
-  border: 1px solid #dc7104;
+  border: 0px solid #dc7104;
+}
+.warning:disabled {
+  opacity: 0.4;
+  background-color: inherit;
+  color: inherit;
 }
 .danger:hover {
   background-color: #ff2727;
-  border: 1px solid #ff2727;
+  border: 0px solid #ff2727;
   color: #fff;
 }
 .danger:active {
   background-color: #ff0808;
   border: 1px solid #ff0808;
+}
+.danger:disabled {
+  opacity: 0.4;
+  background-color: inherit;
+  color: inherit;
 }
 /* RTL Styles */
 html[dir="rtl"] .intake-btn {

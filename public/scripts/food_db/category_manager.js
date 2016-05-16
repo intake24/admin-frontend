@@ -31,7 +31,7 @@ angular.module('intake24.admin.food_db').controller('CategoryManagerController',
 	}
 
 	function loadSearchResults() {
-		foodDataReader.searchCategories(currentSearchQuery, function(categories) {
+		foodDataReader.searchCategories(currentSearchQuery).then(function(categories) {
 				$scope.searchResults = $.map(categories, packer.unpackCategoryHeader);
 			},
 			$scope.handleError

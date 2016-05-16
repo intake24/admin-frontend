@@ -7,7 +7,7 @@ angular.module('intake24.admin.food_db').controller('AsServedSetController', ['$
 	$scope.asServedImageSets = null;
 
 	function reloadAsServedSets() {
-		foodDataReader.getAsServedImageSets(function(asServedSets) {
+		foodDataReader.getAsServedImageSets().then(function(asServedSets) {
 			$scope.asServedImageSets = asServedSets;
 		},
 		$scope.handleError);

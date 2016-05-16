@@ -1,22 +1,15 @@
 angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Locales', function($http, locales) {
 
-	function authApiCall(method, url, onSuccess, onFailure) {
-		$http({
-			method: method,
-			url: api_base_url + url,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(
-			function (response) {	onSuccess(response.data);	},
-			function (response) { onFailure(response); }
-		);
-	};
-
 	function authApiCallFuture(method, url) {
 		return $http({
 			method: method,
 			url: api_base_url + url,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		});
+		}).then(
+			function(response) {
+				return response.data;
+			}
+		);
 	}
 
 	function authApiPostFuture(url, data) {
@@ -39,12 +32,12 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			return authApiCallFuture('PUT', 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
 		},
 
-		deleteFoodFromCategory: function(food_code, category_code)
+		removeFoodFromCategory: function(food_code, category_code)
 		{
 			return authApiCallFuture('DELETE', 'admin/categories/' + category_code + '/foods/' + food_code);
 		},
 
-		deleteCategoryFromCategory: function (category_code, subcategory_code)
+		removeCategoryFromCategory: function (category_code, subcategory_code)
 		{
 			return authApiCallFuture('DELETE', 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
 		},

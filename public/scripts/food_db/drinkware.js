@@ -7,7 +7,7 @@ angular.module('intake24.admin.food_db').controller('DrinkwareController', ['$sc
 	$scope.drinkwareSets = null;
 
 	function reloadDrinkwareSets() {
-		foodDataReader.getDrinkwareSets(function(drinkwareSets) {
+		foodDataReader.getDrinkwareSets().then(function(drinkwareSets) {
 			$scope.drinkwareSets = drinkwareSets;
 		},
 		$scope.handleError);

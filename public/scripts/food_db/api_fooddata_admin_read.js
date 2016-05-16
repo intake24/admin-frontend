@@ -1,67 +1,68 @@
 angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Locales', function($http, locales) {
 
-	function authApiCall(method, url, onSuccess, onFailure) {
-		$http({
+	function authApiCallFuture(method, url, onSuccess, onFailure) {
+		return $http({
 			method: method,
 			url: api_base_url + url,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(
-			function (response) {	onSuccess(response.data);	},
-			function (response) { onFailure(response); }
+			function(response) {
+				return response.data;
+			}
 		);
 	};
 
 	return {
-		getRootCategories: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + locales.current(), onSuccess, onFailure);
+		getRootCategories: function() {
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current());
 		},
 
-		getUncategorisedFoods: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + locales.current() + '/uncategorised', onSuccess, onFailure);
+		getUncategorisedFoods: function() {
+			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/uncategorised')
 		},
 
-		getCategoryContents: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code, onSuccess, onFailure);
+		getCategoryContents: function(code) {
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/' + code);
 		},
 
-		getCategoryDefinition: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code + '/definition', onSuccess, onFailure);
+		getCategoryDefinition: function(code) {
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/' + code + '/definition');
 		},
 
-		getFoodDefinition: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + locales.current() + '/' + code + '/definition', onSuccess, onFailure);
+		getFoodDefinition: function(code) {
+			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/' + code + '/definition');
 		},
 
-		getCategoryParentCategories: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + locales.current() + '/' + code + '/parent-categories', onSuccess, onFailure);
+		getCategoryParentCategories: function(code) {
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/' + code + '/parent-categories');
 		},
 
-		getFoodParentCategories: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + locales.current() + '/' + code + '/parent-categories', onSuccess, onFailure);
+		getFoodParentCategories: function(code) {
+			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/' + code + '/parent-categories');
 		},
 
-		getFoodGroups: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/food-groups/' + locales.current(), onSuccess, onFailure);
+		getFoodGroups: function() {
+			return authApiCallFuture('GET', 'admin/food-groups/' + locales.current());
 		},
 
-		getAsServedImageSets: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/portion-size/as-served', onSuccess, onFailure);
+		getAsServedImageSets: function() {
+			return authApiCallFuture('GET', 'admin/portion-size/as-served');
 		},
 
-		getGuideImages: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/portion-size/guide-image', onSuccess, onFailure);
+		getGuideImages: function() {
+			return authApiCallFuture('GET', 'admin/portion-size/guide-image');
 		},
 
-		getDrinkwareSets: function(onSuccess, onFailure) {
-			authApiCall('GET', 'admin/portion-size/drinkware', onSuccess, onFailure);
+		getDrinkwareSets: function() {
+			return authApiCallFuture('GET', 'admin/portion-size/drinkware');
 		},
 
 		searchCategories: function(query, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/categories/' + locales.current() + '/search/' + query, onSuccess, onFailure);
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/search/' + query);
 		},
 
 		searchFoods: function(query, onSuccess, onFailure) {
-			authApiCall('GET', 'admin/foods/' + locales.current() + '/search/' + query, onSuccess, onFailure);
+			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/search/' + query);
 		}
 	};
 }]);

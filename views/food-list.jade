@@ -15,8 +15,8 @@
 						i(ng-class='uncategorisedNodeMarkerClass(value, #{lang_dir})' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='uncategorisedFoodsExist()')
 						i(ng-class='uncategorisedNodeMarkerClass(value, #{lang_dir})' ng-if='!uncategorisedFoodsExist()')
 						span #{ gettext("Uncategorised foods") }
-						ul(ng-if='uncategorisedFoods')
-							li(ng-repeat='(index, value) in uncategorisedFoods | orderBy:["type", "displayName"]' ng-include='"node"')
+					ul(ng-if='uncategorisedFoods')
+						li(ng-repeat='(index, value) in uncategorisedFoods | orderBy:["type", "displayName"]' ng-include='"node"')
 			
 				li(ng-repeat='(index, value) in rootCategories | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
 

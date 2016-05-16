@@ -44,9 +44,17 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	$scope.forceDisabledButtons = false;
 
 	function reloadData() {
-		loadProperties();
-		loadParentCategories();
-		loadLocalFoodData();
+		disableButtons();
+
+		$q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
+			function(response) {
+				$scope.handleError(response);
+			}
+		).finally(
+			function() {
+				enableButtons();
+			}
+		);
 	}
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -77,69 +85,69 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		currentItem.setChangedState($scope.itemChanged());
 	});
 
-	function loadProperties() {
+	function loadBasicData() {
 
 		function broadcastEvent() {
 			$scope.$broadcast('intake24.admin.food_db.PropertiesLoaded');
-		};
+		}
 
-		$('#properties-col').addClass('active');
-		$('input').removeClass('valid invalid');
+		function resetStyles() {
+			$('#properties-col').addClass('active');
+			$('input').removeClass('valid invalid');
+		}
 
 		if ($scope.currentItem.type == 'category') {
-			foodDataReader.getCategoryDefinition($scope.currentItem.code,
+			return foodDataReader.getCategoryDefinition($scope.currentItem.code).then(
 				function(definition) {
 					$scope.itemDefinition = packer.unpackCategoryDefinition(definition);
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
-					broadcastEvent();
+					resetStyles();
 
-					// use ng-if in template for consistency
+					// TODO: use ng-if in template for consistency
 					$('.properties-container').not('#category-properties-container').hide();
 					$('#category-properties-container').css({'display':'block'});
-				},
-				$scope.handleError
-			);
+
+					broadcastEvent();
+				});
 		} else if ($scope.currentItem.type == 'food') {
-			foodDataReader.getFoodDefinition($scope.currentItem.code,
+			return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
 				function(definition) {
 					$scope.itemDefinition = packer.unpackFoodDefinition(definition);
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
-					broadcastEvent();
+					resetStyles();
 
-					// use ng-if in template for consistency
+					// TODO: use ng-if in template for consistency
 					$('.properties-container').not('#food-properties-container').hide();
 					$('#food-properties-container').css({'display':'block'});
-				},
-				$scope.handleError
-			);
+
+					broadcastEvent();
+
+				});
 		}
 	}
 
 	function loadParentCategories() {
 		if ($scope.currentItem.type == 'food') {
-			foodDataReader.getFoodParentCategories($scope.currentItem.code,
+			return foodDataReader.getFoodParentCategories($scope.currentItem.code).then(
 				function(categories) {
 					$scope.parentCategories = $.map(categories, packer.unpackFoodHeader);
 					$scope.originalParentCategories = angular.copy($scope.parentCategories);
-				},
-				$scope.handleError
+				}
 			);
 		} else if ($scope.currentItem.type == 'category') {
-			foodDataReader.getCategoryParentCategories($scope.currentItem.code,
+			return foodDataReader.getCategoryParentCategories($scope.currentItem.code).then(
 				function(categories) {
 					$scope.parentCategories = $.map(categories, packer.unpackCategoryHeader);
 					$scope.originalParentCategories = angular.copy($scope.parentCategories);
-				},
-				$scope.handleError
-			);
+				});
 		}
 	}
 
-	function loadLocalFoodData() {
+	function loadLocalData() {
 		if ($scope.currentItem.type == 'food') {
-			userFoodData.getFoodDataWithSources($scope.currentItem.code,
+			return userFoodData.getFoodDataWithSources($scope.currentItem.code).then(
 				function(data) {
 					$scope.localFoodData = data[0];
 					$scope.localFoodDataSources = data[1];
@@ -149,17 +157,17 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 						// 404 is expected and means that local food data is not defined
 						$scope.localFoodData = null;
 					} // anything else is an error
-					else $scope.handleError(response);
-				}
-			);
+						else return $q.reject(response);
+				});
 		}
 	}
 
 	function reloadFoodGroups() {
-		foodDataReader.getFoodGroups(function(groups) {
-			$scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
-		},
-		$scope.handleError);
+		foodDataReader.getFoodGroups().then(
+			function(groups) {
+				$scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
+			},
+			$scope.handleError);
 	}
 
 	function exists(categoryList, categoryHeader) {
@@ -209,22 +217,30 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		return ((changes.add_to.length + changes.remove_from.length) > 0);
 	}
 
-	function buildParentCategoryRequests() {
+	// Returns a single future (promise) for all the necessary category calls
+	function updateParentCategories() {
 		var changes = parentCategoryChanges();
 
+		// The requests below are using the original item code because the code
+		// could have been edited. Category changes must therefore be applied
+		// before base food/category record updates.
+
 		var addRequests = $.map(changes.add_to, function (c) {
-			return foodDataWriter.addFoodToCategory($scope.itemDefinition.code, c.code);
+			if ($scope.currentItem.type == 'food')
+				return foodDataWriter.addFoodToCategory($scope.originalItemDefinition.code, c.code);
+			else if ($scope.currentItem.type == 'category')
+				return foodDataWriter.addCategoryToCategory($scope.originalItemDefinition.code, c.code);
 		});
 
 		var deleteRequests = $.map(changes.remove_from, function (c) {
-			return foodDataWriter.removeFromCategory($scope.itemDefinition.code, c.code);
+			if ($scope.currentItem.type == 'food')
+				return foodDataWriter.removeFoodFromCategory($scope.originalItemDefinition.code, c.code);
+			else if ($scope.currentItem.type == 'category')
+				return foodDataWriter.removeCategoryFromCategory($scope.originalItemDefinition.code, c.code);
 		});
 
-		return $.when.apply($, addRequests.concat(deleteRequests));
-	}
-
-	$scope.commitParentCategories = function() {
-		buildParentCategoryRequests().fail(function(response) { $scope.handleError (response); });
+		// $q.all is sequence: Array[Future[_]] => Future[Array[_]]
+		return $q.all(addRequests.concat(deleteRequests));
 	}
 
 	$scope.categoryBasicDefinitionChanged = function() {
@@ -275,30 +291,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		else if ($scope.currentItem && $scope.currentItem.type == 'category')
 			return $scope.categoryChanged();
 		return false;
-	}
-
-	$scope.commitCategory = function() {
-		if (categoryBasicDefinitionChanged()) {
-			foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packer.packCategoryDefinition($scope.itemDefinition)).fail($scope.handleError);
-		}
-
-		if (categoryLocalDefinitionChanged()) {
-			foodDataWriter.updateCategoryLocal($scope.originalItemDefinition.code, packer.packCategoryLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
-		}
-
-		$scope.commitParentCategories();
-	}
-
-	$scope.commitFood = function() {
-		if (foodBasicDefinitionChanged()) {
-			foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packer.packFoodDefinition($scope.itemDefinition)).fail($scope.handleError);
-		}
-
-		if (foodLocalDefinitionChanged()) {
-			foodDataWriter.updateFoodLocal($scope.originalItemDefinition.code, packer.packFoodLocalDefinition($scope.itemDefinition)).fail($scope.handleError);
-		}
-
-		$scope.commitParentCategories();
 	}
 
 	$scope.localDescriptionModel = function(description) {
@@ -477,35 +469,35 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 		function updateLocal() {
 			if ($scope.foodLocalDefinitionChanged()) {
-				console.log("Local definition changed");
 				var packed = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
 				return foodDataWriter.updateFoodLocal($scope.itemDefinition.code, packed);
 			} else {
-				console.log("Won't update local");
 				return $q.when(true);
 			}
 		}
 
 		function updateBasic() {
 			if ($scope.foodBasicDefinitionChanged()) {
-				console.log("Basic definition changed");
 				var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
 				return foodDataWriter.updateFoodBasic($scope.originalItemDefinition.code, packed)
 			} else {
-				console.log("Won't update basic");
 				return $q.when(true);
 			}
 		}
 
 		// Food code might have changed.
-		// Update local first (using the old code) and then basic to update the code.
+		// Update parent categories first, then local record (using the old code)
+		// and then basic to update the code.
 		// Race conditions are possible (someone else can manage to change the code
-		// between the two calls), but quite unlikely
+		// between the two calls), but quite unlikely.
 
-		updateLocal().then(function (res) {
-			return updateBasic();
+		updateParentCategories().then(function (response) {
+			return updateLocal();
 		}).then(
-			function (res) {
+			function (response) {
+				return updateBasic();
+		}).then(
+			function (response) {
 				showMessage(gettext('Food updated'), 'success');
 
 				var updateEvent = {
@@ -513,17 +505,18 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					originalCode: $scope.originalItemDefinition.code,
 					code: $scope.itemDefinition.code,
 					englishDescription: $scope.itemDefinition.englishDescription,
-					localDescription: $scope.itemDefinition.localData.localDescription
+					localDescription: $scope.itemDefinition.localData.localDescription,
+					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; })
 				};
 
 				currentItem.itemUpdated(updateEvent);
-				enableButtons();
 			},
 			function (response) {
 				showMessage(gettext('Failed to update food'), 'danger');
 				// Check if this was caused by a 409, and show a better message
 				console.error(response);
-				enableButtons();
+
+				currentItem.itemUpdated(updateEvent);
 			}
 		);
 	}
@@ -532,24 +525,4 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		reloadData();
 		showMessage(gettext('Changes discarded'), 'success');
 	}
-
-	$scope.updateLocalFood = function() {
-
-		/*$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'foods/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem.localData
-		}).then(function successCallback(response) {
-
-			showMessage(gettext('Local food updated'), 'success');
-
-			$scope.fetchProperties();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update local food'), 'danger'); console.log(response); $scope.fetchProperties(); });*/
-	}
-
-
 }]);

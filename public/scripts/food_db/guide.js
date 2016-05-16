@@ -11,7 +11,7 @@ angular.module('intake24.admin.food_db').controller('GuideImageController', ['$s
 	});
 
 	function reloadGuideImages() {
-		foodDataReader.getGuideImages(function(guideImages) {
+		foodDataReader.getGuideImages().then(function(guideImages) {
 			$scope.guideImages = guideImages;
 		},
 		$scope.handleError);

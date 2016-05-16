@@ -1,23 +1,24 @@
 angular.module('intake24.admin.food_db').factory('UserFoodData', ['$http', 'Locales', function($http, locales) {
 
-	function authApiCall(method, url, onSuccess, onFailure) {
-		$http({
+	function authApiCallFuture(method, url) {
+		return $http({
 			method: method,
 			url: api_base_url + url,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
 		}).then(
-			function (response) {	onSuccess(response.data);	},
-			function (response) { onFailure(response); }
+			function(response) {
+				return response.data;
+			}
 		);
-	};
+	}
 
 	return {
-		getFoodData: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'user/foods/' + locales.current() + '/' + code, onSuccess, onFailure);
+		getFoodData: function(code) {
+			return authApiCallFuture('GET', 'user/foods/' + locales.current() + '/' + code);
 		},
 
-		getFoodDataWithSources: function(code, onSuccess, onFailure) {
-			authApiCall('GET', 'user/foods/' + locales.current() + '/' + code + '/with-sources', onSuccess, onFailure);
+		getFoodDataWithSources: function(code) {
+			return authApiCallFuture('GET', 'user/foods/' + locales.current() + '/' + code + '/with-sources');
 		}
 	};
 

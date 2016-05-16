@@ -11,18 +11,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.uncategorisedFoods = [];
 
-	// Watch the current item for changes
-	/*$scope.$watch('SharedData.currentItem', function(newItem) {
-
-		$.each($scope.SharedData.treeData, function(key, value) {
-
-			// Update items in the food list as they are modified
-			updateItems(newItem, value);
-
-		});
-
-	}, true);*/
-
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
 		reloadRootCategories();
 		reloadUncategorisedFoods();
@@ -42,10 +30,18 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			if (categoryNode.children) {
 				$.each(categoryNode.children, function (i, node) {
 					maybeUpdateNode(node);
+
+					if (updateEvent.originalCode == node.code && updateEvent.parentCategories.indexOf(categoryNode.code) == -1) {
+						console.log("Remove " + node.displayName + " from " + categoryNode.displayName);
+						node.markForRemoval = true;
+					}
+
 					if (node.type == 'category')
 						updateCategory(node);
-					});
-				}
+				});
+
+				categoryNode.children = $.grep(categoryNode.children, function(node) { return !node.markForRemoval });
+			}
 		}
 
 		$.each ($scope.rootCategories, function (i, cat) {
@@ -142,10 +138,9 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	function reloadUncategorisedFoods()
 	{
-		foodDataReader.getUncategorisedFoods( function (foods) {
-			$.each(foods, function (index, node) { node.type = 'food' })
-			$scope.uncategorisedFoods = foods;
-			},
+		foodDataReader.getUncategorisedFoods().then( function (foods) {
+			$scope.uncategorisedFoods = $.map(foods, packer.unpackFoodHeader);
+		},
 			$scope.handleError
 		);
 	}
@@ -167,7 +162,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	}
 
 	function reloadRootCategories() {
-		foodDataReader.getRootCategories( function(categories) {
+		foodDataReader.getRootCategories().then( function(categories) {
 
 			$scope.rootCategories = [];
 
@@ -185,7 +180,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		if (node.type != 'category')
 			console.error("Attempt to load children of a non-category node: " + node.code);
 
-		foodDataReader.getCategoryContents(node.code, function(contents) {
+		foodDataReader.getCategoryContents(node.code).then(function(contents) {
 			var subcategories = $.map(contents.subcategories, packer.unpackCategoryHeader);
 			var foods = $.map(contents.foods, packer.unpackFoodHeader);
 			var children = subcategories.concat(foods);

@@ -6,55 +6,63 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.sharedData = sharedData;
 
+	function clearData() {
+		// A snapshot of the initial item definition.
+		// Loaded from the server when the currentItem changes.
+		// Used to determine if anything changed to avoid making unneeded API calls.
+		$scope.originalItemDefinition = null;
+
+		// Current state of the selected item's properties.
+		// Loaded from the server when the currentItem changes,
+		// then bound to page controls and can be edited.
+		$scope.itemDefinition = null;
+
+	  // A snapshot of the initial parent categories state.
+		// Loaded from the server when the currentItem changes.
+		// Used to generate add/remove category API calls when the item is saved.
+		$scope.originalParentCategories = null;
+
+		// Current state of the selected item's parent categories list.
+		// Can be edited using the "Manage categories" drawer.
+		$scope.parentCategories = null;
+
+		// Local view of the current food/category in the current locale for debugging
+		$scope.localFoodData = null;
+
+		$scope.localFoodDataSources = null;
+
+		$scope.localViewOpen = false;
+
+		// Override disabled state for footer buttons, e.g. while the update async
+		// request is pending
+		$scope.forceDisabledButtons = false;
+	}
+
+	clearData();
+
 	// Currently selected item's header.
 	// Used for reference and should not be changed in this controller.
 	$scope.currentItem = null;
 
-	// A snapshot of the initial item definition.
-	// Loaded from the server when the currentItem changes.
-	// Used to determine if anything changed to avoid making unneeded API calls.
-	$scope.originalItemDefinition = null;
-
-	// Current state of the selected item's properties.
-	// Loaded from the server when the currentItem changes,
-	// then bound to page controls and can be edited.
-	$scope.itemDefinition = null;
-
-  // A snapshot of the initial parent categories state.
-	// Loaded from the server when the currentItem changes.
-	// Used to generate add/remove category API calls when the item is saved.
-	$scope.originalParentCategories = null;
-
-	// Current state of the selected item's parent categories list.
-	// Can be edited using the "Manage categories" drawer.
-	$scope.parentCategories = null;
-
 	// List of all food groups. Loaded once on controller instantiation.
 	$scope.foodGroups = null;
 
-	// Local view of the current food/category in the current locale for debugging
-	$scope.localFoodData = null;
-
-	$scope.localFoodDataSources = null;
-
-	$scope.localViewOpen = false;
-
-	// Override disabled state for footer buttons, e.g. while the update async
-	// request is pending
-	$scope.forceDisabledButtons = false;
-
 	function reloadData() {
-		disableButtons();
+		clearData();
 
-		$q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
-			function(response) {
-				$scope.handleError(response);
-			}
-		).finally(
-			function() {
-				enableButtons();
-			}
-		);
+		if ($scope.currentItem) {
+			disableButtons();
+
+			$q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
+				function(response) {
+					$scope.handleError(response);
+				}
+			).finally(
+				function() {
+					enableButtons();
+				}
+			);
+		}
 	}
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -65,11 +73,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	});
 
 	$scope.$on('intake24.admin.food_db.CurrentItemUpdated', function(event, updateEvent) {
-		$scope.currentItem.code = updateEvent.code;
-		$scope.currentItem.localDescription = updateEvent.localDescription;
-		$scope.currentItem.englishDescription = updateEvent.englishDescription;
-		$scope.currentItem.displayName = updateEvent.localDescription.defined ? updateEvent.localDescription.value : updateEvent.englishDescription;
-
+		$scope.currentItem = updateEvent.header;
 		reloadData();
 	});
 
@@ -103,11 +107,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					resetStyles();
-
-					// TODO: use ng-if in template for consistency
-					$('.properties-container').not('#category-properties-container').hide();
-					$('#category-properties-container').css({'display':'block'});
-
 					broadcastEvent();
 				});
 		} else if ($scope.currentItem.type == 'food') {
@@ -117,11 +116,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					resetStyles();
-
-					// TODO: use ng-if in template for consistency
-					$('.properties-container').not('#food-properties-container').hide();
-					$('#food-properties-container').css({'display':'block'});
-
 					broadcastEvent();
 
 				});
@@ -501,12 +495,15 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 				showMessage(gettext('Food updated'), 'success');
 
 				var updateEvent = {
-					type: "food",
+					header: {
+						type: "food",
+						code: $scope.itemDefinition.code,
+						englishDescription: $scope.itemDefinition.englishDescription,
+						localDescription: $scope.itemDefinition.localData.localDescription,
+						displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+					},
 					originalCode: $scope.originalItemDefinition.code,
-					code: $scope.itemDefinition.code,
-					englishDescription: $scope.itemDefinition.englishDescription,
-					localDescription: $scope.itemDefinition.localData.localDescription,
-					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; })
+					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
 				};
 
 				currentItem.itemUpdated(updateEvent);

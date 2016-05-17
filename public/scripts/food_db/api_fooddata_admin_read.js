@@ -37,8 +37,16 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Lo
 			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/' + code + '/parent-categories');
 		},
 
+		getCategoryAllCategories: function(code) {
+			return authApiCallFuture('GET', 'admin/categories/' + locales.current() + '/' + code + '/all-categories');
+		},
+
 		getFoodParentCategories: function(code) {
 			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/' + code + '/parent-categories');
+		},
+
+		getFoodAllCategories: function(code) {
+			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/' + code + '/all-categories');
 		},
 
 		getFoodGroups: function() {

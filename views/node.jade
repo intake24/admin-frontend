@@ -1,4 +1,4 @@
-a(ng-click='nodeSelected($event, value)')
+a(ng-click='nodeClicked(value)' ng-class="value.selected ? 'active' : []")
 	i(class='fa fa-caret-down fa-fw' ng-if='(value.type == "category" || value.type == "uncategorised")')
 	i(class='fa fa-caret-right fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "ltr"))')
 	i(class='fa fa-caret-left fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "rtl"))')
@@ -6,4 +6,4 @@ a(ng-click='nodeSelected($event, value)')
 	i(ng-class='nodeMarkerClass(value, #{lang_dir})' ng-if='!hasProblems(value)')
 	{{ value.displayName }}
 ul(ng-if='value.children')
-	li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"')
+	li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')

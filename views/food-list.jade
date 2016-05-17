@@ -8,7 +8,7 @@
 		.food-list
 			ul
 				li
-					a(ng-click='uncategorisedNodeSelected($event)')
+					a(ng-click='uncategorisedNodeSelected($event)' ng-class="value.selected ? 'active' : []")
 						i(class='fa fa-caret-down fa-fw')
 						i(class='fa fa-caret-right fa-fw' ng-if='"#{lang_dir}" == "ltr"')
 						i(class='fa fa-caret-left fa-fw' ng-if='"#{lang_dir}" == "rtl"')

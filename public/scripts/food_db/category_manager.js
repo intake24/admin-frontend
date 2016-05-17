@@ -61,10 +61,11 @@ angular.module('intake24.admin.food_db').controller('CategoryManagerController',
 	}
 
 	$scope.isInParentCategories = function(categoryHeader) {
-		for (var i = 0; i < $scope.parentCategories.length; i++) {
-			if ($scope.parentCategories[i].code == categoryHeader.code)
-				return true;
-		}
+		if ($scope.parentCategories != null)
+			for (var i = 0; i < $scope.parentCategories.length; i++) {
+				if ($scope.parentCategories[i].code == categoryHeader.code)
+					return true;
+			}
 		return false;
 	}
 

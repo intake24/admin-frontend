@@ -5,7 +5,6 @@
 }
 /* Import color variables */
 .properties-container {
-  display: none;
   position: relative;
 }
 .properties-container .food-local-view-icon {

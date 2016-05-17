@@ -4,45 +4,12 @@ angular.module("intake24.admin.food_db").controller('SearchController', ['$scope
 
 	$scope.searchResults = null;
 
-
-/*	function updateItems(newItem, oldItem)
-	{
-		if (oldItem.code == $scope.SharedData.originalCode) {
-
-			if ($scope.SharedData.currentItem.hasOwnProperty('temp')) {
-				if ($scope.SharedData.currentItem.temp.hasOwnProperty('update_code')) {
-					delete $scope.SharedData.currentItem.temp.update_code;
-					oldItem.code = newItem.code = $scope.SharedData.currentItem.temp.code;
-				}
-			}
-		}
-
-		if (oldItem.code == newItem.code) {
-
-			oldItem.editing = !angular.equals(oldItem.englishDescription, newItem.englishDescription);
-
-			newItem.children = (oldItem.hasOwnProperty('children')) ? oldItem.children : [];
-
-			angular.merge(oldItem, newItem);
-		}
-
-		if (oldItem.hasOwnProperty('children')) {
-			$.each(oldItem.children, function(key, value) { updateItems(newItem, value); })
-		}
-
-	}*/
-
 	// Add click and mouse enter/leave events to search wrapper
 	$('.search-field-wrapper').on('click', function() {
-
 		$(this).addClass('active');
-
 	}).on('mouseenter', function() {
-
 		$(this).addClass('active');
-
 	}).on('mouseleave', function() {
-
 		if ($('#search-field').val() == '') {
 			$('#search-field').blur();
 			$(this).removeClass('active');
@@ -51,11 +18,8 @@ angular.module("intake24.admin.food_db").controller('SearchController', ['$scope
 
 	// Detect change of search query and update results
 	$('#search-field').on('input', function(e) {
-
 		performFoodSearch($(this).val());
-
 	}).keypress(function(e) {
-
 		if (e.keyCode == 13) { performFoodSearch($(this).val()); }
 	});
 
@@ -71,24 +35,26 @@ angular.module("intake24.admin.food_db").controller('SearchController', ['$scope
 			$('#search-results').addClass('visible');
 		}
 
-		foodDataReader.searchCategories(query, function(categories) {
+		foodDataReader.searchCategories(query).then (function(categories) {
 			$scope.searchResults = $scope.searchResults.concat($.map(categories, packer.unpackCategoryHeader));
 		},
 		$scope.handleError);
 
-		foodDataReader.searchFoods(query, function(foods) {
+		foodDataReader.searchFoods(query).then(function(foods) {
 			$scope.searchResults = $scope.searchResults.concat($.map(foods, packer.unpackFoodHeader));
 		},
 		$scope.handleError);
 	}
 
-	$scope.resultSelected = function($event, value) {
+	$scope.resultClicked = function($event, node) {
+		$("#search-field").val("");
+		$("#search-field").blur();
+		$('.search-field-wrapper').removeClass("active");
+		$('.food-list-container').addClass('visible');
+		$('#search-results').removeClass('visible');
 
-		$('#search-results ul li').removeClass('active');
-
-		$($event.target).addClass('active');
-
-		currentItem.setCurrentItem(value);
+		// Defined in outer Explorer controller
+		$scope.searchResultSelected($event, node);
 	}
 
 }]);

@@ -258,6 +258,9 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 				case "milk-on-cereal":
 					break;
 
+				case "milk-in-a-hot-drink":
+					break;
+
 				case "pizza":
 					break;
 
@@ -409,6 +412,9 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					break;
 
 				case "pizza":
+					break;
+
+				case "milk-in-a-hot-drink":
 					break;
 
 				default:

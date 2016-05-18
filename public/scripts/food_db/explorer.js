@@ -9,8 +9,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.rootCategories = [];
 
-	$scope.uncategorisedFoods = [];
-
 	$scope.selectedNode = null;
 
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
@@ -36,15 +34,12 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 				if (indexInThisCategory > -1) {
 					// Remove node from the tree if it was removed from one of the expanded categories
-					if (updateEvent.parentCategories.indexOf(categoryNode.code) == -1) {
-						console.log(categoryNode.children[indexInThisCategory]);
-						if (categoryNode.children[indexInThisCategory].selected) {
-							console.log("Selected node removed");
+					if ( (updateEvent.parentCategories.indexOf(categoryNode.code) == -1) || ((updateEvent.parentCategories.length > 0) && (categoryNode.code == '$UNCAT')) ) {
+						if (categoryNode.children[indexInThisCategory].selected)
 							selectedNodeRemoved = true;
-						}
 						categoryNode.children.splice(indexInThisCategory, 1);
 					}
-				} else if (updateEvent.parentCategories.indexOf(categoryNode.code) > -1) {
+				} else if ( (updateEvent.parentCategories.indexOf(categoryNode.code) > -1) || ((updateEvent.parentCategories.length == 0) && (categoryNode.code == '$UNCAT')) ) {
 					// Add node to the tree if it was added to one of the expanded categories
 					categoryNode.children.push(updateEvent.header);
 				}
@@ -140,21 +135,23 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	$scope.hasProblems = function (node) {
 		if (node.type == 'food')
 			return (node.problems != null && node.problems.length > 0);
-		else if (node.type == 'category')
+		else if ( (node.type == 'category') && (node.code != "$UNCAT") )
 			return (node.recursiveProblems != null &&
 				(node.recursiveProblems.categoryProblems.length > 0 ||
 				node.recursiveProblems.foodProblems.length > 0));
+		else if ( (node.type == 'category') && (node.code == "$UNCAT") )
+			return (node.children.length > 0);
 	}
 
 	function reloadUncategorisedFoodsDeferred()
 	{
 		return foodDataReader.getUncategorisedFoods().then( function (foods) {
-			$scope.uncategorisedFoods = $.map(foods, packer.unpackFoodHeader);
+			$scope.rootCategories[0].children = $.map(foods, packer.unpackFoodHeader);
 		});
 	}
 
 	function loadProblemsForNodeDeferred(node) {
-		if (node.type == 'category')
+		if ( (node.type == 'category') && ( node.code != '$UNCAT') )
 			return problems.getCategoryProblemsRecursive(node.code);
 		else if (node.type == 'food')
 			return problems.getFoodProblems(node.code);
@@ -164,7 +161,17 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	function reloadRootCategoriesDeferred() {
 		return foodDataReader.getRootCategories().then( function(categories) {
-			 $scope.rootCategories = $.map(categories, packer.unpackCategoryHeader);
+			$scope.rootCategories = $.map(categories, packer.unpackCategoryHeader);
+
+			$scope.rootCategories.unshift (
+				{
+					displayName: "Uncategorised foods", //FIXME: use localised string
+					code: "$UNCAT",
+					type: "category",
+					children: []
+				}
+			);
+
 			 return $q.all($.map($scope.rootCategories, function(node) { return loadProblemsForNodeDeferred(node) }));
 		 });
 	}
@@ -188,16 +195,17 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		loadChildrenDeferred(node).catch($scope.handleError);
 	}
 
-	function makeVisibleAndSelect(node) {
-		clearSelection();
+	function findNodeInTree(node) {
+
+		function match(n) { return n.type == node.type && n.code == node.code };
 
 		// First check if the node is one of the root categories
-		var rootCategory = _.find($scope.rootCategories, function (n) { return n.type == node.type && n.code == node.code });
+		var targetNode = _.find($scope.rootCategories, match);
 
-		if (rootCategory) {
-				selectNode(rootCategory);
+		if (targetNode) {
+				return $q.when(targetNode);
 		} else {
-
+			// Try to find the node in the tree
 			var allParentCategoriesDeferred = null;
 
 			if (node.type == "food") {
@@ -206,52 +214,62 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(node.code);
 			}
 
-			allParentCategoriesDeferred.then(function (allCategories) {
+			return allParentCategoriesDeferred.then(function (allCategories) {
 
 				var allCategoryCodes = _.map(allCategories, function (c) { return c.code; });
 
-				function find(topLevelCategories) {
-					var category = _.find(topLevelCategories, function (cnode) { return _.contains(allCategoryCodes, cnode.code) });
+				if (allCategoryCodes.length == 0) {
+					// Check the uncategorised foods
 
-					if (category)
-						return loadChildrenDeferred(category).then(function () {
-							category.open = true;
+					return reloadUncategorisedFoodsDeferred().then( function () {
+						$scope.uncategorisedNode.open = true;
+						targetNode = _.find($scope.uncategorisedFoods, match);
+						if (targetNode)
+							return $q.when(targetNode);
+						else
+							return $q.reject("Failed to find selected node in the food tree");
+					});
+				} else {
+					function find(topLevelCategories) {
+						var category = _.find(topLevelCategories, function (cnode) { return _.contains(allCategoryCodes, cnode.code) });
 
-							var result = _.find(category.children, function (n) { return n.type == node.type && n.code == node.code });
+						if (category)
+							return loadChildrenDeferred(category).then(function () {
+								category.open = true;
 
-							if (result)
-								selectNode(result);
-							else {
-								return f(_.filter(category.children, function(n) { return n.type == "category"}));
-							}
-						});
-					else
-						return $q.reject("Failed to find selected node in the food tree");
+								var targetNode = _.find(category.children, match);
+
+								if (targetNode)
+									return $q.when(targetNode);
+								else
+									return find(_.filter(category.children, function(n) { return n.type == "category"}));
+							});
+						else
+							return $q.reject("Failed to find selected node in the food tree");
+						}
+
+						return find($scope.rootCategories);
 				}
-
-				find($scope.rootCategories);
-
-			}, $scope.handleError)
+			});
 		}
+	}
+
+	function makeVisibleAndSelect(node) {
+		findNodeInTree(node).then (function (n) {
+			clearSelection();
+			selectNode(n);
+			setTimeout(function() {
+				var targetElement = $("#food-list-col ul a.active")[0];
+				$("#food-list-col").animate( {
+					scrollTop: targetElement.offsetTop - $("header").height() - 5
+				}, 500);
+			}, 0);
+		}, $scope.handleError);
 	}
 
 	$scope.uncategorisedFoodsExist = function() {
 		return $scope.uncategorisedFoods.length > 0;
 	}
-
-	/*function nodeClicked($event) {
-		var nodeAnchor = $($event.target).closest('a');
-		var nodeLi = nodeAnchor.parent();
-
-		// Selection highlight
-
-		$('.food-list ul li a').removeClass('active');
-		nodeAnchor.addClass('active');
-
-		nodeLi.toggleClass('node-open');
-
-		return nodeLi.hasClass('node-open');
-	}*/
 
 	function selectNode(node) {
 		if ($scope.selectedNode)
@@ -264,6 +282,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			$scope.selectedNode.open = !$scope.selectedNode.open;
 			if ($scope.selectedNode.open)
 				loadChildren(node);
+		} else if ($scope.selectedNode.type == 'uncategorised') {
+			$scope.selectedNode.open = !$scope.selectedNode.open;
+			if ($scope.selectedNode.open)
+				reloadUncategorisedFoodsDeferred().catch($scope.handleError);
 		}
 
 		currentItem.setCurrentItem($scope.selectedNode);
@@ -282,12 +304,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.searchResultSelected = function($event, node) {
 		makeVisibleAndSelect(node);
-	}
-
-	$scope.uncategorisedNodeSelected = function($event) {
-		if (nodeClicked($event)) {
-			reloadUncategorisedFoods();
-		}
 	}
 
 	$scope.copyEnglishMethods = function() {

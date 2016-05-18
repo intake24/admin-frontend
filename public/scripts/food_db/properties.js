@@ -365,7 +365,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.addPortionSize = function(array) {
-		array.push({description:'', imageUrl:'', useForRecipes:false, parameters:{}});
+		array.push({method: 'as-served', description:'', imageUrl:'', useForRecipes:false, parameters:{}});
 	}
 
 	$scope.deletePortionSize = function(array, index) {

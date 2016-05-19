@@ -12,7 +12,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	$scope.selectedNode = null;
 
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
-		$q.all([reloadRootCategoriesDeferred(),	reloadUncategorisedFoodsDeferred()]).catch($scope.handleError);
+		reloadRootCategoriesDeferred().catch($scope.handleError);
 	});
 
 	$scope.$on("intake24.admin.food_db.CurrentItemUpdated", function(event, updateEvent) {
@@ -77,42 +77,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.removeFromCategory = function() {
 
-		$scope.reloadCategories();
-
-		$.each($scope.SharedData.currentItem.parentCategories, function(index, value) {
-
-			if (value.remove) {
-
-				// Item is flagged for removal so lets remove it!
-				var food_code = $scope.SharedData.currentItem.code;
-				var category_code = value.code;
-
-				var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
-
-				$http({
-					method: 'DELETE',
-					url: api_endpoint,
-					headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-				}).then(function successCallback(response) {
-
-					showMessage(gettext('Removed from selected categories'), 'success');
-
-					$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
-					$scope.fetchProperties();
-
-					getChildren({code: category_code, type: 'category'});
-
-				}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
-			};
-		});
-
-	}
-
-	$scope.uncategorisedNodeMarkerClass = function() {
-		var cls = ['fa', 'fa-fw', 'fa-circle'];
-		if ($scope.uncategorisedFoodsExist())
-			cls.push('problems');
-		return cls;
 	}
 
 	$scope.nodeMarkerClass = function(node) {
@@ -135,26 +99,36 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	$scope.hasProblems = function (node) {
 		if (node.type == 'food')
 			return (node.problems != null && node.problems.length > 0);
-		else if ( (node.type == 'category') && (node.code != "$UNCAT") )
+		else if (node.type == 'category')
 			return (node.recursiveProblems != null &&
 				(node.recursiveProblems.categoryProblems.length > 0 ||
 				node.recursiveProblems.foodProblems.length > 0));
-		else if ( (node.type == 'category') && (node.code == "$UNCAT") )
-			return (node.children.length > 0);
-	}
-
-	function reloadUncategorisedFoodsDeferred()
-	{
-		return foodDataReader.getUncategorisedFoods().then( function (foods) {
-			$scope.rootCategories[0].children = $.map(foods, packer.unpackFoodHeader);
-		});
 	}
 
 	function loadProblemsForNodeDeferred(node) {
 		if ( (node.type == 'category') && ( node.code != '$UNCAT') )
-			return problems.getCategoryProblemsRecursive(node.code);
+			return problems.getCategoryProblemsRecursive(node.code).then( function(problems) {
+				node.recursiveProblems = problems;
+			})
+		else if ( (node.type == 'category') && (node.code == '$UNCAT') ) {
+			return foodDataReader.getUncategorisedFoods().then ( function (uncategorisedFoods) {
+				node.recursiveProblems = {
+					foodProblems: _.map(_.take(uncategorisedFoods, 10), function(food) {
+						var unpacked = packer.unpackFoodHeader(food);
+						return {
+							foodName: unpacked.displayName,
+							foodCode: unpacked.code,
+							problemCode: "food_not_categorised"
+						}
+					}),
+					categoryProblems: []
+				}
+			});
+		}
 		else if (node.type == 'food')
-			return problems.getFoodProblems(node.code);
+			return problems.getFoodProblems(node.code).then( function(problems) {
+				node.problems = problems;
+			});
 		else
 			return $q.reject("Node has no type tag -- probably incorrect argument");
 	}
@@ -180,13 +154,21 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		if (node.type != 'category')
 			console.error("Attempt to load children of a non-category node: " + node.code);
 
-		return foodDataReader.getCategoryContents(node.code).then(function(contents) {
-			var subcategories = $.map(contents.subcategories, packer.unpackCategoryHeader);
-			var foods = $.map(contents.foods, packer.unpackFoodHeader);
-			var children = subcategories.concat(foods);
+		var childrenDeferred;
 
+		if (node.code == "$UNCAT")
+			childrenDeferred = foodDataReader.getUncategorisedFoods().then(function (foods) {
+				return $.map(foods, packer.unpackFoodHeader);
+			});
+		else
+			childrenDeferred = foodDataReader.getCategoryContents(node.code).then(function(contents) {
+				var subcategories = $.map(contents.subcategories, packer.unpackCategoryHeader);
+				var foods = $.map(contents.foods, packer.unpackFoodHeader);
+				return subcategories.concat(foods);
+			});
+
+		return childrenDeferred.then(function (children) {
 			node.children = children;
-
 			return $q.all($.map(children, function (node) { loadProblemsForNodeDeferred(node); }));
 		});
 	}
@@ -272,8 +254,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	}
 
 	function selectNode(node) {
-		if ($scope.selectedNode)
-			$scope.selectedNode.selected = false;
+		clearSelection();
 
 		$scope.selectedNode = node;
 		$scope.selectedNode.selected = true;
@@ -282,13 +263,11 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			$scope.selectedNode.open = !$scope.selectedNode.open;
 			if ($scope.selectedNode.open)
 				loadChildren(node);
-		} else if ($scope.selectedNode.type == 'uncategorised') {
-			$scope.selectedNode.open = !$scope.selectedNode.open;
-			if ($scope.selectedNode.open)
-				reloadUncategorisedFoodsDeferred().catch($scope.handleError);
 		}
 
-		currentItem.setCurrentItem($scope.selectedNode);
+		// Don't show properties for the uncategorised foods node
+		if (($scope.selectedNode.type != 'category') || ($scope.selectedNode.code != '$UNCAT'))
+			currentItem.setCurrentItem($scope.selectedNode);
 	}
 
 	function clearSelection() {
@@ -532,6 +511,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.handleError = function(response)
 	{
+		showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
 		console.log(response);
 		if (response.status === 401) { showMessage(gettext('You are not authorized'), 'danger'); Cookies.remove('auth-token'); }
 	}

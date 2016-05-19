@@ -206,6 +206,14 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		});
 	}
 
+	function disableButtons() {
+		$scope.forceDisabledButtons = true;
+	}
+
+	function enableButtons() {
+		$scope.forceDisabledButtons = false;
+	}
+
 	$scope.parentCategoriesChanged = function() {
 		var changes = parentCategoryChanges();
 		return ((changes.add_to.length + changes.remove_from.length) > 0);
@@ -239,14 +247,14 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.categoryBasicDefinitionChanged = function() {
 		if ($scope.originalItemDefinition && $scope.itemDefinition)
-			return !angular.equals(packer.packCategoryDefinition($scope.originalItemDefinition), packer.packCategoryDefinition($scope.itemDefinition));
+			return !angular.equals(packer.packCategoryBasicDefinition($scope.originalItemDefinition), packer.packCategoryBasicDefinition($scope.itemDefinition));
 		else
 			return false;
 	}
 
 	$scope.categoryLocalDefinitionChanged = function() {
 		if ($scope.originalItemDefinition && $scope.itemDefinition)
-			return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition), packer.packCategoryLocalDefinition($scope.itemDefinition));
+			return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition.localData), packer.packCategoryLocalDefinition($scope.itemDefinition.localData));
 		else
 			return false;
 	}
@@ -374,81 +382,57 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.updateCategory = function() {
 
-		console.log("Update category");
-		applyParentCategoryChanges();
+		disableButtons();
 
-		/*packCurrentItemService.broadcast();
+		function updateLocalDeferred() {
+			if ($scope.categoryLocalDefinitionChanged()) {
+				var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.localData);
+				return foodDataWriter.updateCategoryLocal($scope.itemDefinition.code, packed);
+			} else {
+				return $q.when(true);
+			}
+		}
 
-		$http({
-			method: 'POST',
-			url: api_base_url + 'categories/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem
-		}).then(function successCallback(response) {
+		function updateBasicDeferred() {
+			if ($scope.categoryBasicDefinitionChanged()) {
+				var packed = packer.packCategoryBasicDefinition($scope.itemDefinition);
+				return foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packed)
+			} else {
+				return $q.when(true);
+			}
+		}
 
-			$.each($scope.SharedData.topLevelCategories, function(index, value) {
+		updateParentCategories().then(function (response) {
+			return updateLocalDeferred();
+		}).then(
+			function (response) {
+				return updateBasicDeferred();
+		}).then(
+			function (response) {
+				showMessage(gettext('Category updated'), 'success');
 
-				if (value.state == 'add') {
-					addCategoryToCategory(value.code, $scope.SharedData.currentItem.code);
-				}
+				var updateEvent = {
+					header: {
+						type: "category",
+						code: $scope.itemDefinition.code,
+						englishDescription: $scope.itemDefinition.englishDescription,
+						localDescription: $scope.itemDefinition.localData.localDescription,
+						displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+					},
+					originalCode: $scope.originalItemDefinition.code,
+					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
+				};
 
-				if (value.state == 'remove') {
+				currentItem.itemUpdated(updateEvent);
+			},
+			function (response) {
+				showMessage(gettext('Failed to update category'), 'danger');
+				// Check if this was caused by a 409, and show a better message
+				console.error(response);
 
-					var category_code = value.code;
-
-					var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/' + category_code + '/subcategories/' + $scope.SharedData.currentItem.code : api_base_url + 'categories/' + category_code + '/foods/' + $scope.SharedData.currentItem.code;
-
-					$http({
-						method: 'DELETE',
-						url: api_endpoint,
-						headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-					}).then(function successCallback(response) {
-
-						showMessage(gettext('Removed from selected categories'), 'success');
-
-					}, function errorCallback(response) { showMessage(gettext('Failed to remove from categories'), 'danger'); });
-
-				}
-
-			});
-
-			fetchCategoriesService.broadcast();
-
-			showMessage(gettext('Category updated'), 'success');
-
-			$scope.fetchProperties();
-
-			$scope.updateLocalCategory();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update category'), 'danger'); console.log(response); });*/
-	}
-
-	$scope.updateLocalCategory = function() {
-
-		applyParentCategoryChanges();
-
-	/*	$scope.SharedData.currentItem.localData.localDescription = ($scope.SharedData.locale.intake_locale == 'en_GB') ? [$scope.SharedData.currentItem.englishDescription] : $scope.SharedData.currentItem.localData.localDescription;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'categories/' + $scope.SharedData.locale.intake_locale + '/' + $scope.SharedData.originalCode,
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem.localData
-		}).then(function successCallback(response) {
-
-			showMessage(gettext('Local category updated'), 'success');
-
-			$scope.fetchProperties();
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to update local category'), 'danger'); console.log(response); $scope.fetchProperties(); });*/
-	}
-
-	function disableButtons() {
-		$scope.forceDisabledButtons = true;
-	}
-
-	function enableButtons() {
-		$scope.forceDisabledButtons = false;
+				currentItem.itemUpdated(updateEvent);
+			}
+		);
 	}
 
 	$scope.updateFood = function() {
@@ -473,7 +457,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		function updateBasic() {
 			if ($scope.foodBasicDefinitionChanged()) {
 				var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
-				return foodDataWriter.updateFoodBasic($scope.originalItemDefinition.code, packed)
+				return foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packed)
 			} else {
 				return $q.when(true);
 			}

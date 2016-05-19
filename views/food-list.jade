@@ -7,18 +7,8 @@
 	.food-list-container.visible
 		.food-list
 			ul
-				li(ng-class='uncategorisedNode.open ? "node-open" : "node-closed"')
-					a(ng-click='nodeClicked(uncategorisedNode)' ng-class="uncategorisedNode.selected ? 'active' : []")
-						i(class='fa fa-caret-down fa-fw')
-						i(class='fa fa-caret-right fa-fw' ng-if='"#{lang_dir}" == "ltr"')
-						i(class='fa fa-caret-left fa-fw' ng-if='"#{lang_dir}" == "rtl"')
-						i(ng-class='uncategorisedNodeMarkerClass(value, #{lang_dir})' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='uncategorisedFoodsExist()')
-						i(ng-class='uncategorisedNodeMarkerClass(value, #{lang_dir})' ng-if='!uncategorisedFoodsExist()')
-						span {{ uncategorisedNode.displayName }}
-					ul
-						li(ng-repeat='(index, value) in uncategorisedFoods | orderBy:["type", "displayName"]' ng-include='"node"')
-			
-				li(ng-repeat='(index, value) in rootCategories | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
+				li(ng-repeat='(index, value) in rootCategories.slice(0, 1) | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
+				li(ng-repeat='(index, value) in rootCategories.slice(1) | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
 
 include food-problems
 

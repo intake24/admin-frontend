@@ -46,8 +46,6 @@ angular.module('intake24.admin.food_db').controller('CategoryManagerController',
 		// Try to remove the category first
 		var filtered = $.grep($scope.parentCategories, function(c) { return c.code != categoryHeader.code });
 
-		console.log(filtered);
-
 		if (filtered.length == $scope.parentCategories.length) {
 			// Category wasn't in the parentCategories list (since nothing was removed
 			// by the grep filter), so we need to add it

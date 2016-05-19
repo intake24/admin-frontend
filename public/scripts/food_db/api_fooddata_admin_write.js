@@ -47,7 +47,12 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			return authApiPostFuture('admin/categories/' + category_code, definition);
 		},
 
-		updateFoodBasic: function (food_code, definition)
+		updateCategoryLocal: function (category_code, definition)
+		{
+			return authApiPostFuture('admin/categories/' + locales.current() + '/' + category_code, definition);
+		},
+
+		updateFoodBase: function (food_code, definition)
 		{
 			return authApiPostFuture('admin/foods/' + food_code, definition);
 		},

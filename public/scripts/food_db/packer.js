@@ -281,7 +281,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		};
 	}
 
-	instance.packCategoryDefinition = function(unpacked) {
+	instance.packCategoryBasicDefinition = function(unpacked) {
 		return {
 			version: unpacked.version,
 			code: unpacked.code,
@@ -289,15 +289,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 			isHidden: unpacked.isHidden,
 			attributes: instance.packInheritableAttributes(unpacked.attributes)
 		};
-	}
-
-	instance.packFoodDefinition = function(unpacked) {
-		var basic = packFoodBasicDefinition(unpacked);
-		var local = packFoodLocalDefinition(unpacked.localData);
-
-		basic.localData = local;
-
-		return basic;
 	}
 
 	instance.packFoodBasicDefinition = function(unpacked) {
@@ -320,10 +311,13 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 	}
 
 	instance.packCategoryLocalDefinition = function(unpacked) {
+		console.log("PACK");
+		console.log(unpacked);
+
 		return {
-			version: instance.packOption(unpacked.localData.version),
-			localDescription: instance.packOption(unpacked.localData.localDescription),
-			portionSize: instance.packPortionSizes(unpacked.localData.portionSize)
+			version: instance.packOption(unpacked.version),
+			localDescription: instance.packOption(unpacked.localDescription),
+			portionSize: instance.packPortionSizes(unpacked.portionSize)
 		};
 	}
 

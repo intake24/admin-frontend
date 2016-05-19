@@ -11,7 +11,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 	var instance = {};
 
-	/* These functions convert the servrer-side optional data encoding to
+	/* These functions convert the server-side optional data encoding to
 	* a more appropriate structure for use with Angular templates.
 	*
 	* Server-side encoding is an array with either 0 (value not present) or exactly
@@ -311,9 +311,6 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 	}
 
 	instance.packCategoryLocalDefinition = function(unpacked) {
-		console.log("PACK");
-		console.log(unpacked);
-
 		return {
 			version: instance.packOption(unpacked.version),
 			localDescription: instance.packOption(unpacked.localDescription),

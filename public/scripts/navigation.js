@@ -1,6 +1,11 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', ["$scope", "Locales", function($scope, locales) {
+app.controller('NavigationController', ["$rootScope", "$scope", "Locales", function($rootScope, $scope, locales) {
+
+	// FIXME: What are these for?
+	$scope.manage_foods_active = true;
+	$scope.manage_categories_active = true;
+	$scope.sidebaropen = false;
 
 	$scope.$watch(function() {
 			return locales.list();
@@ -54,38 +59,7 @@ app.controller('NavigationController', ["$scope", "Locales", function($scope, lo
 
 	// Add new food
 	$scope.addNewFood = function() {
-
-		$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-			value.state = 'none';
-
-		});
-
-		$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[0];
-
-		$scope.SharedData.currentItem = {
-			code:"",
-			englishDescription:"",
-			groupCode:0,
-			attributes:{
-				readyMealOption:Array(),
-				sameAsBeforeOption:Array(),
-				reasonableAmount:Array()
-			},
-			localData:{
-				version:Array(),
-				localDescription:Array(),
-				nutrientTableCodes:{},
-				portionSize:Array()
-			},
-			parentCategories:Array()
-		};
-
-		$('#properties-col').show().addClass('fullwidth');
-
-		$('#food-list-col').hide();
-
-		showContainer('#add-new-food-container');
+		$rootScope.$broadcast('intake24.admin.food_db.AddNewFood');
 	}
 
 	// Clone food

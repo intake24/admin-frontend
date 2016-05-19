@@ -1,6 +1,6 @@
 block sidebar
-	.sidebar(ng-init='sidebaropen=false' ng-class='{"active": sidebaropen}')
-		ul(ng-controller='NavigationController' ng-init='manage_foods_active = manage_categories_active = true')
+	.sidebar(ng-class='{"active": sidebaropen}' ng-controller='NavigationController')
+		ul
 			li.sidebar-btn(ng-class="{'active': set_language_active}")
 				a(ng-click='set_language_active = !set_language_active') #{ gettext("Set Language") } <i class="fa" ng-class="set_language_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>
 				ul.nested-li

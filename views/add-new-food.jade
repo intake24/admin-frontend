@@ -1,4 +1,4 @@
-.properties-container#add-new-food-container(ng-if="currentItem != null && currentItem.type == 'food' && currentItem.newItem")
+.properties-container#add-new-food-container(ng-if="currentItem != null && currentItem.type == 'food' && newItem")
 
 
 	.properties-padding
@@ -10,8 +10,8 @@
 
 	.properties-footer
 		.input-wrapper
-			.intake-btn.success(ng-click='addFood()')
+			.intake-btn.success(ng-click='saveNewFood()')
 				span #{ gettext("Add food") }
-			.intake-btn.danger(ng-click='returnHome()')
+			.intake-btn.danger(ng-click='cancelNewFood()')
 				span #{ gettext("Cancel") }
 			.clearfloat

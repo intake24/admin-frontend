@@ -47,6 +47,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			return authApiPostFuture('admin/categories/' + category_code, definition);
 		},
 
+		createNewCategory: function(definition)
+		{
+			return authApiPostFuture('admin/categories/new', definition);
+		},
+
 		updateCategoryLocal: function (category_code, definition)
 		{
 			return authApiPostFuture('admin/categories/' + locales.current() + '/' + category_code, definition);
@@ -55,6 +60,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 		updateFoodBase: function (food_code, definition)
 		{
 			return authApiPostFuture('admin/foods/' + food_code, definition);
+		},
+
+		createNewFood: function(definition)
+		{
+			return authApiPostFuture('admin/foods/new', definition);
 		},
 
 		updateFoodLocal: function(food_code, definition)
@@ -69,6 +79,5 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 		checkCategoryCode: function(category_code) {
 			return authApiCallFuture('GET', 'admin/categories/code-available/' + category_code );
 		}
-
 	};
 }]);

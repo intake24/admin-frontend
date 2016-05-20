@@ -1,4 +1,4 @@
-.properties-container#add-new-category-container(ng-if="false")
+.properties-container#add-new-category-container(ng-if="currentItem != null && currentItem.type == 'category' && newItem")
 
 	.properties-padding
 		
@@ -9,8 +9,8 @@
 
 	.properties-footer
 		.input-wrapper
-			.intake-btn.success(ng-click='addCategory()')
+			.intake-btn.success(ng-click='saveNewCategory()')
 				span #{ gettext("Add category") }
-			.intake-btn.danger(ng-click='returnHome()')
+			.intake-btn.danger(ng-click='cancelNewCategory()')
 				span #{ gettext("Cancel") }
 			.clearfloat

@@ -36,6 +36,9 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		// Override disabled state for footer buttons, e.g. while the update async
 		// request is pending
 		$scope.forceDisabledButtons = false;
+
+		// Used to select whether the new item actions are used or the update actions
+		$scope.newItem = false;
 	}
 
 	clearData();
@@ -65,20 +68,26 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}
 	}
 
+	$scope.$on('intake24.admin.food_db.NewItemCreated', function(event, newItem, header) {
+		$scope.currentItem = header;
+		$scope.originalItemDefinition = newItem;
+		$scope.itemDefinition = angular.copy(newItem);
+		$scope.originalParentCategories = [];
+		$scope.parentCategories = [];
+		$scope.newItem = true;
+	});
+
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
 		// This is just the basic header received from the tree control
 		// Editable data will be stored in itemDefinition
 		$scope.currentItem = newItem;
+		$scope.newItem = false;
 		reloadData();
 	});
 
 	$scope.$on('intake24.admin.food_db.CurrentItemUpdated', function(event, updateEvent) {
 		$scope.currentItem = updateEvent.header;
 		reloadData();
-	});
-
-	$scope.$on('intake24.admin.food_db.PropertiesLoaded', function(event) {
-		$('.input-intake-code').keyup(function() { checkCode(this); } );
 	});
 
 	$scope.$on("intake24.admin.LoggedIn", function(event) {
@@ -90,10 +99,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	});
 
 	function loadBasicData() {
-
-		function broadcastEvent() {
-			$scope.$broadcast('intake24.admin.food_db.PropertiesLoaded');
-		}
 
 		function resetStyles() {
 			$('#properties-col').addClass('active');
@@ -107,7 +112,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					resetStyles();
-					broadcastEvent();
 				});
 		} else if ($scope.currentItem.type == 'food') {
 			return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
@@ -116,8 +120,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 					$scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
 					resetStyles();
-					broadcastEvent();
-
 				});
 		}
 	}
@@ -185,25 +187,25 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			};
 	}
 
-	function checkCode(input)
+	$scope.checkCode = function($event)
 	{
-		var code = $(input).val();
+		console.log($event.target);
+		var el = $($event.target);
+		var code = el.val();
 
-		if (code.length < 4 || code == $scope.originalItemDefinition.code) { $(input).removeClass('valid invalid'); return; }
+		if (code.length < 4 || code == $scope.originalItemDefinition.code) { el.removeClass('valid invalid'); return; }
 
-		var future = ($scope.currentItem.type == 'food') ? foodDataWriter.checkFoodCode(code) : foodDataWriter.checkCategoryCode(code);
+		var deferred = ($scope.currentItem.type == 'food') ? foodDataWriter.checkFoodCode(code) : foodDataWriter.checkCategoryCode(code);
 
-		future.then(
-			function onSuccess(response) {
-				if (response.data) {
-					$(input).removeClass('invalid').addClass('valid');
-				} else {
-					$(input).removeClass('valid').addClass('invalid');
-				}
+		deferred.then(
+			function (codeValid) {
+				if (codeValid)
+					el.removeClass('invalid').addClass('valid');
+				else
+					el.removeClass('valid').addClass('invalid');
 			},
-			function onError(response) {
-				$scope.handleError(response);
-		});
+			$scope.handleError);
+
 	}
 
 	function disableButtons() {
@@ -435,33 +437,50 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		);
 	}
 
+	function notifyItemUpdated() {
+		var updateEvent = {
+			header: {
+				type: $scope.currentItem.type,
+				code: $scope.itemDefinition.code,
+				englishDescription: $scope.itemDefinition.englishDescription,
+				localDescription: $scope.itemDefinition.localData.localDescription,
+				displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+			},
+			originalCode: $scope.originalItemDefinition.code,
+			parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
+		};
+
+		currentItem.itemUpdated(updateEvent);
+	}
+
+	// These functions return a future ("promise" in angular terminology)
+	// that will generate an async HTTP request to update the basic/local food
+	// record if required.
+	// Will return a dummy 'true' value if no changes are detected.
+	// Resulting value is not important, but HTTP errors must be handled further.
+
+	function updateFoodBase() {
+		if ($scope.foodBasicDefinitionChanged()) {
+			var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
+			return foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packed)
+		} else {
+			return $q.when(true);
+		}
+	}
+
+	function updateFoodLocal() {
+		if ($scope.foodLocalDefinitionChanged()) {
+			var packed = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
+			return foodDataWriter.updateFoodLocal($scope.itemDefinition.code, packed);
+		} else {
+			return $q.when(true);
+		}
+	}
+
+
 	$scope.updateFood = function() {
 
 		disableButtons();
-
-		// These functions return a future ("promise" in angular terminology)
-		// that will generate an async HTTP request to update the basic/local food
-		// record if required.
-		// Will return a dummy 'true' value if no changes are detected.
-		// Resulting value is not important, but HTTP errors must be handled further.
-
-		function updateLocal() {
-			if ($scope.foodLocalDefinitionChanged()) {
-				var packed = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
-				return foodDataWriter.updateFoodLocal($scope.itemDefinition.code, packed);
-			} else {
-				return $q.when(true);
-			}
-		}
-
-		function updateBasic() {
-			if ($scope.foodBasicDefinitionChanged()) {
-				var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
-				return foodDataWriter.updateFoodBase($scope.originalItemDefinition.code, packed)
-			} else {
-				return $q.when(true);
-			}
-		}
 
 		// Food code might have changed.
 		// Update parent categories first, then local record (using the old code)
@@ -469,41 +488,57 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		// Race conditions are possible (someone else can manage to change the code
 		// between the two calls), but quite unlikely.
 
-		updateParentCategories().then(function (response) {
-			return updateLocal();
-		}).then(
-			function (response) {
-				return updateBasic();
-		}).then(
-			function (response) {
-				showMessage(gettext('Food updated'), 'success');
-
-				var updateEvent = {
-					header: {
-						type: "food",
-						code: $scope.itemDefinition.code,
-						englishDescription: $scope.itemDefinition.englishDescription,
-						localDescription: $scope.itemDefinition.localData.localDescription,
-						displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+		updateParentCategories()
+			.then(function () {	return updateFoodLocal(); })
+			.then(function () {	return updateFoodBase(); })
+			.then(
+				function () {
+						showMessage(gettext('Food updated'), 'success');
+						notifyItemUpdated();
 					},
-					originalCode: $scope.originalItemDefinition.code,
-					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
-				};
+				function (response) {
+					showMessage(gettext('Failed to update food'), 'danger');
+					// Check if this was caused by a 409, and show a better message
+					console.error(response);
 
-				currentItem.itemUpdated(updateEvent);
-			},
-			function (response) {
-				showMessage(gettext('Failed to update food'), 'danger');
-				// Check if this was caused by a 409, and show a better message
-				console.error(response);
-
-				currentItem.itemUpdated(updateEvent);
-			}
-		);
+					notifyItemUpdated();
+				});
 	}
 
 	$scope.discardFoodChanges = function() {
 		reloadData();
 		showMessage(gettext('Changes discarded'), 'success');
 	}
+
+	$scope.saveNewFood = function() {
+		var packed = packer.packNewFoodDefinition($scope.itemDefinition);
+
+		foodDataWriter.createNewFood(packed)
+			.then( function() { return updateParentCategories(); })
+			.then( function () { return updateFoodLocal(); })
+			.then(
+				function () {
+					showMessage(gettext('New food added'), 'success');
+					notifyItemUpdated();
+				},
+				function (response) {
+					showMessage(gettext('Failed to add new food'), 'danger');
+					// Check if this was caused by a 409, and show a better message
+					console.error(response);
+				});
+	}
+
+
+	$scope.cancelNewFood = function() {
+		currentItem.setCurrentItem(null);
+	}
+
+	$scope.saveNewCategory = function() {
+
+	}
+
+	$scope.cancelNewCategory = function() {
+		currentItem.setCurrentItem(null);
+	}
+
 }]);

@@ -2,7 +2,7 @@
 
 angular.module('intake24.admin.food_db').controller('ExplorerController',
 	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
-	'Packer', 'Locales', '$q', function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer, locales, $q) {
+	'Packer', 'Locales', '$q', '$rootScope', function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer, locales, $q, $rootScope) {
 
 	// Load shared data
 	$scope.SharedData = sharedData;
@@ -70,7 +70,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		var newFood = {
 			version: "",
 			code: "",
-			englishDescription: gettext("New food"),
+			englishDescription: "New food",
 			groupCode: 0,
 			attributes: {
 				readyMealOption: { defined: false, value: null },
@@ -85,7 +85,15 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			}
 		}
 
-		console.log(parentNode);
+		var header = {
+			type: "food",
+			code: newFood.code,
+			englishDescription: newFood.englishDescription,
+			localDescription: newFood.localData.localDescription,
+			displayName: newFood.englishDescription
+		}
+
+		$rootScope.$broadcast("intake24.admin.food_db.NewItemCreated", newFood, header);
 
 	});
 

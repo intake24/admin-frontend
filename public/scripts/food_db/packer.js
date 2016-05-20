@@ -301,6 +301,15 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		};
 	}
 
+	instance.packNewFoodDefinition = function(unpacked) {
+		return {
+			code: unpacked.code,
+			groupCode: unpacked.groupCode,
+			englishDescription: unpacked.englishDescription,
+			attributes: instance.packInheritableAttributes(unpacked.attributes),
+		};
+	}
+
 	instance.packFoodLocalDefinition = function(unpacked) {
 		return {
 			version: instance.packOption(unpacked.version),

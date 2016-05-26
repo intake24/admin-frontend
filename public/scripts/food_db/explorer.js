@@ -50,7 +50,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			updateCategory(cat);
 		});
 
-		if (selectedNodeRemoved)
+		if (selectedNodeRemoved || updateEvent.newItem)
 			makeVisibleAndSelect(updateEvent.header);
 	});
 
@@ -65,7 +65,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	$scope.$on("intake24.admin.food_db.AddNewFood", function(event, updateEvent) {
 
-		var parentNode = parentCategoryNodeForNewItem();
+		var parentNode = angular.copy(parentCategoryNodeForNewItem());
 
 		var newFood = {
 			version: "",
@@ -93,7 +93,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			displayName: newFood.englishDescription
 		}
 
-		$rootScope.$broadcast("intake24.admin.food_db.NewItemCreated", newFood, header);
+		$rootScope.$broadcast("intake24.admin.food_db.NewItemCreated", newFood, header, parentNode);
 
 	});
 
@@ -283,6 +283,8 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	function makeVisibleAndSelect(node) {
 		findNodeInTree(node).then (function (n) {
+			console.log("MAKE VISIBLE");
+			console.log(n);
 			clearSelection();
 			selectNode(n);
 			setTimeout(function() {

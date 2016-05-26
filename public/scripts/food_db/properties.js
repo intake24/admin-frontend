@@ -68,12 +68,12 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}
 	}
 
-	$scope.$on('intake24.admin.food_db.NewItemCreated', function(event, newItem, header) {
+	$scope.$on('intake24.admin.food_db.NewItemCreated', function(event, newItem, header, parentNode) {
 		$scope.currentItem = header;
 		$scope.originalItemDefinition = newItem;
 		$scope.itemDefinition = angular.copy(newItem);
 		$scope.originalParentCategories = [];
-		$scope.parentCategories = [];
+		$scope.parentCategories = [parentNode];
 		$scope.newItem = true;
 	});
 
@@ -125,20 +125,16 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	function loadParentCategories() {
-		if ($scope.currentItem.type == 'food') {
-			return foodDataReader.getFoodParentCategories($scope.currentItem.code).then(
-				function(categories) {
-					$scope.parentCategories = $.map(categories, packer.unpackFoodHeader);
-					$scope.originalParentCategories = angular.copy($scope.parentCategories);
-				}
-			);
-		} else if ($scope.currentItem.type == 'category') {
-			return foodDataReader.getCategoryParentCategories($scope.currentItem.code).then(
-				function(categories) {
-					$scope.parentCategories = $.map(categories, packer.unpackCategoryHeader);
-					$scope.originalParentCategories = angular.copy($scope.parentCategories);
-				});
+
+		function unpackCategories(categories) {
+			$scope.parentCategories = $.map(categories, packer.unpackCategoryHeader);
+			$scope.originalParentCategories = angular.copy($scope.parentCategories);
 		}
+
+		if ($scope.currentItem.type == 'food')
+			return foodDataReader.getFoodParentCategories($scope.currentItem.code).then(unpackCategories);
+		else if ($scope.currentItem.type == 'category')
+			return foodDataReader.getCategoryParentCategories($scope.currentItem.code).then(unpackCategories);
 	}
 
 	function loadLocalData() {
@@ -189,7 +185,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.checkCode = function($event)
 	{
-		console.log($event.target);
 		var el = $($event.target);
 		var code = el.val();
 
@@ -221,26 +216,22 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		return ((changes.add_to.length + changes.remove_from.length) > 0);
 	}
 
-	// Returns a single future (promise) for all the necessary category calls
+	// Returns a single deferred for all the necessary category calls
 	function updateParentCategories() {
 		var changes = parentCategoryChanges();
 
-		// The requests below are using the original item code because the code
-		// could have been edited. Category changes must therefore be applied
-		// before base food/category record updates.
-
 		var addRequests = $.map(changes.add_to, function (c) {
 			if ($scope.currentItem.type == 'food')
-				return foodDataWriter.addFoodToCategory($scope.originalItemDefinition.code, c.code);
+				return foodDataWriter.addFoodToCategory($scope.itemDefinition.code, c.code);
 			else if ($scope.currentItem.type == 'category')
-				return foodDataWriter.addCategoryToCategory($scope.originalItemDefinition.code, c.code);
+				return foodDataWriter.addCategoryToCategory($scope.itemDefinition.code, c.code);
 		});
 
 		var deleteRequests = $.map(changes.remove_from, function (c) {
 			if ($scope.currentItem.type == 'food')
-				return foodDataWriter.removeFoodFromCategory($scope.originalItemDefinition.code, c.code);
+				return foodDataWriter.removeFoodFromCategory($scope.itemDefinition.code, c.code);
 			else if ($scope.currentItem.type == 'category')
-				return foodDataWriter.removeCategoryFromCategory($scope.originalItemDefinition.code, c.code);
+				return foodDataWriter.removeCategoryFromCategory($scope.itemDefinition.code, c.code);
 		});
 
 		// $q.all is sequence: Array[Future[_]] => Future[Array[_]]
@@ -290,11 +281,15 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.itemChanged = function() {
-		if ($scope.currentItem && $scope.currentItem.type == 'food')
-			return $scope.foodChanged();
-		else if ($scope.currentItem && $scope.currentItem.type == 'category')
-			return $scope.categoryChanged();
-		return false;
+		if ($scope.newItem)
+			return false;
+		else if ($scope.currentItem) {
+				if ($scope.currentItem.type == 'food')
+					return $scope.foodChanged();
+				else if ($scope.currentItem.type == 'category')
+					return $scope.categoryChanged();
+			} else
+				return false;
 	}
 
 	$scope.localDescriptionModel = function(description) {
@@ -437,8 +432,8 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		);
 	}
 
-	function notifyItemUpdated() {
-		var updateEvent = {
+	function createUpdateEvent() {
+		return {
 			header: {
 				type: $scope.currentItem.type,
 				code: $scope.itemDefinition.code,
@@ -449,11 +444,15 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			originalCode: $scope.originalItemDefinition.code,
 			parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
 		};
+	}
 
+	function notifyItemUpdated() {
+		var updateEvent = createUpdateEvent();
+		updateEvent.newItem = $scope.newItem;
 		currentItem.itemUpdated(updateEvent);
 	}
 
-	// These functions return a future ("promise" in angular terminology)
+	// These functions return a deffered function (see https://docs.angularjs.org/api/ng/service/$q)
 	// that will generate an async HTTP request to update the basic/local food
 	// record if required.
 	// Will return a dummy 'true' value if no changes are detected.
@@ -479,18 +478,11 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 
 	$scope.updateFood = function() {
-
 		disableButtons();
 
-		// Food code might have changed.
-		// Update parent categories first, then local record (using the old code)
-		// and then basic to update the code.
-		// Race conditions are possible (someone else can manage to change the code
-		// between the two calls), but quite unlikely.
-
-		updateParentCategories()
+		updateFoodBase()
+			.then(function () {	return updateParentCategories(); })
 			.then(function () {	return updateFoodLocal(); })
-			.then(function () {	return updateFoodBase(); })
 			.then(
 				function () {
 						showMessage(gettext('Food updated'), 'success');
@@ -513,21 +505,20 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	$scope.saveNewFood = function() {
 		var packed = packer.packNewFoodDefinition($scope.itemDefinition);
 
-		foodDataWriter.createNewFood(packed)
-			.then( function() { return updateParentCategories(); })
-			.then( function () { return updateFoodLocal(); })
-			.then(
-				function () {
-					showMessage(gettext('New food added'), 'success');
-					notifyItemUpdated();
-				},
-				function (response) {
-					showMessage(gettext('Failed to add new food'), 'danger');
-					// Check if this was caused by a 409, and show a better message
-					console.error(response);
-				});
-	}
+		// FIXME: this really needs better error handling when the base record
+		// is able to be created, but the parent categories then fail to update
 
+		foodDataWriter.createNewFood(packed)
+			.then( function () { return updateParentCategories(); })
+			.then( function () {
+				showMessage(gettext('New food added'), 'success');
+				notifyItemUpdated();
+			}, function () {
+				showMessage(gettext('Failed to add new food'), 'danger');
+				// Check if this was caused by a 409, and show a better message
+				console.error(response);
+			});
+	}
 
 	$scope.cancelNewFood = function() {
 		currentItem.setCurrentItem(null);

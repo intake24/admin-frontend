@@ -18,37 +18,53 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	$scope.$on("intake24.admin.food_db.CurrentItemUpdated", function(event, updateEvent) {
 		var selectedNodeRemoved = false;
 
-		function updateCategory(categoryNode) {
-			var indexInThisCategory = -1;
+		// parentNode can be null (for root category nodes)
+		function processNodes(nodes, parentNode) {
+			var index = -1;
 
-			if (categoryNode.children && categoryNode.open) {
-				$.each(categoryNode.children, function (i, node) {
-					if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
-						_.extend(categoryNode.children[i], updateEvent.header);
-						indexInThisCategory = i;
-					}
+			$.each(nodes, function (i, node) {
+				if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
+					_.extend(nodes[i], updateEvent.header);
+					index = i;
+				}
 
-					if (node.type == 'category')
-						updateCategory(node);
-				});
+				if (node.type == 'category' && node.children && node.open)
+				// Performance: should be tail recursion, no real need to keep index on the stack
+					processNodes(node.children, node);
+			});
 
-				if (indexInThisCategory > -1) {
-					// Remove node from the tree if it was removed from one of the expanded categories
-					if ( (updateEvent.parentCategories.indexOf(categoryNode.code) == -1) || ((updateEvent.parentCategories.length > 0) && (categoryNode.code == '$UNCAT')) ) {
-						if (categoryNode.children[indexInThisCategory].selected)
+			// If the node matching the update event is in the current node list
+			if (index > -1) {
+				// Remove the node from the list if:
+				//  - The node was not a root category node and it is no longer contained in the category represented by parentNode
+				//  - The node was an uncategorised food node and it is no longer uncategorised (has 1+ parent categories)
+				//  - The node was a root category node and it is no longer a root category (has 1+ parent categories)
+				if (
+						(parentNode && (updateEvent.parentCategories.indexOf(parentNode.code) == -1)) ||
+						(parentNode && (updateEvent.parentCategories.length > 0) && (parentNode.code == '$UNCAT')) ||
+						(!parentNode && (updateEvent.type == 'category') && (updateEvent.parentCategories > 0))
+					) {
+						nodes.splice(index, 1);
+						if (nodes[index].selected)
 							selectedNodeRemoved = true;
-						categoryNode.children.splice(indexInThisCategory, 1);
-					}
-				} else if ( (updateEvent.parentCategories.indexOf(categoryNode.code) > -1) || ((updateEvent.parentCategories.length == 0) && (categoryNode.code == '$UNCAT')) ) {
-					// Add node to the tree if it was added to one of the expanded categories
-					categoryNode.children.push(updateEvent.header);
+				}
+			} else {
+				// Add node to the list:
+				// - The node is now in the category represented by parentNode
+				// - The node now has 0 parent categories and parentNode is the uncategorised categories node
+				// - The node is now a root category node (is a category and has 0 parent categories)
+
+				if (
+					(parentNode && (updateEvent.parentCategories.indexOf(parentNode.code) > -1)) ||
+					(parentNode && (updateEvent.parentCategories.length == 0) && (parentNode.code == '$UNCAT')) ||
+					(!parentNode && (updateEvent.type == 'category') && (updateEvent.parentCategories.length == 0))
+				) {
+					nodes.push(updateEvent.header);
 				}
 			}
 		}
 
-		$.each ($scope.rootCategories, function (i, cat) {
-			updateCategory(cat);
-		});
+		processNodes($scope.rootCategories, null);
 
 		if (selectedNodeRemoved || updateEvent.newItem)
 			makeVisibleAndSelect(updateEvent.header);

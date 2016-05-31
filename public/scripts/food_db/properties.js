@@ -222,16 +222,16 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 		var addRequests = $.map(changes.add_to, function (c) {
 			if ($scope.currentItem.type == 'food')
-				return foodDataWriter.addFoodToCategory($scope.itemDefinition.code, c.code);
+				return foodDataWriter.addFoodToCategory(c.code, $scope.itemDefinition.code);
 			else if ($scope.currentItem.type == 'category')
-				return foodDataWriter.addCategoryToCategory($scope.itemDefinition.code, c.code);
+				return foodDataWriter.addCategoryToCategory(c.code, $scope.itemDefinition.code);
 		});
 
 		var deleteRequests = $.map(changes.remove_from, function (c) {
 			if ($scope.currentItem.type == 'food')
-				return foodDataWriter.removeFoodFromCategory($scope.itemDefinition.code, c.code);
+				return foodDataWriter.removeFoodFromCategory(c.code, $scope.itemDefinition.code);
 			else if ($scope.currentItem.type == 'category')
-				return foodDataWriter.removeCategoryFromCategory($scope.itemDefinition.code, c.code);
+				return foodDataWriter.removeCategoryFromCategory(c.code, $scope.itemDefinition.code);
 		});
 
 		// $q.all is sequence: Array[Future[_]] => Future[Array[_]]
@@ -378,58 +378,23 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.updateCategory = function() {
-
 		disableButtons();
 
-		function updateLocalDeferred() {
-			if ($scope.categoryLocalDefinitionChanged()) {
-				var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.localData);
-				return foodDataWriter.updateCategoryLocal($scope.itemDefinition.code, packed);
-			} else {
-				return $q.when(true);
-			}
-		}
-
-		function updateBasicDeferred() {
-			if ($scope.categoryBasicDefinitionChanged()) {
-				var packed = packer.packCategoryBasicDefinition($scope.itemDefinition);
-				return foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packed)
-			} else {
-				return $q.when(true);
-			}
-		}
-
-		updateParentCategories().then(function (response) {
-			return updateLocalDeferred();
-		}).then(
-			function (response) {
-				return updateBasicDeferred();
-		}).then(
-			function (response) {
-				showMessage(gettext('Category updated'), 'success');
-
-				var updateEvent = {
-					header: {
-						type: "category",
-						code: $scope.itemDefinition.code,
-						englishDescription: $scope.itemDefinition.englishDescription,
-						localDescription: $scope.itemDefinition.localData.localDescription,
-						displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+		updateCategoryBase()
+			.then(function () {	return updateParentCategories(); })
+			.then(function () {	return updateCategoryLocal(); })
+			.then(
+				function () {
+						showMessage(gettext('Category updated'), 'success');
+						notifyItemUpdated();
 					},
-					originalCode: $scope.originalItemDefinition.code,
-					parentCategories: $.map($scope.parentCategories, function( cat ) { return cat.code; }),
-				};
+				function (response) {
+					showMessage(gettext('Failed to update category'), 'danger');
+					// Check if this was caused by a 409, and show a better message
+					console.error(response);
 
-				currentItem.itemUpdated(updateEvent);
-			},
-			function (response) {
-				showMessage(gettext('Failed to update category'), 'danger');
-				// Check if this was caused by a 409, and show a better message
-				console.error(response);
-
-				currentItem.itemUpdated(updateEvent);
-			}
-		);
+					notifyItemUpdated();
+				});
 	}
 
 	function createUpdateEvent() {
@@ -452,7 +417,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		currentItem.itemUpdated(updateEvent);
 	}
 
-	// These functions return a deffered function (see https://docs.angularjs.org/api/ng/service/$q)
+	// These functions return a future/promise/deferred (see https://docs.angularjs.org/api/ng/service/$q)
 	// that will generate an async HTTP request to update the basic/local food
 	// record if required.
 	// Will return a dummy 'true' value if no changes are detected.
@@ -476,6 +441,23 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		}
 	}
 
+	function updateCategoryBase() {
+		if ($scope.categoryBasicDefinitionChanged()) {
+			var packed = packer.packCategoryBasicDefinition($scope.itemDefinition);
+			return foodDataWriter.updateCategoryBase($scope.originalItemDefinition.code, packed)
+		} else {
+			return $q.when(true);
+		}
+	}
+
+	function updateCategoryLocal() {
+		if ($scope.categoryLocalDefinitionChanged()) {
+			var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.localData);
+			return foodDataWriter.updateCategoryLocal($scope.itemDefinition.code, packed);
+		} else {
+			return $q.when(true);
+		}
+	}
 
 	$scope.updateFood = function() {
 		disableButtons();

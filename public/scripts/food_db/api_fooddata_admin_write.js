@@ -22,7 +22,7 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 	}
 
 	return {
-		addFoodToCategory: function(food_code, category_code)
+		addFoodToCategory: function(category_code, food_code)
 		{
 			return authApiCallFuture('PUT', 'admin/categories/' + category_code + '/foods/' + food_code);
 		},
@@ -32,7 +32,7 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			return authApiCallFuture('PUT', 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
 		},
 
-		removeFoodFromCategory: function(food_code, category_code)
+		removeFoodFromCategory: function(category_code, food_code)
 		{
 			return authApiCallFuture('DELETE', 'admin/categories/' + category_code + '/foods/' + food_code);
 		},

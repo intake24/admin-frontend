@@ -42,22 +42,21 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 				if (
 						(parentNode && (updateEvent.parentCategories.indexOf(parentNode.code) == -1)) ||
 						(parentNode && (updateEvent.parentCategories.length > 0) && (parentNode.code == '$UNCAT')) ||
-						(!parentNode && (updateEvent.type == 'category') && (updateEvent.parentCategories > 0))
+						(!parentNode && (updateEvent.header.type == 'category') && (updateEvent.parentCategories.length > 0))
 					) {
-						nodes.splice(index, 1);
 						if (nodes[index].selected)
 							selectedNodeRemoved = true;
+						nodes.splice(index, 1);
 				}
 			} else {
 				// Add node to the list:
 				// - The node is now in the category represented by parentNode
 				// - The node now has 0 parent categories and parentNode is the uncategorised categories node
 				// - The node is now a root category node (is a category and has 0 parent categories)
-
 				if (
 					(parentNode && (updateEvent.parentCategories.indexOf(parentNode.code) > -1)) ||
 					(parentNode && (updateEvent.parentCategories.length == 0) && (parentNode.code == '$UNCAT')) ||
-					(!parentNode && (updateEvent.type == 'category') && (updateEvent.parentCategories.length == 0))
+					(!parentNode && (updateEvent.header.type == 'category') && (updateEvent.parentCategories.length == 0))
 				) {
 					nodes.push(updateEvent.header);
 				}

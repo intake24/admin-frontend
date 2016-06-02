@@ -310,6 +310,15 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		};
 	}
 
+	instance.packNewCategoryDefinition = function(unpacked) {
+		return {
+			code: unpacked.code,
+			isHidden: unpacked.isHidden,
+			englishDescription: unpacked.englishDescription,
+			attributes: instance.packInheritableAttributes(unpacked.attributes),
+		};
+	}
+
 	instance.packFoodLocalDefinition = function(unpacked) {
 		return {
 			version: instance.packOption(unpacked.version),
@@ -383,10 +392,10 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 
 				case "as-served":
 
-					packedPortionSize.parameters = [{ name: "serving_image_set", value: portionSize.parameters.serving_image_set }];
+					packedPortionSize.parameters = [{ name: "serving-image-set", value: portionSize.parameters.serving_image_set }];
 
 					if (portionSize.parameters.useLeftoverImages)
-						packedPortionSize.parameters.push({ name: "leftovers_image_set", value: portionSize.parameters.leftovers_image_set });
+						packedPortionSize.parameters.push({ name: "leftovers-image-set", value: portionSize.parameters.leftovers_image_set });
 
 					break;
 
@@ -395,7 +404,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 					packedPortionSize.parameters = [
 						{ name: "drinkware-id", value: portionSize.parameters.drinkware_id },
 						{ name: "initial-fill-level", value: portionSize.parameters.initial_fill_level.toString() },
-						{ name: "skip_fill_level", value: portionSize.parameters.skip_fill_level.toString() }
+						{ name: "skip-fill-level", value: portionSize.parameters.skip_fill_level.toString() }
 					];
 
 					break;
@@ -403,7 +412,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 				case "cereal":
 
 					packedPortionSize.parameters = [
-						{ name: "cereal_type", value: portionSize.parameters.cereal_type }
+						{ name: "cereal-type", value: portionSize.parameters.cereal_type }
 					];
 
 					break;

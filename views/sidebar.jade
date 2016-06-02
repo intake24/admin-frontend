@@ -16,7 +16,7 @@ block sidebar
 				ul.nested-li
 					li.sidebar-btn(ng-click='addNewFood()') 
 						a #{ gettext("Add new food") }
-					li.sidebar-btn(ng-class='{disabled:(SharedData.currentItem.type != "food")}' ng-click='cloneFood()') 
+					li.sidebar-btn(ng-class='{disabled:!cloneFoodEnabled()}' ng-click='cloneFood()') 
 						a #{ gettext("Clone food") }
 			
 			li.sidebar-btn(ng-class="{'active': manage_categories_active}")
@@ -24,8 +24,8 @@ block sidebar
 				ul.nested-li
 					li.sidebar-btn(ng-click='addNewCategory()')
 						a #{ gettext("Add new category") }
-					li.sidebar-btn(ng-class='{disabled:(SharedData.currentItem.type != "category")}' ng-click='cloneCategory()')
-						a #{ gettext("Clone category") }
+			//		li.sidebar-btn(ng-class='{disabled:(SharedData.currentItem.type != "category")}' ng-click='cloneCategory()')
+			//			a #{ gettext("Clone category") }
 			
 			//- li(class= 'sidebar-btn').active
 			//- 	a #{ gettext("Manage accounts") }<i class="fa fa-chevron-down"></i>

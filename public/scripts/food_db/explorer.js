@@ -112,6 +112,45 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	});
 
+	$scope.$on("intake24.admin.food_db.AddNewCategory", function(event, updateEvent) {
+
+		var parentNode = angular.copy(parentCategoryNodeForNewItem());
+
+		var newCategory = {
+			version: "",
+			code: "",
+			englishDescription: "New category",
+			isHidden: false,
+			attributes: {
+				readyMealOption: { defined: false, value: null },
+				sameAsBeforeOption: { defined: false, value: null },
+				reasonableAmount: { defined: false, value: null },
+			},
+			localData: {
+				version: { defined: false, value: null },
+				localDescription: { defined: false, value: null },
+				portionSize: []
+			}
+		}
+
+		var header = {
+			type: "category",
+			code: newCategory.code,
+			englishDescription: newCategory.englishDescription,
+			localDescription: newCategory.localData.localDescription,
+			displayName: newCategory.englishDescription
+		}
+
+		$scope.$broadcast("intake24.admin.food_db.NewItemCreated", newCategory, header, parentNode);
+
+	});
+
+	$scope.on("intake24.admin.food_db.CloneFood", function(event) {
+		var parentNode = angular.copy(parentCategoryNodeForNewItem());
+
+		$scope.$broadcast("intake24.admin.food_db.CloneItem", parentNode);
+	});
+
 	$scope.getText = function(s) {
 		return gettext(s);
 	}
@@ -298,8 +337,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	function makeVisibleAndSelect(node) {
 		findNodeInTree(node).then (function (n) {
-			console.log("MAKE VISIBLE");
-			console.log(n);
 			clearSelection();
 			selectNode(n);
 			setTimeout(function() {
@@ -419,21 +456,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
 		{
-			$scope.selected_node.remove();
-
-			var food_code = $scope.SharedData.currentItem.code;
-
-			$http({
-				method: 'DELETE',
-				url: api_base_url + 'foods/' + food_code,
-				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-			}).then(function successCallback(response) {
-
-				showMessage(gettext('Food deleted'), 'success');
-
-				$scope.SharedData.currentItem = new Object();
-
-				resetProperties();
 
 			}, function errorCallback(response) { showMessage(gettext('Failed to delete food'), 'danger'); });
 		}

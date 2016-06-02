@@ -1,6 +1,6 @@
 // Navigation (NavigationController)
 
-app.controller('NavigationController', ["$rootScope", "$scope", "Locales", function($rootScope, $scope, locales) {
+app.controller('NavigationController', ["$rootScope", "$scope", "Locales", "CurrentItem", function($rootScope, $scope, locales, currentItem) {
 
 	// FIXME: What are these for?
 	$scope.manage_foods_active = true;
@@ -14,6 +14,8 @@ app.controller('NavigationController', ["$rootScope", "$scope", "Locales", funct
 	});
 
 	$scope.currentLocale = locales.current();
+
+	$scope.currentItem = currentItem;
 
 	/*if (locale) {
 		 showMessage(format('Language set to %s', [locale.language]), 'success');
@@ -57,84 +59,24 @@ app.controller('NavigationController', ["$rootScope", "$scope", "Locales", funct
 		});
 	});
 
-	// Add new food
 	$scope.addNewFood = function() {
 		$rootScope.$broadcast('intake24.admin.food_db.AddNewFood');
 	}
 
-	// Clone food
-	$scope.cloneFood = function() {
-
-		if ($scope.SharedData.currentItem.type != 'food') {
-
-			showMessage(gettext('Please select a food'), 'warning');
-
-			return;
-		}
-
-		$scope.SharedData.selectedFoodGroup = $scope.SharedData.foodGroups[0];
-
-		$('#properties-col').show().addClass('fullwidth');
-
-		$('#food-list-col').hide();
-
-		showContainer('#add-new-food-container');
-	}
-
-
-	/***********************/
-	/** Manage categories **/
-	/***********************/
-
-	// Add new category
 	$scope.addNewCategory = function() {
-
-		$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-			value.state = 'none';
-
-		});
-
-		$scope.SharedData.currentItem = {
-			code:"",
-			englishDescription:"",
-			isHidden: false,
-			attributes:{
-				readyMealOption:Array(),
-				sameAsBeforeOption:Array(),
-				reasonableAmount:Array()
-			},
-			localData:{
-				version:Array(),
-				localDescription:Array(),
-				nutrientTableCodes:{},
-				portionSize:Array()
-			},
-			parentCategories:Array()
-		};
-
-		$('#properties-col').show().addClass('fullwidth');
-
-		$('#food-list-col').hide();
-
-		showContainer('#add-new-category-container');
+		$rootScope.$broadcast('intake24.admin.food_db.AddNewCategory');
 	}
 
-	// Clone category
-	$scope.cloneCategory = function() {
+	$scope.cloneFoodEnabled = function() {
+		var curItem = $scope.currentItem.getCurrentItem();
+		return (curItem && curItem.type == 'food');
+	}
 
-		if ($scope.SharedData.currentItem.type != 'category') {
-
-			showMessage(gettext('Please select a category'), 'warning');
-
-			return;
-		}
-
-		$('#properties-col').show().addClass('fullwidth');
-
-		$('#food-list-col').hide();
-
-		showContainer('#add-new-category-container');
+	$scope.cloneFood = function() {
+		if ($scope.cloneFoodEnabled())
+			$rootScope.$broadcast('intake24.admin.food_db.CloneFood');
+		else
+			showMessage("Select a food to clone", "warning");
 	}
 
 }]);

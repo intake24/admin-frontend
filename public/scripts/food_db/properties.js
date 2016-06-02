@@ -73,8 +73,12 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 		$scope.originalItemDefinition = newItem;
 		$scope.itemDefinition = angular.copy(newItem);
 		$scope.originalParentCategories = [];
-		$scope.parentCategories = [parentNode];
+		$scope.parentCategories = (parentNode.code == "$UNCAT") ? [] : [parentNode];
 		$scope.newItem = true;
+	});
+
+	$scope.$on("intake24.admin.food_db.CloneItem", function(event, parentNode) {
+		
 	});
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -495,7 +499,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 			.then( function () {
 				showMessage(gettext('New food added'), 'success');
 				notifyItemUpdated();
-			}, function () {
+			}, function (response) {
 				showMessage(gettext('Failed to add new food'), 'danger');
 				// Check if this was caused by a 409, and show a better message
 				console.error(response);
@@ -507,7 +511,21 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	}
 
 	$scope.saveNewCategory = function() {
+		var packed = packer.packNewCategoryDefinition($scope.itemDefinition);
 
+		// FIXME: this really needs better error handling when the base record
+		// is able to be created, but the parent categories then fail to update
+
+		foodDataWriter.createNewCategory(packed)
+			.then( function () { return updateParentCategories(); })
+			.then( function () {
+				showMessage(gettext('New category added'), 'success');
+				notifyItemUpdated();
+			}, function (response) {
+				showMessage(gettext('Failed to add new category'), 'danger');
+				// Check if this was caused by a 409, and show a better message
+				console.error(response);
+			});
 	}
 
 	$scope.cancelNewCategory = function() {

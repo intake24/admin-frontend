@@ -1,0 +1,8 @@
+.property
+	h3 #{ gettext("Definition") }
+	include basic-fields
+	.input-wrapper
+		label #{ gettext("Hidden") }
+		input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.isHidden')
+
+include parent-categories

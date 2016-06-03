@@ -73,10 +73,7 @@ app.controller('NavigationController', ["$rootScope", "$scope", "Locales", "Curr
 	}
 
 	$scope.cloneFood = function() {
-		if ($scope.cloneFoodEnabled())
-			$rootScope.$broadcast('intake24.admin.food_db.CloneFood');
-		else
-			showMessage("Select a food to clone", "warning");
+		$rootScope.$broadcast('intake24.admin.food_db.CloneFood');
 	}
 
 }]);

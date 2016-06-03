@@ -145,10 +145,17 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 
 	});
 
-	$scope.on("intake24.admin.food_db.CloneFood", function(event) {
+	$scope.$on("intake24.admin.food_db.CloneFood", function(event) {
 		var parentNode = angular.copy(parentCategoryNodeForNewItem());
+		var item = currentItem.getCurrentItem();
 
-		$scope.$broadcast("intake24.admin.food_db.CloneItem", parentNode);
+		if (item && item.type == 'food') {
+			foodDataReader.getFoodDefinition(currentItem.getCurrentItem().code)
+				.then (function (targetFoodData) {
+					return 
+				});
+		} else
+			showMessage("Select a food to clone", "warning");
 	});
 
 	$scope.getText = function(s) {
@@ -457,7 +464,7 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
 		{
 
-			}, function errorCallback(response) { showMessage(gettext('Failed to delete food'), 'danger'); });
+
 		}
 	}
 

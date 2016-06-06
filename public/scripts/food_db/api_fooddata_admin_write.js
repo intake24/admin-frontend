@@ -18,7 +18,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			url: api_base_url + url,
 			data: data,
 			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		});
+		}).then(
+			function(response) {
+				return response.data;
+			}
+		)
 	}
 
 	return {
@@ -65,6 +69,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 		createNewFood: function(definition)
 		{
 			return authApiPostFuture('admin/foods/new', definition);
+		},
+
+		createNewFoodWithTempCode: function(definition)
+		{
+			return authApiPostFuture('admin/foods/new-with-temp-code', definition);
 		},
 
 		updateFoodLocal: function(food_code, definition)

@@ -1,8 +1,8 @@
 // Explorer (ExplorerController)
 
 angular.module('intake24.admin.food_db').controller('ExplorerController',
-	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader',
-	'Packer', 'Locales', '$q', '$rootScope', function($scope, $http, sharedData, problems, currentItem, foodDataReader, packer, locales, $q, $rootScope) {
+	['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
+	'Packer', 'Locales', '$q', '$rootScope', function($scope, $http, sharedData, problems, currentItem, foodDataReader, foodDataWriter, packer, locales, $q, $rootScope) {
 
 	// Load shared data
 	$scope.SharedData = sharedData;
@@ -150,9 +150,35 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		var item = currentItem.getCurrentItem();
 
 		if (item && item.type == 'food') {
-			foodDataReader.getFoodDefinition(currentItem.getCurrentItem().code)
+			foodDataReader.getFoodDefinition(item.code)
 				.then (function (targetFoodData) {
-					return 
+					return foodDataReader.getFoodParentCategories(item.code)
+					.then (function (parentCategories) {
+						var unpacked = packer.unpackFoodDefinition(targetFoodData);
+						unpacked.englishDescription = "Copy of " + unpacked.englishDescription;
+						var newFoodDef = packer.packNewFoodDefinition(unpacked);
+
+						return foodDataWriter.createNewFoodWithTempCode(newFoodDef)
+							.then (function (newCode) {
+								var newLocalData = angular.copy(targetFoodData.localData);
+								newLocalData.version = [];
+								newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
+								return foodDataWriter.updateFoodLocal(newCode, newLocalData)
+								.then (function() {
+									return $q.all (_.map(parentCategories, function (c) { return foodDataWriter.addFoodToCategory(c.code, newCode)}));
+								})
+								.then (function() {
+									showMessage("Food cloned", "success");
+									makeVisibleAndSelect( {
+										type: "food",
+										code: newCode,
+										englishDescription: targetFoodData.englishDescription,
+										localDescription: targetFoodData.localData.localDescription,
+										displayName: targetFoodData.localData.localDescription.defined ? targetFoodData.localData.localDescription.value : targetFoodData.englishDescription
+									});
+								})
+							})
+					}, $scope.handleError)
 				});
 		} else
 			showMessage("Select a food to clone", "warning");

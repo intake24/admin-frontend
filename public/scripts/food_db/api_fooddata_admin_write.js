@@ -87,6 +87,16 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 
 		checkCategoryCode: function(category_code) {
 			return authApiCallFuture('GET', 'admin/categories/code-available/' + category_code );
+		},
+
+		deleteFood: function(food_code)
+		{
+			return authApiCallFuture('DELETE', 'admin/foods/' + food_code );
+		},
+
+		deleteCategory: function(category_code)
+		{
+			return authApiCallFuture('DELETE', 'admin/categories/' + category_code );
 		}
 	};
 }]);

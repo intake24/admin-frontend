@@ -76,4 +76,13 @@ app.controller('NavigationController', ["$rootScope", "$scope", "Locales", "Curr
 		$rootScope.$broadcast('intake24.admin.food_db.CloneFood');
 	}
 
+	$scope.deleteItemEnabled = function() {
+		return $scope.currentItem.getCurrentItem();
+	}
+
+	$scope.deleteItem = function() {
+		if ($scope.deleteItemEnabled())
+			$scope.currentItem.delete();
+	}
+
 }]);

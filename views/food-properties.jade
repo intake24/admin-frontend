@@ -16,6 +16,6 @@
 				span #{ gettext("Accept changes") }
 			button(class="intake-btn warning" ng-click="discardFoodChanges()" ng-disabled="!itemChanged() || forceDisabledButtons" id="btn-discard-food")
 				span #{ gettext("Discard changes") }
-			button(class="intake-btn danger" ng-click="deleteFood()" ng-disabled="forceDisabledButtons" id="btn-delete-food")
+			button(class="intake-btn danger" ng-click="deleteItem()" ng-disabled="forceDisabledButtons" id="btn-delete-food")
 				span #{ gettext("Delete") }
 			.clearfloat

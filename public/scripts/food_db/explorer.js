@@ -184,6 +184,30 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			showMessage("Select a food to clone", "warning");
 	});
 
+	$scope.$on("intake24.admin.food_db.DeleteItem", function() {
+		var item = currentItem.getCurrentItem();
+
+		if (!item)
+			showMessage(gettext("Select an item to delete"), "warning");
+		else {
+			if (confirm("Delete " + item.displayName + " (" + item.code + ") ?"))
+			{
+				var deferred;
+				if (item.type == 'category')
+					deferred = foodDataWriter.deleteCategory(item.code);
+				else if (item.type == 'food')
+					deferred = foodDataWriter.deleteFood(item.code);
+
+				deferred.then(function() {
+					clearSelection();
+
+					// TODO: refresh all open categories
+				}, $scope.handleError);
+
+			}
+		}
+	});
+
 	$scope.getText = function(s) {
 		return gettext(s);
 	}
@@ -447,117 +471,12 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	// Food Actions
-
-	$scope.addFood = function() {
-
-		packCurrentItemService.broadcast();
-
-		delete $scope.SharedData.currentItem.version;
-
-		$scope.SharedData.currentItem.groupCode = $scope.SharedData.selectedFoodGroup.id;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'foods/new',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem
-		}).then(function successCallback(response) {
-
-			$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-				if (value.state == 'add') {
-					addFoodToCategory($scope.SharedData.currentItem.code, value.code);
-				}
-
-			});
-
-			showMessage(gettext('Food added'), 'success');
-
-			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
-
-			$scope.updateLocalFood();
-
-			$scope.SharedData.currentItem = new Object();
-
-			$('input').removeClass('valid invalid');
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to add food'), 'danger'); console.log(response); });
-	}
-
-	$scope.deleteFood = function() {
-
-		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
-		{
-
-
-		}
-	}
-
-	// Category Actions
-
-	$scope.addCategory = function() {
-
-		packCurrentItemService.broadcast();
-
-		delete $scope.SharedData.currentItem.version;
-
-		$http({
-			method: 'POST',
-			url: api_base_url + 'categories/new',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') },
-			data: $scope.SharedData.currentItem
-		}).then(function successCallback(response) {
-
-			$.each($scope.SharedData.topLevelCategories, function(index, value) {
-
-				if (value.state == 'add') {
-					addCategoryToCategory($scope.SharedData.currentItem.code, value.code);
-				}
-
-			});
-
-			showMessage(gettext('Category added'), 'success');
-
-			$scope.SharedData.originalCode = $scope.SharedData.currentItem.code;
-
-			$scope.updateLocalCategory();
-
-			$scope.SharedData.currentItem = new Object();
-
-			$('input').removeClass('valid invalid');
-
-		}, function errorCallback(response) { showMessage(gettext('Failed to add category'), 'danger'); console.log(response); });
-	}
-
 	$scope.discardCategoryChanges = function() {
 
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
 		$scope.fetchProperties();
 
 		showMessage(gettext('Changes discarded'), 'success');
-	}
-
-	$scope.deleteCategory = function() {
-
-		if (confirm("Delete " + $scope.SharedData.currentItem.code + "?"))
-		{
-			$scope.selected_node.remove();
-
-			var category_code = $scope.SharedData.currentItem.code;
-
-			$http({
-				method: 'DELETE',
-				url: api_base_url + 'categories/' + category_code,
-				headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-			}).then(function successCallback(response) {
-
-				showMessage(gettext('Category deleted'), 'success');
-
-				resetProperties();
-
-			}, function errorCallback(response) { showMessage(gettext('Failed to delete category'), 'danger'); });
-		}
 	}
 
 	$scope.handleError = function(response)

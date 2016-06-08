@@ -78,7 +78,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 	});
 
 	$scope.$on("intake24.admin.food_db.CloneItem", function(event, parentNode) {
-		
+
 	});
 
 	$scope.$on('intake24.admin.food_db.CurrentItemChanged', function(event, newItem) {
@@ -530,6 +530,10 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
 
 	$scope.cancelNewCategory = function() {
 		currentItem.setCurrentItem(null);
+	}
+
+	$scope.deleteItem = function() {
+		currentItem.delete();
 	}
 
 }]);

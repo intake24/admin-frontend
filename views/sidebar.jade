@@ -1,5 +1,5 @@
 block sidebar
-	.sidebar(ng-class='{"active": sidebaropen}' ng-controller='NavigationController')
+	.sidebar(ng-class='{"active": $parent.sidebaropen}' ng-controller='NavigationController')
 		ul
 			li.sidebar-btn(ng-class="{'active': set_language_active}")
 				a(ng-click='set_language_active = !set_language_active') #{ gettext("Set Language") } <i class="fa" ng-class="set_language_active ? 'fa-chevron-down' : 'fa-chevron-left'"></i>

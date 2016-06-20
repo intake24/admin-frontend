@@ -71,11 +71,11 @@ html(lang='#{lang}' dir='#{lang_dir}')
 
 	body.animated.fadeIn(ng-app='intake24.admin' ng-controller='AdminController')
 		header
-			#sidebar-button(ng-click="sidebaropen=!sidebaropen")
+			#sidebar-button(ng-click="sidebarToggle()")
 				i.fa.fa-bars
 			a(href='/')
 				h4 <strong>Intake24</strong> Admin
-			a(href='#' class='intake-btn-modal' id='btn-authenticate' data-modal='modal-logout').auth-menu
+			a(href='#' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
 				i.fa.fa-user
 				p Login / Register
 

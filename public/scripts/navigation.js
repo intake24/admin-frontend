@@ -5,7 +5,6 @@ app.controller('NavigationController', ["$rootScope", "$scope", "Locales", "Curr
 	// FIXME: What are these for?
 	$scope.manage_foods_active = true;
 	$scope.manage_categories_active = true;
-	$scope.sidebaropen = false;
 
 	$scope.$watch(function() {
 			return locales.list();

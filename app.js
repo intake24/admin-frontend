@@ -30,6 +30,7 @@ app.use(cors({
     allowedOrigins: ['*'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
 }))
+
 app.use(express.logger('dev'))
 app.use(stylus.middleware(
   { src: __dirname + '/public'

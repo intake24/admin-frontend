@@ -413,6 +413,9 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	}
 
 	function selectNode(node) {
+		if (!confirmSwitchToAnotherItem()) {
+			return;
+		}
 		clearSelection();
 
 		$scope.selectedNode = node;
@@ -434,6 +437,19 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 			$scope.selectedNode.selected = false;
 		$scope.selectedNode = null;
 		currentItem.setCurrentItem(null);
+	}
+
+	function confirmSwitchToAnotherItem() {
+		if ($scope.selectedNode == null || !$scope.selectedNode.changed) {
+			return true;
+		}
+		var conf = confirm(gettext('discard_item_changes'));
+		if (conf) {
+			$scope.selectedNode.changed = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	$scope.nodeClicked = function(node) {

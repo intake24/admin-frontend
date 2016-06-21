@@ -108,9 +108,6 @@ a:hover {
   text-decoration: none;
   color: inherit;
 }
-*::-webkit-scrollbar {
-  display: none;
-}
 html {
   background-color: #f9f9f9;
 }
@@ -318,11 +315,11 @@ header a.auth-menu:active {
   padding-left: 280px;
 }
 .col {
-  bottom: 0px;
-  overflow: scroll;
+  overflow: auto;
   padding-top: 50px;
   position: absolute;
   top: 0;
+  bottom: 0;
 }
 #food-list-col {
   background-color: #fff;

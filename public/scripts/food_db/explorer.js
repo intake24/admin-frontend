@@ -329,7 +329,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 	}
 
 	function loadChildren(node) {
-		loadChildrenDeferred(node).catch($scope.handleError);
+		node.loadingChildren = true;
+		loadChildrenDeferred(node).catch($scope.handleError).finally(function() {
+			node.loadingChildren = false;
+		});
 	}
 
 	function findNodeInTree(node) {

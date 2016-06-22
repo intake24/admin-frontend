@@ -71,6 +71,10 @@ angular.module('intake24.admin.food_db').factory('FoodDataReader', ['$http', 'Lo
 
 		searchFoods: function(query, onSuccess, onFailure) {
 			return authApiCallFuture('GET', 'admin/foods/' + locales.current() + '/search/' + query);
-		}
+		},
+
+		fetchNutrientTables: function() {
+			return authApiCallFuture('GET', 'admin/nutrient-tables');
+		}		
 	};
 }]);

@@ -477,18 +477,10 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	function fetchNutrientTables()
-	{
-		$http({
-			method: 'GET',
-			url: api_base_url + 'nutrient-tables',
-			headers: { 'X-Auth-Token': Cookies.get('auth-token') }
-		}).then(function successCallback(response) {
-
-			$scope.SharedData.nutrientTables = response.data;
-
-		}, function errorCallback(response) { $scope.handleError(response); });
-	}
+	/*
+	foodDataReader.fetchNutrientTables().then( function(tables) {
+		console.log(tables);
+	}); */
 
 	$scope.discardCategoryChanges = function() {
 

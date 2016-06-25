@@ -163,6 +163,14 @@
          null,
          "مجموعة الطعام"
       ],
+      "Nutrient codes": [
+         null,
+         "رموز المواد الغذائية"
+      ],
+      "add_nutrient_code": [
+         null,
+         "إضافة رمز"
+      ],
       "Serving image set": [
          null,
          "خدمة مجموعة صورة"

@@ -163,6 +163,14 @@
          null,
          "Food group"
       ],
+      "Nutrient codes": [
+         null,
+         "Nutrient codes"
+      ],
+      "add_nutrient_code": [
+         null,
+         "Add code"
+      ],
       "Serving image set": [
          null,
          "Serving image set"

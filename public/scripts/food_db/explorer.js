@@ -477,11 +477,6 @@ angular.module('intake24.admin.food_db').controller('ExplorerController',
 		}, function errorCallback(response) { $scope.handleError(response); });
 	}
 
-	/*
-	foodDataReader.fetchNutrientTables().then( function(tables) {
-		console.log(tables);
-	}); */
-
 	$scope.discardCategoryChanges = function() {
 
 		$scope.SharedData.currentItem.code = $scope.SharedData.originalCode;

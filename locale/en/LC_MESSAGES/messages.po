@@ -204,6 +204,12 @@ msgstr "e.g. ALBU"
 msgid "Food group"
 msgstr "Food group"
 
+msgid "Nutrient codes"
+msgstr "Nutrient codes"
+
+msgid "add_nutrient_code"
+msgstr "Add code"
+
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:4
 msgid "Serving image set"
 msgstr "Serving image set"

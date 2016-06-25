@@ -6,62 +6,127 @@
 /* Import variables */
 @import 'variables'
 
+@import 'nib'
+
 .intake-btn
-	background-color btn-default-color
-	border 0px solid darken(btn-default-color, 5%)
-	border-radius 4px
-	float left
-	font-size 13px
-	margin 10px 10px 10px 0
-	padding 12px 15px
-	transition(all .2s linear)
-	&:hover
-		background-color darken(btn-default-color, 5%)
-		border 0px solid darken(btn-default-color, 5%)
-		cursor pointer
-	&:active
-		background-color darken(btn-default-color, 15%)
-		border 0px solid darken(btn-default-color, 15%)
+  background-color btn-default-color
+  border 0px solid darken(btn-default-color, 5%)
+  border-radius 4px
+  // Fixme: remove float: left. Check that nothing is broken.
+  float left
+  font-size 13px
+  margin 10px 10px 10px 0
+  padding 12px 15px
+  transition(all .2s linear)
+  &:hover
+    background-color darken(btn-default-color, 5%)
+    border 0px solid darken(btn-default-color, 5%)
+    cursor pointer
+  &:active
+    background-color darken(btn-default-color, 15%)
+    border 0px solid darken(btn-default-color, 15%)
+
+  &[disabled]
+  &.disabled
+    cursor not-allowed
+    opacity .65
+
+    &:hover
+    &:active
+      background-color btn-default-color
+      border 0px solid darken(btn-default-color, 5%)
+
+  // Fixme: This class fixes float: left of the .intake-btn. Remove after .intake-btn float: left is fixed.
+  &.no-float
+    float none
+
 .success
-	&:hover
-		background-color darken(btn-success-color, 5%)
-		border 0px solid darken(btn-success-color, 5%)
-		color #FFF
-	&:active
-		background-color darken(btn-success-color, 15%)
-		border 0px solid darken(btn-success-color, 15%)
-	&:disabled
-		opacity 0.4
-		background-color inherit
-		color inherit
+  &:hover
+    background-color darken(btn-success-color, 5%)
+    border 0px solid darken(btn-success-color, 5%)
+    color #FFF
+  &:active
+    background-color darken(btn-success-color, 15%)
+    border 0px solid darken(btn-success-color, 15%)
+  &:disabled
+    opacity 0.4
+    background-color inherit
+    color inherit
+
 .warning
-	&:hover
-		background-color darken(btn-warning-color, 5%)
-		border 0px solid darken(btn-warning-color, 5%)
-		color #FFF
-	&:active
-		background-color darken(btn-warning-color, 15%)
-		border 0px solid darken(btn-warning-color, 15%)
-	&:disabled
-		opacity 0.4
-		background-color inherit
-		color inherit
+  &:hover
+    background-color darken(btn-warning-color, 5%)
+    border 0px solid darken(btn-warning-color, 5%)
+    color #FFF
+  &:active
+    background-color darken(btn-warning-color, 15%)
+    border 0px solid darken(btn-warning-color, 15%)
+  &:disabled
+    opacity 0.4
+    background-color inherit
+    color inherit
+
 .danger
-	&:hover
-		background-color darken(btn-danger-color, 5%)
-		border 0px solid darken(btn-danger-color, 5%)
-		color #FFF
-	&:active
-		background-color darken(btn-danger-color, 15%)
-		border 1px solid darken(btn-danger-color, 15%)
-	&:disabled
-		opacity 0.4
-		background-color inherit
-		color inherit
+  &:hover
+    background-color darken(btn-danger-color, 5%)
+    border 0px solid darken(btn-danger-color, 5%)
+    color #FFF
+  &:active
+    background-color darken(btn-danger-color, 15%)
+    border 1px solid darken(btn-danger-color, 15%)
+  &:disabled
+    opacity 0.4
+    background-color inherit
+    color inherit
 
 /* RTL Styles */
 
 html[dir="rtl"]
-	.intake-btn
-		float right
-		margin 10px 0 10px 10px
+  .intake-btn
+    float right
+    margin 10px 0 10px 10px
+
+.intake-dropdown
+  position relative
+
+  .intake-btn
+    float none
+
+  &-menu
+    position absolute
+    top 100%
+    left 0
+    display none
+    float left
+    min-width 160px
+    padding 5px 0
+    margin 2px 0 0
+    font-size 14px
+    text-align left
+    list-style none
+    background-color #fff
+    background-clip padding-box
+    border 1px solid #ccc
+    border-radius 4px
+    box-shadow 0 3px 6px rgba(0, 0, 0, .175)
+
+    .open &
+      display block
+
+
+    & > li > a
+      display block
+      padding 3px 20px
+      clear both
+      font-weight 400
+      line-height 1.42857143
+      color #333
+      white-space nowrap
+      transition(all .2s linear)
+
+      &:hover
+      &:focus
+        color #262626
+        text-decoration none
+        background-color #f5f5f5
+

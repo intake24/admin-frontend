@@ -1,13 +1,12 @@
 form(id='food-properties-form')
 .property
-	h3 #{ gettext("Definition") }
-	include basic-fields
-	.input-wrapper(ng-repeat='(id, code) in itemDefinition.localData.nutrientTableCodes')
-		label {{ id }}
-		input(id='input-{{ id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='itemDefinition.localData.nutrientTableCodes[id]')
-	.input-wrapper
-		label #{ gettext("Food group") }
-		select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
+    h3 #{ gettext("Definition") }
+    include basic-fields
+    .input-wrapper
+        label #{ gettext("Food group") }
+        select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
+
+include food-properties-nutrient-codes
 
 include inheritable-properties
 

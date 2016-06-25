@@ -203,6 +203,12 @@ msgstr "على سبيل المثال البو"
 msgid "Food group"
 msgstr "مجموعة الطعام"
 
+msgid "Nutrient codes"
+msgstr "رموز المواد الغذائية"
+
+msgid "add_nutrient_code"
+msgstr "إضافة رمز"
+
 #: /Users/edjenkins/MAMP/intake-node/views/forms/portion-size-methods/as-served.jade:4
 msgid "Serving image set"
 msgstr "خدمة مجموعة صورة"

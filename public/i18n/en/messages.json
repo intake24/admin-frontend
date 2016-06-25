@@ -318,6 +318,10 @@
       "single_item_in_category": [
          null,
          "Category contains only one item, consider merging with another category"
+      ],
+      "discard_item_changes": [
+         null,
+         "Do you want to discard changes and switch to another item?"
       ]
    }
 }

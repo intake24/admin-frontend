@@ -365,3 +365,6 @@ msgstr "Category is empty, consider deleting"
 
 msgid "single_item_in_category"
 msgstr "Category contains only one item, consider merging with another category"
+
+msgid "discard_item_changes"
+msgstr "Do you want to discard changes and switch to another item?"

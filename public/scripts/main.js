@@ -5,25 +5,26 @@ var showingFlashMessage = false;
 
 /*setInterval(function() {
 
-  if (($(window).height() + $(window).scrollTop()) > ($('#food-list-col').height() + $('header').height())) {
-    $('.view-toggle').fadeOut();
-  } else {
-    $('.view-toggle').fadeIn();
-  }
+ if (($(window).height() + $(window).scrollTop()) > ($('#food-list-col').height() + $('header').height())) {
+ $('.view-toggle').fadeOut();
+ } else {
+ $('.view-toggle').fadeIn();
+ }
 
-}, 500);*/
+ }, 500);*/
 
-var app = angular.module('intake24.admin', ['ngCookies', 'ui.bootstrap', 'intake24.admin.food_db']);
+var app = angular.module('intake24.admin', ['ngCookies', 'ui.bootstrap', 'intake24.admin.food_db',
+    'ngSanitize', 'ui.select']);
 
-app.directive('jfbFormModel', function() {
+app.directive('jfbFormModel', function () {
     'use strict';
 
     return {
         restrict: 'A',
         require: 'form',
-        compile: function(element, attr) {
+        compile: function (element, attr) {
             var inputs = element.find('input');
-            for (var i = 0; i < inputs.length; i++){
+            for (var i = 0; i < inputs.length; i++) {
                 var input = inputs.eq(i);
                 if (input.attr('name')) {
                     input.attr('ng-model', attr.jfbFormModel + '.' + input.attr('name'));
@@ -34,95 +35,138 @@ app.directive('jfbFormModel', function() {
 });
 
 
-app.filter('selectedCategoryFilter', function() {
+app.directive('foodSelect', ['FoodDataReader', function (FoodDataReaderService) {
+    'use strict';
 
-  return function(input, search) {
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value.state).toLowerCase();
-      if ((actual.indexOf('add') !== -1) || (actual.indexOf('existing') !== -1)) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
+    return {
+        restrict: 'A',
+        require: 'uiSelect',
+        link: function (scope, element, attrs, $select) {
+            scope.selected = null;
+
+            $select.placeholder = gettext("associated_food_select_placeholder");
+
+            scope.$watch(function() {
+                return $select.selected;
+            }, function() {
+                if ($select.selected == undefined) {
+                    return;
+                }
+                search($select.selected.code);
+            });
+
+            scope.$watch(function () {
+                return $select.search;
+            }, function () {
+                search($select.search);
+            });
+
+            function search(query) {
+                if (!query) {
+                    return;
+                }
+                FoodDataReaderService.searchFoods(query).then(function (data) {
+                    var l = _.sortBy(data, function(item) {
+                       return item.localDescription[0];
+                    });
+                    $select.items.length = 0;
+                    Array.prototype.push.apply($select.items, l);
+                });
+            }
+
+        }
+    };
+}]);
+
+
+app.filter('selectedCategoryFilter', function () {
+
+    return function (input, search) {
+        var result = {};
+        angular.forEach(input, function (value, key) {
+            var actual = ('' + value.state).toLowerCase();
+            if ((actual.indexOf('add') !== -1) || (actual.indexOf('existing') !== -1)) {
+                result[key] = value;
+            }
+        });
+        return result;
+    }
 });
 
-app.filter('categoryFilter', function() {
-  return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
-    var expected = ('' + search).toLowerCase();
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value.englishDescription).toLowerCase();
-      if (actual.indexOf(expected) !== -1) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
+app.filter('categoryFilter', function () {
+    return function (input, search) {
+        if (!input) return input;
+        if (!search) return input;
+        var expected = ('' + search).toLowerCase();
+        var result = {};
+        angular.forEach(input, function (value, key) {
+            var actual = ('' + value.englishDescription).toLowerCase();
+            if (actual.indexOf(expected) !== -1) {
+                result[key] = value;
+            }
+        });
+        return result;
+    }
 });
 
-app.filter('asServedFilter', function() {
-  return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
-    var expected = ('' + search).toLowerCase();
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value.description).toLowerCase();
-      if (actual.indexOf(expected) !== -1) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
+app.filter('asServedFilter', function () {
+    return function (input, search) {
+        if (!input) return input;
+        if (!search) return input;
+        var expected = ('' + search).toLowerCase();
+        var result = {};
+        angular.forEach(input, function (value, key) {
+            var actual = ('' + value.description).toLowerCase();
+            if (actual.indexOf(expected) !== -1) {
+                result[key] = value;
+            }
+        });
+        return result;
+    }
 });
 
-app.filter('guideImageFilter', function() {
-  return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
-    var expected = ('' + search).toLowerCase();
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value.id).toLowerCase();
-      if (actual.indexOf(expected) !== -1) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
+app.filter('guideImageFilter', function () {
+    return function (input, search) {
+        if (!input) return input;
+        if (!search) return input;
+        var expected = ('' + search).toLowerCase();
+        var result = {};
+        angular.forEach(input, function (value, key) {
+            var actual = ('' + value.id).toLowerCase();
+            if (actual.indexOf(expected) !== -1) {
+                result[key] = value;
+            }
+        });
+        return result;
+    }
 });
 
-app.filter('drinkScaleFilter', function() {
-  return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
-    var expected = ('' + search).toLowerCase();
-    var result = {};
-    angular.forEach(input, function(value, key) {
-      var actual = ('' + value.description).toLowerCase();
-      if (actual.indexOf(expected) !== -1) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
+app.filter('drinkScaleFilter', function () {
+    return function (input, search) {
+        if (!input) return input;
+        if (!search) return input;
+        var expected = ('' + search).toLowerCase();
+        var result = {};
+        angular.forEach(input, function (value, key) {
+            var actual = ('' + value.description).toLowerCase();
+            if (actual.indexOf(expected) !== -1) {
+                result[key] = value;
+            }
+        });
+        return result;
+    }
 });
-
 
 
 // Serving method filters
 
 app.filter('serving-image-set-filter', function () {
-   return function(inputs, filterValues) {
-      var output = [];
-      angular.forEach(inputs, function (input) {
-        if (filterValues.indexOf(input.id) !== -1)
-            output.push(input);
-       });
-       return output;
-   };
+    return function (inputs, filterValues) {
+        var output = [];
+        angular.forEach(inputs, function (input) {
+            if (filterValues.indexOf(input.id) !== -1)
+                output.push(input);
+        });
+        return output;
+    };
 });

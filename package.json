@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "private": "true",
   "dependencies": {
+    "angular-sanitize": "^1.5.7",
     "express": "3.0.0alpha4",
     "jade": "*",
+    "nib": "*",
     "stylus": "*",
-    "nib": "*"
+    "ui-select": "^0.18.0"
   }
 }

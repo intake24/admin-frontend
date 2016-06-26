@@ -59,6 +59,30 @@
          null,
          "Definition"
       ],
+      "associated_food_title": [
+         null,
+         "Associated food"
+      ],
+      "associated_food_select_placeholder": [
+         null,
+         "Start typing food name"
+      ],
+      "associated_food_question": [
+         null,
+         "Question"
+      ],
+      "associated_food_main_food": [
+         null,
+         "Main food"
+      ],
+      "associated_food_delete": [
+         null,
+         "Delete"
+      ],
+      "associated_food_add": [
+         null,
+         "Add food"
+      ],
       "Description": [
          null,
          "Description"

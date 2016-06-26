@@ -74,6 +74,24 @@ msgstr "طعام"
 msgid "Definition"
 msgstr "تعريف"
 
+msgid "associated_food_title"
+msgstr "الغذاء المرتبطة"
+
+msgid "associated_food_select_placeholder"
+msgstr "ابدأ بكتابة اسم الغذاء"
+
+msgid "associated_food_question"
+msgstr "سؤال"
+
+msgid "associated_food_main_food"
+msgstr "الطعام الرئيسي"
+
+msgid "associated_food_delete"
+msgstr "حذف"
+
+msgid "associated_food_add"
+msgstr "إضافة المواد الغذائية"
+
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:4
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:56
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:57

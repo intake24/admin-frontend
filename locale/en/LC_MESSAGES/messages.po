@@ -75,6 +75,24 @@ msgstr "Food"
 msgid "Definition"
 msgstr "Definition"
 
+msgid "associated_food_title"
+msgstr "Associated food"
+
+msgid "associated_food_select_placeholder"
+msgstr "Start typing food name"
+
+msgid "associated_food_question"
+msgstr "Question"
+
+msgid "associated_food_main_food"
+msgstr "Main food"
+
+msgid "associated_food_delete"
+msgstr "Delete"
+
+msgid "associated_food_add"
+msgstr "Add food"
+
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:4
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:56
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:57

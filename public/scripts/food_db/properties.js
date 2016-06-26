@@ -54,28 +54,40 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
     $scope.nutrientCodeSection = {
         tables: null,
         dropDownOpened: false,
-        filteredTables: function() {
+        filteredTables: function () {
             if (!$scope.itemDefinition) {
                 return this.tables;
             }
-            return _.filter(this.tables, function(item) {
+            return _.filter(this.tables, function (item) {
                 return $scope.itemDefinition.localData.nutrientTableCodes[item.id] == undefined;
             });
         },
-        toggleDropDown: function() {
+        toggleDropDown: function () {
             this.dropDownOpened = !this.dropDownOpened;
         },
-        addTable: function(id) {
+        addTable: function (id) {
             this.dropDownOpened = false;
             $scope.itemDefinition.localData.nutrientTableCodes[id] = "";
         },
-        removeTable: function(id) {
+        removeTable: function (id) {
             delete $scope.itemDefinition.localData.nutrientTableCodes[id];
         },
-        buttonDisabled: function() {
-            console.log(this.filteredTables());
+        buttonDisabled: function () {
             return this.filteredTables().length == 0;
         }
+    };
+
+    $scope.addAssociatedFood = function () {
+        $scope.itemDefinition.associatedFoods.push({
+            question: "",
+            mainFood: false,
+            food: null
+        })
+    };
+
+    $scope.removeAssociatedFood = function (item) {
+        var i = $scope.itemDefinition.associatedFoods.indexOf(item);
+        $scope.itemDefinition.associatedFoods.splice(i,1);
     };
 
     function reloadData() {
@@ -150,7 +162,9 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
             return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackFoodDefinition(definition);
+                    addAssociatedFoods($scope.itemDefinition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
+
                     resetStyles();
                 });
         }
@@ -197,7 +211,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
     function reloadNutrientCodeTables() {
         foodDataReader.fetchNutrientTables().then(function (tables) {
             $scope.nutrientCodeSection.tables = tables;
-            Array.prototype.push.apply($scope.nutrientCodeSection.tables, testTables);
         });
     }
 
@@ -598,4 +611,34 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
         currentItem.delete();
     }
 
-}]);
+    function addAssociatedFoods(item) {
+        item.associatedFoods = [{
+            question: "How are you?",
+            mainFood: true,
+            food: {
+                code: "YPBO",
+                englishDescription: "Yellow peppers, boiled",
+                localDescription: ["Yellow peppers, boiled"]
+            }
+        }, {
+            question: "Was it tasty?",
+            mainFood: false,
+            food: {
+                code: "YAMB",
+                englishDescription: "Yam, boiled",
+                localDescription: ["Yam, boiled"]
+            }
+        }, {
+            question: "Some question?",
+            mainFood: false,
+            food: {
+                code: "WCBB",
+                englishDescription: "White cabbage, boiled / steamed / microwaved",
+                localDescription: ["White cabbage, boiled / steamed / microwaved"]
+            }
+        }];
+    }
+
+}
+
+]);

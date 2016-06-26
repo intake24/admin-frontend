@@ -59,6 +59,30 @@
          null,
          "تعريف"
       ],
+      "associated_food_title": [
+         null,
+         "الغذاء المرتبطة"
+      ],
+      "associated_food_select_placeholder": [
+         null,
+         "ابدأ بكتابة اسم الغذاء"
+      ],
+      "associated_food_question": [
+         null,
+         "سؤال"
+      ],
+      "associated_food_main_food": [
+         null,
+         "الطعام الرئيسي"
+      ],
+      "associated_food_delete": [
+         null,
+         "حذف"
+      ],
+      "associated_food_add": [
+         null,
+         "إضافة المواد الغذائية"
+      ],
       "Description": [
          null,
          "الوصف"

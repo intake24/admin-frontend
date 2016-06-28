@@ -92,6 +92,12 @@ msgstr "حذف"
 msgid "associated_food_add"
 msgstr "إضافة المواد الغذائية"
 
+msgid "properties_do_not_use_in_this_locale"
+msgstr "Do not use in this locale"
+
+msgid "properties_use_exclusively_in_this_locale"
+msgstr "Use exclusively in this locale"
+
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:4
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:56
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:57

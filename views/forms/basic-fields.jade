@@ -7,3 +7,9 @@
 .input-wrapper
 	label #{ gettext("Intake24 code") }
 	input(class='input-intake-code' type='text' placeholder='#{ gettext("ALBU") }' ng-model='itemDefinition.code' ng-keyup='checkCode($event)')
+.input-wrapper
+	label #{ gettext("properties_use_exclusively_in_this_locale") }
+	input(type='checkbox' ng-model='itemDefinition.useExclusivelyInThisLocale')
+.input-wrapper
+	label #{ gettext("properties_do_not_use_in_this_locale") }
+	input(type='checkbox' ng-model='itemDefinition.localData.doNotUseInThisLocale')

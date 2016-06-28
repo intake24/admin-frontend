@@ -162,6 +162,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
             return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackFoodDefinition(definition);
+                    // Fixme: This just adds dummy data. Remove once data comes from back end.
                     addAssociatedFoods($scope.itemDefinition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 

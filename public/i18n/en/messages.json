@@ -83,6 +83,14 @@
          null,
          "Add food"
       ],
+      "properties_do_not_use_in_this_locale": [
+         null,
+         "Do not use in this locale"
+      ],
+      "properties_use_exclusively_in_this_locale": [
+         null,
+         "Use exclusively in this locale"
+      ],
       "Description": [
          null,
          "Description"

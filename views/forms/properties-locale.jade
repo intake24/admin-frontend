@@ -1,0 +1,8 @@
+.input-wrapper.overridable
+    label
+    input(type='checkbox' ng-model='itemDefinition.useExclusivelyInThisLocale')
+    label #{ gettext("properties_use_exclusively_in_this_locale") }
+.input-wrapper.overridable
+    label
+    input(type='checkbox' ng-model='itemDefinition.localData.doNotUseInThisLocale')
+    label #{ gettext("properties_do_not_use_in_this_locale") }

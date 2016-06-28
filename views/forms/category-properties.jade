@@ -1,9 +1,12 @@
 .property
 	h3 #{ gettext("Definition") }
 	include basic-fields
-	.input-wrapper
-		label #{ gettext("Hidden") }
+	.input-wrapper.overridable
+		label
 		input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.isHidden')
+		label #{ gettext("Hidden") }
+
+	include properties-locale
 
 include inheritable-properties
 

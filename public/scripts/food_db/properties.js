@@ -90,17 +90,6 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
         $scope.itemDefinition.associatedFoods.splice(i,1);
     };
 
-    $scope.$watchCollection('[itemDefinition.useExclusivelyInThisLocale, itemDefinition.localData.propertiesDoNotUseInThisLocale]', function() {
-        if (!$scope.itemDefinition) {
-            return;
-        }
-        console.log($scope.itemDefinition.useExclusivelyInThisLocale);
-        if (!$scope.itemDefinition.localData) {
-            return;
-        }
-        console.log($scope.itemDefinition.localData.doNotUseInThisLocale);
-    });
-
     function reloadData() {
         clearData();
 

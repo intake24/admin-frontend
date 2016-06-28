@@ -431,6 +431,11 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
         drawers.showDrawer("drawer-drinkware");
     }
 
+    $scope.showAssociatedFoodModal = function (resultObj, resultField) {
+        $scope.$broadcast("intake24.admin.food_db.AssociatedFoodModalOpened", resultObj, resultField);
+        drawers.showDrawer("associated-food-modal");
+    }
+
     $scope.removeItem = function (array, index) {
         array.splice(index, 1);
     }

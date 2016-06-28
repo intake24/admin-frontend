@@ -35,50 +35,6 @@ app.directive('jfbFormModel', function () {
 });
 
 
-app.directive('foodSelect', ['FoodDataReader', function (FoodDataReaderService) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        require: 'uiSelect',
-        link: function (scope, element, attrs, $select) {
-            scope.selected = null;
-
-            $select.placeholder = gettext("associated_food_select_placeholder");
-
-            scope.$watch(function() {
-                return $select.selected;
-            }, function() {
-                if ($select.selected == undefined) {
-                    return;
-                }
-                search($select.selected.code);
-            });
-
-            scope.$watch(function () {
-                return $select.search;
-            }, function () {
-                search($select.search);
-            });
-
-            function search(query) {
-                if (!query) {
-                    return;
-                }
-                FoodDataReaderService.searchFoods(query).then(function (data) {
-                    var l = _.sortBy(data, function(item) {
-                       return item.localDescription[0];
-                    });
-                    $select.items.length = 0;
-                    Array.prototype.push.apply($select.items, l);
-                });
-            }
-
-        }
-    };
-}]);
-
-
 app.filter('selectedCategoryFilter', function () {
 
     return function (input, search) {

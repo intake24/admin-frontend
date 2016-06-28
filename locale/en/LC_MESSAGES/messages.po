@@ -78,9 +78,6 @@ msgstr "Definition"
 msgid "associated_food_title"
 msgstr "Associated food"
 
-msgid "associated_food_select_placeholder"
-msgstr "Start typing food name"
-
 msgid "associated_food_question"
 msgstr "Question"
 
@@ -396,3 +393,12 @@ msgstr "Category contains only one item, consider merging with another category"
 
 msgid "discard_item_changes"
 msgstr "Do you want to discard changes and switch to another item?"
+
+msgid "modals_associated_food_title"
+msgstr "Select associated food"
+
+msgid "modals_associated_food_query_placeholder"
+msgstr "Search associated food"
+
+msgid "properties_select_associated_food"
+msgstr "Search associated food"

@@ -62,16 +62,16 @@
   text-align: left;
   white-space: nowrap;
 }
-.portion-size-method .inline-link {
+.inline-link {
   color: #999;
   display: inline-block;
   font-size: 14px;
 }
-.portion-size-method .inline-link i {
+.inline-link i {
   color: #999;
   margin: 0 6px;
 }
-.portion-size-method .inline-link:hover {
+.inline-link:hover {
   color: #f63;
   cursor: pointer;
 }

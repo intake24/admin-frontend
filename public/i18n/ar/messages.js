@@ -63,10 +63,6 @@
          null,
          "الغذاء المرتبطة"
       ],
-      "associated_food_select_placeholder": [
-         null,
-         "ابدأ بكتابة اسم الغذاء"
-      ],
       "associated_food_question": [
          null,
          "سؤال"
@@ -362,6 +358,18 @@
       "discard_item_changes": [
          null,
          "Do you want to discard changes and switch to another item?"
+      ],
+      "modals_associated_food_title": [
+         null,
+         "Select associated food"
+      ],
+      "modals_associated_food_query_placeholder": [
+         null,
+         "Search associated food"
+      ],
+      "properties_select_associated_food": [
+         null,
+         "Search associated food"
       ]
    }
 }

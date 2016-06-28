@@ -77,9 +77,6 @@ msgstr "تعريف"
 msgid "associated_food_title"
 msgstr "الغذاء المرتبطة"
 
-msgid "associated_food_select_placeholder"
-msgstr "ابدأ بكتابة اسم الغذاء"
-
 msgid "associated_food_question"
 msgstr "سؤال"
 
@@ -398,3 +395,12 @@ msgstr "Category contains only one item, consider merging with another category"
 
 msgid "discard_item_changes"
 msgstr "Do you want to discard changes and switch to another item?"
+
+msgid "modals_associated_food_title"
+msgstr "Select associated food"
+
+msgid "modals_associated_food_query_placeholder"
+msgstr "Search associated food"
+
+msgid "properties_select_associated_food"
+msgstr "Search associated food"

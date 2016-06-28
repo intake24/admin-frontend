@@ -53,4 +53,16 @@
 				li(ng-click='setDrinkwareSet(drinkware_set.id)' ng-model='drinkwareSets' ng-repeat='drinkware_set in drinkwareSets | drinkScaleFilter:query | orderBy: "id"')
 					{{ drinkware_set.description }}
 
+
+.drawer.drawer-narrow.no-padding.animated#associated-food-modal(ng-controller='AssociatedFoodModalController')
+	#button-close-drawer.button-close-drawer
+		i.fa.fa-times
+	.drawer-title #{ gettext("modals_associated_food_title") }
+	input(type='text' ng-model='query' placeholder='#{ gettext("modals_associated_food_query_placeholder") }')
+	.drawer-content
+		.list-container
+			ul
+				li(ng-click='setDrinkwareSet(item)' ng-repeat='item in items | orderBy: "localDescription[0]"')
+					{{ item.localDescription[0] }}
+
 #drawer-backdrop

@@ -12,3 +12,9 @@ var moduleRequirements = ['ngCookies', 'ui.bootstrap', 'ngSanitize', 'ngAnimate'
 require('./controllers')(app);
 require('./directives')(app);
 require('./services')(app);
+require('./filters')(app);
+
+window.api_base_url = 'http://localhost:9000/';
+
+// Fixme: fix and remove all the scripts from other
+require('./other');

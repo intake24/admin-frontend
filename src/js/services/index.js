@@ -9,4 +9,6 @@ module.exports = function(app) {
     require('./current-item-service')(app);
     require('./locales-service')(app);
     require('./packer-service')(app);
+    require('./drawers-service')(app);
+    require('./shared-data-service')(app);
 };

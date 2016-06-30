@@ -3,7 +3,7 @@
 function showMessage(message, type) {
 
     if ($('.flash-message').hasClass('active')) {
-        
+
         setTimeout(function() { showMessage(message, type); }, 500);
 
     } else {

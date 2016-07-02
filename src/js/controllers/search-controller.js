@@ -1,5 +1,7 @@
 'use strict';
 
+var $ = require('jquery');
+
 module.exports = function(app) {
     app.controller('SearchController', ['$scope', 'FoodDataReader', 'Packer', 'CurrentItem', controllerFun]);
 };

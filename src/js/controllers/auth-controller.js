@@ -1,5 +1,8 @@
 'use strict';
 
+var $ = require('jquery'),
+    Cookies = require('js-cookie');
+
 module.exports = function (app) {
     app.controller('AuthController', ['$scope', '$http', '$rootScope', controllerFun]);
 };

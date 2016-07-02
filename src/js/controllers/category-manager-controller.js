@@ -15,6 +15,8 @@
 
 'use strict';
 
+var $ = require('jquery');
+
 module.exports = function (app) {
     app.controller('CategoryManagerController', ['$scope', 'FoodDataReader', 'Packer', controllerFun]);
 };

@@ -4,6 +4,9 @@
 
 'use strict';
 
+var $ = require('jquery'),
+    _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader',

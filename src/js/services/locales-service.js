@@ -1,5 +1,7 @@
 'use strict';
 
+var $ = require('jquery');
+
 module.exports = function(app) {
     app.service('Locales', ['$window', '$rootScope', 'LocaleData', 'Packer', serviceFun]);
 };

@@ -11,4 +11,5 @@ module.exports = function(app) {
     require('./search-controller')(app);
     require('./auth-controller')(app);
     require('./navigation-controller')(app);
+    require('./admin-controller')(app);
 };

@@ -1,0 +1,83 @@
+/* Import CSS snippets */
+@import 'snippets'
+
+/* Import color variables */
+@import 'variables'
+
+.portion-size-method
+	border #e1e1e1 1px solid
+	margin-bottom 30px 
+	max-width 700px
+	padding 10px 20px
+	.units-list
+		background-color white
+		border #ededed 1px solid
+		border-bottom none
+		font-size 12px
+		margin 20px 0 10px 0
+		
+		.row
+			position relative
+			width 100%
+			&:hover
+				background-color #f9f9f9
+				cursor pointer
+			.delete-unit
+					color #CCC  
+					padding 12px
+					position absolute
+					right 0
+					top 0
+					&:hover
+						color danger-color
+			.column
+				float left
+				width 33.333%
+				.unit-cell
+					border-bottom #e9e9e9 1px solid
+					padding 0px
+					text-align center
+					input
+						background transparent !important 
+						border none !important
+						width auto !important
+					input[type="checkbox"]
+						height 31px 
+			&.header
+				background-color #fff !important
+				.column
+					.unit-cell
+						font-weight bold
+						overflow hidden
+						padding 10px
+						text-align left
+						white-space nowrap
+
+	
+.inline-link
+	color #999
+	display inline-block
+	font-size 14px
+	i
+		color #999
+		margin 0 6px
+	&:hover
+		color main-color
+		cursor pointer
+
+/* RTL Styles */
+
+html[dir="rtl"]
+	
+	.portion-size-method
+		.units-list
+			.row
+				.delete-unit
+					left 0
+					right auto
+				.column
+					float right
+				&.header
+					.column
+						.unit-cell
+							text-align right

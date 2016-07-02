@@ -1,5 +1,9 @@
 'use strict';
 
+var $ = require('jquery'),
+    Cookies = require('js-cookie'),
+    _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',

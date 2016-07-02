@@ -9,6 +9,8 @@
 * 1 objects) to a structure with 2 fields: defined and value.
 */
 
+var $ = require('jquery');
+
 module.exports = function(app) {
     app.service('Packer', [ serviceFun ]);
 };

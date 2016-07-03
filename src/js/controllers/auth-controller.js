@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AuthController', ['$scope', 'UserService', controllerFun]);
+    app.controller('AuthController', ['$scope', 'UserService', 'MessageService', controllerFun]);
 };
 
-function controllerFun($scope, UserService) {
+function controllerFun($scope, UserService, MessageService) {
 
     $scope.survey_id = ''; // TODO
     $scope.username = '';
@@ -14,7 +14,7 @@ function controllerFun($scope, UserService) {
         UserService.login($scope.username, $scope.password).then(function () {
             hideModal();
         }, function () {
-            showMessage(gettext('Failed to log you in'), 'danger');
+            MessageService.showMessage(gettext('Failed to log you in'), 'danger');
         });
     };
 

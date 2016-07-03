@@ -7,11 +7,11 @@ var $ = require('jquery'),
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
-            'Packer', 'Locales', '$q', '$rootScope', controllerFun]);
+            'Packer', 'Locales', '$q', '$rootScope', 'MessageService', controllerFun]);
 };
 
 function controllerFun($scope, $http, sharedData, problems, currentItem, foodDataReader,
-                       foodDataWriter, packer, locales, $q, $rootScope) {
+                       foodDataWriter, packer, locales, $q, $rootScope, MessageService) {
 
     // Load shared data
     $scope.SharedData = sharedData;
@@ -179,7 +179,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                                             }));
                                         })
                                         .then(function () {
-                                            showMessage("Food cloned", "success");
+                                            MessageService.showMessage("Food cloned", "success");
                                             makeVisibleAndSelect({
                                                 type: "food",
                                                 code: newCode,
@@ -192,14 +192,14 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                         }, $scope.handleError)
                 });
         } else
-            showMessage("Select a food to clone", "warning");
+            MessageService.showMessage("Select a food to clone", "warning");
     });
 
     $scope.$on("intake24.admin.food_db.DeleteItem", function () {
         var item = currentItem.getCurrentItem();
 
         if (!item)
-            showMessage(gettext("Select an item to delete"), "warning");
+            MessageService.showMessage(gettext("Select an item to delete"), "warning");
         else {
             if (confirm("Delete " + item.displayName + " (" + item.code + ") ?")) {
                 var deferred;
@@ -503,14 +503,14 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
         $scope.SharedData.currentItem.code = $scope.SharedData.originalCode;
         $scope.fetchProperties();
 
-        showMessage(gettext('Changes discarded'), 'success');
+        MessageService.showMessage(gettext('Changes discarded'), 'success');
     }
 
     $scope.handleError = function (response) {
-        showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
+        MessageService.showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
         console.log(response);
         if (response.status === 401) {
-            showMessage(gettext('You are not authorized'), 'danger');
+            MessageService.showMessage(gettext('You are not authorized'), 'danger');
             Cookies.remove('auth-token');
         }
     }

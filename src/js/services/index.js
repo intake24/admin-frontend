@@ -12,4 +12,5 @@ module.exports = function(app) {
     require('./drawers-service')(app);
     require('./shared-data-service')(app);
     require('./user-service')(app);
+    require('./message-service')(app);
 };

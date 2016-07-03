@@ -12,4 +12,5 @@ module.exports = function(app) {
     require('./auth-controller')(app);
     require('./navigation-controller')(app);
     require('./admin-controller')(app);
+    require('./messages-controller')(app);
 };

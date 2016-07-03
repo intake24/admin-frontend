@@ -10,10 +10,11 @@ var $ = require('jquery'),
 module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader',
-            'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', controllerFun]);
+            'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', 'MessageService', controllerFun]);
 };
 
-function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData, packer, drawers, $q) {
+function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
+                       packer, drawers, $q, MessageService) {
 
     $scope.sharedData = sharedData;
 
@@ -471,11 +472,11 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
             })
             .then(
                 function () {
-                    showMessage(gettext('Category updated'), 'success');
+                    MessageService.showMessage(gettext('Category updated'), 'success');
                     notifyItemUpdated();
                 },
                 function (response) {
-                    showMessage(gettext('Failed to update category'), 'danger');
+                    MessageService.showMessage(gettext('Failed to update category'), 'danger');
                     // Check if this was caused by a 409, and show a better message
                     console.error(response);
 
@@ -559,11 +560,11 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
             })
             .then(
                 function () {
-                    showMessage(gettext('Food updated'), 'success');
+                    MessageService.showMessage(gettext('Food updated'), 'success');
                     notifyItemUpdated();
                 },
                 function (response) {
-                    showMessage(gettext('Failed to update food'), 'danger');
+                    MessageService.showMessage(gettext('Failed to update food'), 'danger');
                     // Check if this was caused by a 409, and show a better message
                     console.error(response);
 
@@ -573,7 +574,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     $scope.discardFoodChanges = function () {
         reloadData();
-        showMessage(gettext('Changes discarded'), 'success');
+        MessageService.showMessage(gettext('Changes discarded'), 'success');
     }
 
     $scope.saveNewFood = function () {
@@ -587,10 +588,10 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                 return updateParentCategories();
             })
             .then(function () {
-                showMessage(gettext('New food added'), 'success');
+                MessageService.showMessage(gettext('New food added'), 'success');
                 notifyItemUpdated();
             }, function (response) {
-                showMessage(gettext('Failed to add new food'), 'danger');
+                MessageService.showMessage(gettext('Failed to add new food'), 'danger');
                 // Check if this was caused by a 409, and show a better message
                 console.error(response);
             });
@@ -611,10 +612,10 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                 return updateParentCategories();
             })
             .then(function () {
-                showMessage(gettext('New category added'), 'success');
+                MessageService.showMessage(gettext('New category added'), 'success');
                 notifyItemUpdated();
             }, function (response) {
-                showMessage(gettext('Failed to add new category'), 'danger');
+                MessageService.showMessage(gettext('Failed to add new category'), 'danger');
                 // Check if this was caused by a 409, and show a better message
                 console.error(response);
             });

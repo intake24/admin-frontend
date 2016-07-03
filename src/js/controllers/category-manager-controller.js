@@ -15,7 +15,7 @@
 
 'use strict';
 
-var $ = require('jquery');
+var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('CategoryManagerController', ['$scope', 'FoodDataReader', 'Packer', controllerFun]);
@@ -33,7 +33,7 @@ function controllerFun($scope, foodDataReader, packer) {
     $scope.fixedCategories = [];
 
     function makeFixed(categoryHeader) {
-        var filtered = $.grep($scope.fixedCategories, function (c) {
+        var filtered = _.filter($scope.fixedCategories, function (c) {
             return c.code != categoryHeader.code
         });
         filtered.push(categoryHeader);
@@ -42,7 +42,7 @@ function controllerFun($scope, foodDataReader, packer) {
 
     function loadSearchResults() {
         foodDataReader.searchCategories(currentSearchQuery).then(function (categories) {
-                $scope.searchResults = $.map(categories, packer.unpackCategoryHeader);
+                $scope.searchResults = _.map(categories, packer.unpackCategoryHeader);
             },
             $scope.handleError
         );
@@ -54,7 +54,7 @@ function controllerFun($scope, foodDataReader, packer) {
 
     $scope.toggleParentCategory = function (categoryHeader) {
         // Try to remove the category first
-        var filtered = $.grep($scope.parentCategories, function (c) {
+        var filtered = _.filter($scope.parentCategories, function (c) {
             return c.code != categoryHeader.code
         });
 

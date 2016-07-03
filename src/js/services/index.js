@@ -11,4 +11,5 @@ module.exports = function(app) {
     require('./packer-service')(app);
     require('./drawers-service')(app);
     require('./shared-data-service')(app);
+    require('./user-service')(app);
 };

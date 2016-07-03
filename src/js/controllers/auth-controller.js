@@ -1,87 +1,32 @@
 'use strict';
 
-var $ = require('jquery'),
-    Cookies = require('js-cookie');
-
 module.exports = function (app) {
-    app.controller('AuthController', ['$scope', '$http', '$rootScope', controllerFun]);
+    app.controller('AuthController', ['$scope', 'UserService', controllerFun]);
 };
 
-function controllerFun($scope, $http, $rootScope) {
+function controllerFun($scope, UserService) {
 
-    // Check authentication
-    if (Cookies.get('auth-token')) {
+    $scope.survey_id = ''; // TODO
+    $scope.username = '';
+    $scope.password = '';
 
-        $rootScope.$broadcast('intake24.admin.LoggedIn');
-        hideModal();
-
-        $('body').addClass('authenticated');
-        $('#btn-authenticate p').html(Cookies.get('auth-username'));
-
-    } else {
-
-        showModal('modal-authenticate');
-
-    }
-
-    $('#modal-authenticate input').off().keypress(function (e) {
-
-        if (e.keyCode == 13) {
-            $('#button-login').trigger('click')
-        }
-    });
-
-    // Attempt to logout user
-    $('#button-logout').off().click(function () {
-
-        Cookies.remove('auth-token');
-
-        $('body').removeClass('authenticated');
-        $('#btn-authenticate p').html('Login');
-
-        hideModal();
-        showModal('modal-authenticate');
-
-        // showMessage(gettext('You have logged out'), 'success');
-    });
-
-    // Attempt to login user
-    $('#button-login').off().click(function () {
-
-        var survey_id = ''; // TODO
-        var username = $('#form-login-username').val();
-        var password = $('#form-login-password').val();
-
-        $http({
-            method: 'POST',
-            url: api_base_url + 'signin',
-            data: {survey_id: survey_id, username: username, password: password}
-        }).then(function successCallback(response) {
-
-            Cookies.set('auth-token', response.data.token);
-
-            Cookies.set('auth-username', username);
-
-            $rootScope.$broadcast('intake24.admin.LoggedIn');
-
+    $scope.login = function () {
+        UserService.login($scope.username, $scope.password).then(function () {
             hideModal();
-
-            $('body').addClass('authenticated');
-            $('#btn-authenticate p').html(username);
-
-            // showMessage(gettext('You have logged in'), 'success');
-
-        }, function errorCallback(response) {
+        }, function () {
             showMessage(gettext('Failed to log you in'), 'danger');
-            handleError(response);
         });
+    };
 
-    });
+    $scope.logout = function () {
+        UserService.logout();
+        hideModal();
+        showModal('modal-authenticate');
+    };
 
-    function handleError(response) {
-
-        if (response.status === 401) {
-            Cookies.remove('auth-token');
-        }
+    if (UserService.getAuthenticated()) {
+        hideModal();
+    } else {
+        showModal('modal-authenticate');
     }
 }

@@ -1,45 +1,47 @@
 doctype
 html(lang='#{lang}' dir='#{lang_dir}')
 
-	head
-		title #{title} - #{ gettext("Intake24 Admin") }
+    head
+        title #{title} - #{ gettext("Intake24 Admin") }
 
-		meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
 
-		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-		link(rel='stylesheet', href='/style.min.css')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/style.min.css')
 
-		script(type="text/javascript").
-			window.intake24_locale = '#{intake24_locale}';
+        script(type="text/javascript").
+            window.intake24_locale = '#{intake24_locale}';
 
-		//- Load current translation file
-		script(type="text/javascript" src='/i18n/#{lang}/messages.js')
-		script(type="text/javascript" src='/intake24-admin.js')
+        //- Load current translation file
+        script(type="text/javascript" src='/i18n/#{lang}/messages.js')
+        script(type="text/javascript" src='/intake24-admin.js')
 
-	body.animated.fadeIn(ng-app='intake24.admin' ng-controller='AdminController')
-		header
-			#sidebar-button(ng-click="sidebarToggle()")
-				i.fa.fa-bars
-			a(href='/')
-				h4 <strong>Intake24</strong> Admin
-			a(href='#' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
-				i.fa.fa-user
-				p Login / Register
+    body.animated.fadeIn(ng-app='intake24.admin'
+                        ng-controller='AdminController'
+                        ng-class="{authenticated: authenticated}")
+        header
+            #sidebar-button(ng-click="sidebarToggle()")
+                i.fa.fa-bars
+            a(href='/')
+                h4 <strong>Intake24</strong> Admin
+            a(href='#' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
+                i.fa.fa-user
+                p {{authUsername || 'Login / Register'}}
 
-		.intake-container
-			.main-content
-				block content
-			
-			include sidebar
+        .intake-container
+            .main-content
+                block content
 
-		include modals		
-			
-		.flash-message
-			#message
-			#flash-dismiss-btn(ng-click='hideMessage()')
-				i(class='fa fa-close')
+            include sidebar
 
-		#authenticate-overlay
-			#authenticate-logo
-				h4 <strong>Intake24</strong> Admin
+        include modals
+
+        .flash-message
+            #message
+            #flash-dismiss-btn(ng-click='hideMessage()')
+                i(class='fa fa-close')
+
+        #authenticate-overlay
+            #authenticate-logo
+                h4 <strong>Intake24</strong> Admin

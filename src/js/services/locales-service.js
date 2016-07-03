@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = require('jquery');
+var _ = require('underscore');
 
 module.exports = function(app) {
     app.service('Locales', ['$window', '$rootScope', 'LocaleData', 'Packer', serviceFun]);
@@ -30,7 +30,7 @@ function serviceFun($window, $rootScope, localeData, packer) {
 
 	function reloadLocales() {
 		localeData.getAllLocales( function(data) {
-			locales = $.map(data, unpackLocale);
+			locales = _.map(data, unpackLocale);
 		},
 		function(response) {
 			console.error("Failed to load locale information");

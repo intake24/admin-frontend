@@ -7,11 +7,11 @@ var $ = require('jquery'),
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
-            'Packer', 'Locales', '$q', '$rootScope', 'MessageService', controllerFun]);
+            'Packer', '$q', '$rootScope', 'MessageService', controllerFun]);
 };
 
 function controllerFun($scope, $http, sharedData, problems, currentItem, foodDataReader,
-                       foodDataWriter, packer, locales, $q, $rootScope, MessageService) {
+                       foodDataWriter, packer, $q, $rootScope, MessageService) {
 
     // Load shared data
     $scope.SharedData = sharedData;

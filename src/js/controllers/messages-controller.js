@@ -10,6 +10,10 @@ function controllerFun($scope, MessageService) {
     $scope.message = '';
     $scope.class = '';
 
+    $scope.hide = function() {
+        MessageService.hideMessage();
+    };
+
     $scope.$watchCollection(function() {
         return [MessageService.getActive(), MessageService.getMessageText(), MessageService.getMessageType()];
     }, function() {

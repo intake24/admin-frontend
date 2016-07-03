@@ -2,5 +2,4 @@
 
 module.exports = function () {
     require('./gettext')();
-    require('./modals')();
 };

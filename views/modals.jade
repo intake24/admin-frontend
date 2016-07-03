@@ -1,5 +1,5 @@
 div(ng-controller='AuthController')
-	.intake-modal.modal-narrow.animated#modal-authenticate
+	.intake-modal.modal-narrow#modal-authenticate(ng-show="modalAuthenticateVisible")
 			.intake-modal-title #{ gettext("Login") }
 			.intake-modal-content
 				form(ng-submit="login()")
@@ -8,12 +8,12 @@ div(ng-controller='AuthController')
 					button #{ gettext("Login") }
 					.clearfloat
 
-	.intake-modal.modal-narrow.animated#modal-logout
-		#button-close-modal.button-close-modal
+	.intake-modal.modal-narrow#modal-logout(ng-show="modalLogOutVisible")
+		#button-close-modal.button-close-modal(ng-click="hideLogoutModal()")
 			i.fa.fa-times
 		.intake-modal-title #{ gettext("Are you sure?") }
 		.intake-modal-content
 			button(ng-click="logout()") #{ gettext("Logout") }
 			.clearfloat
 
-	#modal-backdrop
+	#modal-backdrop(ng-show="getBackdropVisibe()")

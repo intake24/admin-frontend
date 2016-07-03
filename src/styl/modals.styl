@@ -7,7 +7,6 @@
 .intake-modal
 	background white
 	border-radius 4px
-	display none
 	left 50%
 	margin-left -300px
 	overflow hidden
@@ -15,6 +14,13 @@
 	top 200px
 	width 600px
 	z-index 50
+	opacity 1
+	transition(all 0.1s linear)
+
+	&.ng-hide
+		opacity: 0;
+		transform: translate3d(0, 100%, 0);
+
 	@media(max-width: 600px)
 		width 300px
 		margin-left -150px
@@ -92,17 +98,17 @@
 
 #modal-backdrop
 	background-color rgba(0, 0, 0, 0.5)
-	display none
-	opacity 0
 	position fixed
 	top 0
 	bottom 0
 	left 0
 	right 0
 	z-index 11
+	opacity 1
+	transition(opacity .25s linear)
 
-#modal-backdrop.active
-	display block
+	&.ng-hide
+		opacity 0
 
 /* RTL Styles */
 

@@ -2,14 +2,14 @@
 
 /* Packer service
 *
-* Converts JSON objects received from the API server to more covnenient format
+* Converts JSON objects received from the API server to more convenient format
 * for JS code.
 *
 * In particular, converts server-side optional data encoding (an array with 0 or
 * 1 objects) to a structure with 2 fields: defined and value.
 */
 
-var $ = require('jquery');
+var _ = require('underscore');
 
 module.exports = function(app) {
     app.service('Packer', [ serviceFun ]);
@@ -169,7 +169,7 @@ function serviceFun() {
 
 	instance.unpackPortionSizes = function(packedPortionSizes) {
 
-		return $.map(packedPortionSizes, function(packed) {
+		return _.map(packedPortionSizes, function(packed) {
 
 			var unpacked = {
 				method: packed.method,
@@ -186,7 +186,7 @@ function serviceFun() {
 
 					unpacked.parameters.units = [];
 
-					$.each(packed.parameters, function(index, parameter) {
+					_.each(packed.parameters, function(parameter, index) {
 
 						var name = parameter.name;
 						var indexArray = name.match(/\d+/);
@@ -210,7 +210,7 @@ function serviceFun() {
 
 				case "guide-image":
 
-					$.each(packed.parameters, function(index, param) {
+					_.each(packed.parameters, function(param, index) {
 						if (param.name == 'guide-image-id') {
 							unpacked.parameters.guide_image_id = param.value;
 						}
@@ -220,7 +220,7 @@ function serviceFun() {
 
 				case "as-served":
 
-					$.each(packed.parameters, function(index, param) {
+					_.each(packed.parameters, function(oaram, index) {
 
 						unpacked.parameters.useLeftoverImages = false;
 
@@ -237,7 +237,7 @@ function serviceFun() {
 
 				case "drink-scale":
 
-					$.each(packed.parameters, function(index, param) {
+					_.each(packed.parameters, function(param, index) {
 
 						if (param.name == 'drinkware-id') {
 							unpacked.parameters.drinkware_id = param.value;
@@ -253,7 +253,7 @@ function serviceFun() {
 
 				case "cereal":
 
-					$.each(packed.parameters, function(index, param) {
+					_.each(packed.parameters, function(param, index) {
 
 						if (param.name == 'type') {
 							unpacked.parameters.cereal_type = param.value;
@@ -346,7 +346,7 @@ function serviceFun() {
 
 	instance.packPortionSizes = function(unpackedPortionSizes)
 	{
-		return $.map(unpackedPortionSizes, function(portionSize, index) {
+		return _.map(unpackedPortionSizes, function(portionSize, index) {
 
 			var packedPortionSize = Object();
 
@@ -366,7 +366,7 @@ function serviceFun() {
 						value: portionSize.parameters.units.length.toString()
 					});
 
-					$.each(portionSize.parameters.units, function(index, parameter) {
+					_.each(portionSize.parameters.units, function(parameter, index) {
 
 						var name;
 

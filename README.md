@@ -1,5 +1,15 @@
 ## Intake24 Admin Panel
     A node/angular web application that interfaces with the Intake24 backend to allow users to manage food databases for multiple languages.
+    
+## Building front-end JS and CSS
+All JavaScript is built into `public/intake24-admin.js` from `src/js/intake24-admin.js`.
+All CSS is built into `public/style.css` from `src/styl/style.styl`.
+
+To build scripts and styles for production run `grunt`.
+To build scripts and styles in development mode listening to changes
+and recompiling JS and Styl files run `grunt dev`.
+
+Configuration for building JS files is in `src/js/config/development.js` and `src/js/config/production.js`.
 
 ## i18n
 	i18n is implemented using 'i18n-abide' by Mozilla ('https://github.com/mozilla/i18n-abide')

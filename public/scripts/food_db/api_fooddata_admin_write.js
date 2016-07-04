@@ -66,6 +66,11 @@ angular.module('intake24.admin.food_db').factory('FoodDataWriter', ['$http', 'Lo
 			return authApiPostFuture('admin/foods/' + food_code, definition);
 		},
 
+		updateAssociatedFoods: function(food_code, associatedFoods)
+		{
+			return authApiPostFuture('admin/foods/' + locales.current() + '/' + code + '/associated-foods', associatedFoods);
+		},
+
 		createNewFood: function(definition)
 		{
 			return authApiPostFuture('admin/foods/new', definition);

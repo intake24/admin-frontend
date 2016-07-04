@@ -96,7 +96,7 @@ angular.module('intake24.admin.food_db').controller('PropertiesController', ['$s
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
+            $q.all(loadBasicData(), loadParentCategories(), loadLocalData(), loadAssociatedFoods()).catch(
                 function (response) {
                     $scope.handleError(response);
                 }

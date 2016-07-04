@@ -102,7 +102,9 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 		var unpacked = instance.unpackCommonDefinitionFields(packed);
 
 		unpacked.groupCode = packed.groupCode;
+		unpacked.useExclusivelyInThisLocale = false;
 		unpacked.localData.nutrientTableCodes = packed.localData.nutrientTableCodes;
+		unpacked.localData.doNotUseInThisLocale = packed.localData.doNotUse;
 
 		return unpacked;
 	};
@@ -142,6 +144,7 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 	instance.unpackFoodHeader = function(packed)
 	{
 		var unpacked = instance.unpackCommonHeaderFields(packed);
+		unpacked.doNotUseInThisLocale = packed.doNotUse;
 		unpacked.type = 'food';
 		return unpacked;
 	};
@@ -324,7 +327,8 @@ angular.module('intake24.admin.food_db').factory('Packer', [ function() {
 			version: instance.packOption(unpacked.version),
 			localDescription: instance.packOption(unpacked.localDescription),
 			nutrientTableCodes: unpacked.nutrientTableCodes,
-			portionSize: instance.packPortionSizes(unpacked.portionSize)
+			portionSize: instance.packPortionSizes(unpacked.portionSize),
+			doNotUse: unpacked.doNotUseInThisLocale
 		};
 	}
 

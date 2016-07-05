@@ -17,5 +17,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('dev', ['stylus:dev', 'browserify:dev', 'copy:dev', 'watch']);
-    grunt.registerTask('default', ['stylus:prod', 'browserify:prod', 'uglify:prod']);
+		grunt.registerTask('test', ['stylus:prod', 'browserify:test', 'uglify:prod']);
+		grunt.registerTask('default', ['stylus:prod', 'browserify:prod', 'uglify:prod']);
 };

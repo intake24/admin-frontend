@@ -27,6 +27,14 @@ module.exports = function (grunt) {
                     ENVIRONMENT: 'production'
                 })]
             }
+        },
+				test: {
+            files: browserifyFileOptions,
+            options: {
+                transform: [envify({
+                    ENVIRONMENT: 'test'
+                })]
+            }
         }
     });
 };

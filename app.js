@@ -4,7 +4,6 @@
 var express = require('express')
     ,routes = require('./routes')
     ,i18n = require('i18n-abide')
-    ,request = require('request')
     ,cors = require('express-cors')
 
 var app = express()

@@ -10,19 +10,19 @@ To build scripts and styles for production run `grunt --config {your_config.json
 **Example config:**
 
 `{`<br/>
-    `"apiBaseUrl": "http://localhost:9000/",`<br/>
-    `"stylusFrom": "src/styl/style.styl",`<br/>
-    `"stylusWatch": "src/styl/*",`<br/>
-    `"stylusTo": "public/style.css",`<br/>
-    `"browserifyFrom": "src/js/intake24-admin.js",`<br/>
-    `"browserifyTo": "src/js/temp/intake24-admin.browserified.js",`<br/>
-    `"buildJsTo": "public/intake24-admin.js",`<br/>
-    `"uglifyJs": false,`<br/>
-    `"includeCssMaps": true,`<br/>
-    `"includeJsMaps": true,`<br/>
-    `"watchStylus": true,`<br/>
-    `"watchJs": true,`<br/>
-    `"watchDebounceDelay": 5000`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"apiBaseUrl": "http://localhost:9000/",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"stylusFrom": "src/styl/style.styl",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"stylusWatch": "src/styl/*",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"stylusTo": "public/style.css",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"browserifyFrom": "src/js/intake24-admin.js",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"browserifyTo": "src/js/temp/intake24-admin.browserified.js",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"buildJsTo": "public/intake24-admin.js",`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"uglifyJs": false,`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"includeCssMaps": true,`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"includeJsMaps": true,`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"watchStylus": true,`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"watchJs": true,`<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;`"watchDebounceDelay": 5000`<br/>
 `}`
 
 ## i18n

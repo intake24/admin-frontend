@@ -1,22 +1,25 @@
 'use strict';
 
-var config = require('./config')();
-
 module.exports = function (grunt) {
+
+    var config = grunt.config.get('environment'),
+        jsTask = (config.uglifyJs ? 'uglify' : 'copy:scripts');
+
+    console.log(config.browserifyTo);
 
     grunt.config.set('watch', {
         stylus: {
             files: [config.stylusWatch],
-            tasks: ['stylus:dev'],
+            tasks: ['stylus'],
             options: {
-                debounceDelay: 5000
+                debounceDelay: config.watchDebounceDelay
             }
         },
         scripts: {
             files: [config.browserifyTo],
-            tasks: ['copy:dev'],
+            tasks: [jsTask],
             options: {
-                debounceDelay: 5000
+                debounceDelay: config.watchDebounceDelay
             }
         }
     });

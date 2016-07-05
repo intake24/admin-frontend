@@ -1,10 +1,11 @@
 'use strict';
 
-var config = require('./config')();
-
 module.exports = function (grunt) {
+
+    var config = grunt.config.get('environment');
+
     grunt.config.set('copy', {
-        dev: {
+        scripts: {
             src: config.browserifyTo,
             dest: config.buildJsTo
         }

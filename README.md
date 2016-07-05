@@ -5,11 +5,25 @@
 All JavaScript is built into `public/intake24-admin.js` from `src/js/intake24-admin.js`.
 All CSS is built into `public/style.css` from `src/styl/style.styl`.
 
-To build scripts and styles for production run `grunt`.
-To build scripts and styles in development mode listening to changes
-and recompiling JS and Styl files run `grunt dev`.
+To build scripts and styles for production run `grunt --config {your_config.json}`.
 
-Configuration for building JS files is in `src/js/config/development.js` and `src/js/config/production.js`.
+**Example config:**
+
+`{`<br/>
+    `"apiBaseUrl": "http://localhost:9000/",`<br/>
+    `"stylusFrom": "src/styl/style.styl",`<br/>
+    `"stylusWatch": "src/styl/*",`<br/>
+    `"stylusTo": "public/style.css",`<br/>
+    `"browserifyFrom": "src/js/intake24-admin.js",`<br/>
+    `"browserifyTo": "src/js/temp/intake24-admin.browserified.js",`<br/>
+    `"buildJsTo": "public/intake24-admin.js",`<br/>
+    `"uglifyJs": false,`<br/>
+    `"includeCssMaps": true,`<br/>
+    `"includeJsMaps": true,`<br/>
+    `"watchStylus": true,`<br/>
+    `"watchJs": true,`<br/>
+    `"watchDebounceDelay": 5000`<br/>
+`}`
 
 ## i18n
 	i18n is implemented using 'i18n-abide' by Mozilla ('https://github.com/mozilla/i18n-abide')

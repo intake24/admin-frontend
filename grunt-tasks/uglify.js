@@ -1,9 +1,10 @@
 'use strict';
 
-var config = require('./config')();
-
 module.exports = function (grunt) {
-    var uglifyJsFileOptions = {};
+
+    var config = grunt.config.get('environment'),
+        uglifyJsFileOptions = {};
+
     uglifyJsFileOptions[config.buildJsTo] = config.browserifyTo;
 
     grunt.config.set('uglify', {

@@ -1,22 +1,20 @@
 'use strict';
 
-var config = require('./config')();
-
 module.exports = function (grunt) {
-    var stylOptions = {};
-    stylOptions[config.stylusTo] = config.stylusFrom;
+    var config = grunt.config.get('environment'),
+        fileOptions = {},
+        buildOptions = {};
+
+    fileOptions[config.stylusTo] = config.stylusFrom;
+
+    if (config.includeCssMaps) {
+        buildOptions.sourcemap = {inline: true};
+    }
 
     grunt.config.set('stylus', {
-        dev: {
-            options: {
-                sourcemap: {
-                    inline: true
-                }
-            },
-            files: stylOptions
-        },
-        prod: {
-            files: stylOptions
+        build: {
+            options: buildOptions,
+            files: fileOptions
         }
     });
 };

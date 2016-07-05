@@ -2,6 +2,16 @@
 
 module.exports = function (grunt) {
 
+    var configPath = grunt.option("config"),
+        tskList, config;
+
+    if (!configPath) {
+        throw "Path to config file is not provided. Define after --config"
+    }
+
+    config = grunt.file.readJSON(configPath);
+
+    grunt.config.set('environment', config);
     grunt.config.set('pkg', grunt.file.readJSON('package.json'));
 
     require('./grunt-tasks/browserify')(grunt);
@@ -16,7 +26,22 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('dev', ['stylus:dev', 'browserify:dev', 'copy:dev', 'watch']);
-		grunt.registerTask('test', ['stylus:prod', 'browserify:test', 'uglify:prod']);
-		grunt.registerTask('default', ['stylus:prod', 'browserify:prod', 'uglify:prod']);
+    tskList = ['stylus', 'browserify'];
+
+    if (config.uglifyJs) {
+        tskList.push('uglify');
+    } else {
+        tskList.push('copy:scripts');
+    }
+    if (config.watchStylus && config.watchJs) {
+        tskList.push('watch');
+    }
+    if (config.watchStylus) {
+        tskList.push('watch:stylus');
+    }
+    if (config.watchJs) {
+        tskList.push('watch:scripts');
+    }
+
+    grunt.registerTask('default', tskList);
 };

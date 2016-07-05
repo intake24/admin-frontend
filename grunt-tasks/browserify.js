@@ -1,38 +1,24 @@
 'use strict';
 
-var config = require('./config')(),
-    envify = require('envify/custom');
+var envify = require('envify/custom');
 
 module.exports = function (grunt) {
-    var browserifyFileOptions = {};
+
+    var config = grunt.config.get('environment'),
+        browserifyFileOptions = {};
+
     browserifyFileOptions[config.browserifyTo] = config.browserifyFrom;
 
     grunt.config.set('browserify', {
-        dev: {
+        build: {
             files: browserifyFileOptions,
             options: {
-                watch: ['true'],
+                watch: [config.watchJs],
                 browserifyOptions: {
-                    debug: true
+                    debug: config.includeJsMaps
                 },
                 transform: [envify({
-                    ENVIRONMENT: 'development'
-                })]
-            }
-        },
-        prod: {
-            files: browserifyFileOptions,
-            options: {
-                transform: [envify({
-                    ENVIRONMENT: 'production'
-                })]
-            }
-        },
-				test: {
-            files: browserifyFileOptions,
-            options: {
-                transform: [envify({
-                    ENVIRONMENT: 'test'
+                    API_BASE_URL: config.apiBaseUrl
                 })]
             }
         }

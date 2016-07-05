@@ -4,11 +4,12 @@
     div.margin-bottom-sm(ng-repeat="assFood in itemDefinition.associatedFoods")
         .input-wrapper
             label #{ gettext("Food") }
-            ui-select(food-select ng-model="assFood.food")
-                ui-select-match
-                    span(ng-bind="$select.selected.localDescription[0]")
-                ui-select-choices(repeat="item in [] track by $index")
-                    span(ng-bind="item.localDescription[0]")
+            .inline-link(ng-click='showAssociatedFoodModal(assFood, "food")')
+                span(ng-if='!assFood.food')
+                    p #{ gettext("properties_select_associated_food") }
+                span(ng-if='assFood.food')
+                    {{ assFood.food.localDescription[0] }}
+
         .input-wrapper
             label #{ gettext("associated_food_question") }
             input(type="text" ng-model="assFood.question")

@@ -36,4 +36,8 @@ jspm_packages
 .node_repl_history
 
 .idea
+src/js/temp
 
+public/intake24-admin.js
+public/style.css
+public/i18n

@@ -1,5 +1,5 @@
 a(ng-click='nodeClicked(value)' ng-class="value.selected ? 'active' : []")
-	i(class='fa fa-spinner fa-spin fa-fw' ng-if='value.loadingChildren')
+	i(class='fa fa-spinner fa-spin fa-fw' ng-class="{hidden: !value.loadingChildren}")
 	i(class='fa fa-caret-down fa-fw' ng-if='(value.type == "category" || value.type == "uncategorised") && !value.loadingChildren')
 	i(class='fa fa-caret-right fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "ltr") && !value.loadingChildren)')
 	i(class='fa fa-caret-left fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "rtl") && !value.loadingChildren)')

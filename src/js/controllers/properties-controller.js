@@ -71,7 +71,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                 return this.tables;
             }
             return _.filter(this.tables, function (item) {
-                return $scope.itemDefinition.localData.nutrientTableCodes[item.id] == undefined;
+                return $scope.itemDefinition.local.nutrientTableCodes[item.id] == undefined;
             });
         },
         toggleDropDown: function () {
@@ -79,10 +79,10 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
         },
         addTable: function (id) {
             this.dropDownOpened = false;
-            $scope.itemDefinition.localData.nutrientTableCodes[id] = "";
+            $scope.itemDefinition.local.nutrientTableCodes[id] = "";
         },
         removeTable: function (id) {
-            delete $scope.itemDefinition.localData.nutrientTableCodes[id];
+            delete $scope.itemDefinition.local.nutrientTableCodes[id];
         },
         buttonDisabled: function () {
             return this.filteredTables().length == 0;
@@ -108,7 +108,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData(), loadAssociatedFoods()).catch(
+            $q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
                 function (response) {
                     $scope.handleError(response);
                 }
@@ -174,8 +174,6 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
             return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackFoodDefinition(definition);
-                    // Fixme: This just adds dummy data. Remove once data comes from back end.
-                    addAssociatedFoods($scope.itemDefinition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
 
                     resetStyles();
@@ -311,22 +309,22 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     $scope.categoryBasicDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(packer.packCategoryBasicDefinition($scope.originalItemDefinition), packer.packCategoryBasicDefinition($scope.itemDefinition));
+            return !angular.equals(packer.packCategoryBasicDefinition($scope.originalItemDefinition.main), packer.packCategoryBasicDefinition($scope.itemDefinition.main));
         else
             return false;
     }
 
     $scope.categoryLocalDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition.localData), packer.packCategoryLocalDefinition($scope.itemDefinition.localData));
+            return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition.local), packer.packCategoryLocalDefinition($scope.itemDefinition.local));
         else
             return false;
     }
 
     $scope.foodBasicDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition);
-            var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition);
+            var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition.main);
+            var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition.main);
             return !angular.equals(packedOriginalBasic, packedCurrentBasic);
         }
         else
@@ -335,8 +333,8 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     $scope.foodLocalDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.localData);
-            var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
+            var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.local);
+            var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
         }
         else
@@ -366,15 +364,15 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
     $scope.localDescriptionModel = function (description) {
         if (arguments.length == 1) {
             if (description.length > 0) {
-                $scope.itemDefinition.localData.localDescription.defined = true;
-                $scope.itemDefinition.localData.localDescription.value = description;
+                $scope.itemDefinition.local.localDescription.defined = true;
+                $scope.itemDefinition.local.localDescription.value = description;
             } else {
-                $scope.itemDefinition.localData.localDescription.defined = false;
-                $scope.itemDefinition.localData.localDescription.value = null;
+                $scope.itemDefinition.local.localDescription.defined = false;
+                $scope.itemDefinition.local.localDescription.value = null;
             }
         } else {
-            if ($scope.itemDefinition != null && $scope.itemDefinition.localData.localDescription.defined)
-                return $scope.itemDefinition.localData.localDescription.value;
+            if ($scope.itemDefinition != null && $scope.itemDefinition.local.localDescription.defined)
+                return $scope.itemDefinition.local.localDescription.value;
             else
                 return "";
         }
@@ -490,8 +488,8 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                 type: $scope.currentItem.type,
                 code: $scope.itemDefinition.code,
                 englishDescription: $scope.itemDefinition.englishDescription,
-                localDescription: $scope.itemDefinition.localData.localDescription,
-                displayName: $scope.itemDefinition.localData.localDescription.defined ? $scope.itemDefinition.localData.localDescription.value : $scope.itemDefinition.englishDescription
+                localDescription: $scope.itemDefinition.local.localDescription,
+                displayName: $scope.itemDefinition.local.localDescription.defined ? $scope.itemDefinition.local.localDescription.value : $scope.itemDefinition.englishDescription
             },
             originalCode: $scope.originalItemDefinition.code,
             parentCategories: $.map($scope.parentCategories, function (cat) {
@@ -523,7 +521,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     function updateFoodLocal() {
         if ($scope.foodLocalDefinitionChanged()) {
-            var packed = packer.packFoodLocalDefinition($scope.itemDefinition.localData);
+            var packed = packer.packFoodLocalDefinition($scope.itemDefinition.local);
             return foodDataWriter.updateFoodLocal($scope.itemDefinition.code, packed);
         } else {
             return $q.when(true);
@@ -541,7 +539,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     function updateCategoryLocal() {
         if ($scope.categoryLocalDefinitionChanged()) {
-            var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.localData);
+            var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.local);
             return foodDataWriter.updateCategoryLocal($scope.itemDefinition.code, packed);
         } else {
             return $q.when(true);
@@ -628,33 +626,4 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
     $scope.deleteItem = function () {
         currentItem.delete();
     }
-
-    function addAssociatedFoods(item) {
-        item.associatedFoods = [{
-            question: "How are you?",
-            mainFood: true,
-            food: {
-                code: "YPBO",
-                englishDescription: "Yellow peppers, boiled",
-                localDescription: ["Yellow peppers, boiled"]
-            }
-        }, {
-            question: "Was it tasty?",
-            mainFood: false,
-            food: {
-                code: "YAMB",
-                englishDescription: "Yam, boiled",
-                localDescription: ["Yam, boiled"]
-            }
-        }, {
-            question: "Some question?",
-            mainFood: false,
-            food: {
-                code: "WCBB",
-                englishDescription: "White cabbage, boiled / steamed / microwaved",
-                localDescription: ["White cabbage, boiled / steamed / microwaved"]
-            }
-        }];
-    }
-
 }

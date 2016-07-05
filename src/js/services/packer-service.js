@@ -83,36 +83,35 @@ function serviceFun() {
 	// Common fields for food and category definition
 	instance.unpackCommonDefinitionFields = function (packed)
 	{
-		var unpacked = Object();
-
-		unpacked.version = packed.version;
-		unpacked.code = packed.code;
-		unpacked.englishDescription = packed.englishDescription;
-
-		unpacked.attributes = Object();
-
-		unpacked.attributes.readyMealOption = instance.unpackOption(packed.attributes.readyMealOption);
-		unpacked.attributes.sameAsBeforeOption = instance.unpackOption(packed.attributes.sameAsBeforeOption);
-		unpacked.attributes.reasonableAmount = instance.unpackOption(packed.attributes.reasonableAmount);
-
-		unpacked.localData = Object();
-
-		unpacked.localData.version = instance.unpackOption(packed.localData.version);
-		unpacked.localData.localDescription = instance.unpackOption(packed.localData.localDescription);
-
-		unpacked.localData.portionSize = instance.unpackPortionSizes(packed.localData.portionSize);
-
-		return unpacked;
+		return {
+			main: {
+				version: packed.main.version,
+				code: packed.main.code,
+				englishDescription: packed.main.englishDescription,
+				attributes: {
+					readyMealOption: instance.unpackOption(packed.main.attributes.readyMealOption),
+					sameAsBeforeOption: instance.unpackOption(packed.main.attributes.sameAsBeforeOption),
+					reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount)
+				}
+			},
+			local: {
+				version: instance.unpackOption(packed.local.version),
+				localDescription: instance.unpackOption(packed.local.localDescription),
+				portionSize: instance.unpackPortionSizes(packed.local.portionSize)
+			}
+		};
 	};
 
 	instance.unpackFoodDefinition = function(packed)
 	{
 		var unpacked = instance.unpackCommonDefinitionFields(packed);
 
-		unpacked.groupCode = packed.groupCode;
-		unpacked.useExclusivelyInThisLocale = false;
-		unpacked.localData.nutrientTableCodes = packed.localData.nutrientTableCodes;
-		unpacked.localData.doNotUseInThisLocale = packed.localData.doNotUse;
+		unpacked.main.groupCode = packed.main.groupCode;
+		unpacked.main.useExclusivelyInThisLocale = false;
+		unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
+		unpacked.local.doNotUseInThisLocale = packed.local.doNotUse;
+		unpacked.brandNames = packed.brandNames;
+		unpacked.associatedFoods = packed.associatedFoods;
 
 		return unpacked;
 	};
@@ -121,7 +120,7 @@ function serviceFun() {
 	{
 		var unpacked = instance.unpackCommonDefinitionFields(packed);
 
-		unpacked.isHidden = packed.isHidden;
+		unpacked.main.isHidden = packed.main.isHidden;
 
 		return unpacked;
 	};
@@ -223,7 +222,7 @@ function serviceFun() {
 
 				case "as-served":
 
-					_.each(packed.parameters, function(oaram, index) {
+					_.each(packed.parameters, function(param, index) {
 
 						unpacked.parameters.useLeftoverImages = false;
 

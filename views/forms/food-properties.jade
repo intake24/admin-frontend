@@ -4,7 +4,7 @@ form(id='food-properties-form')
     include basic-fields
     .input-wrapper
         label #{ gettext("Food group") }
-        select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.groupCode")
+        select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.main.groupCode")
 
     include properties-locale
 

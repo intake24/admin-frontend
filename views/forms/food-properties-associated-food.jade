@@ -3,19 +3,21 @@
 
     div.margin-bottom-sm(ng-repeat="assFood in itemDefinition.associatedFoods")
         .input-wrapper
-            label #{ gettext("Food") }
-            .inline-link(ng-click='showAssociatedFoodModal(assFood, "food")')
-                span(ng-if='!assFood.food')
+            label #{ gettext("Food or category code") }
+            .inline-link(ng-click='showAssociatedFoodModal(assFood, "category")')
+                span(ng-if='!assFood.category')
                     p #{ gettext("properties_select_associated_food") }
-                span(ng-if='assFood.food')
+                span(ng-if='assFood.category')
                     {{ assFood.food.localDescription[0] }}
-
         .input-wrapper
             label #{ gettext("associated_food_question") }
-            input(type="text" ng-model="assFood.question")
+            input(type="text" ng-model="assFood.promptText")
+        .input-wrapper
+            label #{ gettext("Generic name for this food") }
+            input(type="text" ng-model="assFood.genericName")					
         .input-wrapper
             label #{ gettext("associated_food_main_food") }
-            input(type="checkbox" ng-model="assFood.mainFood")
+            input(type="checkbox" ng-model="assFood.linkAsMain")
         .input-wrapper
             label
             button.intake-btn.no-float(ng-click="removeAssociatedFood(assFood)") #{ gettext("associated_food_delete") }

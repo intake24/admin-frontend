@@ -1,6 +1,6 @@
 .property
 	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-repeat='portionSize in itemDefinition.localData.portionSize')
+	.input-wrapper(ng-repeat='portionSize in itemDefinition.local.portionSize')
 		.portion-size-method
 			.input-wrapper
 				label #{ gettext("Description") }
@@ -34,13 +34,13 @@
 			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
 				include portion-size-methods/pizza
 
-			.intake-btn.danger(ng-click='deletePortionSize(itemDefinition.localData.portionSize, $index)')
+			.intake-btn.danger(ng-click='deletePortionSize(itemDefinition.local.portionSize, $index)')
 				span #{ gettext("Delete this method") }
 			.clearfloat
 
 
 	.input-wrapper
-		.intake-btn.success(ng-click='addPortionSize(itemDefinition.localData.portionSize)')
+		.intake-btn.success(ng-click='addPortionSize(itemDefinition.local.portionSize)')
 			span #{ gettext("Add a portion size method") }
 		.intake-btn.success(ng-hide='sharedData.locale.intake_locale=="en_GB"' ng-click='copyEnglishMethods()')
 			span #{ gettext("Copy English methods") }

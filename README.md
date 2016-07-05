@@ -5,7 +5,7 @@
 All JavaScript is built into `public/intake24-admin.js` from `src/js/intake24-admin.js`.
 All CSS is built into `public/style.css` from `src/styl/style.styl`.
 
-To build scripts and styles for production run `grunt --config {your_config.json}`.
+To build scripts and styles for production run `grunt --config={your_config.json}`.
 
 **Example config:**
 

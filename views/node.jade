@@ -5,6 +5,6 @@ a(ng-click='nodeClicked(value)' ng-class="value.selected ? 'active' : []")
 	i(class='fa fa-caret-left fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "rtl") && !value.loadingChildren)')
 	i(ng-class='nodeMarkerClass(value, #{lang_dir})' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='hasProblems(value) && !value.loadingChildren')
 	i(ng-class='nodeMarkerClass(value, #{lang_dir})' ng-if='!hasProblems(value) && !value.loadingChildren')
-	{{ value.displayName }}
+	span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ value.displayName }}
 ul(ng-if='value.children')
 	li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')

@@ -489,6 +489,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                 code: $scope.itemDefinition.main.code,
                 englishDescription: $scope.itemDefinition.main.englishDescription,
                 localDescription: $scope.itemDefinition.local.localDescription,
+                doNotUseInThisLocale: $scope.itemDefinition.local.doNotUseInThisLocale,
                 displayName: $scope.itemDefinition.local.localDescription.defined ? $scope.itemDefinition.local.localDescription.value : $scope.itemDefinition.main.englishDescription
             },
             originalCode: $scope.originalItemDefinition.main.code,

@@ -32,6 +32,12 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
             _.each(nodes, function (node, i) {
                 if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
+                    // Update problems
+                    var n = nodes[i];
+                    while (n) {
+                        loadProblemsForNodeDeferred(n);
+                        n = n.parentNode;
+                    }
                     _.extend(nodes[i], updateEvent.header);
                     index = i;
                 }
@@ -43,13 +49,6 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
             // If the node matching the update event is in the current node list
             if (index > -1) {
-                // Update problems
-                var node = nodes[index];
-                console.log(node);
-                while (node) {
-                    loadProblemsForNodeDeferred(node);
-                    node = node.parentNode;
-                }
 
                 // Remove the node from the list if:
                 //  - The node was not a root category node and it is no longer contained in the category represented by parentNode

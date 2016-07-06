@@ -312,7 +312,6 @@ function serviceFun() {
 	}
 
 	instance.packNewFoodDefinition = function(unpacked) {
-		console.log(unpacked);
 		return {
 			code: unpacked.main.code,
 			groupCode: unpacked.main.groupCode,

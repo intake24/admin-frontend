@@ -1,9 +1,9 @@
 .property
     h3 #{ gettext("Nutrient codes") }
 
-    .input-wrapper(ng-repeat='(id, code) in itemDefinition.localData.nutrientTableCodes')
+    .input-wrapper(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
         label {{ id }}
-        input(id='input-{{ id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='itemDefinition.localData.nutrientTableCodes[id]')
+        input(id='input-{{ id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='itemDefinition.local.nutrientTableCodes[id]')
         button.intake-btn.no-float(ng-click="nutrientCodeSection.removeTable(id)")
             i(class="fa fa-remove")
 

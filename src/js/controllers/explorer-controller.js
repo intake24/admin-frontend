@@ -26,12 +26,11 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
     $scope.$on("intake24.admin.food_db.CurrentItemUpdated", function (event, updateEvent) {
         var selectedNodeRemoved = false;
-
         // parentNode can be null (for root category nodes)
         function processNodes(nodes, parentNode) {
             var index = -1;
 
-            $.each(nodes, function (i, node) {
+            _.each(nodes, function (node, i) {
                 if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
                     _.extend(nodes[i], updateEvent.header);
                     index = i;
@@ -44,6 +43,14 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
             // If the node matching the update event is in the current node list
             if (index > -1) {
+                // Update problems
+                var node = nodes[index];
+                console.log(node);
+                while (node) {
+                    loadProblemsForNodeDeferred(node);
+                    node = node.parentNode;
+                }
+
                 // Remove the node from the list if:
                 //  - The node was not a root category node and it is no longer contained in the category represented by parentNode
                 //  - The node was an uncategorised food node and it is no longer uncategorised (has 1+ parent categories)
@@ -222,21 +229,6 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
         return gettext(s);
     }
 
-    // Show a container and hide all others
-    function showContainer(container_id) {
-        $('.properties-container').hide();
-        $(container_id).show();
-    }
-
-
-    $scope.returnHome = function () {
-
-        $('#properties-col').show().removeClass('fullwidth');
-        $('.properties-container').hide();
-        $('#food-list-col').show();
-
-    }
-
     $scope.removeFromCategory = function () {
 
     }
@@ -297,7 +289,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
     function reloadRootCategoriesDeferred() {
         return foodDataReader.getRootCategories().then(function (categories) {
-            $scope.rootCategories = $.map(categories, packer.unpackCategoryHeader);
+            $scope.rootCategories = _.map(categories, packer.unpackCategoryHeader);
 
             $scope.rootCategories.unshift(
                 {
@@ -308,7 +300,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                 }
             );
 
-            return $q.all($.map($scope.rootCategories, function (node) {
+            return $q.all(_.map($scope.rootCategories, function (node) {
                 return loadProblemsForNodeDeferred(node)
             }));
         });
@@ -322,7 +314,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
         if (node.code == "$UNCAT")
             childrenDeferred = foodDataReader.getUncategorisedFoods().then(function (foods) {
-                return $.map(foods, packer.unpackFoodHeader);
+                return _.map(foods, packer.unpackFoodHeader);
             });
         else
             childrenDeferred = foodDataReader.getCategoryContents(node.code).then(function (contents) {
@@ -336,7 +328,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
             _.each(node.children, function (n) {
                 n.parentNode = node
             });
-            return $q.all($.map(node.children, function (node) {
+            return $q.all(_.map(node.children, function (node) {
                 loadProblemsForNodeDeferred(node);
             }));
         });

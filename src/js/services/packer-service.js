@@ -312,11 +312,12 @@ function serviceFun() {
 	}
 
 	instance.packNewFoodDefinition = function(unpacked) {
+		console.log(unpacked);
 		return {
-			code: unpacked.code,
-			groupCode: unpacked.groupCode,
-			englishDescription: unpacked.englishDescription,
-			attributes: instance.packInheritableAttributes(unpacked.attributes),
+			code: unpacked.main.code,
+			groupCode: unpacked.main.groupCode,
+			englishDescription: unpacked.main.englishDescription,
+			attributes: instance.packInheritableAttributes(unpacked.main.attributes),
 		};
 	}
 

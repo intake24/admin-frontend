@@ -175,7 +175,7 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
                             return foodDataWriter.createNewFoodWithTempCode(newFoodDef)
                                 .then(function (newCode) {
-                                    var newLocalData = angular.copy(targetFoodData.localData);
+                                    var newLocalData = angular.copy(targetFoodData.local);
                                     newLocalData.version = [];
                                     newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
                                     return foodDataWriter.updateFoodLocal(newCode, newLocalData)
@@ -190,8 +190,8 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                                                 type: "food",
                                                 code: newCode,
                                                 englishDescription: targetFoodData.englishDescription,
-                                                localDescription: targetFoodData.localData.localDescription,
-                                                displayName: targetFoodData.localData.localDescription.defined ? targetFoodData.localData.localDescription.value : targetFoodData.englishDescription
+                                                localDescription: targetFoodData.local.localDescription,
+                                                displayName: targetFoodData.local.localDescription.defined ? targetFoodData.local.localDescription.value : targetFoodData.englishDescription
                                             });
                                         })
                                 })

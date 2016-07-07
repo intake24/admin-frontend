@@ -31,14 +31,14 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
             _.each(nodes, function (node, i) {
                 if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
+                    _.extend(nodes[i], updateEvent.header);
+                    index = i;
                     // Update problems
                     var n = nodes[i];
                     while (n) {
                         loadProblemsForNodeDeferred(n);
                         n = n.parentNode;
                     }
-                    _.extend(nodes[i], updateEvent.header);
-                    index = i;
                 }
 
                 if (node.type == 'category' && node.children && node.open)

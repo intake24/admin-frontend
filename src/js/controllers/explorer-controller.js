@@ -1,7 +1,6 @@
 'use strict';
 
-var $ = require('jquery'),
-    Cookies = require('js-cookie'),
+var Cookies = require('js-cookie'),
     _ = require('underscore');
 
 module.exports = function (app) {
@@ -235,7 +234,6 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                         });
                     };
                     removeFromNodes($scope.rootCategories, item);
-                    // TODO: refresh all open categories
                 }, $scope.handleError);
 
             }
@@ -423,15 +421,27 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
         }
     }
 
+    function scrollTo(element, to, duration) {
+        if (duration <= 0) return;
+        var difference = to - element.scrollTop;
+        var perTick = difference / duration * 10;
+
+        setTimeout(function () {
+            element.scrollTop = element.scrollTop + perTick;
+            if (element.scrollTop === to) return;
+            scrollTo(element, to, duration - 10);
+        }, 10);
+    }
+
     function makeVisibleAndSelect(node) {
         findNodeInTree(node).then(function (n) {
             clearSelection();
             selectNode(n);
             setTimeout(function () {
-                var targetElement = $("#food-list-col ul a.active")[0];
-                $("#food-list-col").animate({
-                    scrollTop: targetElement.offsetTop - $("header").height() - 5
-                }, 500);
+                var targetElement = document.querySelector("#food-list-col ul a.active"),
+                    container = document.getElementById("food-list-col"),
+                    to = targetElement.offsetTop - document.querySelector("header").offsetHeight - 5;
+                scrollTo(container, to, 250);
             }, 0);
         }, $scope.handleError);
     }

@@ -217,6 +217,24 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
                 deferred.then(function () {
                     clearSelection();
 
+                    var removeFromNodes = function (nodes, node) {
+                        var targetNode = _.findWhere(nodes, {code: node.code}),
+                            i = nodes.indexOf(targetNode);
+                        if (i > -1) {
+                            var parent = targetNode.parentNode;
+                            nodes.splice(i, 1);
+                            while (parent) {
+                                loadProblemsForNodeDeferred(parent);
+                                parent = parent.parentNode;
+                            }
+                        }
+                        _.each(nodes, function (n) {
+                            if (n.children) {
+                                removeFromNodes(n.children, node);
+                            }
+                        });
+                    };
+                    removeFromNodes($scope.rootCategories, item);
                     // TODO: refresh all open categories
                 }, $scope.handleError);
 

@@ -5,11 +5,11 @@ var Cookies = require('js-cookie'),
 
 module.exports = function (app) {
     app.controller('ExplorerController',
-        ['$scope', '$http', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
+        ['$scope', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
             'Packer', '$q', '$rootScope', 'MessageService', controllerFun]);
 };
 
-function controllerFun($scope, $http, sharedData, problems, currentItem, foodDataReader,
+function controllerFun($scope, sharedData, problems, currentItem, foodDataReader,
                        foodDataWriter, packer, $q, $rootScope, MessageService) {
 
     // Load shared data

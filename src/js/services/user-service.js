@@ -29,10 +29,10 @@ function serviceFun($http, $q, $rootScope, $timeout) {
                 url = api_base_url + 'signin',
                 data = {survey_id: survey_id || '', username: username, password: password};
 
-            $http.post(url, data).then(function successCallback(response) {
+            $http.post(url, data).then(function successCallback(data) {
                 __username = username;
                 authenticated = true;
-                Cookies.set('auth-token', response.data.token);
+                Cookies.set('auth-token', data.token);
                 Cookies.set('auth-username', username);
                 $rootScope.$broadcast('intake24.admin.LoggedIn');
                 defer.resolve();

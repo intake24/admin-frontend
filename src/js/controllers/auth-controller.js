@@ -43,7 +43,6 @@ function controllerFun($scope, UserService, MessageService, ModalService) {
         } else {
             document.body.className = document.body.className.replace("modal-open","");
         }
-        console.log($scope.modalLogOutVisible);
     });
 
     if (UserService.getAuthenticated()) {

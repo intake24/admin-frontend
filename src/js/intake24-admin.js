@@ -14,6 +14,7 @@ require('./controllers')(app);
 require('./directives')(app);
 require('./services')(app);
 require('./filters')(app);
+require('./config')(app);
 
 window.api_base_url = process.env.API_BASE_URL;
 

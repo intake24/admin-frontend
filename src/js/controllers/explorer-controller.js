@@ -504,11 +504,10 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
 
         $http({
             method: 'GET',
-            url: api_endpoint,
-            headers: {'X-Auth-Token': Cookies.get('auth-token')}
-        }).then(function successCallback(response) {
+            url: api_endpoint
+        }).then(function successCallback(data) {
 
-            $scope.SharedData.currentItem.localData = response.data.localData;
+            $scope.SharedData.currentItem.localData = data.localData;
 
             unpackCurrentItemService.broadcast();
 

@@ -513,7 +513,8 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
 
     function updateFoodBase() {
         if ($scope.foodBasicDefinitionChanged()) {
-            var packed = packer.packFoodBasicDefinition($scope.itemDefinition);
+            console.log($scope.itemDefinition);
+            var packed = packer.packFoodBasicDefinition($scope.itemDefinition.main);
             return foodDataWriter.updateFoodBase($scope.originalItemDefinition.main.code, packed)
         } else {
             return $q.when(true);

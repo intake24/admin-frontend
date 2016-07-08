@@ -14,4 +14,5 @@ module.exports = function(app) {
     require('./user-service')(app);
     require('./message-service')(app);
     require('./modal-service')(app);
+    require('./http-request-interceptor')(app);
 };

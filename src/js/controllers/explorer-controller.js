@@ -498,24 +498,6 @@ function controllerFun($scope, $http, sharedData, problems, currentItem, foodDat
         makeVisibleAndSelect(node);
     }
 
-    $scope.copyEnglishMethods = function () {
-
-        var api_endpoint = ($scope.SharedData.currentItem.type == 'category') ? api_base_url + 'categories/en_GB/' + $scope.SharedData.originalCode + '/definition' : api_base_url + 'foods/en_GB/' + $scope.SharedData.originalCode + '/definition';
-
-        $http({
-            method: 'GET',
-            url: api_endpoint
-        }).then(function successCallback(data) {
-
-            $scope.SharedData.currentItem.localData = data.localData;
-
-            unpackCurrentItemService.broadcast();
-
-        }, function errorCallback(response) {
-            $scope.handleError(response);
-        });
-    }
-
     $scope.discardCategoryChanges = function () {
 
         $scope.SharedData.currentItem.code = $scope.SharedData.originalCode;

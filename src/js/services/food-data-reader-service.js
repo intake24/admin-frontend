@@ -19,12 +19,12 @@ function serviceFun ($http, locales) {
             return $http.get(api_base_url + 'admin/categories/' + locales.current() + '/' + code);
         },
 
-        getCategoryDefinition: function (code) {
-            return $http.get(api_base_url + 'admin/categories/' + locales.current() + '/' + code + '/definition');
+        getCategoryDefinition: function (code, locale) {
+            return $http.get(api_base_url + 'admin/categories/' + locale + '/' + code + '/definition');
         },
 
-        getFoodDefinition: function (code) {
-            return $http.get(api_base_url + 'admin/foods/' + locales.current() + '/' + code + '/definition');
+        getFoodDefinition: function (code, locale) {
+            return $http.get(api_base_url + 'admin/foods/' + locale + '/' + code + '/definition');
         },
 
         getCategoryParentCategories: function (code) {

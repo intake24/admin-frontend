@@ -10,11 +10,12 @@ var $ = require('jquery'),
 module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader',
-            'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', 'MessageService', controllerFun]);
+            'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', 'MessageService', 'Locales',
+            controllerFun]);
 };
 
 function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
-                       packer, drawers, $q, MessageService) {
+                       packer, drawers, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
 
@@ -163,7 +164,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
         }
 
         if ($scope.currentItem.type == 'category') {
-            return foodDataReader.getCategoryDefinition($scope.currentItem.code).then(
+            return foodDataReader.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackCategoryDefinition(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
@@ -171,7 +172,7 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
                     resetStyles();
                 });
         } else if ($scope.currentItem.type == 'food') {
-            return foodDataReader.getFoodDefinition($scope.currentItem.code).then(
+            return foodDataReader.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackFoodDefinition(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
@@ -457,6 +458,18 @@ function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, f
     $scope.deletePortionSize = function (array, index) {
         array.splice(index, 1);
     }
+
+    $scope.copyEnglishMethods = function () {
+        var promise;
+        if ($scope.currentItem.type == 'category') {
+            promise = foodDataReader.getCategoryDefinition($scope.currentItem.code, "en_GB");
+        } else {
+            promise = foodDataReader.getFoodDefinition($scope.currentItem.code, "en_GB");
+        }
+        promise.then(function successCallback(data) {
+            $scope.currentItem.localData = data.localData;
+        });
+    };
 
     $scope.updateCategory = function () {
         disableButtons();

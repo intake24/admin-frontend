@@ -258,17 +258,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     };
 
-    $scope.$watchCollection(function () {
-        return $scope.itemDefinition ? $scope.itemDefinition.local.portionSize : undefined;
-    }, function () {
-        if (!$scope.itemDefinition) {
-            return
-        }
-        _.each($scope.itemDefinition.local.portionSize, function (item) {
-            console.log(item);
-        });
-    });
-
     function disableButtons() {
         $scope.forceDisabledButtons = true;
     }
@@ -375,67 +364,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     }
 
-    $scope.portionSizeMethodModel = function (portionSize) {
-        return function (new_method_id) {
-            if (arguments.length == 0) {
-                return portionSize.method;
-            } else {
-                // Remember current parameters so that data isn't lost when user
-                // switches portion size methods
-
-                if (!portionSize.cachedParameters)
-                    portionSize.cachedParameters = {};
-
-                // Ignore default undefined selection
-                if (portionSize.method)
-                    portionSize.cachedParameters[portionSize.method] = portionSize.parameters;
-
-                if (portionSize.cachedParameters[new_method_id])
-                    portionSize.parameters = portionSize.cachedParameters[new_method_id];
-                else {
-                    // Use default parameters
-                    var parameters = {description: "", useForRecipes: false, imageUrl: "images/placeholder.jpg"}
-
-                    // Add method-specific default parameters if required
-                    switch (new_method_id) {
-                        case "as-served":
-                            parameters.useLeftoverImages = false;
-                            break;
-                        case "standard-portion":
-                            parameters.units = [];
-                            break;
-                        case "drink-scale":
-                            parameters.initial_fill_level = 0.9;
-                        case "cereal":
-                            parameters.cereal_type = "hoop";
-                        default:
-                            break;
-                    }
-                    portionSize.parameters = parameters;
-                }
-                portionSize.method = new_method_id;
-            }
-        }
-    }
-
     $scope.showParentCategoriesDrawer = function () {
         $scope.$broadcast("intake24.admin.food_db.CategoryManagerDrawerOpened");
         drawers.showDrawer("drawer-manage-categories");
-    }
-
-    $scope.showAsServedImageSetDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.AsServedSetDrawerOpened", resultObj, resultField);
-        drawers.showDrawer("drawer-as-served-image-set");
-    }
-
-    $scope.showGuideImageDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.GuideImageDrawerOpened", resultObj, resultField);
-        drawers.showDrawer("drawer-guide-image");
-    }
-
-    $scope.showDrinkwareDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.DrinkwareDrawerOpened", resultObj, resultField);
-        drawers.showDrawer("drawer-drinkware");
     }
 
     $scope.showAssociatedFoodModal = function (resultObj, resultField) {
@@ -446,26 +377,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.removeItem = function (array, index) {
         array.splice(index, 1);
     }
-
-    $scope.addPortionSize = function (array) {
-        array.push({method: 'as-served', description: '', imageUrl: '', useForRecipes: false, parameters: {}});
-    }
-
-    $scope.deletePortionSize = function (array, index) {
-        array.splice(index, 1);
-    }
-
-    $scope.copyEnglishMethods = function () {
-        var promise;
-        if ($scope.currentItem.type == 'category') {
-            promise = foodDataReader.getCategoryDefinition($scope.currentItem.code, "en_GB");
-        } else {
-            promise = foodDataReader.getFoodDefinition($scope.currentItem.code, "en_GB");
-        }
-        promise.then(function successCallback(data) {
-            $scope.currentItem.localData = data.localData;
-        });
-    };
 
     $scope.updateCategory = function () {
         disableButtons();

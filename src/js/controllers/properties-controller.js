@@ -155,7 +155,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function loadBasicData() {
 
         function resetStyles() {
-            $('#properties-col').addClass('active');
             $('input').removeClass('valid invalid');
         }
 

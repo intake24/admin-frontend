@@ -109,15 +109,10 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData()).catch(
-                function (response) {
-                    $scope.handleError(response);
-                }
-            ).finally(
-                function () {
+            $q.all(loadBasicData(), loadParentCategories(), loadLocalData())
+                .finally(function () {
                     enableButtons();
-                }
-            );
+                });
         }
     }
 
@@ -211,8 +206,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         foodDataReader.getFoodGroups().then(
             function (groups) {
                 $scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
-            },
-            $scope.handleError);
+            });
     }
 
     function reloadNutrientCodeTables() {
@@ -263,8 +257,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                     el.removeClass('invalid').addClass('valid');
                 else
                     el.removeClass('valid').addClass('invalid');
-            },
-            $scope.handleError);
+            });
 
     }
 

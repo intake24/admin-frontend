@@ -19,8 +19,6 @@ function controllerFun($scope, UserService, MessageService, ModalService) {
     $scope.login = function () {
         UserService.login($scope.username, $scope.password).then(function () {
             ModalService.hideAll();
-        }, function () {
-            MessageService.showMessage(gettext('Failed to log you in'), 'danger');
         });
     };
 

@@ -37,12 +37,6 @@ function serviceFun($http, $q, $rootScope, $timeout) {
                 $rootScope.$broadcast('intake24.admin.LoggedIn');
                 defer.resolve();
 
-            }, function errorCallback(response) {
-                if (response.status === 401) {
-                    authenticated = false;
-                    Cookies.remove('auth-token');
-                }
-                defer.reject();
             });
 
             return defer.promise;

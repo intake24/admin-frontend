@@ -3,7 +3,7 @@
 var Cookies = require('js-cookie');
 
 module.exports = function (app) {
-    app.service('httpRequestInterceptor', [function () {
+    app.service('HttpRequestInterceptor', ['$q', 'MessageService', function ($q, MessageService) {
         return {
             request: function (config) {
                 config.headers['X-Auth-Token'] = Cookies.get('auth-token');
@@ -16,6 +16,20 @@ module.exports = function (app) {
                 } else {
                     return response;
                 }
+            },
+            responseError: function (rejection) {
+                console.log(rejection);
+                if (rejection.status == 401) {
+                    if (rejection.config.url == api_base_url + 'signin') {
+                        MessageService.showMessage(gettext('Failed to log you in'), 'danger');
+                    } else {
+                        MessageService.showMessage(gettext('You are not authorized'), 'danger');
+                    }
+                    Cookies.remove('auth-token');
+                } else {
+                    MessageService.showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
+                }
+                return $q.reject(rejection);
             }
         };
     }]);

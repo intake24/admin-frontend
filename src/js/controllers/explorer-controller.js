@@ -20,7 +20,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
     $scope.selectedNode = null;
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
-        reloadRootCategoriesDeferred().catch($scope.handleError);
+        reloadRootCategoriesDeferred();
     });
 
     $scope.$on("intake24.admin.food_db.CurrentItemUpdated", function (event, updateEvent) {
@@ -194,7 +194,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
                                             });
                                         })
                                 })
-                        }, $scope.handleError)
+                        })
                 });
         } else
             MessageService.showMessage("Select a food to clone", "warning");
@@ -234,7 +234,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
                         });
                     };
                     removeFromNodes($scope.rootCategories, item);
-                }, $scope.handleError);
+                });
 
             }
         }
@@ -351,7 +351,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
 
     function loadChildren(node) {
         node.loadingChildren = true;
-        loadChildrenDeferred(node).catch($scope.handleError).finally(function () {
+        loadChildrenDeferred(node).finally(function () {
             node.loadingChildren = false;
         });
     }
@@ -443,7 +443,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
                     to = targetElement.offsetTop - document.querySelector("header").offsetHeight - 5;
                 scrollTo(container, to, 250);
             }, 0);
-        }, $scope.handleError);
+        });
     }
 
     $scope.uncategorisedFoodsExist = function () {
@@ -504,14 +504,5 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
         $scope.fetchProperties();
 
         MessageService.showMessage(gettext('Changes discarded'), 'success');
-    }
-
-    $scope.handleError = function (response) {
-        MessageService.showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
-        console.log(response);
-        if (response.status === 401) {
-            MessageService.showMessage(gettext('You are not authorized'), 'danger');
-            Cookies.remove('auth-token');
-        }
     }
 }

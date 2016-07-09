@@ -2,6 +2,6 @@
 
 module.exports = function (app) {
     app.config(function ($httpProvider) {
-        $httpProvider.interceptors.push('httpRequestInterceptor');
+        $httpProvider.interceptors.push('HttpRequestInterceptor');
     });
 };

@@ -17,9 +17,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
         script(type="text/javascript" src='/i18n/#{lang}/messages.js')
         script(type="text/javascript" src='/intake24-admin.js')
 
-    body.animated.fadeIn(ng-app='intake24.admin'
-                        ng-controller='AdminController'
-                        ng-class="{authenticated: authenticated}")
+    body(ng-app='intake24.admin' ng-controller='AdminController' ng-class="{authenticated: authenticated}")
         header
             #sidebar-button(ng-click="sidebarToggle()")
                 i.fa.fa-bars

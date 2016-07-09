@@ -9,8 +9,3 @@ exports.dashboard = function(req, res){
 	req.setLocale(req.params.ui_lang);
 	res.render('index', { title : req.gettext('Dashboard'), intake24_locale: req.params.intake_locale });
 };
-
-exports.uiTest = function(req, res){
-	req.setLocale(req.params.ui_lang);
-	res.render('ui-test', { title : req.gettext('Dashboard'), intake24_locale: req.params.intake_locale });
-};

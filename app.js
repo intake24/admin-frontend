@@ -27,6 +27,5 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', routes.dashboardDefault);
 app.get('/:intake_locale/:ui_lang', routes.dashboard);
-app.get('/uiTest', routes.uiTest);
 
 app.listen(3002);

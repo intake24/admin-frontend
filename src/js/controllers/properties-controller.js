@@ -9,12 +9,12 @@ var $ = require('jquery'),
 
 module.exports = function (app) {
     app.controller('PropertiesController',
-        ['$scope', '$http', 'CurrentItem', 'SharedData', 'FoodDataReader',
+        ['$scope', 'CurrentItem', 'SharedData', 'FoodDataReader',
             'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', 'MessageService', 'Locales',
             controllerFun]);
 };
 
-function controllerFun($scope, $http, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
+function controllerFun($scope, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
                        packer, drawers, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;

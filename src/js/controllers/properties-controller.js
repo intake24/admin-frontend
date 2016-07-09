@@ -51,6 +51,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
         // Used to select whether the new item actions are used or the update actions
         $scope.newItem = false;
+
+        $scope.codeIsValid = false;
+        $scope.codeIsInvalid = false;
     }
 
     clearData();
@@ -88,9 +91,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             return this.filteredTables().length == 0;
         }
     };
-
-    $scope.codeIsValid = false;
-    $scope.codeIsInvalid = false;
 
     $scope.addAssociatedFood = function () {
         $scope.itemDefinition.associatedFoods.push({
@@ -242,6 +242,11 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             $scope.codeIsInvalid = false;
             return;
         }
+        if (code.length > 8) {
+            $scope.codeIsValid = false;
+            $scope.codeIsInvalid = true;
+            return;
+        }
 
         var deferred = ($scope.currentItem.type == 'food') ? foodDataWriter.checkFoodCode(code) : foodDataWriter.checkCategoryCode(code);
 
@@ -251,7 +256,18 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 $scope.codeIsInvalid = !codeValid;
             });
 
-    }
+    };
+
+    $scope.$watchCollection(function () {
+        return $scope.itemDefinition ? $scope.itemDefinition.local.portionSize : undefined;
+    }, function () {
+        if (!$scope.itemDefinition) {
+            return
+        }
+        _.each($scope.itemDefinition.local.portionSize, function (item) {
+            console.log(item);
+        });
+    });
 
     function disableButtons() {
         $scope.forceDisabledButtons = true;

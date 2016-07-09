@@ -4,8 +4,7 @@
 
 'use strict';
 
-var $ = require('jquery'),
-    _ = require('underscore');
+var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('PropertiesController',
@@ -90,6 +89,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     };
 
+    $scope.codeIsValid = false;
+    $scope.codeIsInvalid = false;
+
     $scope.addAssociatedFood = function () {
         $scope.itemDefinition.associatedFoods.push({
             question: "",
@@ -149,25 +151,17 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     function loadBasicData() {
 
-        function resetStyles() {
-            $('input').removeClass('valid invalid');
-        }
-
         if ($scope.currentItem.type == 'category') {
             return foodDataReader.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackCategoryDefinition(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
-
-                    resetStyles();
                 });
         } else if ($scope.currentItem.type == 'food') {
             return foodDataReader.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = packer.unpackFoodDefinition(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
-
-                    resetStyles();
                 });
         }
     }
@@ -175,7 +169,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function loadParentCategories() {
 
         function unpackCategories(categories) {
-            $scope.parentCategories = $.map(categories, packer.unpackCategoryHeader);
+            $scope.parentCategories = _.map(categories, packer.unpackCategoryHeader);
             $scope.originalParentCategories = angular.copy($scope.parentCategories);
         }
 
@@ -205,7 +199,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function reloadFoodGroups() {
         foodDataReader.getFoodGroups().then(
             function (groups) {
-                $scope.foodGroups = $.map(groups, packer.unpackFoodGroup);
+                $scope.foodGroups = _.map(groups, packer.unpackFoodGroup);
             });
     }
 
@@ -226,10 +220,10 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function parentCategoryChanges() {
         if ($scope.parentCategories && $scope.originalParentCategories)
             return {
-                add_to: $.grep($scope.parentCategories, function (pc) {
+                add_to: _.filter($scope.parentCategories, function (pc) {
                     return !exists($scope.originalParentCategories, pc);
                 }),
-                remove_from: $.grep($scope.originalParentCategories, function (cpc) {
+                remove_from: _.filter($scope.originalParentCategories, function (cpc) {
                     return !exists($scope.parentCategories, cpc);
                 })
             };
@@ -240,12 +234,12 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             };
     }
 
-    $scope.checkCode = function ($event) {
-        var el = $($event.target);
-        var code = el.val();
+    $scope.checkCode = function () {
+        var code = $scope.itemDefinition.main.code;
 
         if (code.length < 4 || code == $scope.originalItemDefinition.main.code) {
-            el.removeClass('valid invalid');
+            $scope.codeIsValid = false;
+            $scope.codeIsInvalid = false;
             return;
         }
 
@@ -253,10 +247,8 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
         deferred.then(
             function (codeValid) {
-                if (codeValid)
-                    el.removeClass('invalid').addClass('valid');
-                else
-                    el.removeClass('valid').addClass('invalid');
+                $scope.codeIsValid = codeValid;
+                $scope.codeIsInvalid = !codeValid;
             });
 
     }
@@ -278,14 +270,14 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function updateParentCategories() {
         var changes = parentCategoryChanges();
 
-        var addRequests = $.map(changes.add_to, function (c) {
+        var addRequests = _.map(changes.add_to, function (c) {
             if ($scope.currentItem.type == 'food')
                 return foodDataWriter.addFoodToCategory(c.code, $scope.itemDefinition.main.code);
             else if ($scope.currentItem.type == 'category')
                 return foodDataWriter.addCategoryToCategory(c.code, $scope.itemDefinition.main.code);
         });
 
-        var deleteRequests = $.map(changes.remove_from, function (c) {
+        var deleteRequests = _.map(changes.remove_from, function (c) {
             if ($scope.currentItem.type == 'food')
                 return foodDataWriter.removeFoodFromCategory(c.code, $scope.itemDefinition.main.code);
             else if ($scope.currentItem.type == 'category')
@@ -494,7 +486,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 displayName: $scope.itemDefinition.local.localDescription.defined ? $scope.itemDefinition.local.localDescription.value : $scope.itemDefinition.main.englishDescription
             },
             originalCode: $scope.originalItemDefinition.main.code,
-            parentCategories: $.map($scope.parentCategories, function (cat) {
+            parentCategories: _.map($scope.parentCategories, function (cat) {
                 return cat.code;
             }),
         };

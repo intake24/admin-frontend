@@ -1,7 +1,6 @@
 'use strict';
 
-var Cookies = require('js-cookie'),
-    _ = require('underscore');
+var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('ExplorerController',
@@ -358,12 +357,10 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
 
     function findNodeInTree(node) {
 
-        function match(n) {
-            return n.type == node.type && n.code == node.code
-        };
+        var match = {type: node.type, code: node.code};
 
         // First check if the node is one of the root categories
-        var targetNode = _.find($scope.rootCategories, match);
+        var targetNode = _.findWhere($scope.rootCategories, match);
 
         if (targetNode) {
             return $q.when(targetNode);
@@ -389,7 +386,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
                     return foodDataReader.getUncategorisedFoods().then(function (foods) {
                         $scope.rootCategories[0].open = true;
                         $scope.rootCategories[0].children = _.map(foods, packer.unpackFoodHeader);
-                        targetNode = _.find($scope.rootCategories[0].children, match);
+                        targetNode = _.findWhere($scope.rootCategories[0].children, match);
                         if (targetNode)
                             return $q.when(targetNode);
                         else
@@ -404,7 +401,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
                         return loadChildrenDeferred(category).then(function () {
                             category.open = true;
 
-                            var targetNode = _.find(category.children, match);
+                            var targetNode = _.findWhere(category.children, match);
 
                             if (targetNode)
                                 return $q.when(targetNode);

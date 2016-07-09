@@ -130,10 +130,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         $scope.newItem = true;
     });
 
-    $scope.$on("intake24.admin.food_db.CloneItem", function (event, parentNode) {
-
-    });
-
     $scope.$on('intake24.admin.food_db.CurrentItemChanged', function (event, newItem) {
         // This is just the basic header received from the tree control
         // Editable data will be stored in itemDefinition

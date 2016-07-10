@@ -79,30 +79,4 @@ function controllerFun($scope, FoodDataReader, SharedData, DrawersService) {
         $scope.$parent.itemDefinition.local.portionSize.splice(index, 1);
     };
 
-    $scope.showAsServedImageSetDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.AsServedSetDrawerOpened", resultObj, resultField);
-        DrawersService.showDrawer("drawer-as-served-image-set");
-    };
-
-    $scope.showGuideImageDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.GuideImageDrawerOpened", resultObj, resultField);
-        DrawersService.showDrawer("drawer-guide-image");
-    };
-
-    $scope.showDrinkwareDrawer = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.DrinkwareDrawerOpened", resultObj, resultField);
-        DrawersService.showDrawer("drawer-drinkware");
-    };
-
-    $scope.$watchCollection(function () {
-        return $scope.$parent.itemDefinition ? $scope.$parent.itemDefinition.local.portionSize : undefined;
-    }, function () {
-        if (!$scope.$parent.itemDefinition) {
-            return
-        }
-        _.each($scope.$parent.itemDefinition.local.portionSize, function (item) {
-            console.log(item);
-        });
-    });
-
 }

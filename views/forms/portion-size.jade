@@ -1,6 +1,8 @@
 .property(ng-controller="PortionSizeController")
 	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-repeat='portionSize in $parent.itemDefinition.local.portionSize')
+	.input-wrapper(ng-repeat='portionSize in $parent.itemDefinition.local.portionSize'
+					ng-controller="PortionSizeItemController"
+					ng-init="portionSize=portionSize")
 		.portion-size-method
 			.input-wrapper
 				label #{ gettext("Description") }

@@ -14,4 +14,5 @@ module.exports = function(app) {
     require('./admin-controller')(app);
     require('./messages-controller')(app);
     require('./portion-size-controller')(app);
+    require('./portion-size-item-controller')(app);
 };

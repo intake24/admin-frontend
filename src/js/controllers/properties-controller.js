@@ -320,6 +320,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.foodLocalDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
             var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.local);
+            console.log($scope.itemDefinition.local);
             var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
         }

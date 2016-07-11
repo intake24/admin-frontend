@@ -7,11 +7,9 @@ module.exports = function (app) {
 
 function controllerFun($scope, foodDataReader, DrawersService) {
 
-    var _resultObj = null;
-
-    var _resultField = null;
-
     $scope.asServedImageSets = null;
+
+    $scope.isOpen = DrawersService.drawerAsServedImageSet.getOpen();
 
     function reloadAsServedSets() {
         foodDataReader.getAsServedImageSets().then(function (asServedSets) {
@@ -20,18 +18,23 @@ function controllerFun($scope, foodDataReader, DrawersService) {
             $scope.handleError);
     }
 
-    $scope.$on("intake24.admin.food_db.AsServedSetDrawerOpened", function (event, resultObj, resultField) {
-        _resultObj = resultObj;
-        _resultField = resultField;
-    });
-
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadAsServedSets();
     });
 
     $scope.setAsServedImageSet = function (image_set_id) {
-        _resultObj[_resultField] = image_set_id;
-        DrawersService.hideDrawer();
-    }
+        DrawersService.drawerAsServedImageSet.setValue(image_set_id);
+        this.close();
+    };
+
+    $scope.close = function () {
+        DrawersService.drawerAsServedImageSet.close();
+    };
+
+    $scope.$watch(function () {
+        return DrawersService.drawerAsServedImageSet.getOpen();
+    }, function () {
+        $scope.isOpen = DrawersService.drawerAsServedImageSet.getOpen();
+    });
 
 }

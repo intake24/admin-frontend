@@ -8,9 +8,7 @@ module.exports = function(app) {
 
 function controllerFun(DrawersService) {
 
-    var self = this;
-
-    this.selectedItem = null;
+    var selectedItem = null;
 
     this.addAssociatedFood = function () {
         this.$parent.itemDefinition.associatedFoods.push({
@@ -27,18 +25,17 @@ function controllerFun(DrawersService) {
     };
 
     this.showAssociatedFoodDrawer = function (obj) {
-        self.selectedItem = obj;
+        selectedItem = obj;
         DrawersService.drawerAssociatedFood.open();
     };
 
     this.$watch(function() {
         return DrawersService.drawerAssociatedFood.getValue();
     }, function() {
-        if (!self.selectedItem) {
+        if (!selectedItem) {
             return;
         }
-        self.selectedItem.category = DrawersService.drawerAssociatedFood.getValue();
-        console.log(self.selectedItem);
+        selectedItem.category = DrawersService.drawerAssociatedFood.getValue();
     });
 
 }

@@ -6,11 +6,9 @@ module.exports = function (app) {
 
 function controllerFun($scope, foodDataReader, DrawersService) {
 
-    var _resultObj = null;
-
-    var _resultField = null;
-
     $scope.guideImages = null;
+
+    $scope.isOpen = DrawersService.drawerGuideImage.getOpen();
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadGuideImages();
@@ -23,13 +21,18 @@ function controllerFun($scope, foodDataReader, DrawersService) {
             $scope.handleError);
     }
 
-    $scope.$on("intake24.admin.food_db.GuideImageDrawerOpened", function (event, resultObj, resultField) {
-        _resultObj = resultObj;
-        _resultField = resultField;
-    });
-
     $scope.setGuideImage = function (guide_image_id) {
-        _resultObj[_resultField] = guide_image_id;
-        DrawersService.hideDrawer();
-    }
+        DrawersService.drawerGuideImage.setValue(guide_image_id);
+        this.close();
+    };
+
+    $scope.close = function () {
+        DrawersService.drawerGuideImage.close();
+    };
+
+    $scope.$watch(function () {
+        return DrawersService.drawerGuideImage.getOpen();
+    }, function () {
+        $scope.isOpen = DrawersService.drawerGuideImage.getOpen();
+    });
 }

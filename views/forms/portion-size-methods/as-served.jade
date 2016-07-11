@@ -1,6 +1,6 @@
 .input-wrapper
 	label #{ gettext("Serving image set") }
-	.inline-link(ng-click='showAsServedImageSetDrawer(portionSize.parameters, "serving_image_set")')
+	.inline-link(ng-click='selectServingImageSet(portionSize.parameters)')
 		span(ng-if='!portionSize.parameters.serving_image_set')
 			p #{ gettext("Select image set") }
 		span(ng-if='portionSize.parameters.serving_image_set')
@@ -11,7 +11,7 @@
 
 .input-wrapper
 	label #{ gettext("Leftover image set") }
-	.inline-link(ng-click='showAsServedImageSetDrawer(portionSize.parameters, "leftovers_image_set")')
+	.inline-link(ng-click='selectLeftoversImageSet(portionSize.parameters)')
 		span(ng-if='!portionSize.parameters.leftovers_image_set')
 			p #{ gettext("Select image set") }
 		span(ng-if='portionSize.parameters.leftovers_image_set')

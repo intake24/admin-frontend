@@ -1,6 +1,6 @@
 .input-wrapper
 	label #{ gettext("Drinkware set") }
-	.inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters, "drinkware_id")')
+	.inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters)')
 		span(ng-if='!portionSize.parameters.drinkware_id')
 			p #{ gettext("Select drinkware set") }
 		span(ng-if='portionSize.parameters.drinkware_id')

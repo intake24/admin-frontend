@@ -1,6 +1,6 @@
 div(ng-controller='CategoryManagerController')
 	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
-		.button-close-drawer(ng-click="close")
+		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
 		.drawer-title #{ gettext("Manage Categories") }
 		.drawer-content
@@ -85,4 +85,4 @@ div(ng-controller='AssociatedFoodDrawerController')
 						ng-click='select(item)')
 						{{ item.localDescription[0] }}
 
-	.drawer-backdrop(ng-show="isOpen")p
+	.drawer-backdrop(ng-show="isOpen")

@@ -1,7 +1,7 @@
-.property
+.property(ng-controller="CategoriesController")
 	h3 #{ gettext("Categories") }
 	.categories-container
-		ul(ng-repeat='category in parentCategories | orderBy:"displayName"')
+		ul(ng-repeat='category in $parent.parentCategories | orderBy:"displayName"')
 			li {{category.displayName}}
 
 	.input-wrapper

@@ -351,10 +351,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     }
 
-    $scope.showParentCategoriesDrawer = function () {
-        DrawersService.drawerManageCategories.open();
-    }
-
     $scope.removeItem = function (array, index) {
         array.splice(index, 1);
     }

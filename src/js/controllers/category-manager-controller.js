@@ -18,10 +18,11 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.controller('CategoryManagerController', ['$scope', 'FoodDataReader', 'Packer', controllerFun]);
+    app.controller('CategoryManagerController',
+        ['$scope', 'FoodDataReader', 'Packer', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, packer) {
+function controllerFun($scope, foodDataReader, packer, DrawersService) {
 
     // Backing variable for the currentSearch model getter/setter
     var currentSearchQuery = null;
@@ -31,6 +32,8 @@ function controllerFun($scope, foodDataReader, packer) {
 
     // Fixed category list, see comment on top
     $scope.fixedCategories = [];
+
+    $scope.isOpen = DrawersService.drawerManageCategories.getOpen();
 
     function makeFixed(categoryHeader) {
         var filtered = _.filter($scope.fixedCategories, function (c) {
@@ -47,10 +50,6 @@ function controllerFun($scope, foodDataReader, packer) {
             $scope.handleError
         );
     }
-
-    $scope.$on("intake24.admin.food_db.CategoryManagerDrawerOpened", function (event) {
-        $scope.fixedCategories = $scope.parentCategories;
-    });
 
     $scope.toggleParentCategory = function (categoryHeader) {
         // Try to remove the category first
@@ -94,5 +93,15 @@ function controllerFun($scope, foodDataReader, packer) {
             return currentSearchQuery;
         }
     };
+
+    $scope.close = function () {
+        DrawersService.drawerManageCategories.close();
+    };
+
+    $scope.$watch(function () {
+        return DrawersService.drawerManageCategories.getOpen();
+    }, function () {
+        $scope.isOpen = DrawersService.drawerManageCategories.getOpen();
+    });
 
 }

@@ -1,10 +1,11 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AsServedSetController', ['$scope', 'FoodDataReader', 'Drawers', controllerFun]);
+    app.controller('AsServedSetController',
+        ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, drawers) {
+function controllerFun($scope, foodDataReader, DrawersService) {
 
     var _resultObj = null;
 
@@ -30,7 +31,7 @@ function controllerFun($scope, foodDataReader, drawers) {
 
     $scope.setAsServedImageSet = function (image_set_id) {
         _resultObj[_resultField] = image_set_id;
-        drawers.hideDrawer();
+        DrawersService.hideDrawer();
     }
 
 }

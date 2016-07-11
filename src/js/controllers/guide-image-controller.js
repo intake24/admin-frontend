@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('GuideImageController', ['$scope', 'FoodDataReader', 'Drawers', controllerFun]);
+    app.controller('GuideImageController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, drawers) {
+function controllerFun($scope, foodDataReader, DrawersService) {
 
     var _resultObj = null;
 
@@ -30,6 +30,6 @@ function controllerFun($scope, foodDataReader, drawers) {
 
     $scope.setGuideImage = function (guide_image_id) {
         _resultObj[_resultField] = guide_image_id;
-        drawers.hideDrawer();
+        DrawersService.hideDrawer();
     }
 }

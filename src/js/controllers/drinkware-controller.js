@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('DrinkwareController', ['$scope', 'FoodDataReader', 'Drawers', controllerFun]);
+    app.controller('DrinkwareController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, drawers) {
+function controllerFun($scope, foodDataReader, DrawersService) {
 
     var _resultObj = null;
 
@@ -30,7 +30,7 @@ function controllerFun($scope, foodDataReader, drawers) {
 
     $scope.setDrinkwareSet = function (drinkware_set_id) {
         _resultObj[_resultField] = drinkware_set_id;
-        drawers.hideDrawer();
+        DrawersService.hideDrawer();
     }
 
 }

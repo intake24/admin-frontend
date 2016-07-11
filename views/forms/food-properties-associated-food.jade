@@ -1,14 +1,14 @@
-.property
+.property(ng-controller="AssociatedFoodController")
     h3 #{ gettext("associated_food_title") }
 
     div.margin-bottom-sm(ng-repeat="assFood in itemDefinition.associatedFoods")
         .input-wrapper
             label #{ gettext("Food or category code") }
-            .inline-link(ng-click='showAssociatedFoodModal(assFood, "category")')
+            .inline-link(ng-click='showAssociatedFoodDrawer(assFood)')
                 span(ng-if='!assFood.category')
                     p #{ gettext("properties_select_associated_food") }
                 span(ng-if='assFood.category')
-                    {{ assFood.food.localDescription[0] }}
+                    {{ assFood.category.localDescription[0] }}
         .input-wrapper
             label #{ gettext("associated_food_question") }
             input(type="text" ng-model="assFood.promptText")

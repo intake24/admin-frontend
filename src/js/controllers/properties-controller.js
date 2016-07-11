@@ -9,12 +9,12 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', 'CurrentItem', 'SharedData', 'FoodDataReader',
-            'FoodDataWriter', 'UserFoodData', 'Packer', 'Drawers', '$q', 'MessageService', 'Locales',
+            'FoodDataWriter', 'UserFoodData', 'Packer', 'DrawersService', '$q', 'MessageService', 'Locales',
             controllerFun]);
 };
 
 function controllerFun($scope, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
-                       packer, drawers, $q, MessageService, LocalesService) {
+                       packer, DrawersService, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
 
@@ -90,19 +90,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         buttonDisabled: function () {
             return this.filteredTables().length == 0;
         }
-    };
-
-    $scope.addAssociatedFood = function () {
-        $scope.itemDefinition.associatedFoods.push({
-            question: "",
-            mainFood: false,
-            food: null
-        })
-    };
-
-    $scope.removeAssociatedFood = function (item) {
-        var i = $scope.itemDefinition.associatedFoods.indexOf(item);
-        $scope.itemDefinition.associatedFoods.splice(i, 1);
     };
 
     function reloadData() {
@@ -320,7 +307,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.foodLocalDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
             var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.local);
-            console.log($scope.itemDefinition.local);
             var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
         }
@@ -366,13 +352,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.showParentCategoriesDrawer = function () {
-        $scope.$broadcast("intake24.admin.food_db.CategoryManagerDrawerOpened");
-        drawers.showDrawer("drawer-manage-categories");
-    }
-
-    $scope.showAssociatedFoodModal = function (resultObj, resultField) {
-        $scope.$broadcast("intake24.admin.food_db.AssociatedFoodModalOpened", resultObj, resultField);
-        drawers.showDrawer("associated-food-modal");
+        DrawersService.drawerManageCategories.open();
     }
 
     $scope.removeItem = function (array, index) {

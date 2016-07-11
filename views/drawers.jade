@@ -1,68 +1,88 @@
-.drawer.drawer-narrow.no-padding.animated#drawer-manage-categories(ng-controller='CategoryManagerController')
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Manage Categories") }
-	.drawer-content
-		.categories-container
-			input(type='text' ng-model='searchQuery' ng-model-options='{getterSetter : true}' placeholder='#{ gettext("Search categories") }')
-			ul(ng-if="searchQuery()")
-				li(ng-repeat='category in searchResults | orderBy:"displayName"' ng-click='toggleParentCategory(category)' ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
-			ul(ng-if="!searchQuery()")
-				li(ng-repeat='category in fixedCategories | orderBy:"displayName"' ng-click='toggleParentCategory(category)' ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
+div(ng-controller='CategoryManagerController')
+	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
+		.button-close-drawer(ng-click="close")
+			i.fa.fa-times
+		.drawer-title #{ gettext("Manage Categories") }
+		.drawer-content
+			.categories-container
+				input(type='text' ng-model='searchQuery'
+						placeholder='#{ gettext("Search categories") }'
+						ng-model-options='{getterSetter : true}')
+				ul(ng-if="searchQuery()")
+					li(ng-repeat='category in searchResults | orderBy:"displayName"'
+						ng-click='toggleParentCategory(category)'
+						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
+				ul(ng-if="!searchQuery()")
+					li(ng-repeat='category in fixedCategories | orderBy:"displayName"'
+						ng-click='toggleParentCategory(category)'
+						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 
-	.drawer-footer
-		button(class="intake-btn success drawer-form-button button-close-drawer close-drawer" ng-click='reloadCategories()') #{ gettext("Done") }
+	.drawer-footer(ng-show="isOpen")
+		button(class="intake-btn success drawer-form-button button-close-drawer close-drawer"
+				ng-click='reloadCategories()') #{ gettext("Done") }
 		.clearfloat
+
+	.drawer-backdrop(ng-show="isOpen")
 
 //- Image set selection drawer
 
-.drawer.drawer-narrow.no-padding.animated#drawer-as-served-image-set(ng-controller='AsServedSetController')
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Image Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setAsServedImageSet(as_served_image_set.id)' ng-repeat='as_served_image_set in asServedImageSets | asServedFilter:query | orderBy:description')
-					{{ as_served_image_set.description }} ({{ as_served_image_set.id }})
+div(ng-controller='AsServedSetController')
+	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
+		.button-close-drawer(ng-click="close()")
+			i.fa.fa-times
+		.drawer-title #{ gettext("Select Image Set") }
+		input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
+		.drawer-content
+			.list-container
+				ul
+					li(ng-click='setAsServedImageSet(as_served_image_set.id)' ng-repeat='as_served_image_set in asServedImageSets | asServedFilter:query | orderBy:description')
+						{{ as_served_image_set.description }} ({{ as_served_image_set.id }})
+
+	.drawer-backdrop(ng-show="isOpen")
 
 //- Guide image selection drawer
+div(ng-controller='GuideImageController')
+	.drawer.drawer-narrow.no-padding.animated(ng-show="isOpen")
+		.button-close-drawer(ng-click="close()")
+			i.fa.fa-times
+		.drawer-title #{ gettext("Select Guide Image") }
+		input(type='text' ng-model='query' placeholder='#{ gettext("Search guide images") }')
+		.drawer-content
+			.list-container
+				ul
+					li(ng-click='setGuideImage(guide_image_set.id)' ng-model='guideImages' ng-repeat='guide_image_set in guideImages | guideImageFilter:query | orderBy: "id"')
+						{{ guide_image_set.id }} ({{ guide_image_set.description }})
 
-.drawer.drawer-narrow.no-padding.animated#drawer-guide-image(ng-controller='GuideImageController')
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Guide Image") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search guide images") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setGuideImage(guide_image_set.id)' ng-model='guideImages' ng-repeat='guide_image_set in guideImages | guideImageFilter:query | orderBy: "id"')
-					{{ guide_image_set.id }} ({{ guide_image_set.description }})
+	.drawer-backdrop(ng-show="isOpen")
 
 //- Drinkware selection drawer
+div(ng-controller='DrinkwareController')
+	.drawer.drawer-narrow.no-padding.animated(ng-show="isOpen")
+		.button-close-drawer(ng-click="close()")
+			i.fa.fa-times
+		.drawer-title #{ gettext("Select Drinkware Set") }
+		input(type='text' ng-model='query' placeholder='#{ gettext("Search drinkware sets") }')
+		.drawer-content
+			.list-container
+				ul
+					li(ng-click='setDrinkwareSet(drinkware_set.id)' ng-model='drinkwareSets' ng-repeat='drinkware_set in drinkwareSets | drinkScaleFilter:query | orderBy: "id"')
+						{{ drinkware_set.description }}
 
-.drawer.drawer-narrow.no-padding.animated#drawer-drinkware(ng-controller='DrinkwareController')
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("Select Drinkware Set") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("Search drinkware sets") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setDrinkwareSet(drinkware_set.id)' ng-model='drinkwareSets' ng-repeat='drinkware_set in drinkwareSets | drinkScaleFilter:query | orderBy: "id"')
-					{{ drinkware_set.description }}
+	.drawer-backdrop(ng-show="isOpen")
 
+div(ng-controller='AssociatedFoodDrawerController')
+	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
+		.button-close-drawer(ng-click="close()")
+			i.fa.fa-times
+		.drawer-title #{ gettext("modals_associated_food_title") }
+		input(type='text'
+				placeholder='#{ gettext("modals_associated_food_query_placeholder") }'
+				ng-model='query')
+		.drawer-content
+			.list-container
+				ul
+					li(ng-repeat='item in items | orderBy: "localDescription[0]"'
+						ng-click='select(item)')
+						{{ item.localDescription[0] }}
 
-.drawer.drawer-narrow.no-padding.animated#associated-food-modal(ng-controller='AssociatedFoodModalController')
-	#button-close-drawer.button-close-drawer
-		i.fa.fa-times
-	.drawer-title #{ gettext("modals_associated_food_title") }
-	input(type='text' ng-model='query' placeholder='#{ gettext("modals_associated_food_query_placeholder") }')
-	.drawer-content
-		.list-container
-			ul
-				li(ng-click='setDrinkwareSet(item)' ng-repeat='item in items | orderBy: "localDescription[0]"')
-					{{ item.localDescription[0] }}
-
-#drawer-backdrop
+	.drawer-backdrop(ng-show="isOpen")p

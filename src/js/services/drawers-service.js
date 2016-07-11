@@ -1,60 +1,42 @@
 'use strict';
 
-var $ = require('jquery');
-
 module.exports = function (app) {
-    app.service('Drawers', [serviceFun]);
+    app.service('DrawersService', [serviceFun]);
 };
 
 function serviceFun() {
 
-    var service = {
-        showDrawer: function (drawer_id) {
+    return {
+        drawerManageCategories: DrawerStateFactory(),
+        drawerAsServedImageSet: DrawerStateFactory(),
+        drawerGuideImage: DrawerStateFactory(),
+        drawerDrinkware: DrawerStateFactory(),
+        drawerAssociatedFood: DrawerStateFactory()
+    };
+}
 
-            $('body').addClass('drawer-open');
-            $('#drawer-backdrop').show().animate({'opacity': 1.0}, 300);
+function DrawerStateFactory() {
+    var isOpen = false,
+        value = undefined,
+        DrawerState = function () {
+        };
 
-            if ($('html').attr('dir') == 'ltr') {
-                $('.drawer#' + drawer_id).show().removeClass('fadeOutRight').addClass('fadeInRight');
-            } else {
-                $('.drawer#' + drawer_id).show().removeClass('fadeOutLeft').addClass('fadeInLeft');
-            }
-        },
-
-        hideDrawer: function () {
-
-            $('body').removeClass('drawer-open');
-
-            if ($('html').attr('dir') == 'ltr') {
-                $('.drawer').removeClass('fadeInRight').addClass('fadeOutRight');
-            } else {
-                $('.drawer').removeClass('fadeInLeft').addClass('fadeOutLeft');
-            }
-
-            $('#drawer-backdrop').animate({'opacity': 0.0}, 300, function () {
-                $('#drawer-backdrop').hide();
-            });
-        }
+    DrawerState.prototype.open = function () {
+        isOpen = true;
+    };
+    DrawerState.prototype.close = function () {
+        isOpen = false;
+    };
+    DrawerState.prototype.getOpen = function () {
+        return isOpen;
+    };
+    DrawerState.prototype.setValue = function (val) {
+        value = val;
+    };
+    DrawerState.prototype.getValue = function () {
+        return value;
     };
 
-    $(document).ready(function () {
-        // Show authentication drawer
-        $('#button-close-drawer').click(function () {
+    return new DrawerState();
 
-            $('#drawer-authenticate').removeClass('active');
-            $('#drawer-backdrop').removeClass('active');
-        });
-
-        // Hide drawer on backdrop click
-        $('#drawer-backdrop').click(service.hideDrawer);
-
-        // Hide drawer on close button click
-        $('.button-close-drawer').click(service.hideDrawer);
-
-        $('.btn-drawer').click(function () {
-            service.showDrawer($(this).attr('data-drawer'));
-        });
-    });
-
-    return service;
 }

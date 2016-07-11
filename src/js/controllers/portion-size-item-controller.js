@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
     app.controller('PortionSizeItemController',
-        ['$scope', 'Drawers', controllerFun]);
+        ['$scope', 'DrawersService', controllerFun]);
 };
 
 function controllerFun($scope, DrawersService) {

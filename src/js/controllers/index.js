@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
     require('./as-served-set-controller')(app);
-    require('./associated-food-modal-controller')(app);
+    require('./associated-food-drawer-controller')(app);
     require('./category-manager-controller')(app);
     require('./drinkware-controller')(app);
     require('./explorer-controller')(app);
@@ -15,4 +15,5 @@ module.exports = function(app) {
     require('./messages-controller')(app);
     require('./portion-size-controller')(app);
     require('./portion-size-item-controller')(app);
+    require('./associated-food-controller')(app);
 };

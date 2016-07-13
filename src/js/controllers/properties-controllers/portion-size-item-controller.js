@@ -1,10 +1,11 @@
 'use strict';
 
 var angular = require('angular'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    controllerName = 'PortionSizeItemController';
 
 module.exports = function (app) {
-    app.controller('PortionSizeItemController',
+    app.controller(controllerName,
         ['$scope', 'DrawersService', controllerFun]);
 };
 
@@ -153,8 +154,10 @@ function portionSizeIsValid() {
             return standardPortionParametersAreValid.call(this.parameters);
         case 'as-served':
             return asServedParametersAreValid.call(this.parameters);
+        case 'guide-image':
+            return guideImageParametersAreValid.call(this.parameters);
         default:
-            return false;
+            throw controllerName + ': unexpected portion size method.'
     }
 }
 
@@ -167,9 +170,14 @@ function standardPortionParametersAreValid() {
 }
 
 function standardPortionUnitIsValid() {
-    return this.name != "" && this.value != "";
+    return this.name != '' && this.value != '';
 }
 
 function asServedParametersAreValid() {
-    return this.serving_image_set != undefined && (this.leftovers_image_set != undefined || !this.useLeftoverImages);
+    return this.serving_image_set != undefined && this.serving_image_set != '' &&
+        (this.leftovers_image_set != undefined && this.leftovers_image_set != '' || !this.useLeftoverImages);
+}
+
+function guideImageParametersAreValid() {
+    return this.guide_image_id != undefined && this.guide_image_id != '';
 }

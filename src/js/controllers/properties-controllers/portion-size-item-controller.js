@@ -6,13 +6,15 @@ var angular = require('angular'),
 
 module.exports = function (app) {
     app.controller(controllerName,
-        ['$scope', 'DrawersService', controllerFun]);
+        ['$scope', 'DrawersService', 'SharedData', controllerFun]);
 };
 
-function controllerFun($scope, DrawersService) {
+function controllerFun($scope, DrawersService, SharedData) {
 
     var selectedItem = null,
         targetField = undefined;
+
+    $scope.sharedData = SharedData;
 
     $scope.selectServingImageSet = function (resultObj) {
         selectedItem = resultObj;
@@ -149,16 +151,24 @@ function controllerFun($scope, DrawersService) {
 }
 
 function portionSizeIsValid() {
+    var evaluationMethod;
     switch (this.method) {
         case 'standard-portion':
-            return standardPortionParametersAreValid.call(this.parameters);
+            evaluationMethod = standardPortionParametersAreValid;
+            break;
         case 'as-served':
-            return asServedParametersAreValid.call(this.parameters);
+            evaluationMethod = asServedParametersAreValid;
+            break;
         case 'guide-image':
-            return guideImageParametersAreValid.call(this.parameters);
+            evaluationMethod = guideImageParametersAreValid;
+            break;
+        case 'cereal':
+            evaluationMethod = cerealParametersAreValid;
+            break;
         default:
             throw controllerName + ': unexpected portion size method.'
     }
+    return evaluationMethod.call(this.parameters);
 }
 
 function standardPortionParametersAreValid() {
@@ -180,4 +190,8 @@ function asServedParametersAreValid() {
 
 function guideImageParametersAreValid() {
     return this.guide_image_id != undefined && this.guide_image_id != '';
+}
+
+function cerealParametersAreValid() {
+    return this.cereal_type != undefined && this.cereal_type != '';
 }

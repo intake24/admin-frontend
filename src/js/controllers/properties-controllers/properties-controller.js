@@ -54,6 +54,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
         $scope.codeIsValid = false;
         $scope.codeIsInvalid = false;
+        $scope.portionSizeIsValid = true;
     }
 
     clearData();
@@ -92,18 +93,21 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     };
 
-    function reloadData() {
-        clearData();
+    $scope.parentCategoriesChanged = function () {
+        var changes = parentCategoryChanges();
+        return ((changes.add_to.length + changes.remove_from.length) > 0);
+    };
 
-        if ($scope.currentItem) {
-            disableButtons();
+    $scope.notValid = function () {
+        return $scope.codeIsInvalid || !$scope.portionSizeIsValid;
+    };
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData())
-                .finally(function () {
-                    enableButtons();
-                });
+    $scope.$watch('itemDefinition.main.code', function () {
+        if ($scope.itemDefinition == null) {
+            return;
         }
-    }
+        checkCode();
+    });
 
     $scope.$on('intake24.admin.food_db.NewItemCreated', function (event, newItem, header, parentNode) {
         $scope.currentItem = header;
@@ -135,6 +139,19 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.$watch("itemChanged()", function (event) {
         currentItem.setChangedState($scope.itemChanged());
     });
+
+    function reloadData() {
+        clearData();
+
+        if ($scope.currentItem) {
+            disableButtons();
+
+            $q.all(loadBasicData(), loadParentCategories(), loadLocalData())
+                .finally(function () {
+                    enableButtons();
+                });
+        }
+    }
 
     function loadBasicData() {
 
@@ -221,15 +238,15 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             };
     }
 
-    $scope.checkCode = function () {
+    function checkCode() {
         var code = $scope.itemDefinition.main.code;
 
-        if (code.length < 4 || code == $scope.originalItemDefinition.main.code) {
+        if (code == $scope.originalItemDefinition.main.code) {
             $scope.codeIsValid = false;
             $scope.codeIsInvalid = false;
             return;
         }
-        if (code.length > 8) {
+        if (code.length < 4 || code.length > 8) {
             $scope.codeIsValid = false;
             $scope.codeIsInvalid = true;
             return;
@@ -243,7 +260,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 $scope.codeIsInvalid = !codeValid;
             });
 
-    };
+    }
 
     function disableButtons() {
         $scope.forceDisabledButtons = true;
@@ -251,11 +268,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     function enableButtons() {
         $scope.forceDisabledButtons = false;
-    }
-
-    $scope.parentCategoriesChanged = function () {
-        var changes = parentCategoryChanges();
-        return ((changes.add_to.length + changes.remove_from.length) > 0);
     }
 
     // Returns a single deferred for all the necessary category calls

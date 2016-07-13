@@ -91,10 +91,9 @@ function controllerFun($scope, DrawersService, SharedData) {
         return !standardPortionUnitIsValid.call(unit);
     };
 
-    $scope.$watch('[portionSize.method, portionSize.parameters]', function () {
-        console.log($scope.portionSize.method);
-        console.log($scope.portionSize.parameters);
-        console.log(portionSizeIsValid.call($scope.portionSize));
+    $scope.$watch('portionSize', function () {
+        var index = $scope.$parent.portionSizes.indexOf($scope.portionSize);
+        $scope.$parent.portionSizesValidations[index] = portionSizeIsValid.call($scope.portionSize);
     }, true);
 
     $scope.$watch(function () {
@@ -151,33 +150,38 @@ function controllerFun($scope, DrawersService, SharedData) {
 }
 
 function portionSizeIsValid() {
-    var evaluationMethod;
+    var parametersEvaluationMethod;
     switch (this.method) {
         case 'standard-portion':
-            evaluationMethod = standardPortionParametersAreValid;
+            parametersEvaluationMethod = standardPortionParametersAreValid;
             break;
         case 'as-served':
-            evaluationMethod = asServedParametersAreValid;
+            parametersEvaluationMethod = asServedParametersAreValid;
             break;
         case 'guide-image':
-            evaluationMethod = guideImageParametersAreValid;
+            parametersEvaluationMethod = guideImageParametersAreValid;
             break;
         case 'cereal':
-            evaluationMethod = cerealParametersAreValid;
+            parametersEvaluationMethod = cerealParametersAreValid;
             break;
         case 'milk-on-cereal':
-            evaluationMethod = parametersAreValid;
+            parametersEvaluationMethod = parametersAreValid;
             break;
         case 'milk-in-a-hot-drink':
-            evaluationMethod = parametersAreValid;
+            parametersEvaluationMethod = parametersAreValid;
             break;
         case 'pizza':
-            evaluationMethod = parametersAreValid;
+            parametersEvaluationMethod = parametersAreValid;
             break;
         default:
             throw controllerName + ': unexpected portion size method.'
     }
-    return evaluationMethod.call(this.parameters);
+    return portionGeneralParametersAreValid.call(this) && parametersEvaluationMethod.call(this.parameters);
+}
+
+function portionGeneralParametersAreValid() {
+    return this.description!=undefined && this.description!='' &&
+            this.imageUrl!=undefined && this.imageUrl!='';
 }
 
 function standardPortionParametersAreValid() {

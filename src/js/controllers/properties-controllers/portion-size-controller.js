@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('PortionSizeController',
         ['$scope', 'FoodDataReader', 'SharedData', controllerFun]);
@@ -8,9 +10,10 @@ module.exports = function (app) {
 function controllerFun($scope, FoodDataReader, SharedData) {
 
     $scope.sharedData = SharedData;
+    $scope.portionSizesValidations = [];
 
     $scope.addPortionSize = function () {
-        $scope.$parent.itemDefinition.local.portionSize.push({
+        $scope.portionSizes.push({
             method: 'as-served',
             description: '',
             imageUrl: '',
@@ -33,7 +36,26 @@ function controllerFun($scope, FoodDataReader, SharedData) {
     };
 
     $scope.deletePortionSize = function (index) {
-        $scope.$parent.itemDefinition.local.portionSize.splice(index, 1);
+        $scope.portionSizes.splice(index, 1);
     };
+
+    $scope.$watchCollection('$parent.itemDefinition.local.portionSize', function () {
+        if ($scope.$parent.itemDefinition == null) {
+            $scope.portionSizes = null;
+            return;
+        } else {
+            $scope.portionSizes = $scope.$parent.itemDefinition.local.portionSize;
+        }
+        $scope.portionSizesValidations = _.map($scope.portionSizes, function () {
+            return true;
+        });
+    });
+
+    $scope.$watchCollection('portionSizesValidations', function () {
+        $scope.$parent.$parent.portionSizeIsValid = _.reduce($scope.portionSizesValidations, function (a, b) {
+                return a && b;
+            }) ||
+            $scope.$parent.$parent.currentItem.type != 'food' && $scope.portionSizesValidations.length == 0;
+    });
 
 }

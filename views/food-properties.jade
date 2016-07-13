@@ -12,10 +12,19 @@
 
 	.properties-footer
 		.input-wrapper
-			button(class="intake-btn success" ng-click="updateFood()" ng-disabled="!itemChanged() || forceDisabledButtons" id="btn-update-food")
+			button(class="intake-btn success"
+					id="btn-update-food"
+					ng-click="updateFood()"
+					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
 				span #{ gettext("Accept changes") }
-			button(class="intake-btn warning" ng-click="discardFoodChanges()" ng-disabled="!itemChanged() || forceDisabledButtons" id="btn-discard-food")
+			button(class="intake-btn warning"
+					id="btn-discard-food"
+					ng-click="discardFoodChanges()"
+					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()" )
 				span #{ gettext("Discard changes") }
-			button(class="intake-btn danger" ng-click="deleteItem()" ng-disabled="forceDisabledButtons" id="btn-delete-food")
+			button(class="intake-btn danger"
+					id="btn-delete-food"
+					ng-click="deleteItem()"
+					ng-disabled="forceDisabledButtons")
 				span #{ gettext("Delete") }
 			.clearfloat

@@ -1,15 +1,19 @@
 .property(ng-controller="PortionSizeController")
 	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-repeat='portionSize in $parent.itemDefinition.local.portionSize'
+	.input-wrapper(ng-repeat='portionSize in portionSizes'
 					ng-controller="PortionSizeItemController"
 					ng-init="portionSize=portionSize")
 		.portion-size-method
 			.input-wrapper
 				label #{ gettext("Description") }
-				input(placeholder='#{ gettext("Description") }' ng-model='portionSize.description')
+				input(placeholder='#{ gettext("Description") }'
+						ng-model='portionSize.description'
+						ng-class="{'invalid': !portionSize.description}")
 			.input-wrapper
 				label #{ gettext("Image") }
-				input(placeholder='#{ gettext("e.g. path/filename.jpg") }' ng-model='portionSize.imageUrl')
+				input(placeholder='#{ gettext("e.g. path/filename.jpg") }'
+						ng-model='portionSize.imageUrl'
+						ng-class="{'invalid': !portionSize.imageUrl}")
 			.input-wrapper
 				label #{ gettext("Use for recipes") }
 				input(type='checkbox' ng-model='portionSize.useForRecipes')

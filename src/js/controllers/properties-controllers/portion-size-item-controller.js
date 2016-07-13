@@ -82,7 +82,7 @@ function controllerFun($scope, DrawersService) {
         $scope.portionSize.parameters.units.splice(index, 1);
     };
 
-    $scope.unitHasError = function(unit) {
+    $scope.unitHasError = function (unit) {
         return !standardPortionUnitIsValid.call(unit);
     };
 
@@ -148,13 +148,15 @@ function controllerFun($scope, DrawersService) {
 function portionSizeIsValid() {
     switch (this.method) {
         case 'standard-portion':
-            return standardPortionParametersIsValid.call(this.parameters);
+            return standardPortionParametersAreValid.call(this.parameters);
+        case 'as-served':
+            return asServedParametersAreValid.call(this.parameters);
         default:
             return false;
     }
 }
 
-function standardPortionParametersIsValid() {
+function standardPortionParametersAreValid() {
     var unitsAreValid = true;
     _.each(this.units, function (unit) {
         unitsAreValid = unitsAreValid && standardPortionUnitIsValid.call(unit);
@@ -164,4 +166,8 @@ function standardPortionParametersIsValid() {
 
 function standardPortionUnitIsValid() {
     return this.name != "" && this.value != "";
+}
+
+function asServedParametersAreValid() {
+    return this.serving_image_set != undefined && (this.leftovers_image_set != undefined || !this.useLeftoverImages);
 }

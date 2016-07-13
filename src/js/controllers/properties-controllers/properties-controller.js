@@ -351,10 +351,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     }
 
-    $scope.removeItem = function (array, index) {
-        array.splice(index, 1);
-    }
-
     $scope.updateCategory = function () {
         disableButtons();
 

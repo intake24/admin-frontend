@@ -91,7 +91,7 @@ function controllerFun($scope, DrawersService, SharedData) {
         return !standardPortionUnitIsValid.call(unit);
     };
 
-    $scope.$watch('portionSize.parameters', function () {
+    $scope.$watch('[portionSize.method, portionSize.parameters]', function () {
         console.log($scope.portionSize.method);
         console.log($scope.portionSize.parameters);
         console.log(portionSizeIsValid.call($scope.portionSize));
@@ -165,6 +165,15 @@ function portionSizeIsValid() {
         case 'cereal':
             evaluationMethod = cerealParametersAreValid;
             break;
+        case 'milk-on-cereal':
+            evaluationMethod = parametersAreValid;
+            break;
+        case 'milk-in-a-hot-drink':
+            evaluationMethod = parametersAreValid;
+            break;
+        case 'pizza':
+            evaluationMethod = parametersAreValid;
+            break;
         default:
             throw controllerName + ': unexpected portion size method.'
     }
@@ -194,4 +203,8 @@ function guideImageParametersAreValid() {
 
 function cerealParametersAreValid() {
     return this.cereal_type != undefined && this.cereal_type != '';
+}
+
+function parametersAreValid() {
+    return true;
 }

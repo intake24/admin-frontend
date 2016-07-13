@@ -2,10 +2,10 @@
 
 module.exports = function (app) {
     app.controller('PortionSizeController',
-        ['$scope', 'FoodDataReader', 'SharedData', 'DrawersService', controllerFun]);
+        ['$scope', 'FoodDataReader', 'SharedData', controllerFun]);
 };
 
-function controllerFun($scope, FoodDataReader, SharedData, DrawersService) {
+function controllerFun($scope, FoodDataReader, SharedData) {
 
     $scope.sharedData = SharedData;
 

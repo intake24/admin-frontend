@@ -9,12 +9,12 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', 'CurrentItem', 'SharedData', 'FoodDataReader',
-            'FoodDataWriter', 'UserFoodData', 'Packer', 'DrawersService', '$q', 'MessageService', 'Locales',
+            'FoodDataWriter', 'UserFoodData', 'Packer', '$q', 'MessageService', 'Locales',
             controllerFun]);
 };
 
 function controllerFun($scope, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
-                       packer, DrawersService, $q, MessageService, LocalesService) {
+                       packer, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
 

@@ -16,12 +16,14 @@ function controllerFun($scope, DrawersService) {
     $scope.selectServingImageSet = function (resultObj) {
         selectedItem = resultObj;
         targetField = 'serving_image_set';
+        DrawersService.drawerAsServedImageSet.setValue(selectedItem.serving_image_set);
         DrawersService.drawerAsServedImageSet.open();
     };
 
     $scope.selectLeftoversImageSet = function (resultObj) {
         selectedItem = resultObj;
         targetField = 'leftovers_image_set';
+        DrawersService.drawerAsServedImageSet.setValue(selectedItem.leftovers_image_set);
         DrawersService.drawerAsServedImageSet.open();
     };
 

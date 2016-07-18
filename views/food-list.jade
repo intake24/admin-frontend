@@ -4,7 +4,7 @@
 	
 	include search
 	
-	.food-list-container.visible
+	.food-list-container(ng-class="{visible: explorerIsVisible}")
 		.food-list
 			ul
 				li(ng-repeat='(index, value) in rootCategories.slice(0, 1) | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')

@@ -1,66 +1,73 @@
 'use strict';
 
-var $ = require('jquery');
+var _ = require('underscore');
 
-module.exports = function(app) {
-    app.controller('SearchController', ['$scope', 'FoodDataReader', 'Packer', 'CurrentItem', controllerFun]);
+module.exports = function (app) {
+    app.controller('SearchController', ['$scope', '$timeout', 'FoodDataReader', 'Packer', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, packer, currentItem) {
+function controllerFun($scope, $timeout, foodDataReader, packer) {
 
-	$scope.searchResults = null;
+    var queryTimeout = 500,
+        timeoutPromise;
 
-	// Add click and mouse enter/leave events to search wrapper
-	$('.search-field-wrapper').on('click', function() {
-		$(this).addClass('active');
-	}).on('mouseenter', function() {
-		$(this).addClass('active');
-	}).on('mouseleave', function() {
-		if ($('#search-field').val() == '') {
-			$('#search-field').blur();
-			$(this).removeClass('active');
-		}
-	})
+    $scope.searchResults = null;
+    $scope.searchResultsAreVisible = false;
+    $scope.query = '';
+    $scope.focused = false;
+    $scope.getActive = function () {
+        return this.query != '' || this.focused;
+    };
+    $scope.setFocused = function () {
+        this.focused = true;
+    };
+    $scope.setUnfocused = function () {
+        this.focused = false;
+    };
 
-	// Detect change of search query and update results
-	$('#search-field').on('input', function(e) {
-		performFoodSearch($(this).val());
-	}).keypress(function(e) {
-		if (e.keyCode == 13) { performFoodSearch($(this).val()); }
-	});
+    $scope.$watch('query', function () {
+        $timeout.cancel(timeoutPromise);
+        $timeout(performFoodSearch, queryTimeout);
+    });
 
-	function performFoodSearch(query) {
-		$scope.searchResults = [];
+    function performFoodSearch() {
+        var query = $scope.query;
+        $scope.searchResults = [];
 
-		if (query == '') {
-			$('.food-list-container').addClass('visible');
-			$('#search-results').removeClass('visible');
-			return;
-		} else {
-			$('.food-list-container').removeClass('visible');
-			$('#search-results').addClass('visible');
-		}
+        if (query == '') {
+            hideSearchResults();
+            return;
+        } else {
+            showSearchResults();
+        }
 
-		foodDataReader.searchCategories(query).then (function(categories) {
-			$scope.searchResults = $scope.searchResults.concat($.map(categories, packer.unpackCategoryHeader));
-		},
-		$scope.handleError);
+        foodDataReader.searchCategories(query).then(function (categories) {
+                $scope.searchResults = $scope.searchResults.concat(_.map(categories, packer.unpackCategoryHeader));
+            },
+            $scope.handleError);
 
-		foodDataReader.searchFoods(query).then(function(foods) {
-			$scope.searchResults = $scope.searchResults.concat($.map(foods, packer.unpackFoodHeader));
-		},
-		$scope.handleError);
-	}
+        foodDataReader.searchFoods(query).then(function (foods) {
+                $scope.searchResults = $scope.searchResults.concat(_.map(foods, packer.unpackFoodHeader));
+            },
+            $scope.handleError);
+    }
 
-	$scope.resultClicked = function($event, node) {
-		$("#search-field").val("");
-		$("#search-field").blur();
-		$('.search-field-wrapper').removeClass("active");
-		$('.food-list-container').addClass('visible');
-		$('#search-results').removeClass('visible');
+    function showSearchResults() {
+        $scope.$parent.explorerIsVisible = false;
+        $scope.searchResultsAreVisible = true;
+    }
 
-		// Defined in outer Explorer controller
-		$scope.searchResultSelected($event, node);
-	}
+    function hideSearchResults() {
+        $scope.$parent.explorerIsVisible = true;
+        $scope.searchResultsAreVisible = false;
+    }
+
+    $scope.resultClicked = function ($event, node) {
+        $scope.query = '';
+        hideSearchResults();
+
+        // Defined in outer Explorer controller
+        $scope.searchResultSelected($event, node);
+    }
 
 }

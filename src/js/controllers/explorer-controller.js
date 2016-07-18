@@ -4,19 +4,18 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('ExplorerController',
-        ['$scope', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
+        ['$scope', '$timeout', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
             'Packer', '$q', '$rootScope', 'MessageService', controllerFun]);
 };
 
-function controllerFun($scope, sharedData, problems, currentItem, foodDataReader,
+function controllerFun($scope, $timeout, sharedData, problems, currentItem, foodDataReader,
                        foodDataWriter, packer, $q, $rootScope, MessageService) {
 
     // Load shared data
     $scope.SharedData = sharedData;
-
     $scope.rootCategories = [];
-
     $scope.selectedNode = null;
+    $scope.explorerIsVisible = true;
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadRootCategoriesDeferred();
@@ -423,7 +422,7 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
         var difference = to - element.scrollTop;
         var perTick = difference / duration * 10;
 
-        setTimeout(function () {
+        $timeout(function () {
             element.scrollTop = element.scrollTop + perTick;
             if (element.scrollTop === to) return;
             scrollTo(element, to, duration - 10);
@@ -434,12 +433,14 @@ function controllerFun($scope, sharedData, problems, currentItem, foodDataReader
         findNodeInTree(node).then(function (n) {
             clearSelection();
             selectNode(n);
-            setTimeout(function () {
+            // Timeout is set to wait for the children to be loaded and then scroll to the selected element.
+            // Fixme: Timeout is bad.
+            $timeout(function () {
                 var targetElement = document.querySelector("#food-list-col ul a.active"),
                     container = document.getElementById("food-list-col"),
                     to = targetElement.offsetTop - document.querySelector("header").offsetHeight - 5;
                 scrollTo(container, to, 250);
-            }, 0);
+            }, 250);
         });
     }
 

@@ -26,7 +26,7 @@
 			top 15px
 			left 10px
 
-		#search-field
+		input
 			background transparent
 			border none
 			font-size 14px
@@ -35,13 +35,16 @@
 			padding 15px 15px
 			width 330px
 
-.search-field-wrapper.active
-	background white
-	padding 0
-	
-	.search-field
-		margin 0 auto
-		width 330px
+.search-field-wrapper
+	&:hover
+	&:focus
+	&.active
+		background white
+		padding 0
+
+		.search-field
+			margin 0 auto
+			width 330px
 		
 			
 		

@@ -208,11 +208,6 @@ msgstr "Delete this method"
 msgid "Add a portion size method"
 msgstr "Add a portion size method"
 
-#: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:95
-#: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:96
-msgid "Copy English methods"
-msgstr "Copy English methods"
-
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:6
 msgid "e.g. Beans on toast"
 msgstr "e.g. Beans on toast"

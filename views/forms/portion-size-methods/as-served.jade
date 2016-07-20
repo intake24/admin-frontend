@@ -10,7 +10,7 @@
 	label #{ gettext("Use leftover images") }
 	input(type='checkbox' ng-model='portionSize.parameters.useLeftoverImages')
 
-.input-wrapper
+.input-wrapper(ng-show="portionSize.parameters.useLeftoverImages")
 	label #{ gettext("Leftover image set") }
 	.inline-link(ng-click='selectLeftoversImageSet(portionSize.parameters)'
 				ng-class="{'has-error': portionSize.parameters.useLeftoverImages && !portionSize.parameters.leftovers_image_set}")

@@ -9,13 +9,16 @@
 
 	.properties-footer
 		.input-wrapper
-			button.intake-btn.success(ng-click='updateCategory()'
+			button.intake-btn.success(type="button"
+									ng-click='updateCategory()'
 									ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
 				span #{ gettext("Accept changes") }
-			button.intake-btn.warning(ng-click='discardCategoryChanges()'
+			button.intake-btn.warning(type="button"
+									ng-click='discardCategoryChanges()'
 									ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
 				span #{ gettext("Discard changes") }
-			button.intake-btn.danger(ng-click='deleteItem()'
+			button.intake-btn.danger(type="button"
+									ng-click='deleteItem()'
 									ng-disabled="forceDisabledButtons")
 				span #{ gettext("Delete") }
 			.clearfloat

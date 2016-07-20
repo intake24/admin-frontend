@@ -5,6 +5,6 @@
 			li {{category.displayName}}
 
 	.input-wrapper
-		.intake-btn.success(ng-click='showParentCategoriesDrawer()')
+		button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer()')
 			span #{ gettext("Manage categories") }
 		.clearfloat

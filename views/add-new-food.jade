@@ -10,8 +10,8 @@
 
 	.properties-footer
 		.input-wrapper
-			.intake-btn.success(ng-click='saveNewFood()')
+			button.intake-btn.success(type="button" ng-click='saveNewFood()')
 				span #{ gettext("Add food") }
-			.intake-btn.danger(ng-click='cancelNewFood()')
+			button.intake-btn.danger(type="button" ng-click='cancelNewFood()')
 				span #{ gettext("Cancel") }
 			.clearfloat

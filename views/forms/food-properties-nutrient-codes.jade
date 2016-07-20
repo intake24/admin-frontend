@@ -4,12 +4,12 @@
     .input-wrapper(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
         label {{ id }}
         input(id='input-{{ id }}-code' type='text' placeholder='#{ gettext("e.g. 10968") }' ng-model='itemDefinition.local.nutrientTableCodes[id]')
-        button.intake-btn.no-float(ng-click="nutrientCodeSection.removeTable(id)")
+        button.intake-btn.no-float(type="button" ng-click="nutrientCodeSection.removeTable(id)")
             i(class="fa fa-remove")
 
     .input-wrapper(ng-hide="nutrientCodeSection.buttonDisabled()")
         .intake-dropdown(ng-class="{open: nutrientCodeSection.dropDownOpened}")
-            button.intake-btn(ng-click="nutrientCodeSection.toggleDropDown()")
+            button.intake-btn(type="button" ng-click="nutrientCodeSection.toggleDropDown()")
                 span #{ gettext("add_nutrient_code") }
                 i(class="fa fa-caret-down")
             ul.intake-dropdown-menu

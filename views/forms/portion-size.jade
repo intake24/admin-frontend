@@ -40,12 +40,12 @@
 			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
 				include portion-size-methods/pizza
 
-			.intake-btn.danger(ng-click='deletePortionSize($index)')
+			button.intake-btn.danger(type="button" ng-click='deletePortionSize($index)')
 				span #{ gettext("Delete this method") }
 			.clearfloat
 
 
 	.input-wrapper
-		.intake-btn.success(ng-click='addPortionSize()')
+		button.intake-btn.success(type="button" ng-click='addPortionSize()')
 			span #{ gettext("Add a portion size method") }
 		.clearfloat

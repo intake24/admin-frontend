@@ -24,10 +24,11 @@
 		.delete-unit(ng-click='removeItem($index)')
 				i.fa.fa-minus-circle
 
-.intake-btn.hidden
+button.intake-btn.hidden(type="button")
 	span #{ gettext("Move up") }
-.intake-btn.hidden
+button.intake-btn.hidden(type="button")
 	span #{ gettext("Move down") }
-.intake-btn(ng-click='portionSize.parameters.units.push({name:"", value:"", omitFoodDescription:false})')
+button.intake-btn(type="button"
+				ng-click='portionSize.parameters.units.push({name:"", value:"", omitFoodDescription:false})')
 	span #{ gettext("Add unit") }
 .clearfloat

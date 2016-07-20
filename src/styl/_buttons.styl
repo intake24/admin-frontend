@@ -9,22 +9,29 @@
 @import 'nib'
 
 .intake-btn
+  display inline-block
+  text-align center
+  vertical-align middle
+  touch-action manipulation
+  cursor pointer
+  background-image none
   background-color btn-default-color
-  border 0px solid darken(btn-default-color, 5%)
+  white-space nowrap
   border-radius 4px
+  user-select none
   // Fixme: remove float: left. Check that nothing is broken.
   float left
   font-size 13px
-  margin 10px 10px 10px 0
+  margin-bottom 0
   padding 12px 15px
+  line-height 18px
+  border 1px solid transparent
   transition(all .2s linear)
   &:hover
     background-color darken(btn-default-color, 5%)
-    border 0px solid darken(btn-default-color, 5%)
     cursor pointer
   &:active
     background-color darken(btn-default-color, 15%)
-    border 0px solid darken(btn-default-color, 15%)
 
   &[disabled]
   &.disabled
@@ -34,7 +41,6 @@
     &:hover
     &:active
       background-color btn-default-color
-      border 0px solid darken(btn-default-color, 5%)
 
   // Fixme: This class fixes float: left of the .intake-btn. Remove after .intake-btn float: left is fixed.
   &.no-float
@@ -43,11 +49,9 @@
 .success
   &:hover
     background-color darken(btn-success-color, 5%)
-    border 0px solid darken(btn-success-color, 5%)
     color #FFF
   &:active
     background-color darken(btn-success-color, 15%)
-    border 0px solid darken(btn-success-color, 15%)
   &:disabled
     opacity 0.4
     background-color inherit
@@ -56,11 +60,9 @@
 .warning
   &:hover
     background-color darken(btn-warning-color, 5%)
-    border 0px solid darken(btn-warning-color, 5%)
     color #FFF
   &:active
     background-color darken(btn-warning-color, 15%)
-    border 0px solid darken(btn-warning-color, 15%)
   &:disabled
     opacity 0.4
     background-color inherit
@@ -69,11 +71,9 @@
 .danger
   &:hover
     background-color darken(btn-danger-color, 5%)
-    border 0px solid darken(btn-danger-color, 5%)
     color #FFF
   &:active
     background-color darken(btn-danger-color, 15%)
-    border 1px solid darken(btn-danger-color, 15%)
   &:disabled
     opacity 0.4
     background-color inherit

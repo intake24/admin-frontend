@@ -9,8 +9,8 @@
 
 	.properties-footer
 		.input-wrapper
-			.intake-btn.success(ng-click='saveNewCategory()')
+			button.intake-btn.success(type="button" ng-click='saveNewCategory()')
 				span #{ gettext("Add category") }
-			.intake-btn.danger(ng-click='cancelNewCategory()')
+			button.intake-btn.danger(type="button" ng-click='cancelNewCategory()')
 				span #{ gettext("Cancel") }
 			.clearfloat

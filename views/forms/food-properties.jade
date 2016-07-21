@@ -1,19 +1,19 @@
 form(id='food-properties-form')
-.property
-    h3 #{ gettext("Definition") }
-    include basic-fields
-    .input-wrapper
-        label #{ gettext("Food group") }
-        select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.main.groupCode")
+    .property
+        h3 #{ gettext("Definition") }
+        include basic-fields
+        .input-wrapper
+            label #{ gettext("Food group") }
+            select(class='food-group-dropdown' id='food-group-dropdown' data-ng-options="fg.id as fg.displayName for fg in foodGroups" data-ng-model="itemDefinition.main.groupCode")
 
-    include properties-locale
+        include properties-locale
 
-include food-properties-nutrient-codes
+    include food-properties-nutrient-codes
 
-include inheritable-properties
+    include inheritable-properties
 
-include parent-categories
+    include parent-categories
 
-include portion-size
+    include portion-size
 
-include food-properties-associated-food
+    include food-properties-associated-food

@@ -95,16 +95,18 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         var parentNode = angular.copy(parentCategoryNodeForNewItem());
 
         var newFood = {
-            version: "",
-            code: "",
-            englishDescription: "New food",
-            groupCode: 0,
-            attributes: {
-                readyMealOption: {defined: false, value: null},
-                sameAsBeforeOption: {defined: false, value: null},
-                reasonableAmount: {defined: false, value: null},
+            main: {
+                version: "",
+                code: "",
+                englishDescription: "New food",
+                groupCode: 0,
+                attributes: {
+                    readyMealOption: {defined: false, value: null},
+                    sameAsBeforeOption: {defined: false, value: null},
+                    reasonableAmount: {defined: false, value: null},
+                }
             },
-            localData: {
+            local: {
                 version: {defined: false, value: null},
                 localDescription: {defined: false, value: null},
                 nutrientTableCodes: [],
@@ -116,7 +118,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             type: "food",
             code: newFood.code,
             englishDescription: newFood.englishDescription,
-            localDescription: newFood.localData.localDescription,
+            localDescription: newFood.local.localDescription,
             displayName: newFood.englishDescription
         }
 
@@ -129,16 +131,18 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         var parentNode = angular.copy(parentCategoryNodeForNewItem());
 
         var newCategory = {
-            version: "",
-            code: "",
-            englishDescription: "New category",
-            isHidden: false,
-            attributes: {
-                readyMealOption: {defined: false, value: null},
-                sameAsBeforeOption: {defined: false, value: null},
-                reasonableAmount: {defined: false, value: null},
+            main: {
+                version: "",
+                code: "",
+                englishDescription: "New category",
+                isHidden: false,
+                attributes: {
+                    readyMealOption: {defined: false, value: null},
+                    sameAsBeforeOption: {defined: false, value: null},
+                    reasonableAmount: {defined: false, value: null},
+                },
             },
-            localData: {
+            local: {
                 version: {defined: false, value: null},
                 localDescription: {defined: false, value: null},
                 portionSize: []
@@ -149,7 +153,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             type: "category",
             code: newCategory.code,
             englishDescription: newCategory.englishDescription,
-            localDescription: newCategory.localData.localDescription,
+            localDescription: newCategory.local.localDescription,
             displayName: newCategory.englishDescription
         }
 

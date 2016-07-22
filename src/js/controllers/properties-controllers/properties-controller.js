@@ -99,7 +99,8 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     };
 
     $scope.notValid = function () {
-        return $scope.codeIsInvalid || !$scope.portionSizeIsValid;
+        return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
+            $scope.itemDefinition.main.englishDescription == '';
     };
 
     $scope.$watch('itemDefinition.main.code', function () {

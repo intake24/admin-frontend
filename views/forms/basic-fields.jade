@@ -1,6 +1,8 @@
 .input-wrapper
 	label #{ gettext("Description") }
-	input(class='input-english-description' type='text' placeholder='#{ gettext("e.g. Beans on toast") }' ng-model='itemDefinition.main.englishDescription')
+	input(class='input-english-description' type='text' placeholder='#{ gettext("e.g. Beans on toast") }'
+		ng-model='itemDefinition.main.englishDescription'
+		ng-class="{invalid: itemDefinition.main.englishDescription == ''}")
 .input-wrapper(ng-hide='SharedData.locale.intake_locale=="en_GB"')
 	label #{ gettext("Local Description") }
 	input(class='input-local-description' type='text' ng-model='localDescriptionModel' ng-model-options='{ getterSetter : true }')

@@ -10,7 +10,7 @@ module.exports = function (grunt) {
     grunt.config.set('watch', {
         stylus: {
             files: [config.stylusWatch],
-            tasks: ['stylus'],
+            tasks: ['stylus', 'cssmin'],
             options: {
                 debounceDelay: config.watchDebounceDelay
             }

@@ -14,19 +14,23 @@ module.exports = function (grunt) {
     grunt.config.set('environment', config);
     grunt.config.set('pkg', grunt.file.readJSON('package.json'));
 
+    require('./grunt-tasks/clean')(grunt);
     require('./grunt-tasks/browserify')(grunt);
     require('./grunt-tasks/copy')(grunt);
     require('./grunt-tasks/stylus')(grunt);
+    require('./grunt-tasks/css-minify')(grunt);
     require('./grunt-tasks/uglify')(grunt);
     require('./grunt-tasks/watch')(grunt);
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    tskList = ['stylus', 'browserify'];
+    tskList = ['clean', 'copy:fonts', 'stylus', 'cssmin', 'browserify'];
 
     if (config.uglifyJs) {
         tskList.push('uglify');

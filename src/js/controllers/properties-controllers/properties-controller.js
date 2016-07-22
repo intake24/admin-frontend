@@ -241,7 +241,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function checkCode() {
         var code = $scope.itemDefinition.main.code;
 
-        if (code == $scope.originalItemDefinition.main.code) {
+        if (code != "" && code == $scope.originalItemDefinition.main.code) {
             $scope.codeIsValid = false;
             $scope.codeIsInvalid = false;
             return;

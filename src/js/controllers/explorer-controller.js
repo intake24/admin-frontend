@@ -157,7 +157,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             displayName: newCategory.englishDescription
         }
 
-        $scope.$broadcast("intake24.admin.food_db.NewItemCreated", newCategory, header, parentNode);
+        $rootScope.$broadcast("intake24.admin.food_db.NewItemCreated", newCategory, header, parentNode);
 
     });
 

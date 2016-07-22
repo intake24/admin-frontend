@@ -322,10 +322,10 @@ function serviceFun() {
 
 	instance.packNewCategoryDefinition = function(unpacked) {
 		return {
-			code: unpacked.code,
-			isHidden: unpacked.isHidden,
-			englishDescription: unpacked.englishDescription,
-			attributes: instance.packInheritableAttributes(unpacked.attributes),
+			code: unpacked.main.code,
+			isHidden: unpacked.main.isHidden,
+			englishDescription: unpacked.main.englishDescription,
+			attributes: instance.packInheritableAttributes(unpacked.main.attributes),
 		};
 	}
 

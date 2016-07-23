@@ -1,16 +1,15 @@
-form
-	.property
-		h3 #{ gettext("Definition") }
-		include basic-fields
-		.input-wrapper.overridable
-			label
-			input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.main.isHidden')
-			label #{ gettext("Hidden") }
+.property
+	h3 #{ gettext("Definition") }
+	include basic-fields
+	.input-wrapper.overridable
+		label
+		input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.main.isHidden')
+		label #{ gettext("Hidden") }
 
-		include properties-locale
+	include properties-locale
 
-	include inheritable-properties
+include inheritable-properties
 
-	include parent-categories
+include parent-categories
 
-	include portion-size
+include portion-size

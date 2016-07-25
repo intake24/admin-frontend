@@ -1,8 +1,8 @@
 .property(ng-controller="PortionSizeController")
     h3 #{ gettext("Portion size estimation") }
-    .portion-size-method(ng-repeat='portionSize in portionSizes'
-                        ng-controller="PortionSizeItemController"
-                        ng-init="portionSize=portionSize")
+    .form-subgroup(ng-repeat='portionSize in portionSizes'
+                    ng-controller="PortionSizeItemController"
+                    ng-init="portionSize=portionSize")
         .form-group
             .col-xs-12
                 button.close(type="button" title='#{ gettext("Delete this method") }'

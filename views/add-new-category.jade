@@ -1,16 +1,16 @@
 .properties-container#add-new-category-container(ng-if="currentItem != null && currentItem.type == 'category' && newItem")
 
-	.properties-padding
-		
-		.page-header
-			h2 #{ gettext("Add new category") }
+    .properties-padding
 
-		include forms/new-category-properties
+        .page-header
+            h2 #{ gettext("Add new category") }
 
-	.properties-footer
-		.input-wrapper
-			button.intake-btn.success(type="button" ng-click='saveNewCategory()')
-				span #{ gettext("Add category") }
-			button.intake-btn.danger(type="button" ng-click='cancelNewCategory()')
-				span #{ gettext("Cancel") }
-			.clearfloat
+        include forms/new-category-properties
+
+    .properties-footer
+        .input-wrapper
+            button.intake-btn.success(type="button" ng-click='saveNewCategory()')
+                span #{ gettext("Add category") }
+            button.intake-btn.danger(type="button" ng-click='cancelNewCategory()')
+                span #{ gettext("Cancel") }
+            .clearfloat

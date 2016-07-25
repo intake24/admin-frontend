@@ -1,27 +1,42 @@
 .property(ng-controller="AssociatedFoodController")
     h3 #{ gettext("associated_food_title") }
 
-    div.margin-bottom-sm(ng-repeat="assFood in itemDefinition.associatedFoods")
-        .input-wrapper
-            label #{ gettext("Food or category code") }
-            .inline-link(ng-click='showAssociatedFoodDrawer(assFood)')
-                span(ng-if='!assFood.category')
-                    p #{ gettext("properties_select_associated_food") }
-                span(ng-if='assFood.category')
-                    {{ assFood.category.localDescription[0] }}
-        .input-wrapper
-            label #{ gettext("associated_food_question") }
-            input(type="text" ng-model="assFood.promptText")
-        .input-wrapper
-            label #{ gettext("Generic name for this food") }
-            input(type="text" ng-model="assFood.genericName")					
-        .input-wrapper
-            label #{ gettext("associated_food_main_food") }
-            input(type="checkbox" ng-model="assFood.linkAsMain")
-        .input-wrapper
-            label
-            button.intake-btn.no-float(type="button" ng-click="removeAssociatedFood(assFood)") #{ gettext("associated_food_delete") }
+    .form-subgroup(ng-repeat="assFood in itemDefinition.associatedFoods")
+        .form-group
+            .col-xs-12
+                button.close(type="button"
+                            title="#{ gettext('associated_food_delete') }"
+                            ng-click="removeAssociatedFood(assFood)")
+                    | &times;
+        .form-group
+            label.col-xs-3.control-label #{ gettext("Food or category code") }
+            .col-xs-9
+                .form-control-static
+                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)')
+                        span(ng-if='!assFood.category')
+                            p #{ gettext("properties_select_associated_food") }
+                        span(ng-if='assFood.category')
+                            {{ assFood.category.localDescription[0] }}
+        .form-group
+            label.col-xs-3.control-label(for="associated-food-prompt-text-{{$index}}")
+                | #{ gettext("associated_food_question") }
+            .col-xs-9
+                input.form-control(type="text" id="associated-food-prompt-text-{{$index}}"
+                                    ng-model="assFood.promptText")
+        .form-group
+            label.col-xs-3.control-label(for="associated-food-generic-name-{{$index}}")
+                | #{ gettext("Generic name for this food") }
+            .col-xs-9
+                input.form-control(type="text" id="associated-food-generic-name-{{$index}}"
+                                ng-model="assFood.genericName")
+        .form-group
+            label.col-xs-3.control-label(for="associated-food-link-as-main-{{$index}}")
+                | #{ gettext("associated_food_main_food") }
+            .col-xs-9
+                input(type="checkbox" id="associated-food-link-as-main-{{$index}}"
+                    ng-model="assFood.linkAsMain")
 
-    .input-wrapper
-        button.intake-btn(type="button" ng-click="addAssociatedFood()")
-            span #{ gettext("associated_food_add") }
+    .form-group
+        .col-xs-12
+            button.intake-btn(type="button" ng-click="addAssociatedFood()")
+                span #{ gettext("associated_food_add") }

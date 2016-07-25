@@ -1,8 +1,12 @@
 .property
-	h3 #{ gettext("Definition") }
-	include basic-fields
-	.input-wrapper
-		label #{ gettext("Hidden") }
-		input(id='input-is-hidden' type='checkbox' ng-model='itemDefinition.main.isHidden')
+    h3 #{ gettext("Definition") }
+
+    include basic-fields
+
+    .form-group
+        .col-xs-9.col-xs-offset-3
+            label.checkbox-inline
+                input(type='checkbox' ng-model='itemDefinition.main.isHidden')
+                span #{ gettext("Hidden") }
 
 include parent-categories

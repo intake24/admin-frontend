@@ -1,10 +1,13 @@
 .property(ng-controller="CategoriesController")
 	h3 #{ gettext("Categories") }
-	.categories-container
-		ul(ng-repeat='category in $parent.parentCategories | orderBy:"displayName"')
-			li {{category.displayName}}
+	.form-group
+		.col-xs-12
+			.categories-container
+				ul(ng-repeat='category in $parent.parentCategories | orderBy:"displayName"')
+					li {{category.displayName}}
 
-	.input-wrapper
-		button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer()')
-			span #{ gettext("Manage categories") }
-		.clearfloat
+	.form-group
+		.col-xs-12
+			button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer()')
+				span #{ gettext("Manage categories") }
+			.clearfloat

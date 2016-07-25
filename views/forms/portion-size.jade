@@ -1,51 +1,63 @@
 .property(ng-controller="PortionSizeController")
-	h3 #{ gettext("Portion size estimation") }
-	.input-wrapper(ng-repeat='portionSize in portionSizes'
-					ng-controller="PortionSizeItemController"
-					ng-init="portionSize=portionSize")
-		.portion-size-method
-			.input-wrapper
-				label #{ gettext("Description") }
-				input(placeholder='#{ gettext("Description") }'
-						ng-model='portionSize.description'
-						ng-class="{'invalid': !portionSize.description}")
-			.input-wrapper
-				label #{ gettext("Image") }
-				input(placeholder='#{ gettext("e.g. path/filename.jpg") }'
-						ng-model='portionSize.imageUrl'
-						ng-class="{'invalid': !portionSize.imageUrl}")
-			.input-wrapper
-				label #{ gettext("Use for recipes") }
-				input(type='checkbox' ng-model='portionSize.useForRecipes')
-			.input-wrapper
-				label #{ gettext("Estimation method") }
+    h3 #{ gettext("Portion size estimation") }
+    .portion-size-method(ng-repeat='portionSize in portionSizes'
+                        ng-controller="PortionSizeItemController"
+                        ng-init="portionSize=portionSize")
+        .form-group
+            .col-xs-12
+                button.close(type="button" title='#{ gettext("Delete this method") }'
+                            ng-click='deletePortionSize($index)') &times;
 
-				select(class='estimation-method-dropdown' id='estimation-method-dropdown' ng-model="portionSizeMethodModel(portionSize)" ng-model-options="{getterSetter : true}")
-					option(ng-repeat="estimationMethod in sharedData.estimationMethods" value="{{estimationMethod.slug}}") {{estimationMethod.name}}
+        .form-group
+            label.col-xs-3.control-label(for="portion-size-description-{{$index}}")
+                | #{ gettext("Description") }
+            .col-xs-9
+                input.form-control(id="portion-size-description-{{$index}}"
+                    placeholder='#{ gettext("Description") }'
+                    ng-model='portionSize.description'
+                    ng-class="{'invalid': !portionSize.description}")
+        .form-group
+            label.col-xs-3.control-label(for="portion-size-imgurl-{{$index}}")
+                | #{ gettext("Image") }
+            .col-xs-9
+                input.form-control(id="portion-size-imgurl-{{$index}}"
+                    placeholder='#{ gettext("e.g. path/filename.jpg") }'
+                    ng-model='portionSize.imageUrl'
+                    ng-class="{'invalid': !portionSize.imageUrl}")
+        .form-group
+            label.col-xs-3.control-label(for="portion-size-use-for-recipes-{{$index}}")
+                | #{ gettext("Use for recipes") }
+            .col-xs-9
+                input(type='checkbox' id="portion-size-use-for-recipes-{{$index}}"
+                    ng-model='portionSize.useForRecipes')
+        .form-group
+            label.col-xs-3.control-label(for="portion-size-method-{{$index}}")
+                | #{ gettext("Estimation method") }
+            .col-xs-9
+                select.form-control(id="portion-size-method-{{$index}}"
+                                    ng-model="portionSizeMethodModel(portionSize)"
+                                    ng-model-options="{getterSetter : true}")
+                    option(ng-repeat="estimationMethod in sharedData.estimationMethods"
+                            value="{{estimationMethod.slug}}") {{estimationMethod.name}}
 
-			.as-served(ng-if='portionSize.method == "as-served"')
-				include portion-size-methods/as-served
-			.guide-image(ng-if='portionSize.method == "guide-image"')
-				include portion-size-methods/guide-image
-			.drink-scale(ng-if='portionSize.method == "drink-scale"')
-				include portion-size-methods/drink-scale
-			.standard-portion(ng-if='portionSize.method == "standard-portion"')
-				include portion-size-methods/standard-portion
-			.cereal(ng-if='portionSize.method == "cereal"')
-				include portion-size-methods/cereal
-			.milk-on-cereal(ng-if='portionSize.method == "milk-on-cereal"')
-				include portion-size-methods/milk-on-cereal
-			.milk-on-cereal(ng-if='portionSize.method == "milk-in-a-hot-drink"')
-				include portion-size-methods/milk-in-a-hot-drink
-			.milk-on-cereal(ng-if='portionSize.method == "pizza"')
-				include portion-size-methods/pizza
+        .as-served(ng-if='portionSize.method == "as-served"')
+            include portion-size-methods/as-served
+        .guide-image(ng-if='portionSize.method == "guide-image"')
+            include portion-size-methods/guide-image
+        .drink-scale(ng-if='portionSize.method == "drink-scale"')
+            include portion-size-methods/drink-scale
+        .standard-portion(ng-if='portionSize.method == "standard-portion"')
+            include portion-size-methods/standard-portion
+        .cereal(ng-if='portionSize.method == "cereal"')
+            include portion-size-methods/cereal
+        .milk-on-cereal(ng-if='portionSize.method == "milk-on-cereal"')
+            include portion-size-methods/milk-on-cereal
+        .milk-on-cereal(ng-if='portionSize.method == "milk-in-a-hot-drink"')
+            include portion-size-methods/milk-in-a-hot-drink
+        .milk-on-cereal(ng-if='portionSize.method == "pizza"')
+            include portion-size-methods/pizza
 
-			button.intake-btn.danger(type="button" ng-click='deletePortionSize($index)')
-				span #{ gettext("Delete this method") }
-			.clearfloat
-
-
-	.input-wrapper
-		button.intake-btn.success(type="button" ng-click='addPortionSize()')
-			span #{ gettext("Add a portion size method") }
-		.clearfloat
+    .form-group
+        .col-xs-12
+            button.intake-btn.success(type="button" ng-click='addPortionSize()')
+                | #{ gettext("Add a portion size method") }

@@ -1,28 +1,27 @@
 //- Standard portion
 
-.units-list
-	.row.header
-		.column
-			.unit-cell #{ gettext("Unit name (plural)") }
-		.column
-			.unit-cell #{ gettext("Unit weight (g)") }
-		.column
-			.unit-cell #{ gettext("Omit food description") }
-		.clearfloat
-	.row(ng-repeat='unit in portionSize.parameters.units'
-		ng-class="{'has-error': unitHasError(unit)}")
-		.column
-			.unit-cell
-				input(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
-		.column
-			.unit-cell
-				input(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
-		.column
-			.unit-cell
+table.table.table-hover.units-list
+	thead
+		tr
+			th.text-nowrap
+				| #{ gettext("Unit name (plural)") }
+			th.text-nowrap
+				| #{ gettext("Unit weight (g)") }
+			th.text-nowrap
+				| #{ gettext("Omit food description") }
+			th
+	tbody
+		tr.unit-row(ng-repeat='unit in portionSize.parameters.units'
+					ng-class="{'danger': unitHasError(unit)}")
+			td
+				input.form-control(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
+			td
+				input.form-control(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
+			td
 				input(type='checkbox' ng-model='unit.omitFoodDescription')
-		.clearfloat
-		.delete-unit(ng-click='removeItem($index)')
-				i.fa.fa-minus-circle
+			td
+				button.close(ng-click='removeItem($index)')
+					| &times;
 
 button.intake-btn.hidden(type="button")
 	span #{ gettext("Move up") }

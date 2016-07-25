@@ -1,9 +1,11 @@
-.input-wrapper
-	label #{ gettext("Guide image") }
-	.inline-link(ng-click='showGuideImageDrawer(portionSize.parameters)'
+.form-group
+	label.col-xs-3.control-label
+		| #{ gettext("Guide image") }
+	.col-xs-9
+		.form-control-static
+			.inline-link(ng-click='showGuideImageDrawer(portionSize.parameters)'
 				ng-class="{'has-error': !portionSize.parameters.guide_image_id}")
-		span(ng-if='!portionSize.parameters.guide_image_id')
-			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.parameters.guide_image_id')
-			{{ portionSize.parameters.guide_image_id }}
-.clearfloat
+					span(ng-if='!portionSize.parameters.guide_image_id')
+						p #{ gettext("Select image set") }
+					span(ng-if='portionSize.parameters.guide_image_id')
+						| {{ portionSize.parameters.guide_image_id }}

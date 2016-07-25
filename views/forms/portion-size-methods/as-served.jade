@@ -1,21 +1,26 @@
-.input-wrapper
-	label #{ gettext("Serving image set") }
-	.inline-link(ng-click='selectServingImageSet(portionSize.parameters)'
-				ng-class="{'has-error': !portionSize.parameters.serving_image_set}")
-		span(ng-if='!portionSize.parameters.serving_image_set')
-			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.parameters.serving_image_set')
-			{{ portionSize.parameters.serving_image_set }}
-.input-wrapper
-	label #{ gettext("Use leftover images") }
-	input(type='checkbox' ng-model='portionSize.parameters.useLeftoverImages')
+.form-group
+	label.col-xs-3.control-label #{ gettext("Serving image set") }
+	.col-xs-9
+		.form-control-static
+			.inline-link(ng-click='selectServingImageSet(portionSize.parameters)'
+						ng-class="{'has-error': !portionSize.parameters.serving_image_set}")
+				span(ng-if='!portionSize.parameters.serving_image_set')
+					p #{ gettext("Select image set") }
+				span(ng-if='portionSize.parameters.serving_image_set') {{ portionSize.parameters.serving_image_set }}
+.form-group
+	label.col-xs-3.control-label(for="as-served-use-leftover-images-{{$index}}")
+		| #{ gettext("Use leftover images") }
+	.col-xs-9
+		input(type='checkbox'
+			id="as-served-use-leftover-images-{{$index}}"
+			ng-model='portionSize.parameters.useLeftoverImages')
 
-.input-wrapper(ng-show="portionSize.parameters.useLeftoverImages")
-	label #{ gettext("Leftover image set") }
-	.inline-link(ng-click='selectLeftoversImageSet(portionSize.parameters)'
-				ng-class="{'has-error': portionSize.parameters.useLeftoverImages && !portionSize.parameters.leftovers_image_set}")
-		span(ng-if='!portionSize.parameters.leftovers_image_set')
-			p #{ gettext("Select image set") }
-		span(ng-if='portionSize.parameters.leftovers_image_set')
-			{{ portionSize.parameters.leftovers_image_set }}
-.clearfloat
+.form-group(ng-show="portionSize.parameters.useLeftoverImages")
+	label.col-xs-3.control-label #{ gettext("Leftover image set") }
+	.col-xs-9
+		.form-control-static
+			.inline-link(ng-click='selectLeftoversImageSet(portionSize.parameters)'
+						ng-class="{'has-error': portionSize.parameters.useLeftoverImages && !portionSize.parameters.leftovers_image_set}")
+				span(ng-if='!portionSize.parameters.leftovers_image_set')
+					p #{ gettext("Select image set") }
+				span(ng-if='portionSize.parameters.leftovers_image_set') {{ portionSize.parameters.leftovers_image_set }}

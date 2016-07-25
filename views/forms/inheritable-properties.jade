@@ -32,8 +32,10 @@
 				.col-xs-4
 					input.form-control(type='text'
 									placeholder='#{ gettext("e.g. 600") }'
+									id="inheritable-reasonable-amount"
 									ng-disabled='!itemDefinition.attributes.reasonableAmount.defined'
 									ng-model='itemDefinition.attributes.reasonableAmount.value')
 				.col-xs-8
 					p.form-control-static
-						label #{ gettext("Reasonable amount (g/ml)") }
+						label(for="inheritable-reasonable-amount")
+							| #{ gettext("Reasonable amount (g/ml)") }

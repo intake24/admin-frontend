@@ -1,16 +1,27 @@
-.input-wrapper
-	label #{ gettext("Drinkware set") }
-	.inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters)')
-		span(ng-if='!portionSize.parameters.drinkware_id')
-			p #{ gettext("Select drinkware set") }
-		span(ng-if='portionSize.parameters.drinkware_id')
-			{{ portionSize.parameters.drinkware_id }}
+.form-group
+	label.col-xs-3.control-label
+		| #{ gettext("Drinkware set") }
+	.col-xs-9
+		.form-control-static
+			.inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters)')
+				span(ng-if='!portionSize.parameters.drinkware_id')
+					p #{ gettext("Select drinkware set") }
+				span(ng-if='portionSize.parameters.drinkware_id')
+					{{ portionSize.parameters.drinkware_id }}
 
-.input-wrapper
-	label #{ gettext("Initial fill level") } ({{portionSize.parameters.initial_fill_level}})
-	input(type='range' min='0' max='1' step='0.05' ng-model='portionSize.parameters.initial_fill_level')
+.form-group
+	label.col-xs-3.control-label(for="drink-scale-initial-fill-level-{{$index}}")
+		| #{ gettext("Initial fill level") } ({{portionSize.parameters.initial_fill_level}})
+	.col-xs-9
+		.form-control-static
+			input(type='range' min='0' max='1' step='0.05'
+				id="drink-scale-initial-fill-level-{{$index}}"
+				ng-model='portionSize.parameters.initial_fill_level')
 
-.input-wrapper
-	label #{ gettext("Skip fill level prompt") }
-	input(type='checkbox' ng-model='portionSize.parameters.skip_fill_level')
-.clearfloat
+.form-group
+	label.col-xs-3.control-label(for="drink-scale-skip-fill-level-{{$index}}")
+		| #{ gettext("Skip fill level prompt") }
+	.col-xs-9
+		input(type='checkbox'
+			id="drink-scale-skip-fill-level-{{$index}}"
+			ng-model='portionSize.parameters.skip_fill_level')

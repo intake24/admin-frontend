@@ -1,13 +1,15 @@
-.input-wrapper
-	label #{ gettext("Description") }
-	input(class='input-english-description' type='text' placeholder='#{ gettext("e.g. Beans on toast") }'
-		ng-model='itemDefinition.main.englishDescription'
-		ng-class="{invalid: itemDefinition.main.englishDescription == ''}")
-.input-wrapper(ng-hide='SharedData.locale.intake_locale=="en_GB"')
-	label #{ gettext("Local Description") }
-	input(class='input-local-description' type='text' ng-model='localDescriptionModel' ng-model-options='{ getterSetter : true }')
-.input-wrapper
-	label #{ gettext("Intake24 code") }
-	input(class='input-intake-code' type='text' placeholder='#{ gettext("ALBU") }'
-			ng-model='itemDefinition.main.code'
-			ng-class='{valid: codeIsValid, invalid: codeIsInvalid}')
+.form-group(ng-class="{'has-error': itemDefinition.main.englishDescription == ''}")
+	label.col-xs-3.control-label #{ gettext("Description") }
+	.col-xs-9
+		input(class='form-control' type='text' placeholder='#{ gettext("e.g. Beans on toast") }'
+			ng-model='itemDefinition.main.englishDescription')
+.form-group(ng-hide='SharedData.locale.intake_locale=="en_GB"')
+	label.col-xs-3.control-label #{ gettext("Local Description") }
+	.col-xs-9
+		input(class='form-control' type='text'
+			ng-model='localDescriptionModel' ng-model-options='{ getterSetter : true }')
+.form-group(ng-class="{'has-error': codeIsInvalid, 'has-success': codeIsValid}")
+	label.col-xs-3.control-label #{ gettext("Intake24 code") }
+	.col-xs-9
+		input(class='form-control' type='text' placeholder='#{ gettext("ALBU") }'
+				ng-model='itemDefinition.main.code')

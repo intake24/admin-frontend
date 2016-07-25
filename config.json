@@ -1,7 +1,7 @@
 {
   "apiBaseUrl": "http://localhost:9000/",
   "stylusFrom": "src/styl/style.styl",
-  "stylusWatch": "src/styl/*",
+  "stylusWatch": "src/styl/**/**",
   "stylusTo": "src/temp/style.css",
   "browserifyFrom": "src/js/intake24-admin.js",
   "browserifyTo": "src/temp/intake24-admin.browserified.js",

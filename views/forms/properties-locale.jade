@@ -1,8 +1,10 @@
-.input-wrapper.overridable
-    label
-    input(type='checkbox' ng-model='itemDefinition.useExclusivelyInThisLocale')
-    label #{ gettext("properties_use_exclusively_in_this_locale") }
-.input-wrapper.overridable
-    label
-    input(type='checkbox' ng-model='itemDefinition.local.doNotUseInThisLocale')
-    label #{ gettext("properties_do_not_use_in_this_locale") }
+.form-group
+    .col-xs-9.col-xs-offset-3
+        label.checkbox-inline
+            input(type='checkbox' ng-model='itemDefinition.useExclusivelyInThisLocale')
+            span #{ gettext("properties_use_exclusively_in_this_locale") }
+.form-group
+    .col-xs-9.col-xs-offset-3
+        label.checkbox-inline
+            input(type='checkbox' ng-model='itemDefinition.local.doNotUseInThisLocale')
+            span #{ gettext("properties_do_not_use_in_this_locale") }

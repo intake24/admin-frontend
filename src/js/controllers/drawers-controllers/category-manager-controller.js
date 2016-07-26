@@ -24,8 +24,7 @@ module.exports = function (app) {
 
 function controllerFun($scope, foodDataReader, packer, DrawersService) {
 
-    // Backing variable for the currentSearch model getter/setter
-    var currentSearchQuery = null;
+    $scope.searchQuery = '';
 
     // The list of categories matching current search query, loaded asynchronously
     $scope.searchResults = null;
@@ -35,37 +34,18 @@ function controllerFun($scope, foodDataReader, packer, DrawersService) {
 
     $scope.isOpen = DrawersService.drawerManageCategories.getOpen();
 
-    function makeFixed(categoryHeader) {
-        var filtered = _.filter($scope.fixedCategories, function (c) {
-            return c.code != categoryHeader.code
-        });
-        filtered.push(categoryHeader);
-        $scope.fixedCategories = filtered;
-    }
-
-    function loadSearchResults() {
-        foodDataReader.searchCategories(currentSearchQuery).then(function (categories) {
-                $scope.searchResults = _.map(categories, packer.unpackCategoryHeader);
-            },
-            $scope.handleError
-        );
-    }
-
     $scope.toggleParentCategory = function (categoryHeader) {
-        // Try to remove the category first
-        var filtered = _.filter($scope.parentCategories, function (c) {
-            return c.code != categoryHeader.code
-        });
-
-        if (filtered.length == $scope.parentCategories.length) {
-            // Category wasn't in the parentCategories list (since nothing was removed
-            // by the grep filter), so we need to add it
+        var index = -1;
+        for (var i= 0, l=$scope.parentCategories.length; i<l; i++) {
+            if ($scope.parentCategories[i].code == categoryHeader.code) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
             $scope.parentCategories.push(categoryHeader);
-            makeFixed(categoryHeader);
         } else {
-            // Category was already filtered out
-            // Use $parent so we don't shadow the parent scope field
-            $scope.$parent.parentCategories = filtered;
+            $scope.parentCategories.splice(index, 1);
         }
     };
 
@@ -78,30 +58,27 @@ function controllerFun($scope, foodDataReader, packer, DrawersService) {
         return false;
     };
 
-    $scope.searchQuery = function (newValue) {
-        if (arguments.length == 1) {
-            if (newValue.length > 0) {
-                // If the query string is not empty, fetch search results from the
-                // server
-                currentSearchQuery = newValue;
-                loadSearchResults();
-            } else {
-                // If the query string is empty, treat it as null (for ng-if directives)
-                currentSearchQuery = null;
-            }
-        } else {
-            return currentSearchQuery;
-        }
-    };
-
     $scope.close = function () {
         DrawersService.drawerManageCategories.close();
     };
+
+    $scope.$watch('searchQuery', loadSearchResults);
 
     $scope.$watch(function () {
         return DrawersService.drawerManageCategories.getOpen();
     }, function () {
         $scope.isOpen = DrawersService.drawerManageCategories.getOpen();
     });
+
+    function loadSearchResults() {
+        if ($scope.searchQuery == '') {
+            return;
+        }
+        foodDataReader.searchCategories($scope.searchQuery).then(function (categories) {
+                $scope.searchResults = _.map(categories, packer.unpackCategoryHeader);
+            },
+            $scope.handleError
+        );
+    }
 
 }

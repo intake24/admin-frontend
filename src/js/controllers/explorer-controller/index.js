@@ -11,6 +11,8 @@ module.exports = function (app) {
 function controllerFun($scope, $timeout, sharedData, problems, currentItem, foodDataReader,
                        foodDataWriter, packer, $q, $rootScope, MessageService) {
 
+    var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, foodDataReader, packer, loadChildrenDeferred);
+
     // Load shared data
     $scope.SharedData = sharedData;
     $scope.rootCategories = [];
@@ -356,69 +358,6 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         loadChildrenDeferred(node).finally(function () {
             node.loadingChildren = false;
         });
-    }
-
-    function findNodeInTree(node) {
-
-        var match = {type: node.type, code: node.code};
-
-        // First check if the node is one of the root categories
-        var targetNode = _.findWhere($scope.rootCategories, match);
-
-        if (targetNode) {
-            return $q.when(targetNode);
-        } else {
-            // Try to find the node in the tree
-            var allParentCategoriesDeferred = null;
-
-            if (node.type == "food") {
-                allParentCategoriesDeferred = foodDataReader.getFoodAllCategories(node.code);
-            } else if (node.type == "category") {
-                allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(node.code);
-            }
-
-            return allParentCategoriesDeferred.then(function (allCategories) {
-
-                var allCategoryCodes = _.map(allCategories, function (c) {
-                    return c.code;
-                });
-
-                if (allCategoryCodes.length == 0) {
-                    // Check the uncategorised foods
-
-                    return foodDataReader.getUncategorisedFoods().then(function (foods) {
-                        $scope.rootCategories[0].open = true;
-                        $scope.rootCategories[0].children = _.map(foods, packer.unpackFoodHeader);
-                        targetNode = _.findWhere($scope.rootCategories[0].children, match);
-                        if (targetNode)
-                            return $q.when(targetNode);
-                        else
-                            return $q.reject("Failed to find selected node in the food tree");
-                    });
-                } else {
-                    var category = _.find($scope.rootCategories, function (cnode) {
-                        return _.contains(allCategoryCodes, cnode.code)
-                    });
-
-                    if (category) {
-                        return loadChildrenDeferred(category).then(function () {
-                            category.open = true;
-
-                            var targetNode = _.findWhere(category.children, match);
-
-                            if (targetNode)
-                                return $q.when(targetNode);
-                            else
-                                return find(_.filter(category.children, function (n) {
-                                    return n.type == "category"
-                                }));
-                        });
-                    } else {
-                        return $q.reject("Failed to find selected node in the food tree");
-                    }
-                }
-            });
-        }
     }
 
     function scrollTo(element, to, duration) {

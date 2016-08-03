@@ -18,10 +18,11 @@ function controllerFun($scope, FoodDataReaderService, DrawersService) {
       // the watch from triggering on load seems to be checking if newValue == oldValue,
       // but in this case an empty query should not be sent to the server anyway
 
-      if (query) {
+      if ($scope.query) {
         FoodDataReaderService.searchFoods($scope.query).then(function (data) {
           Array.prototype.push.apply($scope.items, data);
         });
+      }
     });
 
     $scope.select = function (drinkware_set_id) {

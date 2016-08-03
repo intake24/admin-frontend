@@ -32,10 +32,8 @@ function controllerFun(DrawersService) {
     this.$watch(function() {
         return DrawersService.drawerAssociatedFood.getValue();
     }, function() {
-        if (!selectedItem) {
-            return;
-        }
-        selectedItem.category = DrawersService.drawerAssociatedFood.getValue();
-    });
-
+        if (selectedItem) {
+          selectedItem.foodOrCategory = DrawersService.drawerAssociatedFood.getValue();
+    }
+  });
 }

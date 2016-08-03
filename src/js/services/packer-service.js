@@ -111,7 +111,7 @@ function serviceFun() {
 		unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
 		unpacked.local.doNotUseInThisLocale = packed.local.doNotUse;
 		unpacked.brandNames = packed.brandNames;
-		unpacked.associatedFoods = packed.associatedFoods;
+		unpacked.associatedFoods = _.map(packed.associatedFoods, instance.unpackAssociatedFood);
 
 		return unpacked;
 	};
@@ -168,6 +168,23 @@ function serviceFun() {
 
 		return unpacked;
 	}
+
+  instance.unpackAssociatedFood = function(packed)
+  {
+    var foodOrCategory;
+
+    if (packed.foodOrCategoryHeader[0] == 0)
+      foodOrCategory = instance.unpackFoodHeader(packed.foodOrCategoryHeader[1]);
+    else if (packed.foodOrCategoryHeader[0] == 1)
+      foodOrCategory = instance.unpackCategoryHeader(packed.foodOrCategoryHeader[1]);
+
+    return {
+      foodOrCategory: foodOrCategory,
+      promptText: packed.promptText,
+      linkAsMain: packed.linkAsMain,
+      genericName: packed.genericName
+    };
+  }
 
 	instance.unpackPortionSizes = function(packedPortionSizes) {
 

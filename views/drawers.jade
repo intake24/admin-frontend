@@ -80,8 +80,8 @@ div(ng-controller='AssociatedFoodDrawerController')
 		.drawer-content
 			.list-container
 				ul
-					li(ng-repeat='item in items | orderBy: "localDescription[0]"'
-						ng-click='select(item)')
-						{{ item.localDescription[0] }}
+					li(ng-repeat='item in items | orderBy:["type", "displayName"]' ng-click='select(item)')
+						i.fa.fa-folder-o(ng-if='item.type == "category"' style='margin-right: 8px')
+						{{ item.displayName }}
 
 	.drawer-backdrop(ng-show="isOpen")

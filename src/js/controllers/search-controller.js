@@ -13,7 +13,7 @@ function controllerFun($scope, $timeout, foodDataReader, packer) {
 
     $scope.searchResults = null;
     $scope.searchResultsAreVisible = false;
-    $scope.query = '';
+    $scope.query = "";
     $scope.focused = false;
     $scope.getActive = function () {
         return this.query != '' || this.focused;
@@ -25,9 +25,11 @@ function controllerFun($scope, $timeout, foodDataReader, packer) {
         this.focused = false;
     };
 
-    $scope.$watch('query', function () {
+    $scope.$watch('query', function (oldValue, newValue) {
+      if (newValue) {
         $timeout.cancel(timeoutPromise);
-        $timeout(performFoodSearch, queryTimeout);
+        timeoutPromise = $timeout(performFoodSearch, queryTimeout);
+      }
     });
 
     function performFoodSearch() {

@@ -204,7 +204,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function reloadFoodGroups() {
         foodDataReader.getFoodGroups().then(
             function (groups) {
-                $scope.foodGroups = _.map(groups, packer.unpackFoodGroup);
+              $scope.foodGroups = _.map(_.values(groups), packer.unpackFoodGroup);
             });
     }
 

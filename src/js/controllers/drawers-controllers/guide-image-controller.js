@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('GuideImageController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
 };
@@ -16,7 +18,7 @@ function controllerFun($scope, foodDataReader, DrawersService) {
 
     function reloadGuideImages() {
         foodDataReader.getGuideImages().then(function (guideImages) {
-                $scope.guideImages = guideImages;
+                $scope.guideImages = _.values(guideImages);
             },
             $scope.handleError);
     }

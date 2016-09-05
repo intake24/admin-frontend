@@ -159,9 +159,9 @@ function serviceFun() {
 	instance.unpackFoodGroup = function(packed)
 	{
 		var unpacked = {
-			id : packed.id,
-			englishDescription : packed.englishDescription,
-			localDescription : instance.unpackOption(packed.localDescription),
+			id : packed.main.id,
+			englishDescription : packed.main.englishDescription,
+			localDescription : instance.unpackOption(packed.local.localDescription),
 		};
 
 		unpacked.displayName = unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription;
@@ -463,5 +463,6 @@ function serviceFun() {
 
 		});
 	};
+
 	return instance;
 }

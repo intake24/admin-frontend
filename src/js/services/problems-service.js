@@ -10,7 +10,7 @@ function serviceFun($http, locales) {
 
     return {
         getCategoryProblemsRecursive: function (code, onSuccess, onFailure) {
-            return $http.get(api_base_url + 'admin/categories/' + locales.current() + '/' + code + '/problems/recursive');
+            return $http.get(api_base_url + 'admin/categories/' + locales.current() + '/' + code + '/recursive-problems');
         },
 
         getFoodProblems: function (code, onSuccess, onFailure) {

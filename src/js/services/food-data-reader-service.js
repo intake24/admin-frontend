@@ -28,19 +28,19 @@ function serviceFun ($http, locales) {
         },
 
         getCategoryParentCategories: function (code) {
-            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/' + code + '/category-parent-categories');
+            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/category-parent-categories' + '/' + code);
         },
 
         getCategoryAllCategories: function (code) {
-            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/' + code + '/category-all-categories');
+            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/category-all-categories' + '/' + code);
         },
 
         getFoodParentCategories: function (code) {
-            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/' + code + '/food-parent-categories');
+            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/food-parent-categories' + '/' + code);
         },
 
         getFoodAllCategories: function (code) {
-            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/' + code + '/food-all-categories');
+            return $http.get(api_base_url + 'admin/browse/' + locales.current() + '/food-all-categories' + '/' + code);
         },
 
         getFoodGroups: function () {

@@ -266,7 +266,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.categoryChanged = function () {
-        return $scope.categoryBasicDefinitionChanged() || $scope.categoryLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+        return $scope.categoryBasicDefinitionChanged() || $scope.categoryLocalDefinitionChanged();
     }
 
     $scope.itemChanged = function () {

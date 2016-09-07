@@ -12,7 +12,7 @@ div(ng-controller='CategoryManagerController')
 						ng-click='toggleParentCategory(category)'
 						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 				ul(ng-if="searchQuery == ''")
-					li(ng-repeat='category in parentCategories | orderBy:"displayName"'
+					li(ng-repeat='category in stickyCategories | orderBy:"displayName"'
 						ng-click='toggleParentCategory(category)'
 						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 

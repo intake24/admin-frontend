@@ -1,7 +1,7 @@
 .property(ng-controller="AssociatedFoodController")
     h3 #{ gettext("associated_food_title") }
 
-    .form-subgroup(ng-repeat="assFood in itemDefinition.associatedFoods")
+    .form-subgroup(ng-repeat="assFood in itemDefinition.local.associatedFoods")
         .form-group
             .col-xs-12
                 button.close(type="button"

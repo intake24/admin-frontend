@@ -92,7 +92,8 @@ function serviceFun() {
 					readyMealOption: instance.unpackOption(packed.main.attributes.readyMealOption),
 					sameAsBeforeOption: instance.unpackOption(packed.main.attributes.sameAsBeforeOption),
 					reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount)
-				}
+				},
+        parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader)
 			},
 			local: {
 				version: instance.unpackOption(packed.local.version),
@@ -110,8 +111,8 @@ function serviceFun() {
 		unpacked.main.useExclusivelyInThisLocale = false;
 		unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
 		unpacked.local.doNotUseInThisLocale = packed.local.doNotUse;
-		unpacked.brandNames = packed.brandNames;
-		unpacked.associatedFoods = _.map(packed.associatedFoods, instance.unpackAssociatedFood);
+		unpacked.local.brandNames = packed.local.brandNames;
+		unpacked.local.associatedFoods = _.map(packed.local.associatedFoods, instance.unpackAssociatedFood);
 
 		return unpacked;
 	};

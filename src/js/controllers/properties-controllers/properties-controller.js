@@ -29,15 +29,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         // then bound to page controls and can be edited.
         $scope.itemDefinition = null;
 
-        // A snapshot of the initial parent categories state.
-        // Loaded from the server when the currentItem changes.
-        // Used to generate add/remove category API calls when the item is saved.
-        $scope.originalParentCategories = null;
-
-        // Current state of the selected item's parent categories list.
-        // Can be edited using the "Manage categories" drawer.
-        $scope.parentCategories = null;
-
         // Local view of the current food/category in the current locale for debugging
         $scope.localFoodData = null;
 
@@ -93,11 +84,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     };
 
-    $scope.parentCategoriesChanged = function () {
-        var changes = parentCategoryChanges();
-        return ((changes.add_to.length + changes.remove_from.length) > 0);
-    };
-
     $scope.notValid = function () {
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
             $scope.itemDefinition.main.englishDescription == '';
@@ -147,7 +133,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData())
+            $q.all(loadBasicData(), loadLocalData())
                 .finally(function () {
                     enableButtons();
                 });
@@ -169,19 +155,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         }
-    }
-
-    function loadParentCategories() {
-
-        function unpackCategories(categories) {
-            $scope.parentCategories = _.map(categories, packer.unpackCategoryHeader);
-            $scope.originalParentCategories = angular.copy($scope.parentCategories);
-        }
-
-        if ($scope.currentItem.type == 'food')
-            return foodDataReader.getFoodParentCategories($scope.currentItem.code).then(unpackCategories);
-        else if ($scope.currentItem.type == 'category')
-            return foodDataReader.getCategoryParentCategories($scope.currentItem.code).then(unpackCategories);
     }
 
     function loadLocalData() {
@@ -222,23 +195,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         return false;
     }
 
-    function parentCategoryChanges() {
-        if ($scope.parentCategories && $scope.originalParentCategories)
-            return {
-                add_to: _.filter($scope.parentCategories, function (pc) {
-                    return !exists($scope.originalParentCategories, pc);
-                }),
-                remove_from: _.filter($scope.originalParentCategories, function (cpc) {
-                    return !exists($scope.parentCategories, cpc);
-                })
-            };
-        else
-            return {
-                add_to: [],
-                remove_from: []
-            };
-    }
-
     function checkCode() {
         var code = $scope.itemDefinition.main.code;
 
@@ -269,28 +225,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     function enableButtons() {
         $scope.forceDisabledButtons = false;
-    }
-
-    // Returns a single deferred for all the necessary category calls
-    function updateParentCategories() {
-        var changes = parentCategoryChanges();
-
-        var addRequests = _.map(changes.add_to, function (c) {
-            if ($scope.currentItem.type == 'food')
-                return foodDataWriter.addFoodToCategory(c.code, $scope.itemDefinition.main.code);
-            else if ($scope.currentItem.type == 'category')
-                return foodDataWriter.addCategoryToCategory(c.code, $scope.itemDefinition.main.code);
-        });
-
-        var deleteRequests = _.map(changes.remove_from, function (c) {
-            if ($scope.currentItem.type == 'food')
-                return foodDataWriter.removeFoodFromCategory(c.code, $scope.itemDefinition.main.code);
-            else if ($scope.currentItem.type == 'category')
-                return foodDataWriter.removeCategoryFromCategory(c.code, $scope.itemDefinition.main.code);
-        });
-
-        // $q.all is sequence: Array[Future[_]] => Future[Array[_]]
-        return $q.all(addRequests.concat(deleteRequests));
     }
 
     $scope.categoryBasicDefinitionChanged = function () {
@@ -328,7 +262,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.foodChanged = function () {
-        return $scope.foodBasicDefinitionChanged() || $scope.foodLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+        return $scope.foodBasicDefinitionChanged() || $scope.foodLocalDefinitionChanged();
     }
 
     $scope.categoryChanged = function () {

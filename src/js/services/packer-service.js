@@ -319,13 +319,14 @@ function serviceFun() {
 		};
 	}
 
-	instance.packFoodBasicDefinition = function(unpacked) {
+	instance.packFoodMainRecordUpdate = function(unpacked) {
 		return {
-			version: unpacked.version,
+			baseVersion: unpacked.version,
 			code: unpacked.code,
 			groupCode: unpacked.groupCode,
 			englishDescription: unpacked.englishDescription,
 			attributes: instance.packInheritableAttributes(unpacked.attributes),
+      parentCategories: _.map(unpacked.parentCategories, function(header) { return header.code; })
 		};
 	}
 
@@ -347,12 +348,20 @@ function serviceFun() {
 		};
 	}
 
-	instance.packFoodLocalDefinition = function(unpacked) {
+	instance.packFoodLocalRecordUpdate = function(unpacked) {
 		return {
-			version: instance.packOption(unpacked.version),
+			baseVersion: instance.packOption(unpacked.version),
 			localDescription: instance.packOption(unpacked.localDescription),
 			nutrientTableCodes: unpacked.nutrientTableCodes,
 			portionSize: instance.packPortionSizes(unpacked.portionSize),
+      associatedFoods: _.map(unpacked.associatedFoods, function(withHeader) {
+        return {
+          foodOrCategory: [withHeader.type == 'food'? 0 : 1, withHeader.code],
+          genericName: withHeader.genericName,
+          linkAsMain: withHeader.linkAsMain,
+          promptText: withHeader.promptText
+        };
+      }),
 			doNotUse: unpacked.doNotUseInThisLocale
 		};
 	}

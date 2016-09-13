@@ -243,8 +243,8 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     $scope.foodBasicDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition.main);
-            var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition.main);
+            var packedOriginalBasic = packer.packFoodMainRecordUpdate($scope.originalItemDefinition.main);
+            var packedCurrentBasic = packer.packFoodMainRecordUpdate($scope.itemDefinition.main);
             return !angular.equals(packedOriginalBasic, packedCurrentBasic);
         }
         else
@@ -253,8 +253,8 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     $scope.foodLocalDefinitionChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.local);
-            var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.local);
+            var packedOriginalLocal = packer.packFoodLocalRecordUpdate($scope.originalItemDefinition.local);
+            var packedCurrentLocal = packer.packFoodLocalRecordUpdate($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
         }
         else
@@ -351,19 +351,18 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     // Will return a dummy 'true' value if no changes are detected.
     // Resulting value is not important, but HTTP errors must be handled further.
 
-    function updateFoodBase() {
+    function updateFoodMainRecord() {
         if ($scope.foodBasicDefinitionChanged()) {
-            console.log($scope.itemDefinition);
-            var packed = packer.packFoodBasicDefinition($scope.itemDefinition.main);
-            return foodDataWriter.updateFoodBase($scope.originalItemDefinition.main.code, packed)
+            var packed = packer.packFoodMainRecordUpdate($scope.itemDefinition.main);
+            return foodDataWriter.updateFoodBase($scope.originalItemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
     }
 
-    function updateFoodLocal() {
+    function updateFoodLocalRecord() {
         if ($scope.foodLocalDefinitionChanged()) {
-            var packed = packer.packFoodLocalDefinition($scope.itemDefinition.local);
+            var packed = packer.packFoodLocalRecordUpdate($scope.itemDefinition.local);
             return foodDataWriter.updateFoodLocal($scope.itemDefinition.main.code, packed);
         } else {
             return $q.when(true);
@@ -391,14 +390,11 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.updateFood = function () {
         disableButtons();
 
-        updateFoodBase()
-            .then(function () {
-                return updateParentCategories();
+        updateFoodMainRecord()
+         .then(function () {
+              return updateFoodLocalRecord();
             })
-            .then(function () {
-                return updateFoodLocal();
-            })
-            .then(
+         .then(
                 function () {
                     MessageService.showMessage(gettext('Food updated'), 'success');
                     notifyItemUpdated();

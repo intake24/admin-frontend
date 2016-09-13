@@ -165,7 +165,7 @@ function serviceFun() {
 			localDescription : instance.unpackOption(packed.local.localDescription),
 		};
 
-		unpacked.displayName = unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription;
+		unpacked.displayName = unpacked.id.toString() + ". " + (unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription);
 
 		return unpacked;
 	}

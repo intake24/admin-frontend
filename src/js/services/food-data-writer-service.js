@@ -23,7 +23,7 @@ function serviceFun($http, locales) {
             return $http.delete(api_base_url + 'admin/categories/' + category_code + '/subcategories/' + subcategory_code);
         },
 
-        updateCategoryBase: function (category_code, definition) {
+        updateCategoryMainRecord: function (category_code, definition) {
             return $http.post(api_base_url + 'admin/categories/' + category_code, definition);
         },
 
@@ -31,11 +31,11 @@ function serviceFun($http, locales) {
             return $http.post(api_base_url + 'admin/categories/new', definition);
         },
 
-        updateCategoryLocal: function (category_code, definition) {
+        updateCategoryLocalRecord: function (category_code, definition) {
             return $http.post(api_base_url + 'admin/categories/' + locales.current() + '/' + category_code, definition);
         },
 
-        updateFoodBase: function (food_code, definition) {
+        updateFoodMainRecord: function (food_code, definition) {
             return $http.post(api_base_url + 'admin/foods/' + food_code, definition);
         },
 
@@ -47,7 +47,7 @@ function serviceFun($http, locales) {
             return $http.post(api_base_url + 'admin/foods/new-with-temp-code', definition);
         },
 
-        updateFoodLocal: function (food_code, definition) {
+        updateFoodLocalRecord: function (food_code, definition) {
             return $http.post(api_base_url + 'admin/foods/' + locales.current() + '/' + food_code, definition);
         },
 

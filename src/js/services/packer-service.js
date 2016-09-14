@@ -81,7 +81,7 @@ function serviceFun() {
 	};
 
 	// Common fields for food and category definition
-	instance.unpackCommonDefinitionFields = function (packed)
+	instance.unpackCommonRecordFields = function (packed)
 	{
 		return {
 			main: {
@@ -103,9 +103,9 @@ function serviceFun() {
 		};
 	};
 
-	instance.unpackFoodDefinition = function(packed)
+	instance.unpackFoodRecord = function(packed)
 	{
-		var unpacked = instance.unpackCommonDefinitionFields(packed);
+		var unpacked = instance.unpackCommonRecordFields(packed);
 
 		unpacked.main.groupCode = packed.main.groupCode;
 		unpacked.main.useExclusivelyInThisLocale = false;
@@ -117,9 +117,9 @@ function serviceFun() {
 		return unpacked;
 	};
 
-	instance.unpackCategoryDefinition = function(packed)
+	instance.unpackCategoryRecord = function(packed)
 	{
-		var unpacked = instance.unpackCommonDefinitionFields(packed);
+		var unpacked = instance.unpackCommonRecordFields(packed);
 
 		unpacked.main.isHidden = packed.main.isHidden;
 
@@ -309,9 +309,9 @@ function serviceFun() {
 		};
 	}
 
-	instance.packCategoryBasicDefinition = function(unpacked) {
+	instance.packCategoryMainRecordUpdate = function(unpacked) {
 		return {
-			version: unpacked.version,
+			baseVersion: unpacked.version,
 			code: unpacked.code,
 			englishDescription: unpacked.englishDescription,
 			isHidden: unpacked.isHidden,
@@ -330,21 +330,23 @@ function serviceFun() {
 		};
 	}
 
-	instance.packNewFoodDefinition = function(unpacked) {
+	instance.packNewFoodRecord = function(unpacked) {
 		return {
 			code: unpacked.main.code,
 			groupCode: unpacked.main.groupCode,
 			englishDescription: unpacked.main.englishDescription,
 			attributes: instance.packInheritableAttributes(unpacked.main.attributes),
+      parentCategories: _.map(unpacked.main.parentCategories, function(header) { return header.code; })
 		};
 	}
 
-	instance.packNewCategoryDefinition = function(unpacked) {
+	instance.packNewCategoryRecord = function(unpacked) {
 		return {
 			code: unpacked.main.code,
 			isHidden: unpacked.main.isHidden,
 			englishDescription: unpacked.main.englishDescription,
 			attributes: instance.packInheritableAttributes(unpacked.main.attributes),
+      parentCategories: _.map(unpacked.main.parentCategories, function(header) { return header.code; })
 		};
 	}
 
@@ -362,13 +364,14 @@ function serviceFun() {
           promptText: withHeader.promptText
         };
       }),
+      brandNames: [],
 			doNotUse: unpacked.doNotUseInThisLocale
 		};
 	}
 
-	instance.packCategoryLocalDefinition = function(unpacked) {
+	instance.packCategoryLocalRecordUpdate = function(unpacked) {
 		return {
-			version: instance.packOption(unpacked.version),
+			baseVersion: instance.packOption(unpacked.version),
 			localDescription: instance.packOption(unpacked.localDescription),
 			portionSize: instance.packPortionSizes(unpacked.portionSize)
 		};

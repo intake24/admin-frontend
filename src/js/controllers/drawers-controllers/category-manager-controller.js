@@ -52,12 +52,12 @@ function controllerFun($scope, foodDataReader, packer, DrawersService) {
     };
 
     $scope.isInParentCategories = function (categoryHeader) {
-        if ($scope.itemDefinition.main.parentCategories != null)
-            for (var i = 0; i < $scope.itemDefinition.main.parentCategories.length; i++) {
-                if ($scope.itemDefinition.main.parentCategories[i].code == categoryHeader.code)
-                    return true;
-            }
+      if ($scope.itemDefinition == null) {
         return false;
+      } else {
+        var parentCategories = $scope.itemDefinition.main.parentCategories;
+        return _.some(parentCategories, function (header) { return header.code == categoryHeader.code; });
+      }
     };
 
     $scope.close = function () {
@@ -73,7 +73,6 @@ function controllerFun($scope, foodDataReader, packer, DrawersService) {
 
         if ($scope.isOpen) {
           $scope.stickyCategories = angular.copy($scope.itemDefinition.main.parentCategories);
-          window.alert($scope.stickyCategories);
         } else {
           $scope.stickyCategories = [];
         }

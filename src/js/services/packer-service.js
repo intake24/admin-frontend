@@ -108,7 +108,7 @@ function serviceFun() {
 		var unpacked = instance.unpackCommonRecordFields(packed);
 
 		unpacked.main.groupCode = packed.main.groupCode;
-		unpacked.main.useExclusivelyInThisLocale = false;
+		unpacked.main.localeRestrictions = packed.main.localeRestrictions;
 		unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
 		unpacked.local.doNotUseInThisLocale = packed.local.doNotUse;
 		unpacked.local.brandNames = packed.local.brandNames;
@@ -326,7 +326,8 @@ function serviceFun() {
 			groupCode: unpacked.groupCode,
 			englishDescription: unpacked.englishDescription,
 			attributes: instance.packInheritableAttributes(unpacked.attributes),
-      parentCategories: _.map(unpacked.parentCategories, function(header) { return header.code; })
+      parentCategories: _.map(unpacked.parentCategories, function(header) { return header.code; }),
+      localeRestrictions: unpacked.localeRestrictions
 		};
 	}
 

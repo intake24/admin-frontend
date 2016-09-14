@@ -126,6 +126,20 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         currentItem.setChangedState($scope.itemChanged());
     });
 
+    $scope.useExclusivelyInThisLocale = function(use) {
+      if (arguments.length == 1) {
+        var newList = _.without($scope.itemDefinition.main.localeRestrictions, LocalesService.current());
+        if (use)
+          newList.push(LocalesService.current());
+        $scope.itemDefinition.main.localeRestrictions = newList;
+      } else {
+        if ($scope.itemDefinition)
+          return _.contains($scope.itemDefinition.main.localeRestrictions, LocalesService.current())
+        else
+          return false;
+      }
+    }
+
     function reloadData() {
         clearData();
 

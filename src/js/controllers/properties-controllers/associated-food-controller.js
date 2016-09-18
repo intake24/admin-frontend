@@ -9,6 +9,7 @@ module.exports = function(app) {
 function controllerFun(DrawersService) {
 
     var selectedItem = null;
+    var self = this;
 
     this.addAssociatedFood = function () {
         this.$parent.itemDefinition.associatedFoods.push({
@@ -28,6 +29,10 @@ function controllerFun(DrawersService) {
         selectedItem = obj;
         DrawersService.drawerAssociatedFood.open();
     };
+
+    this.$watch('itemDefinition', function() {
+        console.log(self.itemDefinition);
+    });
 
     this.$watch(function() {
         return DrawersService.drawerAssociatedFood.getValue();

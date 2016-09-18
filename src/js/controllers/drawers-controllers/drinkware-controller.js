@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('DrinkwareController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
 };
@@ -12,7 +14,7 @@ function controllerFun($scope, foodDataReader, DrawersService) {
 
     function reloadDrinkwareSets() {
         foodDataReader.getDrinkwareSets().then(function (drinkwareSets) {
-                $scope.drinkwareSets = drinkwareSets;
+                $scope.drinkwareSets = _.values(drinkwareSets);
             },
             $scope.handleError);
     }

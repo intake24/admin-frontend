@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('underscore');
+
 module.exports = function (app) {
     app.controller('AsServedSetController',
         ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
@@ -13,7 +15,7 @@ function controllerFun($scope, foodDataReader, DrawersService) {
 
     function reloadAsServedSets() {
         foodDataReader.getAsServedImageSets().then(function (asServedSets) {
-                $scope.asServedImageSets = asServedSets;
+                $scope.asServedImageSets = _.values(asServedSets);
             },
             $scope.handleError);
     }

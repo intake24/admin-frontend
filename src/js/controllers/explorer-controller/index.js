@@ -5,11 +5,11 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReader', 'FoodDataWriter',
-            'Packer', '$q', '$rootScope', 'MessageService', controllerFun]);
+            'Packer', '$q', '$rootScope', 'MessageService', 'Locales', controllerFun]);
 };
 
 function controllerFun($scope, $timeout, sharedData, problems, currentItem, foodDataReader,
-                       foodDataWriter, packer, $q, $rootScope, MessageService) {
+                       foodDataWriter, packer, $q, $rootScope, MessageService, locales) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, foodDataReader, packer, loadChildrenDeferred);
 
@@ -106,13 +106,16 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                     readyMealOption: {defined: false, value: null},
                     sameAsBeforeOption: {defined: false, value: null},
                     reasonableAmount: {defined: false, value: null},
-                }
+                },
+                parentCategories: []
             },
             local: {
                 version: {defined: false, value: null},
                 localDescription: {defined: false, value: null},
                 nutrientTableCodes: [],
-                portionSize: []
+                portionSize: [],
+                associatedFoods: [],
+                brandsNames: []
             }
         }
 
@@ -143,6 +146,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                     sameAsBeforeOption: {defined: false, value: null},
                     reasonableAmount: {defined: false, value: null},
                 },
+                parentCategories: []
             },
             local: {
                 version: {defined: false, value: null},
@@ -168,35 +172,27 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
-            foodDataReader.getFoodDefinition(item.code)
+            foodDataReader.getFoodDefinition(item.code, locales.current())
                 .then(function (targetFoodData) {
-                    return foodDataReader.getFoodParentCategories(item.code)
-                        .then(function (parentCategories) {
-                            var unpacked = packer.unpackFoodDefinition(targetFoodData);
-                            unpacked.englishDescription = "Copy of " + unpacked.englishDescription;
-                            var newFoodDef = packer.packNewFoodDefinition(unpacked);
+                    var unpacked = packer.unpackFoodRecord(targetFoodData);
+                    unpacked.englishDescription = "Copy of " + unpacked.englishDescription;
+                    var newFoodDef = packer.packNewFoodRecord(unpacked);
 
-                            return foodDataWriter.createNewFoodWithTempCode(newFoodDef)
-                                .then(function (newCode) {
-                                    var newLocalData = angular.copy(targetFoodData.local);
-                                    newLocalData.version = [];
-                                    newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
-                                    return foodDataWriter.updateFoodLocal(newCode, newLocalData)
-                                        .then(function () {
-                                            return $q.all(_.map(parentCategories, function (c) {
-                                                return foodDataWriter.addFoodToCategory(c.code, newCode)
-                                            }));
-                                        })
-                                        .then(function () {
-                                            MessageService.showMessage("Food cloned", "success");
-                                            makeVisibleAndSelect({
-                                                type: "food",
-                                                code: newCode,
-                                                englishDescription: targetFoodData.englishDescription,
-                                                localDescription: targetFoodData.local.localDescription,
-                                                displayName: targetFoodData.local.localDescription.defined ? targetFoodData.local.localDescription.value : targetFoodData.englishDescription
-                                            });
-                                        })
+                    return foodDataWriter.createNewFoodWithTempCode(newFoodDef)
+                        .then(function (newCode) {
+                            var newLocalData = angular.copy(targetFoodData.local);
+                            newLocalData.baseVersion = [];
+                            newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
+                            return foodDataWriter.updateFoodLocalRecord(newCode, newLocalData)
+                                .then(function () {
+                                    MessageService.showMessage("Food cloned", "success");
+                                    makeVisibleAndSelect({
+                                        type: "food",
+                                        code: newCode,
+                                        englishDescription: targetFoodData.englishDescription,
+                                        localDescription: targetFoodData.local.localDescription,
+                                        displayName: targetFoodData.local.localDescription.defined ? targetFoodData.local.localDescription.value : targetFoodData.englishDescription
+                                    });
                                 })
                         })
                 });

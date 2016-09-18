@@ -12,7 +12,7 @@ function controllerFun(DrawersService) {
     var self = this;
 
     this.addAssociatedFood = function () {
-        this.$parent.itemDefinition.associatedFoods.push({
+        this.$parent.itemDefinition.local.associatedFoods.push({
             question: "",
             mainFood: false,
             food: null,
@@ -21,8 +21,8 @@ function controllerFun(DrawersService) {
     };
 
     this.removeAssociatedFood = function (item) {
-        var i = this.$parent.itemDefinition.associatedFoods.indexOf(item);
-        this.$parent.itemDefinition.associatedFoods.splice(i, 1);
+        var i = this.$parent.itemDefinition.local.associatedFoods.indexOf(item);
+        this.$parent.itemDefinition.local.associatedFoods.splice(i, 1);
     };
 
     this.showAssociatedFoodDrawer = function (obj) {
@@ -37,10 +37,8 @@ function controllerFun(DrawersService) {
     this.$watch(function() {
         return DrawersService.drawerAssociatedFood.getValue();
     }, function() {
-        if (!selectedItem) {
-            return;
-        }
-        selectedItem.category = DrawersService.drawerAssociatedFood.getValue();
-    });
-
+        if (selectedItem) {
+          selectedItem.foodOrCategory = DrawersService.drawerAssociatedFood.getValue();
+    }
+  });
 }

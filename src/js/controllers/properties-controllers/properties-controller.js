@@ -29,15 +29,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         // then bound to page controls and can be edited.
         $scope.itemDefinition = null;
 
-        // A snapshot of the initial parent categories state.
-        // Loaded from the server when the currentItem changes.
-        // Used to generate add/remove category API calls when the item is saved.
-        $scope.originalParentCategories = null;
-
-        // Current state of the selected item's parent categories list.
-        // Can be edited using the "Manage categories" drawer.
-        $scope.parentCategories = null;
-
         // Local view of the current food/category in the current locale for debugging
         $scope.localFoodData = null;
 
@@ -93,11 +84,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
     };
 
-    $scope.parentCategoriesChanged = function () {
-        var changes = parentCategoryChanges();
-        return ((changes.add_to.length + changes.remove_from.length) > 0);
-    };
-
     $scope.notValid = function () {
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
             $scope.itemDefinition.main.englishDescription == '';
@@ -114,8 +100,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         $scope.currentItem = header;
         $scope.originalItemDefinition = newItem;
         $scope.itemDefinition = angular.copy(newItem);
-        $scope.originalParentCategories = [];
-        $scope.parentCategories = (parentNode.code == "$UNCAT") ? [] : [parentNode];
+        $scope.itemDefinition.main.parentCategories = (parentNode.code == "$UNCAT") ? [] : [parentNode];
         $scope.newItem = true;
     });
 
@@ -141,50 +126,51 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         currentItem.setChangedState($scope.itemChanged());
     });
 
+    $scope.useExclusivelyInThisLocale = function(use) {
+      if (arguments.length == 1) {
+        var newList = _.without($scope.itemDefinition.main.localeRestrictions, LocalesService.current());
+        if (use)
+          newList.push(LocalesService.current());
+        $scope.itemDefinition.main.localeRestrictions = newList;
+      } else {
+        if ($scope.itemDefinition)
+          return _.contains($scope.itemDefinition.main.localeRestrictions, LocalesService.current())
+        else
+          return false;
+      }
+    }
+
     function reloadData() {
         clearData();
 
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadBasicData(), loadParentCategories(), loadLocalData())
+            $q.all(loadMainRecord(), loadLocalRecord())
                 .finally(function () {
                     enableButtons();
                 });
         }
     }
 
-    function loadBasicData() {
+    function loadMainRecord() {
 
         if ($scope.currentItem.type == 'category') {
             return foodDataReader.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
-                    $scope.itemDefinition = packer.unpackCategoryDefinition(definition);
+                    $scope.itemDefinition = packer.unpackCategoryRecord(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         } else if ($scope.currentItem.type == 'food') {
             return foodDataReader.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
-                    $scope.itemDefinition = packer.unpackFoodDefinition(definition);
+                    $scope.itemDefinition = packer.unpackFoodRecord(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         }
     }
 
-    function loadParentCategories() {
-
-        function unpackCategories(categories) {
-            $scope.parentCategories = _.map(categories, packer.unpackCategoryHeader);
-            $scope.originalParentCategories = angular.copy($scope.parentCategories);
-        }
-
-        if ($scope.currentItem.type == 'food')
-            return foodDataReader.getFoodParentCategories($scope.currentItem.code).then(unpackCategories);
-        else if ($scope.currentItem.type == 'category')
-            return foodDataReader.getCategoryParentCategories($scope.currentItem.code).then(unpackCategories);
-    }
-
-    function loadLocalData() {
+    function loadLocalRecord() {
         if ($scope.currentItem.type == 'food') {
             return userFoodData.getFoodDataWithSources($scope.currentItem.code).then(
                 function (data) {
@@ -204,7 +190,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function reloadFoodGroups() {
         foodDataReader.getFoodGroups().then(
             function (groups) {
-                $scope.foodGroups = _.map(groups, packer.unpackFoodGroup);
+              $scope.foodGroups = _.map(_.values(groups), packer.unpackFoodGroup);
             });
     }
 
@@ -220,23 +206,6 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 return true;
         }
         return false;
-    }
-
-    function parentCategoryChanges() {
-        if ($scope.parentCategories && $scope.originalParentCategories)
-            return {
-                add_to: _.filter($scope.parentCategories, function (pc) {
-                    return !exists($scope.originalParentCategories, pc);
-                }),
-                remove_from: _.filter($scope.originalParentCategories, function (cpc) {
-                    return !exists($scope.parentCategories, cpc);
-                })
-            };
-        else
-            return {
-                add_to: [],
-                remove_from: []
-            };
     }
 
     function checkCode() {
@@ -271,56 +240,34 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         $scope.forceDisabledButtons = false;
     }
 
-    // Returns a single deferred for all the necessary category calls
-    function updateParentCategories() {
-        var changes = parentCategoryChanges();
-
-        var addRequests = _.map(changes.add_to, function (c) {
-            if ($scope.currentItem.type == 'food')
-                return foodDataWriter.addFoodToCategory(c.code, $scope.itemDefinition.main.code);
-            else if ($scope.currentItem.type == 'category')
-                return foodDataWriter.addCategoryToCategory(c.code, $scope.itemDefinition.main.code);
-        });
-
-        var deleteRequests = _.map(changes.remove_from, function (c) {
-            if ($scope.currentItem.type == 'food')
-                return foodDataWriter.removeFoodFromCategory(c.code, $scope.itemDefinition.main.code);
-            else if ($scope.currentItem.type == 'category')
-                return foodDataWriter.removeCategoryFromCategory(c.code, $scope.itemDefinition.main.code);
-        });
-
-        // $q.all is sequence: Array[Future[_]] => Future[Array[_]]
-        return $q.all(addRequests.concat(deleteRequests));
-    }
-
-    $scope.categoryBasicDefinitionChanged = function () {
+    $scope.categoryMainRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(packer.packCategoryBasicDefinition($scope.originalItemDefinition.main), packer.packCategoryBasicDefinition($scope.itemDefinition.main));
+            return !angular.equals(packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main), packer.packCategoryMainRecordUpdate($scope.itemDefinition.main));
         else
             return false;
     }
 
-    $scope.categoryLocalDefinitionChanged = function () {
+    $scope.categoryLocalRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(packer.packCategoryLocalDefinition($scope.originalItemDefinition.local), packer.packCategoryLocalDefinition($scope.itemDefinition.local));
+            return !angular.equals(packer.packCategoryLocalRecordUpdate($scope.originalItemDefinition.local), packer.packCategoryLocalRecordUpdate($scope.itemDefinition.local));
         else
             return false;
     }
 
-    $scope.foodBasicDefinitionChanged = function () {
+    $scope.foodMainRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalBasic = packer.packFoodBasicDefinition($scope.originalItemDefinition.main);
-            var packedCurrentBasic = packer.packFoodBasicDefinition($scope.itemDefinition.main);
+            var packedOriginalBasic = packer.packFoodMainRecordUpdate($scope.originalItemDefinition.main);
+            var packedCurrentBasic = packer.packFoodMainRecordUpdate($scope.itemDefinition.main);
             return !angular.equals(packedOriginalBasic, packedCurrentBasic);
         }
         else
             return false;
     }
 
-    $scope.foodLocalDefinitionChanged = function () {
+    $scope.loadLocalRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalLocal = packer.packFoodLocalDefinition($scope.originalItemDefinition.local);
-            var packedCurrentLocal = packer.packFoodLocalDefinition($scope.itemDefinition.local);
+            var packedOriginalLocal = packer.packFoodLocalRecordUpdate($scope.originalItemDefinition.local);
+            var packedCurrentLocal = packer.packFoodLocalRecordUpdate($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
         }
         else
@@ -328,11 +275,11 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.foodChanged = function () {
-        return $scope.foodBasicDefinitionChanged() || $scope.foodLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+        return $scope.foodMainRecordChanged() || $scope.loadLocalRecordChanged();
     }
 
     $scope.categoryChanged = function () {
-        return $scope.categoryBasicDefinitionChanged() || $scope.categoryLocalDefinitionChanged() || $scope.parentCategoriesChanged();
+        return $scope.categoryMainRecordChanged() || $scope.categoryLocalRecordChanged();
     }
 
     $scope.itemChanged = function () {
@@ -367,12 +314,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.updateCategory = function () {
         disableButtons();
 
-        updateCategoryBase()
+        updateCategoryMainRecord()
             .then(function () {
-                return updateParentCategories();
-            })
-            .then(function () {
-                return updateCategoryLocal();
+                return updateCategoryLocalRecord();
             })
             .then(
                 function () {
@@ -399,7 +343,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 displayName: $scope.itemDefinition.local.localDescription.defined ? $scope.itemDefinition.local.localDescription.value : $scope.itemDefinition.main.englishDescription
             },
             originalCode: $scope.originalItemDefinition.main.code,
-            parentCategories: _.map($scope.parentCategories, function (cat) {
+            parentCategories: _.map($scope.itemDefinition.main.parentCategories, function (cat) {
                 return cat.code;
             }),
         };
@@ -417,38 +361,37 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     // Will return a dummy 'true' value if no changes are detected.
     // Resulting value is not important, but HTTP errors must be handled further.
 
-    function updateFoodBase() {
-        if ($scope.foodBasicDefinitionChanged()) {
-            console.log($scope.itemDefinition);
-            var packed = packer.packFoodBasicDefinition($scope.itemDefinition.main);
-            return foodDataWriter.updateFoodBase($scope.originalItemDefinition.main.code, packed)
+    function updateFoodMainRecord() {
+        if ($scope.foodMainRecordChanged()) {
+            var packed = packer.packFoodMainRecordUpdate($scope.itemDefinition.main);
+            return foodDataWriter.updateFoodMainRecord($scope.originalItemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
     }
 
-    function updateFoodLocal() {
-        if ($scope.foodLocalDefinitionChanged()) {
-            var packed = packer.packFoodLocalDefinition($scope.itemDefinition.local);
-            return foodDataWriter.updateFoodLocal($scope.itemDefinition.main.code, packed);
+    function updateFoodLocalRecord() {
+        if ($scope.loadLocalRecordChanged()) {
+            var packed = packer.packFoodLocalRecordUpdate($scope.itemDefinition.local);
+            return foodDataWriter.updateFoodLocalRecord($scope.itemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
     }
 
-    function updateCategoryBase() {
-        if ($scope.categoryBasicDefinitionChanged()) {
-            var packed = packer.packCategoryBasicDefinition($scope.itemDefinition.main);
-            return foodDataWriter.updateCategoryBase($scope.originalItemDefinition.main.code, packed)
+    function updateCategoryMainRecord() {
+        if ($scope.categoryMainRecordChanged()) {
+            var packed = packer.packCategoryMainRecordUpdate($scope.itemDefinition.main);
+            return foodDataWriter.updateCategoryMainRecord($scope.originalItemDefinition.main.code, packed)
         } else {
             return $q.when(true);
         }
     }
 
-    function updateCategoryLocal() {
-        if ($scope.categoryLocalDefinitionChanged()) {
-            var packed = packer.packCategoryLocalDefinition($scope.itemDefinition.local);
-            return foodDataWriter.updateCategoryLocal($scope.itemDefinition.main.code, packed);
+    function updateCategoryLocalRecord() {
+        if ($scope.categoryLocalRecordChanged()) {
+            var packed = packer.packCategoryLocalRecordUpdate($scope.itemDefinition.local);
+            return foodDataWriter.updateCategoryLocalRecord($scope.itemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
@@ -457,14 +400,11 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.updateFood = function () {
         disableButtons();
 
-        updateFoodBase()
-            .then(function () {
-                return updateParentCategories();
+        updateFoodMainRecord()
+         .then(function () {
+              return updateFoodLocalRecord();
             })
-            .then(function () {
-                return updateFoodLocal();
-            })
-            .then(
+         .then(
                 function () {
                     MessageService.showMessage(gettext('Food updated'), 'success');
                     notifyItemUpdated();
@@ -484,15 +424,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.saveNewFood = function () {
-        var packed = packer.packNewFoodDefinition($scope.itemDefinition);
-
-        // FIXME: this really needs better error handling when the base record
-        // is able to be created, but the parent categories then fail to update
+        var packed = packer.packNewFoodRecord($scope.itemDefinition);
 
         foodDataWriter.createNewFood(packed)
-            .then(function () {
-                return updateParentCategories();
-            })
             .then(function () {
                 MessageService.showMessage(gettext('New food added'), 'success');
                 notifyItemUpdated();
@@ -508,15 +442,9 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.saveNewCategory = function () {
-        var packed = packer.packNewCategoryDefinition($scope.itemDefinition);
-
-        // FIXME: this really needs better error handling when the base record
-        // is able to be created, but the parent categories then fail to update
+        var packed = packer.packNewCategoryRecord($scope.itemDefinition);
 
         foodDataWriter.createNewCategory(packed)
-            .then(function () {
-                return updateParentCategories();
-            })
             .then(function () {
                 MessageService.showMessage(gettext('New category added'), 'success');
                 notifyItemUpdated();

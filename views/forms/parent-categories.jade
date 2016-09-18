@@ -3,10 +3,10 @@
 	.form-group
 		.col-xs-12
 			.categories-container
-				ul(ng-repeat='category in $parent.parentCategories | orderBy:"displayName"')
+				ul(ng-repeat='category in $parent.itemDefinition.main.parentCategories | orderBy:"displayName"')
 					li {{category.displayName}}
 
 	.form-group
 		.col-xs-12
-			button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer()')
+			button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer($parent.itemDefinition.main.parentCategories)')
 				span #{ gettext("Manage categories") }

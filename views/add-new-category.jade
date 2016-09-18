@@ -9,7 +9,8 @@
 
     .properties-footer
         .input-wrapper
-            button.intake-btn.success(type="button" ng-click='saveNewCategory()')
+            button.intake-btn.success(type="button" ng-click='saveNewCategory()'
+                                      ng-disabled="forceDisabledButtons || notValid()")
                 span #{ gettext("Add category") }
             button.intake-btn.danger(type="button" ng-click='cancelNewCategory()')
                 span #{ gettext("Cancel") }

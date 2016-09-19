@@ -5,76 +5,69 @@
 @import '_variables'
 
 .food-list-container
-	display none
-	padding 15px 10px
-	&.visible
-		display flex
-	.food-list
-		overflow hidden
-		ul.intake-problems-list
-			li
-				font-size 12px
-		ul
-			margin 0
-			padding 0
-			li
-				font-size 16px
-				margin 0
-				padding 0
-				.fa-circle-o, .fa-spin
-					margin-left 20px
-				a
-					border-radius 4px
-					display block
-					padding 8px 12px
-					white-space nowrap
-					&.active
-						background-color #f2f2f2
-					&:hover
-						cursor pointer
-				i
-					color #999
-				.fa-circle, .fa-circle-o, .fa-spin
-					color success-color
-					margin-right 5px
-					&.problems
-						color danger-color
-					&.editing
-						color warning-color
-			li > ul > li
-				padding 0 0 0 15px
-			li > ul
-				display none
-			.node-open > ul
-				display block !important
-		.intake-problems-list-name
-			font-weight bold
+  display none
+  padding 15px 10px
+  &.visible
+    display flex
+  .food-list
+    overflow hidden
+    ul.intake-problems-list
+      li
+        font-size 12px
+    ul
+      margin 0
+      padding 0
+      li
+        font-size 16px
+        margin 0
+        padding 0
+        .fa-circle-o, .fa-spin
+          margin-left 20px
+        i
+          color #999
+        .fa-circle, .fa-circle-o, .fa-spin
+          color success-color
+          margin-right 5px
+          &.problems
+            color danger-color
+          &.editing
+            color warning-color
+      li > ul > li
+        padding 0 0 0 15px
+      li > ul
+        display none
+      .node-open > ul
+        display block !important
+    .intake-problems-list-name
+      font-weight bold
+
+  &-node
+    border-radius 4px
+    display block
+    padding 8px 12px
+    white-space nowrap
+    &.active
+        background-color #f2f2f2
+
+    a
+      cursor pointer
 
 @media (max-width: 1080px)
-	.food-list-container
-		border-right none
-		border-bottom 1px solid #f2f2f2
-
-.fa-caret-right, .fa-caret-left
-	display inline-block
-.fa-caret-down
-	display none
-.node-open > a .fa-caret-right, .node-open > a .fa-caret-left
-	display none
-.node-open > a .fa-caret-down
-	display inline-block
+  .food-list-container
+    border-right none
+    border-bottom 1px solid #f2f2f2
 
 /* RTL Styles */
 
 html[dir="rtl"]
-	.food-list-container
-		.food-list
-			ul
-				li
-					.fa-circle-o, .fa-spin
-						margin-left auto
-						margin-right 20px
-					.fa-circle, .fa-circle-o, .fa-spin
-						margin-left 5px
-				li > ul > li
-					padding 0 15px 0 0
+  .food-list-container
+    .food-list
+      ul
+        li
+          .fa-circle-o, .fa-spin
+            margin-left auto
+            margin-right 20px
+          .fa-circle, .fa-circle-o, .fa-spin
+            margin-left 5px
+        li > ul > li
+          padding 0 15px 0 0

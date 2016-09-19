@@ -1,10 +1,18 @@
-a(ng-click='nodeClicked(value)' ng-class="value.selected ? 'active' : []")
-	i(class='fa fa-spinner fa-spin fa-fw' ng-class="{hidden: !value.loadingChildren}")
-	i(class='fa fa-caret-down fa-fw' ng-if='(value.type == "category" || value.type == "uncategorised") && !value.loadingChildren')
-	i(class='fa fa-caret-right fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "ltr") && !value.loadingChildren)')
-	i(class='fa fa-caret-left fa-fw' ng-if='((value.type == "category" || value.type == "uncategorised") && ("#{lang_dir}" == "rtl") && !value.loadingChildren)')
-	i(ng-class='nodeMarkerClass(value, #{lang_dir})' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='hasProblems(value) && !value.loadingChildren')
-	i(ng-class='nodeMarkerClass(value, #{lang_dir})' ng-if='!hasProblems(value) && !value.loadingChildren')
-	span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ value.displayName }}
+span.food-list-container-node(ng-class="{active: value.selected}")
+
+    a(ng-click='expandNode(value)')
+        span(ng-if='value.type == "category" || value.type == "uncategorised"')
+            i(class='fa fa-caret-down fa-fw' ng-show='!value.loadingChildren && value.open')
+            i(class='fa #{lang_dir == "ltr" ? "fa-caret-right" : "fa-caret-left" } fa-fw'
+            ng-hide='(value.loadingChildren || value.open)')
+
+        i(class='fa fa-spinner fa-spin fa-fw' ng-class="{hidden: !value.loadingChildren}")
+        i(ng-class='nodeMarkerClass(value)' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='hasProblems(value) && !value.loadingChildren')
+        i(ng-class='nodeMarkerClass(value)' ng-if='!hasProblems(value) && !value.loadingChildren')
+
+    a(ng-click='showNodeProperties(value)')
+
+        span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ value.displayName }}
+
 ul(ng-if='value.children')
-	li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
+    li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')

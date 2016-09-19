@@ -371,7 +371,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
     function makeVisibleAndSelect(node) {
         findNodeInTree(node).then(function (n) {
             clearSelection();
-            selectNode(n);
+            showNodeProperties(n);
             // Timeout is set to wait for the children to be loaded and then scroll to the selected element.
             // Fixme: Timeout is bad.
             $timeout(function () {
@@ -387,7 +387,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         return $scope.uncategorisedFoods.length > 0;
     }
 
-    function selectNode(node) {
+    function showNodeProperties(node) {
         if (!confirmSwitchToAnotherItem()) {
             return;
         }
@@ -396,15 +396,18 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         $scope.selectedNode = node;
         $scope.selectedNode.selected = true;
 
-        if ($scope.selectedNode.type == 'category') {
-            $scope.selectedNode.open = !$scope.selectedNode.open;
-            if ($scope.selectedNode.open)
-                loadChildren(node);
-        }
-
         // Don't show properties for the uncategorised foods node
         if (($scope.selectedNode.type != 'category') || ($scope.selectedNode.code != '$UNCAT'))
             currentItem.setCurrentItem($scope.selectedNode);
+    }
+
+    function expandNode(node) {
+        if (node.type == 'category') {
+            node.open = !node.open;
+            if (node.open) {
+                loadChildren(node);
+            }
+        }
     }
 
     function clearSelection() {
@@ -427,13 +430,13 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         }
     }
 
-    $scope.nodeClicked = function (node) {
-        selectNode(node);
-    }
+    $scope.showNodeProperties = showNodeProperties;
+
+    $scope.expandNode = expandNode;
 
     $scope.searchResultSelected = function ($event, node) {
         makeVisibleAndSelect(node);
-    }
+    };
 
     $scope.discardCategoryChanges = function () {
 
@@ -441,5 +444,5 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         $scope.fetchProperties();
 
         MessageService.showMessage(gettext('Changes discarded'), 'success');
-    }
+    };
 }

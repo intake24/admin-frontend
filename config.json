@@ -8,7 +8,7 @@
   "buildJsTo": "public/intake24-admin.js",
   "copyFontsFrom": ["node_modules/font-awesome/fonts/*", "node_modules/bootstrap/dist/fonts/*"],
   "copyFontsTo": "public/fonts/",
-  "uglifyJs": true,
+  "uglifyJs": false,
   "includeCssMaps": true,
   "includeJsMaps": true,
   "minifyCssFrom": ["node_modules/font-awesome/css/font-awesome.min.css",

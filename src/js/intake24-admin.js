@@ -6,8 +6,9 @@ require("angular-animate");
 require("angular-touch");
 require("angular-ui-bootstrap");
 require("angular-cookies");
+require("ui-select");
 
-var moduleRequirements = ['ngCookies', 'ui.bootstrap', 'ngSanitize', 'ngAnimate', 'ngTouch'],
+var moduleRequirements = ['ngCookies', 'ui.bootstrap', 'ngSanitize', 'ngAnimate', 'ngTouch', 'ui.select'],
     app = angular.module('intake24.admin', moduleRequirements);
 
 require('./controllers')(app);

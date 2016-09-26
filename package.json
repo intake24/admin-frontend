@@ -18,7 +18,7 @@
     "jquery": "^3.0.0",
     "js-cookie": "^2.1.2",
     "nib": "*",
-    "ui-select": "^0.18.0",
+    "ui-select": "^0.18.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

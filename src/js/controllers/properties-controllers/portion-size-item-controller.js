@@ -14,6 +14,8 @@ function controllerFun($scope, DrawersService, SharedData) {
     var selectedItem = null,
         targetField = undefined;
 
+    $scope.standardUnits = require('../../constants/standard-units-en')();
+
     $scope.sharedData = SharedData;
 
     $scope.selectServingImageSet = function (resultObj) {
@@ -83,8 +85,13 @@ function controllerFun($scope, DrawersService, SharedData) {
         }
     };
 
-    $scope.removeItem = function (index) {
+    $scope.removeStandardUnit = function (index) {
         $scope.portionSize.parameters.units.splice(index, 1);
+    };
+
+    $scope.addStandardUnit = function() {
+        var newUnit = {name: "", value:"", omitFoodDescription:false};
+        $scope.portionSize.parameters.units.push(newUnit);
     };
 
     $scope.unitHasError = function (unit) {

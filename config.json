@@ -13,6 +13,7 @@
   "includeJsMaps": true,
   "minifyCssFrom": ["node_modules/font-awesome/css/font-awesome.min.css",
                 "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "node_modules/ui-select/dist/select.min.css",
                 "src/temp/style.css"],
   "minifyCssTo": "public/style.css",
   "watchStylus": true,

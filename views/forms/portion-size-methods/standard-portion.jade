@@ -1,33 +1,37 @@
 //- Standard portion
 
 table.table.table-hover.units-list
-	thead
-		tr
-			th.text-nowrap
-				| #{ gettext("Unit name (plural)") }
-			th.text-nowrap
-				| #{ gettext("Unit weight (g)") }
-			th.text-nowrap
-				| #{ gettext("Omit food description") }
-			th
-	tbody
-		tr.unit-row(ng-repeat='unit in portionSize.parameters.units'
-					ng-class="{'danger': unitHasError(unit)}")
-			td
-				input.form-control(type='text' placeholder ='#{ gettext("Name") }' ng-model='unit.name')
-			td
-				input.form-control(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
-			td
-				input(type='checkbox' ng-model='unit.omitFoodDescription')
-			td
-				button.close(ng-click='removeItem($index)')
-					| &times;
+    thead
+        tr
+            th.text-nowrap
+                | #{ gettext("Unit name (plural)") }
+            th.text-nowrap
+                | #{ gettext("Unit weight (g)") }
+            th.text-nowrap
+                | #{ gettext("Omit food description") }
+            th
+    tbody
+        tr.unit-row(ng-repeat='unit in portionSize.parameters.units'
+        ng-class="{'danger': unitHasError(unit)}")
+            td
+                ui-select(ng-model="unit.name" title="{{ $select.selected || unit.name || 'Select unit...' }}")
+                    ui-select-match(placeholder="Select unit...")
+                        span(ng-bind="($select.selected.name || unit.name) | ngTextCutFilter : 14")
+                    ui-select-choices(repeat="item in (standardUnits | filter: $select.search)")
+                        span(ng-bind="item")
+            td
+                input.form-control(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
+            td
+                input(type='checkbox' ng-model='unit.omitFoodDescription')
+            td
+                button.close(ng-click='removeStandardUnit($index)')
+                    | &times;
 
 button.intake-btn.hidden(type="button")
-	span #{ gettext("Move up") }
+    span #{ gettext("Move up") }
 button.intake-btn.hidden(type="button")
-	span #{ gettext("Move down") }
+    span #{ gettext("Move down") }
 button.intake-btn(type="button"
-				ng-click='portionSize.parameters.units.push({name:"", value:"", omitFoodDescription:false})')
-	span #{ gettext("Add unit") }
+ng-click='addStandardUnit()')
+    span #{ gettext("Add unit") }
 .clearfloat

@@ -1,19 +1,25 @@
 form
-	.property
-		include basic-fields
-		.form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
-			label.col-xs-3.control-label(for='input-{{ id }}-code')
-				| {{ id }}
-			.col-xs-9
-				input.form-control(id='input-{{ id }}-code' type='text'
-								placeholder='#{ gettext("e.g. 10968") }'
-								ng-model='itemDefinition.local.nutrientTableCodes[id]')
-		.form-group
-			label.col-xs-3.control-label(for='food-group-dropdown')
-				| #{ gettext("Food group") }
-			.col-xs-9
-				select.form-control(id='food-group-dropdown'
-									ng-options="fg.id as fg.displayName for fg in foodGroups"
-									ng-model="itemDefinition.groupCode")
+    .property
+        include basic-fields
+        .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
+            label.col-xs-3.control-label(for='input-{{ id }}-code')
+                | {{ id }}
+            .col-xs-9
+                input.form-control(id='input-{{ id }}-code' type='text'
+                placeholder='#{ gettext("e.g. 10968") }'
+                ng-model='itemDefinition.local.nutrientTableCodes[id]')
+        .form-group
+            label.col-xs-3.control-label(for='food-group-dropdown')
+                | #{ gettext("Food group") }
+            .col-xs-9
+                select.form-control(id='food-group-dropdown'
+                ng-options="fg.id as fg.displayName for fg in foodGroups"
+                ng-model="itemDefinition.groupCode")
 
-	include parent-categories
+        .form-group
+            .col-xs-9.col-xs-offset-3
+                label.checkbox-inline
+                    input(type='checkbox' ng-model='useExclusivelyInThisLocale' ng-model-options='{getterSetter: true}')
+                    span #{ gettext("properties_use_exclusively_in_this_locale") }
+
+    include parent-categories

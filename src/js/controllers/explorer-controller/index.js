@@ -107,7 +107,8 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                     sameAsBeforeOption: {defined: false, value: null},
                     reasonableAmount: {defined: false, value: null},
                 },
-                parentCategories: []
+                parentCategories: [],
+                localeRestrictions: []
             },
             local: {
                 version: {defined: false, value: null},
@@ -117,7 +118,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                 associatedFoods: [],
                 brandsNames: []
             }
-        }
+        };
 
         var header = {
             type: "food",
@@ -125,7 +126,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             englishDescription: newFood.englishDescription,
             localDescription: newFood.local.localDescription,
             displayName: newFood.englishDescription
-        }
+        };
 
         $rootScope.$broadcast("intake24.admin.food_db.NewItemCreated", newFood, header, parentNode);
 

@@ -16,7 +16,7 @@ table.table.table-hover.units-list
             td
                 ui-select(ng-model="unit.name" title="{{ $select.selected || unit.name || 'Select unit...' }}")
                     ui-select-match(placeholder="Select unit...")
-                        span(ng-bind="($select.selected.name || unit.name) | ngTextCutFilter : 14")
+                        span(ng-bind="($select.selected || unit.name) | ngTextCutFilter : 14")
                     ui-select-choices(repeat="item in (standardUnits | filter: $select.search)")
                         span(ng-bind="item")
             td

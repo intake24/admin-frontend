@@ -1,44 +1,46 @@
 .property(ng-controller="PortionSizeController")
     h3 #{ gettext("Portion size estimation") }
     .form-subgroup(ng-repeat='portionSize in portionSizes'
-                    ng-controller="PortionSizeItemController"
-                    ng-init="portionSize=portionSize")
+    ng-controller="PortionSizeItemController"
+    ng-init="portionSize=portionSize")
         .form-group
             .col-xs-12
                 button.close(type="button" title='#{ gettext("Delete this method") }'
-                            ng-click='deletePortionSize($index)') &times;
+                ng-click='deletePortionSize($index)') &times;
 
-        .form-group
+        .form-group(ng-class="{'has-error': !portionSize.description}")
             label.col-xs-3.control-label(for="portion-size-description-{{$index}}")
                 | #{ gettext("Description") }
             .col-xs-9
-                input.form-control(id="portion-size-description-{{$index}}"
-                    placeholder='#{ gettext("Description") }'
-                    ng-model='portionSize.description'
-                    ng-class="{'invalid': !portionSize.description}")
+                ui-select(id="portion-size-description-{{$index}}"
+                ng-model="portionSize.description" title="{{ 'Select description...' }}")
+                    ui-select-match(placeholder="Select description...")
+                        span(ng-bind="($select.selected.name)")
+                    ui-select-choices(repeat="item.id as item in (portionSizeDescriptions | filter: {name: $select.search})")
+                        span(ng-bind="item.name")
         .form-group
             label.col-xs-3.control-label(for="portion-size-imgurl-{{$index}}")
                 | #{ gettext("Image") }
             .col-xs-9
                 input.form-control(id="portion-size-imgurl-{{$index}}"
-                    placeholder='#{ gettext("e.g. path/filename.jpg") }'
-                    ng-model='portionSize.imageUrl'
-                    ng-class="{'invalid': !portionSize.imageUrl}")
+                placeholder='#{ gettext("e.g. path/filename.jpg") }'
+                ng-model='portionSize.imageUrl'
+                ng-class="{'invalid': !portionSize.imageUrl}")
         .form-group
             label.col-xs-3.control-label(for="portion-size-use-for-recipes-{{$index}}")
                 | #{ gettext("Use for recipes") }
             .col-xs-9
                 input(type='checkbox' id="portion-size-use-for-recipes-{{$index}}"
-                    ng-model='portionSize.useForRecipes')
+                ng-model='portionSize.useForRecipes')
         .form-group
             label.col-xs-3.control-label(for="portion-size-method-{{$index}}")
                 | #{ gettext("Estimation method") }
             .col-xs-9
                 select.form-control(id="portion-size-method-{{$index}}"
-                                    ng-model="portionSizeMethodModel(portionSize)"
-                                    ng-model-options="{getterSetter : true}")
+                ng-model="portionSizeMethodModel(portionSize)"
+                ng-model-options="{getterSetter : true}")
                     option(ng-repeat="estimationMethod in sharedData.estimationMethods"
-                            value="{{estimationMethod.slug}}") {{estimationMethod.name}}
+                    value="{{estimationMethod.slug}}") {{estimationMethod.name}}
 
         .as-served(ng-if='portionSize.method == "as-served"')
             include portion-size-methods/as-served

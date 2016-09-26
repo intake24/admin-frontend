@@ -11,6 +11,7 @@ function controllerFun($scope, FoodDataReader, SharedData) {
 
     $scope.sharedData = SharedData;
     $scope.portionSizesValidations = [];
+    $scope.portionSizeDescriptions = require('../../constants/portion-description-en')();
 
     $scope.addPortionSize = function () {
         $scope.portionSizes.push({

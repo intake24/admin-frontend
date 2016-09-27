@@ -176,13 +176,14 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             foodDataReader.getFoodDefinition(item.code, locales.current())
                 .then(function (targetFoodData) {
                     var unpacked = packer.unpackFoodRecord(targetFoodData);
-                    unpacked.englishDescription = "Copy of " + unpacked.englishDescription;
+                    unpacked.main.englishDescription = "Copy of " + unpacked.main.englishDescription;
                     var newFoodDef = packer.packNewFoodRecord(unpacked);
 
                     return foodDataWriter.createNewFoodWithTempCode(newFoodDef)
                         .then(function (newCode) {
                             var newLocalData = angular.copy(targetFoodData.local);
                             newLocalData.baseVersion = [];
+                            newLocalData.associatedFoods = _.map(targetFoodData.associatedFoods, packer.stripAssociatedFoodHeader);
                             newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
                             return foodDataWriter.updateFoodLocalRecord(newCode, newLocalData)
                                 .then(function () {

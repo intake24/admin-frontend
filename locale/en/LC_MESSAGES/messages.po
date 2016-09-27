@@ -102,8 +102,6 @@ msgstr "Use exclusively in this locale"
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:5
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:57
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:58
-msgid "Description"
-msgstr "Description"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:5
 msgid "Beans on toast"
@@ -180,8 +178,20 @@ msgstr "Portion size estimation"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:59
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:60
-msgid "Image"
+msgid "properties_portion_size_description"
+msgstr "Description"
+
+msgid "properties_portion_size_description_select"
+msgstr "Select description..."
+
+msgid "properties_portion_size_image"
 msgstr "Image"
+
+msgid "properties_portion_size_image_edit"
+msgstr "Edit image URL"
+
+msgid "properties_portion_size_standard_portion_unit_name_select"
+msgstr "Select unit..."
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.jade:60
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.jade:61

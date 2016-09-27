@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('underscore');
+var _ = require('underscore'),
+    images = require('./default-portion-size-selection-images')();
 
 module.exports = function () {
     var l = [

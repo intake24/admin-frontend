@@ -2,7 +2,11 @@
 
 var angular = require('angular'),
     _ = require('underscore'),
-    controllerName = 'PortionSizeItemController';
+    PORTION_DESCRIPTIONS = require('../../constants/portion-description-en')(),
+    STANDARD_UNITS = require('../../constants/standard-units-en')(),
+    PORTION_IMAGES = require('../../constants/default-portion-size-selection-images')();
+
+var controllerName = 'PortionSizeItemController';
 
 module.exports = function (app) {
     app.controller(controllerName,
@@ -14,9 +18,16 @@ function controllerFun($scope, DrawersService, SharedData) {
     var selectedItem = null,
         targetField = undefined;
 
-    $scope.standardUnits = require('../../constants/standard-units-en')();
+    $scope.portionSizeDescriptions = PORTION_DESCRIPTIONS;
+    $scope.standardUnits = STANDARD_UNITS;
 
     $scope.sharedData = SharedData;
+
+    $scope.imageUrlEditable = false;
+
+    $scope.toggleImageUrlEdit = function() {
+        $scope.imageUrlEditable = !$scope.imageUrlEditable;
+    };
 
     $scope.selectServingImageSet = function (resultObj) {
         selectedItem = resultObj;
@@ -89,8 +100,8 @@ function controllerFun($scope, DrawersService, SharedData) {
         $scope.portionSize.parameters.units.splice(index, 1);
     };
 
-    $scope.addStandardUnit = function() {
-        var newUnit = {name: "", value:"", omitFoodDescription:false};
+    $scope.addStandardUnit = function () {
+        var newUnit = {name: "", value: "", omitFoodDescription: false};
         $scope.portionSize.parameters.units.push(newUnit);
     };
 
@@ -154,6 +165,13 @@ function controllerFun($scope, DrawersService, SharedData) {
         }
     });
 
+    $scope.$watch('portionSize.description', function (newVal, oldVal) {
+        if (newVal != oldVal) {
+            $scope.portionSize.imageUrl = PORTION_IMAGES[$scope.portionSize.description];
+            $scope.imageUrlEditable = false;
+        }
+    });
+
 }
 
 function portionSizeIsValid() {
@@ -187,8 +205,8 @@ function portionSizeIsValid() {
 }
 
 function portionGeneralParametersAreValid() {
-    return this.description!=undefined && this.description!='' &&
-            this.imageUrl!=undefined && this.imageUrl!='';
+    return this.description != undefined && this.description != '' &&
+        this.imageUrl != undefined && this.imageUrl != '';
 }
 
 function standardPortionParametersAreValid() {

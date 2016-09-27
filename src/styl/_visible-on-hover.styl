@@ -1,0 +1,8 @@
+.visible-on-hover
+  opacity 0
+  transition opacity $transition
+
+.child-visible-on-hover
+  &:hover
+    .visible-on-hover
+      opacity 1

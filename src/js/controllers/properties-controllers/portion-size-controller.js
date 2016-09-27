@@ -4,14 +4,13 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('PortionSizeController',
-        ['$scope', 'FoodDataReader', 'SharedData', controllerFun]);
+        ['$scope', 'SharedData', controllerFun]);
 };
 
-function controllerFun($scope, FoodDataReader, SharedData) {
+function controllerFun($scope, SharedData) {
 
     $scope.sharedData = SharedData;
     $scope.portionSizesValidations = [];
-    $scope.portionSizeDescriptions = require('../../constants/portion-description-en')();
 
     $scope.addPortionSize = function () {
         $scope.portionSizes.push({

@@ -1,3 +1,28 @@
 .text
   &-muted
     color #777
+
+a
+  color $anchorColor
+  text-decoration none
+  transition color $transition
+
+  &:hover
+  &:focus
+    color darken($anchorColor, $hoverDarken)
+    text-decoration underline
+
+.dashed
+  border-bottom 1px dashed
+
+  &:hover
+  &:focus
+    text-decoration none
+
+.no-text-decoration
+  text-decoration none
+
+  &:hover
+  &:focus
+  &:active
+    text-decoration none

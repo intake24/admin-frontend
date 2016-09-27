@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (app) {
-    app.directive('jfbFormModel', directiveFun);
+    app.directive('jfbFormModel', [directiveFun]);
 };
 
 function directiveFun() {

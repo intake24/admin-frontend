@@ -1,7 +1,5 @@
 'use strict';
 
-var Cookies = require('js-cookie');
-
 module.exports = function (app) {
     app.service('UserFoodData', ['$http', 'Locales', serviceFun]);
 };

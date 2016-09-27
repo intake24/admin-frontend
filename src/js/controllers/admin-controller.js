@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AdminController', ["$scope", "UserService", "ModalService", controllerFun]);
+    app.controller('AdminController', ["$scope", "UserStateService", "ModalService", controllerFun]);
 };
 
-function controllerFun($scope, UserService, ModalService) {
+function controllerFun($scope, UserStateService, ModalService) {
     $scope.authUsername = '';
     $scope.authenticated = false;
     $scope.sidebaropen = false;
@@ -16,10 +16,10 @@ function controllerFun($scope, UserService, ModalService) {
     };
 
     $scope.$watch(function() {
-        return UserService.getAuthenticated();
+        return UserStateService.getAuthenticated();
     }, function() {
-        $scope.authUsername = UserService.getUsername();
-        $scope.authenticated = UserService.getAuthenticated();
+        $scope.authUsername = UserStateService.getUsername();
+        $scope.authenticated = UserStateService.getAuthenticated();
     });
 
 }

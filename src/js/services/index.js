@@ -11,7 +11,8 @@ module.exports = function(app) {
     require('./packer-service')(app);
     require('./drawers-service')(app);
     require('./shared-data-service')(app);
-    require('./user-service')(app);
+    require('./user-state-service')(app);
+    require('./user-request-service')(app);
     require('./message-service')(app);
     require('./modal-service')(app);
     require('./http-request-interceptor')(app);

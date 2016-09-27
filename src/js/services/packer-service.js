@@ -350,20 +350,29 @@ function serviceFun() {
         };
     };
 
+    instance.stripAssociatedFoodHeader = function(withHeader) {
+      var foodOrCategoryCode;
+
+      if (withHeader.foodOrCategory == null)
+        foodOrCategoryCode = null;
+      else
+        foodOrCategoryCode = [withHeader.foodOrCategory.type == 'food' ? 0 : 1, withHeader.foodOrCategory.code];
+
+      return {
+          foodOrCategoryCode: foodOrCategoryCode,
+          genericName: withHeader.genericName,
+          linkAsMain: withHeader.linkAsMain,
+          promptText: withHeader.promptText
+      };
+    };
+
     instance.packFoodLocalRecordUpdate = function (unpacked) {
         return {
             baseVersion: instance.packOption(unpacked.version),
             localDescription: instance.packOption(unpacked.localDescription),
             nutrientTableCodes: unpacked.nutrientTableCodes,
             portionSize: instance.packPortionSizes(unpacked.portionSize),
-            associatedFoods: _.map(unpacked.associatedFoods, function (withHeader) {
-                return {
-                    foodOrCategory: [withHeader.type == 'food' ? 0 : 1, withHeader.code],
-                    genericName: withHeader.genericName,
-                    linkAsMain: withHeader.linkAsMain,
-                    promptText: withHeader.promptText
-                };
-            }),
+            associatedFoods: _.map(unpacked.associatedFoods, instance.stripAssociatedFoodHeader),
             brandNames: [],
             doNotUse: unpacked.doNotUseInThisLocale
         };

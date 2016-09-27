@@ -5,1595 +5,1591 @@ var _ = require('underscore');
 module.exports = function () {
     var l = [
         {
-            id: 'one_inch_pieces_estimate_in',
+            id: 'one_inch_pieces',
             name: 'inch pieces'
         },
 
         {
-            id: 'anchovies_estimate_in',
+            id: 'anchovies',
             name: 'anchovies'
         },
 
         {
-            id: 'apricots_estimate_in',
+            id: 'apricots',
             name: 'apricots'
         },
 
         {
-            id: 'artichoke_hearts_estimate_in',
+            id: 'artichoke_hearts',
             name: 'artichoke hearts'
         },
 
         {
-            id: 'aubergine_estimate_in',
+            id: 'aubergine',
             name: 'aubergine'
         },
 
         {
-            id: 'average_size_bags_estimate_in',
+            id: 'average_size_bags',
             name: 'average size bags'
         },
 
         {
-            id: 'average_sized_dim_sum_estimate_in',
+            id: 'average_sized_dim_sum',
             name: 'average sized dim sum'
         },
 
         {
-            id: 'average_sized_flapjacks_estimate_in',
+            id: 'average_sized_flapjacks',
             name: 'average sized flapjacks'
         },
 
         {
-            id: 'average_spring_rolls_estimate_in',
+            id: 'average_spring_rolls',
             name: 'average spring rolls'
         },
 
         {
-            id: 'average_tubs___bags_estimate_in',
+            id: 'average_tubs___bags',
             name: 'average tubs / bags'
         },
 
         {
-            id: 'bacon_and_cheese_grills_estimate_in',
+            id: 'bacon_and_cheese_grills',
             name: 'bacon and cheese grills'
         },
 
         {
-            id: 'bagels_estimate_in',
+            id: 'bagels',
             name: 'bagels'
         },
 
         {
-            id: 'bags_estimate_in',
+            id: 'bags',
             name: 'bags'
         },
 
         {
-            id: 'balls_estimate_in',
+            id: 'balls',
             name: 'balls'
         },
 
         {
-            id: 'bars_estimate_in',
+            id: 'bars',
             name: 'bars'
         },
 
         {
-            id: 'batons_estimate_in',
+            id: 'batons',
             name: 'batons'
         },
 
         {
-            id: 'beetroot_estimate_in',
+            id: 'beetroot',
             name: 'beetroot'
         },
 
         {
-            id: 'berries_estimate_in',
+            id: 'berries',
             name: 'berries'
         },
 
         {
-            id: 'biscuits_estimate_in',
+            id: 'biscuits',
             name: 'biscuits'
         },
 
         {
-            id: 'bites_estimate_in',
+            id: 'bites',
             name: 'bites'
         },
 
         {
-            id: 'blocks_estimate_in',
+            id: 'blocks',
             name: 'blocks'
         },
 
         {
-            id: 'bunches_estimate_in',
+            id: 'bunches',
             name: 'bunches'
         },
 
         {
-            id: 'burritos_estimate_in',
+            id: 'burritos',
             name: 'burritos'
         },
 
         {
-            id: 'cakes_estimate_in',
+            id: 'cakes',
             name: 'cakes'
         },
 
         {
-            id: 'cannelloni_tubes_estimate_in',
+            id: 'cannelloni_tubes',
             name: 'cannelloni tubes'
         },
 
         {
-            id: 'cartons_estimate_in',
+            id: 'cartons',
             name: 'cartons'
         },
 
         {
-            id: 'cassavas_estimate_in',
+            id: 'cassavas',
             name: 'cassavas'
         },
 
         {
-            id: 'cherries_estimate_in',
+            id: 'cherries',
             name: 'cherries'
         },
 
         {
-            id: 'chicken_livers_estimate_in',
+            id: 'chicken_livers',
             name: 'chicken livers'
         },
 
         {
-            id: 'chillies_estimate_in',
+            id: 'chillies',
             name: 'chillies'
         },
 
         {
-            id: 'chocolate_oranges_estimate_in',
+            id: 'chocolate_oranges',
             name: 'chocolate oranges'
         },
 
         {
-            id: 'chocolates_estimate_in',
+            id: 'chocolates',
             name: 'chocolates'
         },
 
         {
-            id: 'cloves_estimate_in',
+            id: 'cloves',
             name: 'cloves'
         },
 
         {
-            id: 'crackers_estimate_in',
+            id: 'crackers',
             name: 'crackers'
         },
 
         {
-            id: 'cups_estimate_in',
+            id: 'cups',
             name: 'cups'
         },
 
         {
-            id: 'dates_estimate_in',
+            id: 'dates',
             name: 'dates'
         },
 
         {
-            id: 'double_measures_estimate_in',
+            id: 'double_measures',
             name: 'double measures'
         },
 
         {
-            id: 'dough_balls_estimate_in',
+            id: 'dough_balls',
             name: 'dough balls'
         },
 
         {
-            id: 'dumplings_estimate_in',
+            id: 'dumplings',
             name: 'dumplings'
         },
 
         {
-            id: 'eggs_estimate_in',
+            id: 'eggs',
             name: 'eggs'
         },
 
         {
-            id: 'enchiladas_estimate_in',
+            id: 'enchiladas',
             name: 'enchiladas'
         },
 
         {
-            id: 'extra_large_bars_estimate_in',
+            id: 'extra_large_bars',
             name: 'extra large bars'
         },
 
         {
-            id: 'extra_large_eggs_estimate_in',
+            id: 'extra_large_eggs',
             name: 'extra large eggs'
         },
 
         {
-            id: 'extra_large_triangles_estimate_in',
+            id: 'extra_large_triangles',
             name: 'extra large triangles'
         },
 
         {
-            id: 'fajitas_estimate_in',
+            id: 'fajitas',
             name: 'fajitas'
         },
 
         {
-            id: 'falafels_estimate_in',
+            id: 'falafels',
             name: 'falafels'
         },
 
         {
-            id: 'fatty_cutties_estimate_in',
+            id: 'fatty_cutties',
             name: 'fatty cutties'
         },
 
         {
-            id: 'fillets_estimate_in',
+            id: 'fillets',
             name: 'fillets'
         },
 
         {
-            id: 'fingers_estimate_in',
+            id: 'fingers',
             name: 'fingers'
         },
 
         {
-            id: 'fritters_estimate_in',
+            id: 'fritters',
             name: 'fritters'
         },
 
         {
-            id: 'fruits_estimate_in',
+            id: 'fruits',
             name: 'fruits'
         },
 
         {
-            id: 'grapes_estimate_in',
+            id: 'grapes',
             name: 'grapes'
         },
 
         {
-            id: 'handfuls_estimate_in',
+            id: 'handfuls',
             name: 'handfuls'
         },
 
         {
-            id: 'heaped_tablespoons_estimate_in',
+            id: 'heaped_tablespoons',
             name: 'heaped tablespoons'
         },
 
         {
-            id: 'heaped_teaspoons_estimate_in',
+            id: 'heaped_teaspoons',
             name: 'heaped teaspoons'
         },
 
         {
-            id: 'hot_pots_estimate_in',
+            id: 'hot_pots',
             name: 'hot pots'
         },
 
         {
-            id: 'ice_cream_sandwiches_estimate_in',
+            id: 'ice_cream_sandwiches',
             name: 'ice cream sandwiches'
         },
 
         {
-            id: 'individual_packs_estimate_in',
+            id: 'individual_packs',
             name: 'individual packs'
         },
 
         {
-            id: 'individual_pies_estimate_in',
+            id: 'individual_pies',
             name: 'individual pies'
         },
 
         {
-            id: 'individual_pots_estimate_in',
+            id: 'individual_pots',
             name: 'individual pots'
         },
 
         {
-            id: 'individual_tarts_estimate_in',
+            id: 'individual_tarts',
             name: 'individual tarts'
         },
 
         {
-            id: 'jars_estimate_in',
+            id: 'jars',
             name: 'jars'
         },
 
         {
-            id: 'kebabs_estimate_in',
+            id: 'kebabs',
             name: 'kebabs'
         },
 
         {
-            id: 'kingsize_pots_estimate_in',
+            id: 'kingsize_pots',
             name: 'kingsize pots'
         },
 
         {
-            id: 'large_aubergines_estimate_in',
+            id: 'large_aubergines',
             name: 'large aubergines'
         },
 
         {
-            id: 'large_avocados_estimate_in',
+            id: 'large_avocados',
             name: 'large avocados'
         },
 
         {
-            id: 'large_bags_estimate_in',
+            id: 'large_bags',
             name: 'large bags'
         },
 
         {
-            id: 'large_bananas_estimate_in',
+            id: 'large_bananas',
             name: 'large bananas'
         },
 
         {
-            id: 'large_bars_estimate_in',
+            id: 'large_bars',
             name: 'large bars'
         },
 
         {
-            id: 'large_biscuits_estimate_in',
+            id: 'large_biscuits',
             name: 'large biscuits'
         },
 
         {
-            id: 'large_bottles_estimate_in',
+            id: 'large_bottles',
             name: 'large bottles'
         },
 
         {
-            id: 'large_bowls_estimate_in',
+            id: 'large_bowls',
             name: 'large bowls'
         },
 
         {
-            id: 'large_carrots_estimate_in',
+            id: 'large_carrots',
             name: 'large carrots'
         },
 
         {
-            id: 'large_cartons_estimate_in',
+            id: 'large_cartons',
             name: 'large cartons'
         },
 
         {
-            id: 'large_chops_estimate_in',
+            id: 'large_chops',
             name: 'large chops'
         },
 
         {
-            id: 'large_cobs_estimate_in',
+            id: 'large_cobs',
             name: 'large cobs'
         },
 
         {
-            id: 'large_crackers_estimate_in',
+            id: 'large_crackers',
             name: 'large crackers'
         },
 
         {
-            id: 'large_eggs_estimate_in',
+            id: 'large_eggs',
             name: 'large eggs'
         },
 
         {
-            id: 'large_fillets_estimate_in',
+            id: 'large_fillets',
             name: 'large fillets'
         },
 
         {
-            id: 'large_flapjacks_estimate_in',
+            id: 'large_flapjacks',
             name: 'large flapjacks'
         },
 
         {
-            id: 'large_gherkins_estimate_in',
+            id: 'large_gherkins',
             name: 'large gherkins'
         },
 
         {
-            id: 'large_handfuls_estimate_in',
+            id: 'large_handfuls',
             name: 'large handfuls'
         },
 
         {
-            id: 'large_hot_dogs_estimate_in',
+            id: 'large_hot_dogs',
             name: 'large hot dogs'
         },
 
         {
-            id: 'large_jars_estimate_in',
+            id: 'large_jars',
             name: 'large jars'
         },
 
         {
-            id: 'large_kiwis_estimate_in',
+            id: 'large_kiwis',
             name: 'large kiwis'
         },
 
         {
-            id: 'large_mushrooms_estimate_in',
+            id: 'large_mushrooms',
             name: 'large mushrooms'
         },
 
         {
-            id: 'large_naan_breads_estimate_in',
+            id: 'large_naan_breads',
             name: 'large naan breads'
         },
 
         {
-            id: 'large_omelettes_4_eggs_estimate_in',
+            id: 'large_omelettes_4_eggs',
             name: 'large omelettes (4 eggs)'
         },
 
         {
-            id: 'large_onions_estimate_in',
+            id: 'large_onions',
             name: 'large onions'
         },
 
         {
-            id: 'large_pancakes_estimate_in',
+            id: 'large_pancakes',
             name: 'large pancakes'
         },
 
         {
-            id: 'large_parsnips_estimate_in',
+            id: 'large_parsnips',
             name: 'large parsnips'
         },
 
         {
-            id: 'large_pastries_estimate_in',
+            id: 'large_pastries',
             name: 'large pastries'
         },
 
         {
-            id: 'large_pies_estimate_in',
+            id: 'large_pies',
             name: 'large pies'
         },
 
         {
-            id: 'large_plantains_estimate_in',
+            id: 'large_plantains',
             name: 'large plantains'
         },
 
         {
-            id: 'large_portions_estimate_in',
+            id: 'large_portions',
             name: 'large portions'
         },
 
         {
-            id: 'large_pots_estimate_in',
+            id: 'large_pots',
             name: 'large pots'
         },
 
         {
-            id: 'large_scones_estimate_in',
+            id: 'large_scones',
             name: 'large scones'
         },
 
         {
-            id: 'large_share_bags_estimate_in',
+            id: 'large_share_bags',
             name: 'large share bags'
         },
 
         {
-            id: 'large_skewers_estimate_in',
+            id: 'large_skewers',
             name: 'large skewers'
         },
 
         {
-            id: 'large_slices_estimate_in',
+            id: 'large_slices',
             name: 'large slices'
         },
 
         {
-            id: 'large_spring_rolls_estimate_in',
+            id: 'large_spring_rolls',
             name: 'large spring rolls'
         },
 
         {
-            id: 'large_squares_estimate_in',
+            id: 'large_squares',
             name: 'large squares'
         },
 
         {
-            id: 'large_steaks_estimate_in',
+            id: 'large_steaks',
             name: 'large steaks'
         },
 
         {
-            id: 'large_tarts_estimate_in',
+            id: 'large_tarts',
             name: 'large tarts'
         },
 
         {
-            id: 'large_truffles_estimate_in',
+            id: 'large_truffles',
             name: 'large truffles'
         },
 
         {
-            id: 'large_tubs_estimate_in',
+            id: 'large_tubs',
             name: 'large tubs'
         },
 
         {
-            id: 'leaves_estimate_in',
+            id: 'leaves',
             name: 'leaves'
         },
 
         {
-            id: 'leeks_estimate_in',
+            id: 'leeks',
             name: 'leeks'
         },
 
         {
-            id: 'level_tablespoons_estimate_in',
+            id: 'level_tablespoons',
             name: 'level tablespoons'
         },
 
         {
-            id: 'level_teaspoons_estimate_in',
+            id: 'level_teaspoons',
             name: 'level teaspoons'
         },
 
         {
-            id: 'lollipops_estimate_in',
+            id: 'lollipops',
             name: 'lollipops'
         },
 
         {
-            id: 'macaroons_estimate_in',
+            id: 'macaroons',
             name: 'macaroons'
         },
 
         {
-            id: 'mange_tout_estimate_in',
+            id: 'mange_tout',
             name: 'mange tout'
         },
 
         {
-            id: 'marshmallows_estimate_in',
+            id: 'marshmallows',
             name: 'marshmallows'
         },
 
         {
-            id: 'meatballs_estimate_in',
+            id: 'meatballs',
             name: 'meatballs'
         },
 
         {
-            id: 'medium_aubergines_estimate_in',
+            id: 'medium_aubergines',
             name: 'medium aubergines'
         },
 
         {
-            id: 'medium_avocados_estimate_in',
+            id: 'medium_avocados',
             name: 'medium avocados'
         },
 
         {
-            id: 'medium_bags_estimate_in',
+            id: 'medium_bags',
             name: 'medium bags'
         },
 
         {
-            id: 'medium_bananas_estimate_in',
+            id: 'medium_bananas',
             name: 'medium bananas'
         },
 
         {
-            id: 'medium_bars_estimate_in',
+            id: 'medium_bars',
             name: 'medium bars'
         },
 
         {
-            id: 'medium_beetroot_estimate_in',
+            id: 'medium_beetroot',
             name: 'medium beetroot'
         },
 
         {
-            id: 'medium_biscuits_estimate_in',
+            id: 'medium_biscuits',
             name: 'medium biscuits'
         },
 
         {
-            id: 'medium_bowls_estimate_in',
+            id: 'medium_bowls',
             name: 'medium bowls'
         },
 
         {
-            id: 'medium_carrots_estimate_in',
+            id: 'medium_carrots',
             name: 'medium carrots'
         },
 
         {
-            id: 'medium_cartons_estimate_in',
+            id: 'medium_cartons',
             name: 'medium cartons'
         },
 
         {
-            id: 'medium_chops_estimate_in',
+            id: 'medium_chops',
             name: 'medium chops'
         },
 
         {
-            id: 'medium_courgettes_estimate_in',
+            id: 'medium_courgettes',
             name: 'medium courgettes'
         },
 
         {
-            id: 'medium_eggs_estimate_in',
+            id: 'medium_eggs',
             name: 'medium eggs'
         },
 
         {
-            id: 'medium_fillet_steaks_estimate_in',
+            id: 'medium_fillet_steaks',
             name: 'medium fillet steaks'
         },
 
         {
-            id: 'medium_fillets_estimate_in',
+            id: 'medium_fillets',
             name: 'medium fillets'
         },
 
         {
-            id: 'medium_gherkins_estimate_in',
+            id: 'medium_gherkins',
             name: 'medium gherkins'
         },
 
         {
-            id: 'medium_handfuls_estimate_in',
+            id: 'medium_handfuls',
             name: 'medium handfuls'
         },
 
         {
-            id: 'medium_jars_estimate_in',
+            id: 'medium_jars',
             name: 'medium jars'
         },
 
         {
-            id: 'medium_kiwis_estimate_in',
+            id: 'medium_kiwis',
             name: 'medium kiwis'
         },
 
         {
-            id: 'medium_naans_estimate_in',
+            id: 'medium_naans',
             name: 'medium naans'
         },
 
         {
-            id: 'medium_omelettes_2_eggs_estimate_in',
+            id: 'medium_omelettes_2_eggs',
             name: 'medium omelettes (2 eggs)'
         },
 
         {
-            id: 'medium_onions_estimate_in',
+            id: 'medium_onions',
             name: 'medium onions'
         },
 
         {
-            id: 'medium_parsnips_estimate_in',
+            id: 'medium_parsnips',
             name: 'medium parsnips'
         },
 
         {
-            id: 'medium_plantains_estimate_in',
+            id: 'medium_plantains',
             name: 'medium plantains'
         },
 
         {
-            id: 'medium_portions_estimate_in',
+            id: 'medium_portions',
             name: 'medium portions'
         },
 
         {
-            id: 'medium_pots_estimate_in',
+            id: 'medium_pots',
             name: 'medium pots'
         },
 
         {
-            id: 'medium_scones_estimate_in',
+            id: 'medium_scones',
             name: 'medium scones'
         },
 
         {
-            id: 'medium_slices_estimate_in',
+            id: 'medium_slices',
             name: 'medium slices'
         },
 
         {
-            id: 'medium_steaks_estimate_in',
+            id: 'medium_steaks',
             name: 'medium steaks'
         },
 
         {
-            id: 'medium_sundaes_estimate_in',
+            id: 'medium_sundaes',
             name: 'medium sundaes'
         },
 
         {
-            id: 'medium_tubs_estimate_in',
+            id: 'medium_tubs',
             name: 'medium tubs'
         },
 
         {
-            id: 'meringues_estimate_in',
+            id: 'meringues',
             name: 'meringues'
         },
 
         {
-            id: 'milles_feuilles_estimate_in',
+            id: 'milles_feuilles',
             name: 'milles feuilles'
         },
 
         {
-            id: 'mini_Oreos_estimate_in',
+            id: 'mini_Oreos',
             name: 'mini Oreos'
         },
 
         {
-            id: 'mini_bars_estimate_in',
+            id: 'mini_bars',
             name: 'mini bars'
         },
 
         {
-            id: 'mini_boxes_estimate_in',
+            id: 'mini_boxes',
             name: 'mini boxes'
         },
 
         {
-            id: 'mini_churros_estimate_in',
+            id: 'mini_churros',
             name: 'mini churros'
         },
 
         {
-            id: 'mini_cobs_estimate_in',
+            id: 'mini_cobs',
             name: 'mini cobs'
         },
 
         {
-            id: 'mini_eclairs_estimate_in',
+            id: 'mini_eclairs',
             name: 'mini eclairs'
         },
 
         {
-            id: 'mini_eggs_estimate_in',
+            id: 'mini_eggs',
             name: 'mini eggs'
         },
 
         {
-            id: 'mini_fillets_estimate_in',
+            id: 'mini_fillets',
             name: 'mini fillets'
         },
 
         {
-            id: 'mini_flapjacks_estimate_in',
+            id: 'mini_flapjacks',
             name: 'mini flapjacks'
         },
 
         {
-            id: 'mini_macaroons_estimate_in',
+            id: 'mini_macaroons',
             name: 'mini macaroons'
         },
 
         {
-            id: 'mini_marshmallows_estimate_in',
+            id: 'mini_marshmallows',
             name: 'mini marshmallows'
         },
 
         {
-            id: 'mini_pastries_estimate_in',
+            id: 'mini_pastries',
             name: 'mini pastries'
         },
 
         {
-            id: 'mini_pots_estimate_in',
+            id: 'mini_pots',
             name: 'mini pots'
         },
 
         {
-            id: 'mini_skewers_estimate_in',
+            id: 'mini_skewers',
             name: 'mini skewers'
         },
 
         {
-            id: 'mini_snack_packs_estimate_in',
+            id: 'mini_snack_packs',
             name: 'mini snack packs'
         },
 
         {
-            id: 'mini_spring_rolls_estimate_in',
+            id: 'mini_spring_rolls',
             name: 'mini spring rolls'
         },
 
         {
-            id: 'mini_tubs_estimate_in',
+            id: 'mini_tubs',
             name: 'mini tubs'
         },
 
         {
-            id: 'mints_estimate_in',
+            id: 'mints',
             name: 'mints'
         },
 
         {
-            id: 'mooncakes_estimate_in',
+            id: 'mooncakes',
             name: 'mooncakes'
         },
 
         {
-            id: 'mozarella_balls_estimate_in',
+            id: 'mozarella_balls',
             name: 'mozarella balls'
         },
 
         {
-            id: 'mozzarella_sticks_estimate_in',
+            id: 'mozzarella_sticks',
             name: 'mozzarella sticks'
         },
 
         {
-            id: 'mugs_estimate_in',
+            id: 'mugs',
             name: 'mugs'
         },
 
         {
-            id: 'multipack_bags_estimate_in',
+            id: 'multipack_bags',
             name: 'multipack bags'
         },
 
         {
-            id: 'multipack_bottles_estimate_in',
+            id: 'multipack_bottles',
             name: 'multipack bottles'
         },
 
         {
-            id: 'mushrooms_estimate_in',
+            id: 'mushrooms',
             name: 'mushrooms'
         },
 
         {
-            id: 'mussels_estimate_in',
+            id: 'mussels',
             name: 'mussels'
         },
 
         {
-            id: 'nectarines_estimate_in',
+            id: 'nectarines',
             name: 'nectarines'
         },
 
         {
-            id: 'new_potatoes_estimate_in',
+            id: 'new_potatoes',
             name: 'new potatoes'
         },
 
         {
-            id: 'nuts_estimate_in',
+            id: 'nuts',
             name: 'nuts'
         },
 
         {
-            id: 'nuts_fruits_estimate_in',
+            id: 'nuts_fruits',
             name: 'nuts/fruits'
         },
 
         {
-            id: 'olives_estimate_in',
+            id: 'olives',
             name: 'olives'
         },
 
         {
-            id: 'onion_rings_estimate_in',
+            id: 'onion_rings',
             name: 'onion rings'
         },
 
         {
-            id: 'onions_estimate_in',
+            id: 'onions',
             name: 'onions'
         },
 
         {
-            id: 'oysters_estimate_in',
+            id: 'oysters',
             name: 'oysters'
         },
 
         {
-            id: 'packets_estimate_in',
+            id: 'packets',
             name: 'packets'
         },
 
         {
-            id: 'packs_estimate_in',
+            id: 'packs',
             name: 'packs'
         },
 
         {
-            id: 'pancakes_estimate_in',
+            id: 'pancakes',
             name: 'pancakes'
         },
 
         {
-            id: 'panna_cottas_estimate_in',
+            id: 'panna_cottas',
             name: 'panna cottas'
         },
 
         {
-            id: 'pastries_estimate_in',
+            id: 'pastries',
             name: 'pastries'
         },
 
         {
-            id: 'peaches_estimate_in',
+            id: 'peaches',
             name: 'peaches'
         },
 
         {
-            id: 'peppers_estimate_in',
+            id: 'peppers',
             name: 'peppers'
         },
 
         {
-            id: 'pieces_estimate_in',
+            id: 'pieces',
             name: 'pieces'
         },
 
         {
-            id: 'pies_estimate_in',
+            id: 'pies',
             name: 'pies'
         },
 
         {
-            id: 'pigs_in_blankets_estimate_in',
+            id: 'pigs_in_blankets',
             name: 'pigs in blankets'
         },
 
         {
-            id: 'pilchards_estimate_in',
+            id: 'pilchards',
             name: 'pilchards'
         },
 
         {
-            id: 'poppadums_estimate_in',
+            id: 'poppadums',
             name: 'poppadums'
         },
 
         {
-            id: 'portions_estimate_in',
+            id: 'portions',
             name: 'portions'
         },
 
         {
-            id: 'potato_skins_estimate_in',
+            id: 'potato_skins',
             name: 'potato skins'
         },
 
         {
-            id: 'potatoes_estimate_in',
+            id: 'potatoes',
             name: 'potatoes'
         },
 
         {
-            id: 'pots_estimate_in',
+            id: 'pots',
             name: 'pots'
         },
 
         {
-            id: 'pots_slices_estimate_in',
+            id: 'pots_slices',
             name: 'pots/slices'
         },
 
         {
-            id: 'pouches_estimate_in',
+            id: 'pouches',
             name: 'pouches'
         },
 
         {
-            id: 'prawns_estimate_in',
+            id: 'prawns',
             name: 'prawns'
         },
 
         {
-            id: 'pretzels_estimate_in',
+            id: 'pretzels',
             name: 'pretzels'
         },
 
         {
-            id: 'profiteroles_estimate_in',
+            id: 'profiteroles',
             name: 'profiteroles'
         },
 
         {
-            id: 'prunes_estimate_in',
+            id: 'prunes',
             name: 'prunes'
         },
 
         {
-            id: 'punnets_estimate_in',
+            id: 'punnets',
             name: 'punnets'
         },
 
         {
-            id: 'rashers_estimate_in',
+            id: 'rashers',
             name: 'rashers'
         },
 
         {
-            id: 'regular_churros_estimate_in',
+            id: 'regular_churros',
             name: 'regular churros'
         },
 
         {
-            id: 'ribs_estimate_in',
+            id: 'ribs',
             name: 'ribs'
         },
 
         {
-            id: 'rice_cakes_estimate_in',
+            id: 'rice_cakes',
             name: 'rice cakes'
         },
 
         {
-            id: 'rings_estimate_in',
+            id: 'rings',
             name: 'rings'
         },
 
         {
-            id: 'rolls_estimate_in',
+            id: 'rolls',
             name: 'rolls'
         },
 
         {
-            id: 'sachets_estimate_in',
+            id: 'sachets',
             name: 'sachets'
         },
 
         {
-            id: 'sachets_made_up_with_milk_estimate_in',
+            id: 'sachets_made_up_with_milk',
             name: 'sachets (made up with milk)'
         },
 
         {
-            id: 'sandwiches_made_with_two_slices_of_bread_estimate_in',
+            id: 'sandwiches_made_with_two_slices_of_bread',
             name: 'sandwiches (made with two slices of bread)'
         },
 
         {
-            id: 'sausages_estimate_in',
+            id: 'sausages',
             name: 'sausages'
         },
 
         {
-            id: 'scallops_estimate_in',
+            id: 'scallops',
             name: 'scallops'
         },
 
         {
-            id: 'scones_estimate_in',
+            id: 'scones',
             name: 'scones'
         },
 
         {
-            id: 'scoops_of_powder_estimate_in',
+            id: 'scoops_of_powder',
             name: 'scoops of powder'
         },
 
         {
-            id: 'segments_estimate_in',
+            id: 'segments',
             name: 'segments'
         },
 
         {
-            id: 'share_bags_estimate_in',
+            id: 'share_bags',
             name: 'share bags'
         },
 
         {
-            id: 'sheets_estimate_in',
+            id: 'sheets',
             name: 'sheets'
         },
 
         {
-            id: 'shots_estimate_in',
+            id: 'shots',
             name: 'shots'
         },
 
         {
-            id: 'shrimps_estimate_in',
+            id: 'shrimps',
             name: 'shrimps'
         },
 
         {
-            id: 'single_measures_estimate_in',
+            id: 'single_measures',
             name: 'single measures'
         },
 
         {
-            id: 'slices_estimate_in',
+            id: 'slices',
             name: 'slices'
         },
 
         {
-            id: 'slices_1_12th_of_cake_estimate_in',
+            id: 'slices_1_12th_of_cake',
             name: 'slices (1/12th of cake)'
         },
 
         {
-            id: 'slices_1_8th_of_cake_estimate_in',
+            id: 'slices_1_8th_of_cake',
             name: 'slices (1/8th of cake)'
         },
 
         {
-            id: 'slices_1_8th_of_pie_estimate_in',
+            id: 'slices_1_8th_of_pie',
             name: 'slices (1/8th of pie)'
         },
 
         {
-            id: 'slices_of_large_flatbread_estimate_in',
+            id: 'slices_of_large_flatbread',
             name: 'slices of large flatbread'
         },
 
         {
-            id: 'small_aubergines_estimate_in',
+            id: 'small_aubergines',
             name: 'small aubergines'
         },
 
         {
-            id: 'small_avocados_estimate_in',
+            id: 'small_avocados',
             name: 'small avocados'
         },
 
         {
-            id: 'small_bags_estimate_in',
+            id: 'small_bags',
             name: 'small bags'
         },
 
         {
-            id: 'small_bananas_estimate_in',
+            id: 'small_bananas',
             name: 'small bananas'
         },
 
         {
-            id: 'small_bars_estimate_in',
+            id: 'small_bars',
             name: 'small bars'
         },
 
         {
-            id: 'small_beetroot_estimate_in',
+            id: 'small_beetroot',
             name: 'small beetroot'
         },
 
         {
-            id: 'small_biscuits_estimate_in',
+            id: 'small_biscuits',
             name: 'small biscuits'
         },
 
         {
-            id: 'small_bottles_estimate_in',
+            id: 'small_bottles',
             name: 'small bottles'
         },
 
         {
-            id: 'small_bowls_estimate_in',
+            id: 'small_bowls',
             name: 'small bowls'
         },
 
         {
-            id: 'small_carrots_estimate_in',
+            id: 'small_carrots',
             name: 'small carrots'
         },
 
         {
-            id: 'small_cartons_estimate_in',
+            id: 'small_cartons',
             name: 'small cartons'
         },
 
         {
-            id: 'small_chops_estimate_in',
+            id: 'small_chops',
             name: 'small chops'
         },
 
         {
-            id: 'small_crepes_estimate_in',
+            id: 'small_crepes',
             name: 'small crepes'
         },
 
         {
-            id: 'small_eggs_estimate_in',
+            id: 'small_eggs',
             name: 'small eggs'
         },
 
         {
-            id: 'small_fillets_estimate_in',
+            id: 'small_fillets',
             name: 'small fillets'
         },
 
         {
-            id: 'small_flatbreads_estimate_in',
+            id: 'small_flatbreads',
             name: 'small flatbreads'
         },
 
         {
-            id: 'small_gherkins_estimate_in',
+            id: 'small_gherkins',
             name: 'small gherkins'
         },
 
         {
-            id: 'small_handfuls_estimate_in',
+            id: 'small_handfuls',
             name: 'small handfuls'
         },
 
         {
-            id: 'small_hot_dogs_estimate_in',
+            id: 'small_hot_dogs',
             name: 'small hot dogs'
         },
 
         {
-            id: 'small_individual_pavlovas_estimate_in',
+            id: 'small_individual_pavlovas',
             name: 'small individual pavlovas'
         },
 
         {
-            id: 'small_individual_tubs_estimate_in',
+            id: 'small_individual_tubs',
             name: 'small individual tubs'
         },
 
         {
-            id: 'small_jars_estimate_in',
+            id: 'small_jars',
             name: 'small jars'
         },
 
         {
-            id: 'small_kiwis_estimate_in',
+            id: 'small_kiwis',
             name: 'small kiwis'
         },
 
         {
-            id: 'small_mushrooms_estimate_in',
+            id: 'small_mushrooms',
             name: 'small mushrooms'
         },
 
         {
-            id: 'small_naans_estimate_in',
+            id: 'small_naans',
             name: 'small naans'
         },
 
         {
-            id: 'small_omelettes_1_egg_estimate_in',
+            id: 'small_omelettes_1_egg',
             name: 'small omelettes (1 egg)'
         },
 
         {
-            id: 'small_onions_estimate_in',
+            id: 'small_onions',
             name: 'small onions'
         },
 
         {
-            id: 'small_packets_estimate_in',
+            id: 'small_packets',
             name: 'small packets'
         },
 
         {
-            id: 'small_pancakes_estimate_in',
+            id: 'small_pancakes',
             name: 'small pancakes'
         },
 
         {
-            id: 'small_parsnips_estimate_in',
+            id: 'small_parsnips',
             name: 'small parsnips'
         },
 
         {
-            id: 'small_pies_estimate_in',
+            id: 'small_pies',
             name: 'small pies'
         },
 
         {
-            id: 'small_plantains_estimate_in',
+            id: 'small_plantains',
             name: 'small plantains'
         },
 
         {
-            id: 'small_portions_estimate_in',
+            id: 'small_portions',
             name: 'small portions'
         },
 
         {
-            id: 'small_pots_estimate_in',
+            id: 'small_pots',
             name: 'small pots'
         },
 
         {
-            id: 'small_scones_estimate_in',
+            id: 'small_scones',
             name: 'small scones'
         },
 
         {
-            id: 'small_slices_estimate_in',
+            id: 'small_slices',
             name: 'small slices'
         },
 
         {
-            id: 'small_souffles_estimate_in',
+            id: 'small_souffles',
             name: 'small souffles'
         },
 
         {
-            id: 'small_squares_estimate_in',
+            id: 'small_squares',
             name: 'small squares'
         },
 
         {
-            id: 'small_steaks_estimate_in',
+            id: 'small_steaks',
             name: 'small steaks'
         },
 
         {
-            id: 'small_sticks_estimate_in',
+            id: 'small_sticks',
             name: 'small sticks'
         },
 
         {
-            id: 'small_sundaes_estimate_in',
+            id: 'small_sundaes',
             name: 'small sundaes'
         },
 
         {
-            id: 'small_tins_estimate_in',
+            id: 'small_tins',
             name: 'small tins'
         },
 
         {
-            id: 'small_truffles_estimate_in',
+            id: 'small_truffles',
             name: 'small truffles'
         },
 
         {
-            id: 'small_tubs_estimate_in',
+            id: 'small_tubs',
             name: 'small tubs'
         },
 
         {
-            id: 'spears_estimate_in',
+            id: 'spears',
             name: 'spears'
         },
 
         {
-            id: 'sprigs_estimate_in',
+            id: 'sprigs',
             name: 'sprigs'
         },
 
         {
-            id: 'sprouts_estimate_in',
+            id: 'sprouts',
             name: 'sprouts'
         },
 
         {
-            id: 'squares_estimate_in',
+            id: 'squares',
             name: 'squares'
         },
 
         {
-            id: 'standard_bags_estimate_in',
+            id: 'standard_bags',
             name: 'standard bags'
         },
 
         {
-            id: 'standard_bars_estimate_in',
+            id: 'standard_bars',
             name: 'standard bars'
         },
 
         {
-            id: 'standard_boxes_estimate_in',
+            id: 'standard_boxes',
             name: 'standard boxes'
         },
 
         {
-            id: 'standard_packs_estimate_in',
+            id: 'standard_packs',
             name: 'standard packs'
         },
 
         {
-            id: 'standard_size_bottles_estimate_in',
+            id: 'standard_size_bottles',
             name: 'standard size bottles'
         },
 
         {
-            id: 'standard_size_sticks_estimate_in',
+            id: 'standard_size_sticks',
             name: 'standard size sticks'
         },
 
         {
-            id: 'steaks_estimate_in',
+            id: 'steaks',
             name: 'steaks'
         },
 
         {
-            id: 'sticks_estimate_in',
+            id: 'sticks',
             name: 'sticks'
         },
 
         {
-            id: 'straws_estimate_in',
+            id: 'straws',
             name: 'straws'
         },
 
         {
-            id: 'stuffed_peppers_half_a_pepper_estimate_in',
+            id: 'stuffed_peppers_half_a_pepper',
             name: 'stuffed peppers (half a pepper)'
         },
 
         {
-            id: 'sweets_estimate_in',
+            id: 'sweets',
             name: 'sweets'
         },
 
         {
-            id: 'tablespoons_estimate_in',
+            id: 'tablespoons',
             name: 'tablespoons'
         },
 
         {
-            id: 'tablets_estimate_in',
+            id: 'tablets',
             name: 'tablets'
         },
 
         {
-            id: 'tarts_estimate_in',
+            id: 'tarts',
             name: 'tarts'
         },
 
         {
-            id: 'teaspoons_estimate_in',
+            id: 'teaspoons',
             name: 'teaspoons'
         },
 
         {
-            id: 'thick_slices_estimate_in',
+            id: 'thick_slices',
             name: 'thick slices'
         },
 
         {
-            id: 'thin_slices_estimate_in',
+            id: 'thin_slices',
             name: 'thin slices'
         },
 
         {
-            id: 'tins_estimate_in',
+            id: 'tins',
             name: 'tins'
         },
 
         {
-            id: 'tomatoes_estimate_in',
+            id: 'tomatoes',
             name: 'tomatoes'
         },
 
         {
-            id: 'treble_measures_estimate_in',
+            id: 'treble_measures',
             name: 'treble measures'
         },
 
         {
-            id: 'triangle_slices_half_a_piece_of_bread_estimate_in',
+            id: 'triangle_slices_half_a_piece_of_bread',
             name: 'triangle slices (half a piece of bread)'
         },
 
         {
-            id: 'tubs_estimate_in',
+            id: 'tubs',
             name: 'tubs'
         },
 
         {
-            id: 'very_thick_slices_estimate_in',
+            id: 'very_thick_slices',
             name: 'very thick slices'
         },
 
         {
-            id: 'vine_leaves_estimate_in',
+            id: 'vine_leaves',
             name: 'vine leaves'
         },
 
         {
-            id: 'vol_au_vents_estimate_in',
+            id: 'vol_au_vents',
             name: 'vol-au-vents'
         },
 
         {
-            id: 'wafers_estimate_in',
+            id: 'wafers',
             name: 'wafers'
         },
 
         {
-            id: 'waffles_estimate_in',
+            id: 'waffles',
             name: 'waffles'
         },
 
         {
-            id: 'wedges_estimate_in',
+            id: 'wedges',
             name: 'wedges'
         },
 
         {
-            id: 'whole_cakes_estimate_in',
+            id: 'whole_cakes',
             name: 'whole cakes'
         },
 
         {
-            id: 'whole_camemberts_estimate_in',
+            id: 'whole_camemberts',
             name: 'whole camemberts'
         },
 
         {
-            id: 'whole_large_pies_estimate_in',
+            id: 'whole_large_pies',
             name: 'whole large pies'
         },
 
         {
-            id: 'whole_large_quiches_estimate_in',
+            id: 'whole_large_quiches',
             name: 'whole large quiches'
         },
 
         {
-            id: 'whole_large_tarts_estimate_in',
+            id: 'whole_large_tarts',
             name: 'whole large tarts'
         },
 
         {
-            id: 'whole_radishes_estimate_in',
+            id: 'whole_radishes',
             name: 'whole radishes'
         },
 
         {
-            id: 'whole_rolls_estimate_in',
+            id: 'whole_rolls',
             name: 'whole rolls'
         },
 
         {
-            id: 'whole_sausages_estimate_in',
+            id: 'whole_sausages',
             name: 'whole sausages'
         },
 
         {
-            id: 'whole_small_quiches_estimate_in',
+            id: 'whole_small_quiches',
             name: 'whole small quiches'
         },
 
         {
-            id: 'whole_stuffed_peppers_estimate_in',
+            id: 'whole_stuffed_peppers',
             name: 'whole stuffed peppers'
         },
 
         {
-            id: 'wings_estimate_in',
+            id: 'wings',
             name: 'wings'
         },
 
         {
-            id: 'yams_estimate_in',
+            id: 'yams',
             name: 'yams'
         },
 
     ];
 
-    var m = _.map(l, function(e) {
-        return e.name;
-    });
-
-    return m.sort();
+    return _.sortBy(l, 'name');
 };

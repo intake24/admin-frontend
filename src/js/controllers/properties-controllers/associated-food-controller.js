@@ -13,6 +13,7 @@ function controllerFun(DrawersService) {
 
     this.addAssociatedFood = function () {
         this.$parent.itemDefinition.local.associatedFoods.push({
+            foodOrCategory: null,
             mainFood: false,
             linkAsMain: false,
             promptText: ""

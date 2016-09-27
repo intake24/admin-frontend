@@ -351,8 +351,15 @@ function serviceFun() {
     };
 
     instance.stripAssociatedFoodHeader = function(withHeader) {
+      var foodOrCategoryCode;
+
+      if (withHeader.foodOrCategory == null)
+        foodOrCategoryCode = null;
+      else
+        foodOrCategoryCode = [withHeader.foodOrCategory.type == 'food' ? 0 : 1, withHeader.foodOrCategory.code];
+
       return {
-          foodOrCategoryCode: [withHeader.foodOrCategory.type == 'food' ? 0 : 1, withHeader.foodOrCategory.code],
+          foodOrCategoryCode: foodOrCategoryCode,
           genericName: withHeader.genericName,
           linkAsMain: withHeader.linkAsMain,
           promptText: withHeader.promptText

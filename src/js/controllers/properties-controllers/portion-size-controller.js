@@ -33,16 +33,14 @@ function controllerFun($scope, SharedData) {
         } else {
             $scope.portionSizes = $scope.$parent.itemDefinition.local.portionSize;
         }
-        $scope.portionSizesValidations = _.map($scope.portionSizes, function () {
-            return true;
-        });
     });
 
     $scope.$watchCollection('portionSizesValidations', function () {
         $scope.$parent.$parent.portionSizeIsValid = _.reduce($scope.portionSizesValidations, function (a, b) {
                 return a && b;
             }) ||
-            $scope.$parent.$parent.currentItem.type != 'food' && $scope.portionSizesValidations.length == 0;
+            $scope.$parent.$parent.currentItem.type != 'food' ||
+            $scope.portionSizesValidations.length == 0;
     });
 
 }

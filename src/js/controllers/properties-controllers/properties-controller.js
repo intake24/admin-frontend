@@ -122,8 +122,8 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         reloadNutrientCodeTables();
     });
 
-    $scope.$watch("itemChanged()", function (event) {
-        currentItem.setChangedState($scope.itemChanged());
+    $scope.$watch("itemChanged()", function (newVal, oldVal) {
+        currentItem.setChangedState(newVal);
     });
 
     $scope.useExclusivelyInThisLocale = function(use) {
@@ -292,7 +292,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 return $scope.categoryChanged();
         } else
             return false;
-    }
+    };
 
     $scope.localDescriptionModel = function (description) {
         if (arguments.length == 1) {

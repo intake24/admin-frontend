@@ -431,7 +431,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 });
     }
 
-    $scope.discardFoodChanges = function () {
+    $scope.discardChanges = function () {
         reloadData();
         MessageService.showMessage(gettext('Changes discarded'), 'success');
     }

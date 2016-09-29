@@ -114,7 +114,18 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
     $scope.$on('intake24.admin.food_db.CurrentItemUpdated', function (event, updateEvent) {
         $scope.currentItem = updateEvent.header;
-        reloadData();
+
+        reloadData().then(function () {
+            if (updateEvent.newItem) {
+                // Fixme: This is done to save local description for newly created items. Because of the event system (CurrentItemChanged, CurrentItemUpdated) $scope.itemDefinition.localDescription is replaced with empty values.
+                $scope.itemDefinition.localDescription = updateEvent.header.localDescription;
+                //if ($scope.currentItem.type == 'category') {
+                //    $scope.updateCategory();
+                //} else if ($scope.currentItem.type == 'food') {
+                //    $scope.updateFood();
+                //}
+            }
+        });
     });
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
@@ -126,18 +137,18 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         currentItem.setChangedState(newVal);
     });
 
-    $scope.useExclusivelyInThisLocale = function(use) {
-      if (arguments.length == 1) {
-        var newList = _.without($scope.itemDefinition.main.localeRestrictions, LocalesService.current());
-        if (use)
-          newList.push(LocalesService.current());
-        $scope.itemDefinition.main.localeRestrictions = newList;
-      } else {
-        if ($scope.itemDefinition)
-          return _.contains($scope.itemDefinition.main.localeRestrictions, LocalesService.current())
-        else
-          return false;
-      }
+    $scope.useExclusivelyInThisLocale = function (use) {
+        if (arguments.length == 1) {
+            var newList = _.without($scope.itemDefinition.main.localeRestrictions, LocalesService.current());
+            if (use)
+                newList.push(LocalesService.current());
+            $scope.itemDefinition.main.localeRestrictions = newList;
+        } else {
+            if ($scope.itemDefinition)
+                return _.contains($scope.itemDefinition.main.localeRestrictions, LocalesService.current())
+            else
+                return false;
+        }
     }
 
     function reloadData() {
@@ -146,10 +157,12 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         if ($scope.currentItem) {
             disableButtons();
 
-            $q.all(loadMainRecord(), loadLocalRecord())
+            return $q.all([loadMainRecord(), loadLocalRecord()])
                 .finally(function () {
                     enableButtons();
                 });
+        } else {
+            return $q.when(true);
         }
     }
 
@@ -190,7 +203,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     function reloadFoodGroups() {
         foodDataReader.getFoodGroups().then(
             function (groups) {
-              $scope.foodGroups = _.map(_.values(groups), packer.unpackFoodGroup);
+                $scope.foodGroups = _.map(_.values(groups), packer.unpackFoodGroup);
             });
     }
 
@@ -401,10 +414,10 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         disableButtons();
 
         updateFoodMainRecord()
-         .then(function () {
-              return updateFoodLocalRecord();
+            .then(function () {
+                return updateFoodLocalRecord();
             })
-         .then(
+            .then(
                 function () {
                     MessageService.showMessage(gettext('Food updated'), 'success');
                     notifyItemUpdated();

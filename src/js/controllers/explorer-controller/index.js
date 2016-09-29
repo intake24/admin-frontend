@@ -377,7 +377,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             // Timeout is set to wait for the children to be loaded and then scroll to the selected element.
             // Fixme: Timeout is bad.
             $timeout(function () {
-                var targetElement = document.querySelector("#food-list-col ul a.active"),
+                var targetElement = document.querySelector("#food-list-col ul span.active"),
                     container = document.getElementById("food-list-col"),
                     to = targetElement.offsetTop - document.querySelector("header").offsetHeight - 5;
                 scrollTo(container, to, 250);

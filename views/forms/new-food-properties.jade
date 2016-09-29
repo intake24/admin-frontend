@@ -12,9 +12,12 @@ form
             label.col-xs-3.control-label(for='food-group-dropdown')
                 | #{ gettext("Food group") }
             .col-xs-9
-                select.form-control(id='food-group-dropdown'
-                ng-options="fg.id as fg.displayName for fg in foodGroups"
-                ng-model="itemDefinition.groupCode")
+                ui-select(id="food-group-dropdown"
+                ng-model="itemDefinition.main.groupCode" title="#{ gettext('properties_food_group_select') }")
+                    ui-select-match(placeholder="#{ gettext('properties_food_group_select') }")
+                        span(ng-bind="($select.selected.displayName)")
+                    ui-select-choices(repeat="item.id as item in (foodGroups | filter: {displayName: $select.search})")
+                        span(ng-bind="item.displayName")
 
         .form-group
             .col-xs-9.col-xs-offset-3

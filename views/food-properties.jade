@@ -19,7 +19,7 @@
 				span #{ gettext("Accept changes") }
 			button(class="intake-btn warning"
 					id="btn-discard-food"
-					ng-click="discardFoodChanges()"
+					ng-click="discardChanges()"
 					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()" )
 				span #{ gettext("Discard changes") }
 			button(class="intake-btn danger"

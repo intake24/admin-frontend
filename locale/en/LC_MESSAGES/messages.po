@@ -407,3 +407,6 @@ msgstr "Search associated food"
 
 msgid "properties_select_associated_food"
 msgstr "Search associated food"
+
+msgid "properties_food_group_select"
+msgstr "Select food group..."

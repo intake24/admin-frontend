@@ -30,9 +30,9 @@ function controllerFun(DrawersService) {
         DrawersService.drawerAssociatedFood.open();
     };
 
-    this.$watch('itemDefinition', function() {
+    /* this.$watch('itemDefinition', function() {
         console.log(self.itemDefinition);
-    });
+    }); */
 
     this.$watch(function() {
         return DrawersService.drawerAssociatedFood.getValue();

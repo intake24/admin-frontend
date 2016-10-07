@@ -189,6 +189,9 @@ function portionSizeIsValid() {
         case 'cereal':
             parametersEvaluationMethod = cerealParametersAreValid;
             break;
+        case 'drink-scale':
+            parametersEvaluationMethod = parametersAreValid;
+            break;
         case 'milk-on-cereal':
             parametersEvaluationMethod = parametersAreValid;
             break;

@@ -25,6 +25,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
 
     $scope.$on("intake24.admin.food_db.CurrentItemUpdated", function (event, updateEvent) {
         var selectedNodeRemoved = false;
+
         // parentNode can be null (for root category nodes)
         function processNodes(nodes, parentNode) {
             var index = -1;
@@ -33,12 +34,6 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                 if (node.code == updateEvent.originalCode && node.type == updateEvent.header.type) {
                     _.extend(nodes[i], updateEvent.header);
                     index = i;
-                    // Update problems
-                    var n = nodes[i];
-                    while (n) {
-                        loadProblemsForNodeDeferred(n);
-                        n = n.parentNode;
-                    }
                 }
 
                 if (node.type == 'category' && node.children && node.open)
@@ -48,6 +43,8 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
 
             // If the node matching the update event is in the current node list
             if (index > -1) {
+
+                updatePotentiallyAffectedNodes(nodes[index]);
 
                 // Remove the node from the list if:
                 //  - The node was not a root category node and it is no longer contained in the category represented by parentNode
@@ -73,6 +70,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                     (!parentNode && (updateEvent.header.type == 'category') && (updateEvent.parentCategories.length == 0))
                 ) {
                     nodes.push(updateEvent.header);
+                    updatePotentiallyAffectedNodes(updateEvent.header);
                 }
             }
         }
@@ -225,6 +223,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
                             var parent = targetNode.parentNode;
                             nodes.splice(i, 1);
                             while (parent) {
+                                console.log("Delete: reloading problems for " + parent.type + " " + parent.code);
                                 loadProblemsForNodeDeferred(parent);
                                 parent = parent.parentNode;
                             }
@@ -274,6 +273,37 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
             return (node.recursiveProblems != null &&
             (node.recursiveProblems.categoryProblems.length > 0 ||
             node.recursiveProblems.foodProblems.length > 0));
+    }
+
+    function updatePotentiallyAffectedNodes(changedNode) {
+      function isDescendant(node, ofNode) {
+        return isAncestor(ofNode, node);
+      }
+
+      function isAncestor(node, ofNode) {
+        var p = ofNode.parentNode;
+        while (p) {
+          if (p.code == node.code && p.type == node.type)
+            return true;
+          else
+            p = p.parentNode;
+        }
+        return false;
+      }
+
+      function processNodes(nodes) {
+        _.each(nodes, function(node) {
+            if (isAncestor(changedNode, node) || isDescendant(changedNode, node)) {
+              loadProblemsForNodeDeferred(node);
+            }
+
+            if (node.type == 'category' && node.children && node.open)
+              processNodes(node.children);
+        });
+      }
+
+      loadProblemsForNodeDeferred(changedNode);
+      processNodes($scope.rootCategories);
     }
 
     function loadProblemsForNodeDeferred(node) {

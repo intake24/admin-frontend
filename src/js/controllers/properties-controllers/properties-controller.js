@@ -118,7 +118,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         reloadData().then(function () {
             if (updateEvent.newItem) {
                 // Fixme: This is done to save local description for newly created items. Because of the event system (CurrentItemChanged, CurrentItemUpdated) $scope.itemDefinition.localDescription is replaced with empty values.
-                $scope.itemDefinition.localDescription = updateEvent.header.localDescription;
+                //$scope.itemDefinition.localDescription = updateEvent.header.localDescription;
                 //if ($scope.currentItem.type == 'category') {
                 //    $scope.updateCategory();
                 //} else if ($scope.currentItem.type == 'food') {

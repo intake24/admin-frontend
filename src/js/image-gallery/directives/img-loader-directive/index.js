@@ -10,6 +10,13 @@ module.exports = function (app) {
     function serviceFun() {
 
         function controller(scope, element, attributes) {
+            element.addClass('img-loader');
+            var img = new Image();
+            img.onload = function() {
+                scope.loaded = true;
+                scope.$apply();
+            };
+            img.src = scope.src;
 
         }
 

@@ -415,3 +415,9 @@ msgstr "Search associated food"
 
 msgid "properties_food_group_select"
 msgstr "حدد مجموعة المواد الغذائية ..."
+
+msgid "image_gallery_main_gallery"
+msgstr "معرض الرئيسي"
+
+msgid "image_gallery_as_served"
+msgstr "كما خدم"

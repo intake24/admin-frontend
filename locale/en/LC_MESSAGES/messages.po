@@ -410,3 +410,10 @@ msgstr "Search associated food"
 
 msgid "properties_food_group_select"
 msgstr "Select food group..."
+
+msgid "image_gallery_main_gallery"
+msgstr "Main gallery"
+
+msgid "image_gallery_as_served"
+msgstr "As served"
+

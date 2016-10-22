@@ -1,0 +1,13 @@
+.search-container(ng-controller='SearchController')
+	.search-field-wrapper(ng-class="{active: getActive()}")
+		.search-field
+			i.fa.fa-search
+			input(type='text' id='search-field'
+					ng-model="query"
+					ng-focus="setFocused()"
+					ng-blur="setUnfocused()")
+	#search-results(ng-class="{visible: searchResultsAreVisible}")
+		ul(ng-model='search')
+			li(ng-repeat='value in searchResults | orderBy:["type", "displayName"]' ng-class='' ng-click='resultClicked($event, value)')
+				i.fa.fa-folder-o(ng-if='value.type == "category"' style='margin-right: 8px')
+				{{ value.displayName }}

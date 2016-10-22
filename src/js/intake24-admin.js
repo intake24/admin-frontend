@@ -7,8 +7,9 @@ require("angular-touch");
 require("angular-ui-bootstrap");
 require("angular-cookies");
 require("ui-select");
+require("angular-route");
 
-var moduleRequirements = ['ngCookies', 'ui.bootstrap', 'ngSanitize', 'ngAnimate', 'ngTouch', 'ui.select'],
+var moduleRequirements = ['ngCookies', 'ui.bootstrap', 'ngSanitize', 'ngAnimate', 'ngTouch', 'ui.select', 'ngRoute'],
     app = angular.module('intake24.admin', moduleRequirements);
 
 require('./controllers')(app);
@@ -16,6 +17,7 @@ require('./directives')(app);
 require('./services')(app);
 require('./filters')(app);
 require('./config')(app);
+require('./set-routes')(app);
 
 window.api_base_url = process.env.API_BASE_URL;
 

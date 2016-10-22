@@ -1,7 +1,13 @@
 extend ../layout
 
 block content
-    h1 Hello
+    div(ng-view)
+
+    script(type="text/ng-template" id="views/image-gallery/image-gallery-main.jade")
+        include image-gallery-main
+
+    script(type="text/ng-template" id="views/image-gallery/image-as-served.jade")
+        include image-gallery-as-served
 
 block sidebar
     include sidebar

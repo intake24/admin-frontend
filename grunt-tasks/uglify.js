@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     var config = grunt.config.get('environment'),
         uglifyJsFileOptions = {};
 
-    uglifyJsFileOptions[config.buildJsTo] = config.browserifyTo;
+    uglifyJsFileOptions[config.buildJsTo] = [config.browserifyTo, config.galleryTemplatesDest];
 
     grunt.config.set('uglify', {
         options: {

@@ -1,0 +1,49 @@
+@import "_variables.styl";
+
+$intk-img-gallery-item-width = 350px
+$intk-img-gallery-item-margin-right = 15px
+$intk-img-gallery-item-margin-bottom = 20px
+$intk-img-gallery-item-border-radius = 4px
+$intk-img-gallery-item-border-color = $subgroup-border-color
+
+.intk-gallery-item {
+  display: inline-block;
+  vertical-align: top;
+  width: $intk-img-gallery-item-width;
+  max-width: 100%;
+  margin-right: 15px;
+  margin-bottom: 20px;
+  border-radius: $intk-img-gallery-item-border-radius;
+  overflow: hidden;
+  border: 1px solid $intk-img-gallery-item-border-color;
+
+  &-img {
+    width: 100%;
+    height: ($intk-img-gallery-item-width * 9 / 16);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+  }
+
+  &-blank {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: #000;
+    transition: opacity .1s linear;
+
+    &:hover {
+      opacity: 0.4;
+    }
+
+  }
+
+  &-tools {
+
+  }
+
+}

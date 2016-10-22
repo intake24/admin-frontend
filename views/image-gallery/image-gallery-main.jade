@@ -1,3 +1,7 @@
 include search
 
-Main gallery
+.intk-gallery-item
+    div(img-loader src="'http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample4_l.jpg'")
+    .intk-gallery-item-tools
+        span.intk-tag-input-item.label.label-primary(ng-for="tag in tags") {{ tag }}
+        input(type="text" placeholder="Add tag..." ng-model="newTag" ng-keypress="onNewTagKeyUp($event)")

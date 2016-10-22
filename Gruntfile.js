@@ -16,26 +16,30 @@ module.exports = function (grunt) {
 
     require('./grunt-tasks/clean')(grunt);
     require('./grunt-tasks/browserify')(grunt);
+    require('./grunt-tasks/concat')(grunt);
     require('./grunt-tasks/copy')(grunt);
     require('./grunt-tasks/stylus')(grunt);
     require('./grunt-tasks/css-minify')(grunt);
+    require('./grunt-tasks/ngtemplates')(grunt);
     require('./grunt-tasks/uglify')(grunt);
     require('./grunt-tasks/watch')(grunt);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-angular-templates');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    tskList = ['clean', 'copy:fonts', 'stylus', 'cssmin', 'browserify'];
+    tskList = ['clean', 'ngtemplates', 'copy:fonts', 'stylus', 'cssmin', 'browserify', 'concat'];
 
     if (config.uglifyJs) {
         tskList.push('uglify');
     } else {
-        tskList.push('copy:scripts');
+        tskList.push('concat');
     }
     if (config.watchStylus && config.watchJs) {
         tskList.push('watch');

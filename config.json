@@ -3,7 +3,7 @@
   "stylusFrom": "src/styl/style.styl",
   "stylusWatch": "src/styl/**/**",
   "stylusTo": "src/temp/style.css",
-  "browserifyFrom": "src/js/intake24-admin.js",
+  "browserifyFrom": "src/js/index.js",
   "browserifyTo": "src/temp/intake24-admin.browserified.js",
   "buildJsTo": "public/intake24-admin.js",
   "copyFontsFrom": ["node_modules/font-awesome/fonts/*", "node_modules/bootstrap/dist/fonts/*"],

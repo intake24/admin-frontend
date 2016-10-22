@@ -16,10 +16,6 @@ require('./controllers')(app);
 require('./directives')(app);
 require('./services')(app);
 require('./filters')(app);
-require('./config')(app);
-require('./set-routes')(app);
+require('../shared/config')(app);
 
 window.api_base_url = process.env.API_BASE_URL;
-
-// Fixme: fix and remove all the scripts from other
-require('./other')();

@@ -1,8 +1,8 @@
 .page-block
-    include search
+    search-input(ng-model="searchQuery")
 
 .container-fluid
-    .intk-gallery-item(ng-repeat="item in images")
+    .intk-gallery-item(ng-repeat="item in getFilteredImages()")
         .intk-gallery-item-img
             div(img-loader src="item.src")
             .intk-gallery-item-blank

@@ -1,0 +1,11 @@
+<div class="search-container">
+	<div class="search-field-wrapper" ng-class="{active: getActive()}">
+		<div class="search-field">
+			<i class="fa fa-search"></i>
+			<input type="text"
+                   ng-model="ngModel"
+                   ng-focus="setFocused()"
+                   ng-blur="setUnfocused()">
+        </div>
+    </div>
+</div>

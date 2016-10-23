@@ -5,11 +5,15 @@
 'use strict';
 
 module.exports = function(app) {
-    app.controller('ImageGalleryMain', ["$scope", controllerFun]);
+    app.controller('ImageGalleryMain', ["$scope", "ImageService", controllerFun]);
 };
 
-function controllerFun($scope) {
+function controllerFun($scope, ImageService) {
 
+    $scope.images = [];
 
+    ImageService.all().then(function(data) {
+        $scope.images = data;
+    });
 
 }

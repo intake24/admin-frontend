@@ -1,0 +1,7 @@
+<div class="tag-input">
+    <span class="tag-input-item label label-primary" ng-repeat="tag in tags track by $index">
+        {{ tag }}
+        <a href="" ng-click="removeTag($index)">&times;</a>
+    </span>
+    <input type="text" placeholder="Add tag..." ng-model="newTag" ng-keyup="onNewTagKeyUp($event)">
+</div>

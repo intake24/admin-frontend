@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     grunt.config.set('watch', {
         templates: {
             files: [config.galleryTemplatesSrc],
-            tasks: ['ngtemplates'],
+            tasks: ['ngtemplates', jsTask],
             options: {
                 debounceDelay: 5000
             }

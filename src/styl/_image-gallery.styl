@@ -6,6 +6,10 @@ $intk-img-gallery-item-margin-bottom = 20px
 $intk-img-gallery-item-border-radius = 4px
 $intk-img-gallery-item-border-color = $subgroup-border-color
 
+$intk-tag-input-selector = intk-tag-input
+$intk-tag-input-item = 4px
+$intk-tag-input-padding = 4px
+
 .intk-gallery-item {
   display: inline-block;
   vertical-align: top;
@@ -81,6 +85,31 @@ $intk-img-gallery-item-border-color = $subgroup-border-color
       opacity: 0;
     }
 
+  }
+
+}
+
+tag-input {
+
+  display: block;
+  max-width: 100%;
+  padding: $intk-tag-input-padding;
+
+  .tag-input-item {
+    display: inline-block;
+    margin-right: $intk-tag-input-item;
+
+    a {
+      color: #fff;
+      font-size: larger;
+    }
+
+  }
+
+  input {
+    border: none;
+    outline: none;
+    background: transparent;
   }
 
 }

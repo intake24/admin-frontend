@@ -4,128 +4,128 @@
 @import '_variables'
 
 #sidebar-button
-	display none
-	position absolute
-	top 0px
-	left 0px
-	transition(background .3s ease-out)
+  display none
+  position absolute
+  top 0px
+  left 0px
+  transition(background .3s ease-out)
 
-	i
-		color white
-		line-height 50px
-		text-align center
-		width 50px 
+  i
+    color white
+    line-height 50px
+    text-align center
+    width 50px
 
 #sidebar-button:hover
-	background-color darken(main-color, 10%)
-	cursor pointer
+  background-color darken(main-color, 10%)
+  cursor pointer
 
 .sidebar
-	background-color sidebar-color
-	bottom 0
-	left 0
-	overflow-x hidden
-	overflow-y auto
-	padding-top 50px
-	position absolute
-	top 0
-	width sidebar-width
-	z-index 9
-	transition(all .3s ease-out)
+  background-color sidebar-color
+  top 0
+  left 0
+  height 100%
+  position fixed
+  overflow-x hidden
+  overflow-y auto
+  padding-top 50px
+  width sidebar-width
+  z-index 9
+  transition(all .3s ease-out)
 
-	ul
-		list-style none
-		margin 0
-		padding 0
-		width 100% 
-		li
-			a
-				border-left transparent 3px solid
-				color white
-				display block
-				font-size 13px
-				line-height 48px
-				margin 0
-				padding 0 60px 0 20px
-				position relative
-				text-decoration none
-				white-space: nowrap;
-				.fa
-					font-size 11px
-					line-height 48px
-					position absolute
-					right 10px
-					top 0px
-			    .flag
-				    margin-right 10px 
-			&.disabled
-				a
-					color darken(white, 50%)
-				
-			a.active, a:hover
-				border-left-color main-color
-				cursor pointer
-			.nested-li
-				display none
-			.nested-li li
-				background-color lighten(sidebar-color, 5%)
-			
-			.nested-li li a:hover
-				border-left-color #aaa
-				
-			&.active
-				.nested-li
-					display block 
+  ul
+    list-style none
+    margin 0
+    padding 0
+    width 100%
+    li
+      a
+        border-left transparent 3px solid
+        color white
+        display block
+        font-size 13px
+        line-height 48px
+        margin 0
+        padding 0 60px 0 20px
+        position relative
+        text-decoration none
+        white-space: nowrap;
+        .fa
+          font-size 11px
+          line-height 48px
+          position absolute
+          right 10px
+          top 0px
+          .flag
+            margin-right 10px
+      &.disabled
+        a
+          color darken(white, 50%)
+
+      a.active, a:hover
+        border-left-color main-color
+        cursor pointer
+      .nested-li
+        display none
+      .nested-li li
+        background-color lighten(sidebar-color, 5%)
+
+      .nested-li li a:hover
+        border-left-color #aaa
+
+      &.active
+        .nested-li
+          display block
 
 @media (max-width: 1080px)
-	.sidebar
-		position fixed
-		
+  .sidebar
+    position fixed
+
 @media (max-width: 1080px)
-	#sidebar-button
-		display block
+  #sidebar-button
+    display block
 
-	.sidebar
-		left - sidebar-width
+  .sidebar
+    left - sidebar-width
 
-	.sidebar.active
-		left 0px
-		
+  .sidebar.active
+    left 0px
+
 /* RTL Styles */
 
 html[dir="rtl"]
-	
-	#sidebar-button
-		left auto
-		right 0px
-	.sidebar
-		left auto
-		right 0
-		ul
-			li
-				a
-					border-left none
-					border-right transparent 3px solid
-					padding 0 20px 0 60px
-					.fa
-						left 10px
-						right auto
-					.flag
-						margin-right 0
-						margin-left 10px  
-				a.active, a:hover
-					border-right-color main-color
-				.nested-li li a:hover
-					border-right-color #aaa
-				&.active
-					.nested-li
-						display block 
-		
-	@media (max-width: 1080px)
-		.sidebar
-			left auto
-			right - sidebar-width
 
-		.sidebar.active
-			left auto
-			right 0px
+  #sidebar-button
+    left auto
+    right 0px
+  .sidebar
+    left auto
+    right 0
+    ul
+      li
+        a
+          border-left none
+          border-right transparent 3px solid
+          padding 0 20px 0 60px
+          .fa
+            left 10px
+            right auto
+          .flag
+            margin-right 0
+            margin-left 10px
+        a.active, a:hover
+          border-right-color main-color
+        .nested-li li a:hover
+          border-right-color #aaa
+        &.active
+          .nested-li
+            display block
+
+  @media (max-width: 1080px)
+    .sidebar
+      left auto
+      right - sidebar-width
+
+    .sidebar.active
+      left auto
+      right 0px

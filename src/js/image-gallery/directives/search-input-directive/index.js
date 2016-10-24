@@ -5,9 +5,9 @@
 'use strict';
 
 module.exports = function (app) {
-    app.directive('searchInput', [serviceFun]);
+    app.directive('searchInput', [directiveFun]);
 
-    function serviceFun() {
+    function directiveFun() {
 
         function controller(scope, element, attributes) {
             scope.focused = false;

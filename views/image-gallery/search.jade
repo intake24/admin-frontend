@@ -1,8 +1,0 @@
-.search-container(ng-controller='SearchController')
-	.search-field-wrapper(ng-class="{active: getActive()}")
-		.search-field
-			i.fa.fa-search
-			input(type='text' id='search-field'
-					ng-model="$parent.searchQuery"
-					ng-focus="setFocused()"
-					ng-blur="setUnfocused()")

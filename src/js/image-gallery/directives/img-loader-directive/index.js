@@ -5,9 +5,9 @@
 'use strict';
 
 module.exports = function (app) {
-    app.directive('imgLoader', [serviceFun]);
+    app.directive('imgLoader', [directiveFun]);
 
-    function serviceFun() {
+    function directiveFun() {
 
         function controller(scope, element, attributes) {
             element.addClass('img-loader');
@@ -16,8 +16,12 @@ module.exports = function (app) {
                 scope.loaded = true;
                 scope.$apply();
             };
-            img.src = scope.src;
-
+            img.load(scope.src);
+            scope.$watch(function() {
+                return img.completedPercentage;
+            }, function() {
+                scope.completedPercentage = img.completedPercentage;
+            });
         }
 
         return {

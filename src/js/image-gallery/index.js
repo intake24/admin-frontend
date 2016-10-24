@@ -19,4 +19,6 @@ require('./filters')(app);
 require('../shared/config')(app);
 require('./set-routes')(app);
 
+require('./image-load')();
+
 window.api_base_url = process.env.API_BASE_URL;

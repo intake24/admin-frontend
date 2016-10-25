@@ -14,11 +14,6 @@ function controllerFun($scope, ImageService) {
 
     $scope.images = [];
     $scope.searchQuery = '';
-    $scope.toolsVisible = false;
-
-    $scope.toggleTools = function () {
-        $scope.toolsVisible = !$scope.toolsVisible;
-    };
 
     $scope.getFilteredImages = function () {
         return $scope.images.filter(function (image) {

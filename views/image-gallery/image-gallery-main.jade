@@ -4,10 +4,10 @@
         file-button(on-change="onFilesChange(fileList)")
             button(type="button" ng-click="addImage()")
                 i.fa.fa-plus
-    .search-input-addon.dropdown(ng-class="{open: toolsVisible}")
-        button(type="button" ng-click="toggleTools()")
+    .search-input-addon(uib-dropdown auto-close="outsideClick")
+        button(type="button" uib-dropdown-toggle id="tools-dropdown")
             i.fa.fa-angle-down
-        ul.dropdown-menu.dropdown-menu-right
+        ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="tools-dropdown")
             li
                 a(href="" ng-click="selectAll()") Select all
             li
@@ -26,4 +26,4 @@ file-drop-zone(on-dropped="onFilesChange(fileList)")
                 .intk-gallery-item-blank(ng-class="{'visible': item.selected || item.loading}" ng-click="select(item)")
                     i.fa(ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }")
             .intk-gallery-item-tools
-                tag-input(tags="item.tags")
+                tag-input(tags="item.tags" disabled="item.disabled")

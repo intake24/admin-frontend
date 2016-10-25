@@ -112,23 +112,25 @@ tag-input {
 
   display: block;
   max-width: 100%;
-  padding: $intk-tag-input-padding;
 
-  .tag-input-item {
-    display: inline-block;
-    margin-right: $intk-tag-input-item;
+  .tag-input {
+    padding: $intk-tag-input-padding;
 
-    a {
-      color: #fff;
-      font-size: larger;
+    &-item {
+      display: inline-block;
+      margin-right: $intk-tag-input-item;
+
+      a {
+        color: #fff;
+        font-size: larger;
+      }
+
     }
-
-  }
-
-  input {
-    border: none;
-    outline: none;
-    background: transparent;
+    input {
+      border: none;
+      outline: none;
+      background: transparent;
+    }
   }
 
 }

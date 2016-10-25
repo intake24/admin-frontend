@@ -12,6 +12,7 @@ function ImageModel(id, src, tags) {
     this.tags = tags || [];
     this.loading = false;
     this.selected = false;
+    this.disabled = false;
 }
 
 ImageModel.prototype.getItemSelected = function() {

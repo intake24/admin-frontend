@@ -43,6 +43,7 @@ module.exports = function (app) {
             link: controller,
             scope: {
                 tags: '=?',
+                disabled: '=?'
             },
             templateUrl: 'src/js/image-gallery/directives/tag-input-directive/tag-input-directive.html'
         };

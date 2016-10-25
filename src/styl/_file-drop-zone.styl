@@ -1,0 +1,21 @@
+file-drop-zone {
+  display: block;
+  position: relative;
+
+  .file-drop-zone-blank {
+    transition: opacity .25s linear;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    opacity: 0.5;
+    border: 4px dashed #999;
+
+    &.ng-hide {
+      opacity: 0;
+    }
+  }
+
+}

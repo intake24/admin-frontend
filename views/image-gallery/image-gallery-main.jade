@@ -1,26 +1,25 @@
-.page-block
-    .search-input-group
-        search-input(ng-model="searchQuery")
-        .search-input-addon
-            file-button(on-change="onFilesChange(fileList)")
-                button(type="button" ng-click="addImage()")
-                    i.fa.fa-plus
-        .search-input-addon.dropdown(ng-class="{open: toolsVisible}")
-            button(type="button" ng-click="toggleTools()")
-                i.fa.fa-angle-down
-            ul.dropdown-menu.dropdown-menu-right
-                li
-                    a(href="" ng-click="selectAll()") Select all
-                li
-                    a(href="" ng-click="deselectAll()") Deselect all
-                li
-                    a(href="") Edit tags for selected
-                li.divider
-                li
-                    a(href="" ng-click="removeSelected()") Remove selected
+.search-input-group
+    search-input(ng-model="searchQuery")
+    .search-input-addon
+        file-button(on-change="onFilesChange(fileList)")
+            button(type="button" ng-click="addImage()")
+                i.fa.fa-plus
+    .search-input-addon.dropdown(ng-class="{open: toolsVisible}")
+        button(type="button" ng-click="toggleTools()")
+            i.fa.fa-angle-down
+        ul.dropdown-menu.dropdown-menu-right
+            li
+                a(href="" ng-click="selectAll()") Select all
+            li
+                a(href="" ng-click="deselectAll()") Deselect all
+            li
+                a(href="") Edit tags for selected
+            li.divider
+            li
+                a(href="" ng-click="removeSelected()") Remove selected
 
-.container-fluid
-    file-drop-zone(on-dropped="onFilesChange(fileList)")
+file-drop-zone(on-dropped="onFilesChange(fileList)")
+    .container-fluid.intk-gallery
         .intk-gallery-item(ng-repeat="item in getFilteredImages() track by $index")
             .intk-gallery-item-img
                 div(img-loader src="item.src")

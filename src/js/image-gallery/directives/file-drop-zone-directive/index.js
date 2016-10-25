@@ -10,10 +10,15 @@ module.exports = function (app) {
     function directiveFun() {
 
         function controller(scope, element, attributes) {
+
+            scope.blankIsVisible = false;
+
             element.bind('dragover', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 e.dataTransfer.dropEffect = 'copy';
+                scope.blankIsVisible = true;
+                scope.$apply();
             });
 
             // Get file data on drop
@@ -21,6 +26,13 @@ module.exports = function (app) {
                 e.stopPropagation();
                 e.preventDefault();
                 scope.onDropped({fileList: e.dataTransfer.files});
+            });
+
+            element.bind('drop dragleave', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                scope.blankIsVisible = false;
+                scope.$apply();
             });
         }
 

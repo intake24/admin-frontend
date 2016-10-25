@@ -14,6 +14,7 @@ function controllerFun($scope, ImageService) {
 
     $scope.images = [];
     $scope.searchQuery = '';
+    $scope.copiedTags = [];
 
     $scope.getFilteredImages = function () {
         return $scope.images.filter(function (image) {
@@ -56,12 +57,28 @@ function controllerFun($scope, ImageService) {
             if (!image.selected) {
                 return;
             }
-            image.loading = true;
-            ImageService.remove(image.id).then(function () {
-                var i = $scope.images.indexOf(image);
-                $scope.images.splice(i, 1);
-            });
+            $scope.removeItem(image);
         });
+    };
+
+    $scope.removeItem = function (image) {
+        image.loading = true;
+        ImageService.remove(image.id).then(function () {
+            var i = $scope.images.indexOf(image);
+            $scope.images.splice(i, 1);
+        });
+    };
+
+    $scope.copyTags = function (image) {
+        $scope.copiedTags = image.tags.slice();
+    };
+
+    $scope.pasteTagsToSelected = function () {
+        if ($scope.copiedTags != undefined && $scope.copiedTags.length > 0) {
+            $scope.getFilteredImages().forEach(function (image) {
+                image.tags = $scope.copiedTags.slice();
+            });
+        }
     };
 
     ImageService.all().then(function (data) {

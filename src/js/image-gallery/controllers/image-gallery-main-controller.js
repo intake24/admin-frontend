@@ -60,7 +60,7 @@ function controllerFun($scope, ImageService) {
             if (!image.selected) {
                 return;
             }
-            $scope.removeItem(image);
+            removeItem(image);
         });
     };
 
@@ -81,6 +81,12 @@ function controllerFun($scope, ImageService) {
                 image.tags = $scope.copiedTags.slice();
             });
         }
+    };
+
+    $scope.getImagesSelected = function () {
+        return $scope.images.filter(function (image) {
+                return image.selected;
+            }).length > 0;
     };
 
     ImageService.all().then(function (data) {

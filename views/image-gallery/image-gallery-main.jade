@@ -11,15 +11,16 @@
             li
                 a(href="" ng-click="selectAll()") Select all
             li
-                a(href="" ng-click="deselectAll()") Deselect all
+                a(href="" ng-click="deselectAll()" ng-show="getImagesSelected()") Deselect all
             li(ng-show="copiedTags.length > 0")
                 a(href="" ng-click="pasteTagsToSelected()") Paste tags to selected
-            li.divider
+            li.divider(ng-show="getImagesSelected()")
             li
-                a(href="" ng-click="removeSelected()") Remove selected
+                a(href="" ng-click="removeSelected()" ng-show="getImagesSelected()") Remove selected
 
 file-drop-zone(on-dropped="onFilesChange(fileList)")
     .container-fluid.intk-gallery
+        p(ng-hide="getFilteredImages().length > 0") No images found
         .intk-gallery-item(ng-repeat="item in getFilteredImages() track by $index")
             .intk-gallery-item-img
                 div(img-loader src="item.src")

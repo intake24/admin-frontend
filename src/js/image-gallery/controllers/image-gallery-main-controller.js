@@ -53,6 +53,9 @@ function controllerFun($scope, ImageService) {
     };
 
     $scope.removeSelected = function () {
+        if (!confirm("Are you sure you want to delete selected images?")) {
+            return;
+        }
         $scope.images.forEach(function (image) {
             if (!image.selected) {
                 return;
@@ -62,11 +65,10 @@ function controllerFun($scope, ImageService) {
     };
 
     $scope.removeItem = function (image) {
-        image.loading = true;
-        ImageService.remove(image.id).then(function () {
-            var i = $scope.images.indexOf(image);
-            $scope.images.splice(i, 1);
-        });
+        if (!confirm("Are you sure you want to delete this image?")) {
+            return;
+        }
+        removeItem(image);
     };
 
     $scope.copyTags = function (image) {
@@ -84,6 +86,14 @@ function controllerFun($scope, ImageService) {
     ImageService.all().then(function (data) {
         $scope.images = data;
     });
+
+    function removeItem(image) {
+        image.loading = true;
+        ImageService.remove(image.id).then(function () {
+            var i = $scope.images.indexOf(image);
+            $scope.images.splice(i, 1);
+        });
+    }
 
 }
 

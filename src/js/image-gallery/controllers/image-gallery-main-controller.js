@@ -15,10 +15,16 @@ function controllerFun($scope, ImageService) {
     $scope.images = [];
     $scope.searchQuery = '';
     $scope.copiedTags = [];
+    $scope.showDeleted = false;
+
+    $scope.toggleShowDeleted = function () {
+        $scope.showDeleted = !$scope.showDeleted;
+    };
 
     $scope.getFilteredImages = function () {
         return $scope.images.filter(function (image) {
-            return image.tags.join(' ').search($scope.searchQuery) > -1;
+            return image.tags.join(' ').search($scope.searchQuery) > -1 &&
+                (!image.deleted || $scope.showDeleted);
         });
     };
 
@@ -29,8 +35,7 @@ function controllerFun($scope, ImageService) {
                 continue;
             }
             readImageFromFile(file, function (img) {
-                // Fixme: Add images to the beginning of list
-                $scope.images.push(img);
+                $scope.images.unshift(img);
                 $scope.$apply();
             });
         }
@@ -53,6 +58,7 @@ function controllerFun($scope, ImageService) {
     };
 
     $scope.removeSelected = function () {
+        // Fixme: You can't remove deleted images
         if (!confirm("Are you sure you want to delete selected images?")) {
             return;
         }
@@ -90,7 +96,9 @@ function controllerFun($scope, ImageService) {
     };
 
     ImageService.all().then(function (data) {
-        $scope.images = data;
+        $scope.images = data.map(function (image) {
+            return new ImageModel(image.id, image.src, image.tags, image.deleted);
+        });
     });
 
     function removeItem(image) {

@@ -4,12 +4,11 @@
 
 'use strict';
 
-var ImageModel = require("../models/image-model");
-
 var SAMPLE_IMAGES = [
-  {id: 0, src: 'http://localhost:3002/images/sample1_l.jpg', tags: ['tag1', 'tag2']},
-  {id: 1, src: 'http://localhost:3002/images/sample4_l.jpg', tags: ['tag3', 'tag4']},
-  {id: 3, src: 'http://localhost:3002/images/sample_10.jpg', tags: ['tag5', 'tag6']},
+    {id: 0, src: 'http://localhost:3002/images/sample1_l.jpg', tags: ['tag1', 'tag2'], deleted: false},
+    {id: 1, src: 'http://localhost:3002/images/sample4_l.jpg', tags: ['tag3', 'tag4'], deleted: false},
+    {id: 3, src: 'http://localhost:3002/images/sample_10.jpg', tags: ['tag5', 'tag6'], deleted: false},
+    {id: 4, src: 'http://localhost:3002/images/sample_10.jpg', tags: ['tag5', 'tag6'], deleted: true},
 ];
 
 module.exports = function (app) {
@@ -20,18 +19,14 @@ function serviceFun($q, $timeout) {
 
     return {
         all: function () {
-            var deferred = $q.defer(),
-                result = SAMPLE_IMAGES.map(function(image) {
-                    return new ImageModel(image.id, image.src, image.tags);
-                });
-
-            deferred.resolve(result);
+            var deferred = $q.defer();
+            deferred.resolve(SAMPLE_IMAGES);
 
             return deferred.promise;
         },
-        remove: function(id) {
+        remove: function (id) {
             var deferred = $q.defer();
-            $timeout(function() {
+            $timeout(function () {
                 deferred.resolve();
             }, Math.random() * 500);
             return deferred.promise;

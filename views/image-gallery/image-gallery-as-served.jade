@@ -1,4 +1,43 @@
-.page-block
+.search-input-group
     search-input(ng-model="searchQuery")
+    .search-input-addon
+        button(type="button" ng-click="addItem()")
+            i.fa.fa-plus
 
-.page-block {{ searchQuery }}
+    .search-input-addon(uib-dropdown auto-close="outsideClick")
+        button(type="button" uib-dropdown-toggle id="tools-dropdown")
+            i.fa.fa-angle-down
+        ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="tools-dropdown")
+            li
+                a(href="" ng-click="selectAll()") Select all
+            li
+                a(href="" ng-click="deselectAll()" ng-show="getItemsSelected()") Deselect all
+            li
+                a(href="" ng-click="toggleShowDeleted()") {{ showDeleted ? 'Hide deleted' : 'Show deleted' }}
+            li.divider(ng-show="getItemsSelected()")
+            li
+                a(href="" ng-click="removeSelected()" ng-show="getItemsSelected()") Remove selected
+
+.container-fluid.intk-gallery
+    p(ng-hide="getFilteredItems().length > 0") No items found
+    .intk-gallery-item(ng-repeat="item in getFilteredItems() track by $index")
+        .intk-gallery-item-img
+            img-loader(src="item.src")
+            .intk-gallery-item-blank(ng-class="{'visible': item.selected || item.loading}")
+                button.btn-select(ng-click="select(item)")
+                    i.fa(ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }")
+
+        .intk-gallery-item-tools
+            span.label.label-danger(ng-show="item.deleted") Deleted
+            .input-group(ng-show="item.edited")
+                input.form-control(type="text" placeholder="Weight in gramms" ng-model="item.newWeight" ng-disabled="item.loading")
+                .input-group-btn
+                    button.btn.btn-default(type="button" ng-click="saveItem(item)" ng-disabled="item.loading")
+                        i.fa(ng-class="{'fa-check': !item.loading, 'fa-spinner fa-spin': item.loading}")
+            a.child-visible-on-hover.no-text-decoration(href="" ng-click="item.edit()" ng-class="{hide: item.edited}")
+                span.dashed {{ item.weight }}g
+                &nbsp;
+                i.fa.fa-pencil.visible-on-hover
+
+image-select-drawer(is-open="imageSelectDrawer.isOpen" selected-item="imageSelectDrawer.selectedItem"
+on-image-selected="imageSelectDrawer.onImageSelected" items="imageSelectDrawer.items")

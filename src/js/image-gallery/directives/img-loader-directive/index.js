@@ -25,7 +25,7 @@ module.exports = function (app) {
         }
 
         return {
-            restrict: 'A',
+            restrict: 'E',
             link: controller,
             scope: {
                 src: '=?',

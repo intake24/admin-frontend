@@ -6,13 +6,13 @@
 
 module.exports = ImageModel;
 
-function ImageModel(id, src, tags) {
+function ImageModel(id, src, tags, deleted) {
     this.id = id;
     this.src = src;
     this.tags = tags || [];
     this.loading = false;
     this.selected = false;
-    this.disabled = false;
+    this.deleted = deleted || false;
 }
 
 ImageModel.prototype.getItemSelected = function() {

@@ -24,6 +24,16 @@
         .intk-gallery-item-img
             img-loader(src="item.src")
             .intk-gallery-item-blank(ng-class="{'visible': item.selected || item.loading}")
+                div.pull-right(uib-dropdown)
+                    button.btn.btn-default.btn-tools(uib-dropdown-toggle)
+                        i.fa.fa-ellipsis-v
+                    ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu)
+                        li
+                            a(href="" ng-click="changeImage(item)") Change image
+                        li.divider
+                        li
+                            a(href="" ng-click="removeItem(item)") Remove image
+
                 button.btn-select(ng-click="select(item)")
                     i.fa(ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }")
 

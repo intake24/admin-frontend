@@ -89,6 +89,22 @@ function controllerFun($scope, ImageService, AsServedService) {
         });
     };
 
+    $scope.removeItem = function (image) {
+        if (!confirm("Are you sure you want to delete this image?")) {
+            return;
+        }
+        removeItem(image);
+    };
+
+    $scope.changeImage = function(item) {
+        $scope.imageSelectDrawer.isOpen = true;
+        $scope.imageSelectDrawer.onImageSelected = function(imageModel) {
+            item.newSrc = imageModel.src;
+            $scope.imageSelectDrawer.isOpen = false;
+            $scope.saveItem(item);
+        };
+    };
+
     $scope.getItemsSelected = function () {
         return $scope.items.filter(function (item) {
                 return item.selected;

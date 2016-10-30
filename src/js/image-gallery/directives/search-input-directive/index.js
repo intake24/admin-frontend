@@ -11,6 +11,9 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
             scope.focused = false;
+            scope.clear = function() {
+                scope.ngModel = "";
+            };
             scope.getActive = function () {
                 return this.ngModel != '' || this.focused;
             };

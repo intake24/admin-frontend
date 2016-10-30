@@ -417,3 +417,9 @@ msgstr "Main gallery"
 msgid "image_gallery_as_served"
 msgstr "As served"
 
+msgid "drawers_images_title"
+msgstr "Select image"
+
+msgid "drawers_images_query_placeholder"
+msgstr "Search images"
+

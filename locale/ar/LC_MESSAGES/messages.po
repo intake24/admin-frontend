@@ -421,3 +421,9 @@ msgstr "معرض الرئيسي"
 
 msgid "image_gallery_as_served"
 msgstr "كما خدم"
+
+msgid "drawers_images_title"
+msgstr "اختر صورة"
+
+msgid "drawers_images_query_placeholder"
+msgstr "بحث صور"

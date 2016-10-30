@@ -10,8 +10,8 @@ module.exports = function (app) {
     function directiveFun($window) {
 
         function controller(scope, element, attributes) {
-            scope.title = $window.gettext("modals_associated_food_title");
-            scope.placeholder = $window.gettext("modals_associated_food_query_placeholder");
+            scope.title = $window.gettext("drawers_images_title");
+            scope.placeholder = $window.gettext("drawers_images_query_placeholder");
             scope.searchQuery = "";
 
             scope.close = function () {

@@ -18,36 +18,36 @@
             li
                 a(href="" ng-click="removeSelected()" ng-show="getItemsSelected()") Remove selected
 
-.container-fluid.intk-gallery
+.intk-gallery
     p(ng-hide="getFilteredItems().length > 0") No items found
-    .intk-gallery-item(ng-repeat="item in getFilteredItems() track by $index")
-        .intk-gallery-item-img
-            img-loader(src="item.src")
-            .intk-gallery-item-blank(ng-class="{'visible': item.selected || item.loading}")
-                div.pull-right(uib-dropdown)
-                    button.btn.btn-default.btn-tools(uib-dropdown-toggle)
-                        i.fa.fa-ellipsis-v
-                    ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu)
-                        li
-                            a(href="" ng-click="changeImage(item)") Change image
-                        li.divider
-                        li
-                            a(href="" ng-click="removeItem(item)") Remove image
+    as-served-set(name="item.id" description="item.description" items="item.images" ng-repeat="item in getFilteredItems() track by $index")
+    //.intk-gallery-item(ng-repeat="item in getFilteredItems() track by $index")
+    //    .intk-gallery-item-img
+    //        img-loader(src="item.src")
+    //        .intk-gallery-item-blank(ng-class="{'visible': item.selected || item.loading}")
+    //            div.pull-right(uib-dropdown)
+    //                button.btn.btn-default.btn-tools(uib-dropdown-toggle)
+    //                    i.fa.fa-ellipsis-v
+    //                ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu)
+    //                    li
+    //                        a(href="" ng-click="changeImage(item)") Change image
+    //                    li.divider
+    //                    li
+    //                        a(href="" ng-click="removeItem(item)") Remove image
+    //
+    //            button.btn-select(ng-click="select(item)")
+    //                i.fa(ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }")
+    //
+    //    .intk-gallery-item-tools
+    //        span.label.label-danger(ng-show="item.deleted") Deleted
+    //        .input-group(ng-show="item.edited")
+    //            input.form-control(type="text" placeholder="Weight in gramms" ng-model="item.newWeight" ng-disabled="item.loading")
+    //            .input-group-btn
+    //                button.btn.btn-default(type="button" ng-click="saveItem(item)" ng-disabled="item.loading")
+    //                    i.fa(ng-class="{'fa-check': !item.loading, 'fa-spinner fa-spin': item.loading}")
+    //        a.child-visible-on-hover.no-text-decoration(href="" ng-click="item.edit()" ng-class="{hide: item.edited}")
+    //            span.dashed {{ item.weight }}g
+    //            &nbsp;
+    //            i.fa.fa-pencil.visible-on-hover
 
-                button.btn-select(ng-click="select(item)")
-                    i.fa(ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }")
-
-        .intk-gallery-item-tools
-            span.label.label-danger(ng-show="item.deleted") Deleted
-            .input-group(ng-show="item.edited")
-                input.form-control(type="text" placeholder="Weight in gramms" ng-model="item.newWeight" ng-disabled="item.loading")
-                .input-group-btn
-                    button.btn.btn-default(type="button" ng-click="saveItem(item)" ng-disabled="item.loading")
-                        i.fa(ng-class="{'fa-check': !item.loading, 'fa-spinner fa-spin': item.loading}")
-            a.child-visible-on-hover.no-text-decoration(href="" ng-click="item.edit()" ng-class="{hide: item.edited}")
-                span.dashed {{ item.weight }}g
-                &nbsp;
-                i.fa.fa-pencil.visible-on-hover
-
-image-select-drawer(is-open="imageSelectDrawer.isOpen" selected-item="imageSelectDrawer.selectedItem"
-on-image-selected="imageSelectDrawer.onImageSelected" items="imageSelectDrawer.items")
+image-select-drawer

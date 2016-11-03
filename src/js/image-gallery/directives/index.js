@@ -7,4 +7,7 @@ module.exports = function(app) {
     require('./file-button-directive')(app);
     require('./file-drop-zone-directive')(app);
     require('./image-select-drawer-directive')(app);
+    require('./as-served-set-directive')(app);
+    require('./contenteditable')(app);
+    require('./editable-directive')(app);
 };

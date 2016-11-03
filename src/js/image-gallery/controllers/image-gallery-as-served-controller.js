@@ -4,26 +4,18 @@
 
 'use strict';
 
-var AsServedItemModel = require("../models/as-served-item-model"),
-    ImageModel = require("../models/image-model");
+var AsServedSetModel = require("../models/as-served-set-model");
 
 module.exports = function (app) {
-    app.controller('ImageGalleryAsServed', ["$scope", "ImageService", "AsServedService", controllerFun]);
+    app.controller('ImageGalleryAsServed', ["$scope", "AsServedSetService", controllerFun]);
 };
 
-function controllerFun($scope, ImageService, AsServedService) {
+function controllerFun($scope, AsServedSetService) {
 
     $scope.items = [];
     $scope.searchQuery = '';
     $scope.copiedTags = [];
     $scope.showDeleted = false;
-
-    $scope.imageSelectDrawer = {
-        items: [],
-        isOpen: false,
-        selectedItem: undefined,
-        onImageSelected: undefined
-    };
 
     $scope.toggleShowDeleted = function () {
         $scope.showDeleted = !$scope.showDeleted;
@@ -31,7 +23,7 @@ function controllerFun($scope, ImageService, AsServedService) {
 
     $scope.getFilteredItems = function () {
         return $scope.items.filter(function (item) {
-            return item.tags.join(' ').search($scope.searchQuery) > -1 &&
+            return [item.id, item.description].join(' ').search($scope.searchQuery) > -1 &&
                 (!item.deleted || $scope.showDeleted);
         });
     };
@@ -96,38 +88,21 @@ function controllerFun($scope, ImageService, AsServedService) {
         removeItem(image);
     };
 
-    $scope.changeImage = function(item) {
-        $scope.imageSelectDrawer.isOpen = true;
-        $scope.imageSelectDrawer.onImageSelected = function(imageModel) {
-            item.newSrc = imageModel.src;
-            $scope.imageSelectDrawer.isOpen = false;
-            $scope.saveItem(item);
-        };
-    };
-
     $scope.getItemsSelected = function () {
         return $scope.items.filter(function (item) {
                 return item.selected;
             }).length > 0;
     };
 
-    ImageService.all().then(function (data) {
-        $scope.imageSelectDrawer.items = data.map(function (image) {
-            return new ImageModel(image.id, image.src, image.tags, image.deleted);
-        }).filter(function (image) {
-            return !image.deleted;
-        });
-    });
-
-    AsServedService.all().then(function (data) {
+    AsServedSetService.all().then(function (data) {
         $scope.items = data.map(function (item) {
-            return new AsServedItemModel(item.id, item.src, item.tags, item.weight, item.deleted);
+            return new AsServedSetModel(item.id, item.description, item.deleted, item.images);
         });
     });
 
     function removeItem(item) {
         item.loading = true;
-        AsServedService.remove(item.id).then(function () {
+        AsServedSetService.remove(item.id).then(function () {
             var i = $scope.items.indexOf(item);
             $scope.items.splice(i, 1);
         });

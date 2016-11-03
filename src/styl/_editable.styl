@@ -1,0 +1,30 @@
+@import "_variables.styl"
+
+editable
+  .editable
+    position relative
+
+    &.empty
+      display inline-block
+      min-width 5px
+      height 1em
+
+    &-icon
+      $size = 0.8em
+      font-size $size
+      position absolute
+      top -($size * 0.5)
+      right -($size * 1.5)
+      opacity 0
+      transition opacity $transition
+
+      &.ng-hide
+        opacity 0
+
+    &:hover
+      .editable-icon:not(.ng-hide)
+        opacity 1
+
+    &-placeholder
+      color $placeholder-color
+

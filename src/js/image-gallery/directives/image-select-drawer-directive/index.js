@@ -4,10 +4,12 @@
 
 'use strict';
 
-module.exports = function (app) {
-    app.directive("imageSelectDrawer", ["$window", directiveFun]);
+var ImageModel = require("../../models/image-model");
 
-    function directiveFun($window) {
+module.exports = function (app) {
+    app.directive("imageSelectDrawer", ["$window", "ImageService", "DrawersService", directiveFun]);
+
+    function directiveFun($window, ImageService, DrawersService) {
 
         function controller(scope, element, attributes) {
             scope.title = $window.gettext("drawers_images_title");
@@ -16,13 +18,13 @@ module.exports = function (app) {
 
             scope.close = function () {
                 scope.isOpen = false;
+                DrawersService.imageDrawer.close();
             };
 
             scope.select = function (item) {
                 scope.selectedItem = item;
-                if (scope.onImageSelected) {
-                    scope.onImageSelected(item);
-                }
+                DrawersService.imageDrawer.setValue(angular.copy(item));
+                scope.close();
             };
 
             scope.getFilteredItems = function () {
@@ -30,18 +32,26 @@ module.exports = function (app) {
                     return item.tags.join(' ').search(scope.searchQuery) > -1;
                 });
             };
+
+            scope.$watch(function() {
+                return DrawersService.imageDrawer.getOpen();
+            }, function() {
+                scope.isOpen = DrawersService.imageDrawer.getOpen();
+            });
+
+            ImageService.all().then(function (data) {
+                scope.items = data.map(function (image) {
+                    return new ImageModel(image.id, image.src, image.tags, image.deleted);
+                }).filter(function (image) {
+                    return !image.deleted;
+                });
+            });
         }
 
         return {
             restrict: "E",
             link: controller,
-            transclude: true,
-            scope: {
-                isOpen: "=?",
-                selectedItem: "=?",
-                onImageSelected: "=?",
-                items: "=?"
-            },
+            scope: {},
             templateUrl: "src/js/image-gallery/directives/image-select-drawer-directive/image-select-drawer-directive.html"
         };
     }

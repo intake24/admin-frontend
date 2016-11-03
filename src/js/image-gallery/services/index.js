@@ -7,5 +7,7 @@ module.exports = function(app) {
     require('./modal-service')(app);
     require('./image-service')(app);
     require('./as-served-service')(app);
+    require('./as-served-set-service')(app);
+    require('./drawers-service')(app);
     require('../../shared/services/http-request-interceptor')(app);
 };

@@ -1,0 +1,58 @@
+<div class="as-served-set-info">
+    <h1 class="as-served-set-title">
+        <editable ng-model="name" placeholder="Type something"></editable>
+    </h1>
+    <p class="as-served-set-description">
+        <editable ng-model="description"></editable>
+    </p>
+</div>
+<div class="as-served-set-images">
+    <div class="intk-gallery-item" ng-repeat="item in items track by $index">
+        <div class="intk-gallery-item-img">
+            <img-loader src="item.src"></img-loader>
+            <div class="intk-gallery-item-blank" ng-class="{'visible': item.selected || item.loading}">
+                <div class="pull-right" uib-dropdown>
+                    <button class="btn btn-default btn-tools" uib-dropdown-toggle>
+                        <i class="fa fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                        <li>
+                            <a href="" ng-click="changeImage(item)">
+                                Change image
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="" ng-click="removeItem(item)">
+                                Remove image
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="btn-select" ng-click="select(item)">
+                    <i class="fa"
+                       ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }"></i>
+                </button>
+            </div>
+        </div>
+        <div class="intk-gallery-item-tools">
+            <span class="label label-danger" ng-show="item.deleted">Deleted</span>
+            <div class="input-group" ng-show="item.edited">
+                <input class="form-control" type="text" placeholder="Weight in grams" ng-model="item.newWeight"
+                       ng-disabled="item.loading">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="saveItem(item)" ng-disabled="item.loading">
+                        <i class="fa" ng-class="{'fa-check': !item.loading, 'fa-spinner fa-spin': item.loading}"></i>
+                    </button>
+                </div>
+            </div>
+            <a class="child-visible-on-hover no-text-decoration" href="" ng-click="item.edit()"
+               ng-class="{hide: item.edited}">
+            <span class="dashed">
+                {{ item.weight }}g
+            </span>
+                <i class="fa fa-pencil visible-on-hover"></i>
+            </a>
+        </div>
+    </div>
+</div>

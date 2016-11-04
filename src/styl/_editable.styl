@@ -13,7 +13,7 @@ editable
       $size = 0.8em
       font-size $size
       position absolute
-      top -($size * 0.5)
+      bottom ($size * 0.5)
       right -($size * 1.5)
       opacity 0
       transition opacity $transition
@@ -27,4 +27,10 @@ editable
 
     &-placeholder
       color $placeholder-color
+      border-bottom 1px solid $placeholder-color
+
+      &.error
+        $error-color = lighten($color-red, 30%)
+        color $error-color
+        border-bottom-color $error-color
 

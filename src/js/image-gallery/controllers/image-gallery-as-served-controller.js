@@ -4,8 +4,6 @@
 
 'use strict';
 
-var AsServedSetModel = require("../models/as-served-set-model");
-
 module.exports = function (app) {
     app.controller('ImageGalleryAsServed', ["$scope", "AsServedSetService", controllerFun]);
 };
@@ -44,11 +42,6 @@ function controllerFun($scope, AsServedSetService) {
         });
     };
 
-    $scope.addItem = function () {
-        $scope.imageSelectDrawer.isOpen = true;
-        $scope.imageSelectDrawer.onImageSelected = addItemFromImage;
-    };
-
     $scope.saveItem = function (item) {
         var promise;
 
@@ -57,11 +50,11 @@ function controllerFun($scope, AsServedSetService) {
         if (item.id == undefined) {
             promise = AsServedService.add(123, item.newWeight).then(function (data) {
                 item.id = data.id;
-                item.acceptChanges();
+                item.asServedItemModel.acceptChanges();
             });
         } else {
             promise = AsServedService.edit(item.id, item.newSrc, item.newWeight).then(function (data) {
-                item.acceptChanges();
+                item.asServedItemModel.acceptChanges();
             });
         }
         promise.finally(function () {
@@ -95,9 +88,7 @@ function controllerFun($scope, AsServedSetService) {
     };
 
     AsServedSetService.all().then(function (data) {
-        $scope.items = data.map(function (item) {
-            return new AsServedSetModel(item.id, item.description, item.deleted, item.images);
-        });
+        $scope.items = data;
     });
 
     function removeItem(item) {
@@ -106,13 +97,6 @@ function controllerFun($scope, AsServedSetService) {
             var i = $scope.items.indexOf(item);
             $scope.items.splice(i, 1);
         });
-    }
-
-    function addItemFromImage(imageModel) {
-        var newItem = new AsServedItemModel(undefined, imageModel.src, imageModel.tags, 0, false);
-        newItem.edit();
-        $scope.items.unshift(newItem);
-        $scope.imageSelectDrawer.isOpen = false;
     }
 
 }

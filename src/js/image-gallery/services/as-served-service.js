@@ -24,9 +24,18 @@ function serviceFun($q, $timeout) {
 
             return deferred.promise;
         },
+        generateNewItem: function (imgSrc, imgTags) {
+            return {id: undefined, src: imgSrc, tags: imgTags, weight: 0, deleted: false};
+        },
         add: function (imgId, weight) {
             var deferred = $q.defer();
-            var newItem = {id: 5, src: 'http://localhost:3002/images/sample1_l.jpg', tags: ['some', 'tag'], weight: weight, deleted: false};
+            var newItem = {
+                id: 5,
+                src: 'http://localhost:3002/images/sample1_l.jpg',
+                tags: ['some', 'tag'],
+                weight: weight,
+                deleted: false
+            };
             $timeout(function () {
                 deferred.resolve(newItem);
             }, Math.random() * 500);

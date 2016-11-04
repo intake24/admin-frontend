@@ -1,5 +1,11 @@
 <span class="editable" ng-class="{empty: !ngModel}">
-    <span class="editable-placeholder" ng-show="getPlaceholderIsVisible()" ng-click="focus()">{{placeholder}}</span>
-    <span contenteditable strip-br ng-model="ngModel" ng-blur="setBlured()" ng-focus="setFocused()"></span>
+    <span class="editable-placeholder"
+          ng-show="getPlaceholderIsVisible()"
+          ng-click="focus()"
+          ng-class="{error: getValid()}">{{placeholder}}</span>
+    <span contenteditable
+          ng-model="ngModel"
+          ng-blur="setBlured()"
+          ng-focus="setFocused()"></span>
     <i class="fa fa-pencil editable-icon" ng-show="!focused"></i>
 </span>

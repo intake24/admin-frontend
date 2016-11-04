@@ -1,16 +1,36 @@
+<div class="pull-right" uib-dropdown>
+    <button class="btn btn-default" uib-dropdown-toggle>
+        <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+        <li>
+            <a href="" ng-click="addItem()">
+                Add image
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="" ng-click="">
+                Remove set
+            </a>
+        </li>
+    </ul>
+</div>
+
 <div class="as-served-set-info">
     <h1 class="as-served-set-title">
-        <editable ng-model="name" placeholder="Type something"></editable>
+        <editable ng-model="name" placeholder="Type something" required></editable>
     </h1>
     <p class="as-served-set-description">
-        <editable ng-model="description"></editable>
+        <editable ng-model="description" placeholder="Type something" required></editable>
     </p>
 </div>
 <div class="as-served-set-images">
-    <div class="intk-gallery-item" ng-repeat="item in items track by $index">
+    <div class="intk-gallery-item" ng-repeat="item in getFilteredItems() track by $index">
         <div class="intk-gallery-item-img">
             <img-loader src="item.src"></img-loader>
-            <div class="intk-gallery-item-blank" ng-class="{'visible': item.selected || item.loading}">
+            <div class="intk-gallery-item-blank"
+                 ng-class="{'visible': item.asServedItemModel.loading}">
                 <div class="pull-right" uib-dropdown>
                     <button class="btn btn-default btn-tools" uib-dropdown-toggle>
                         <i class="fa fa-ellipsis-v"></i>
@@ -29,25 +49,29 @@
                         </li>
                     </ul>
                 </div>
-                <button class="btn-select" ng-click="select(item)">
+                <button class="btn-select">
                     <i class="fa"
-                       ng-class="{'fa-check-circle-o': item.getItemSelected(), 'fa-circle-o': item.getItemDeselected(), 'fa-spinner fa-spin': item.loading }"></i>
+                       ng-class="{'fa-spinner fa-spin': item.asServedItemModel.loading }"></i>
                 </button>
             </div>
         </div>
         <div class="intk-gallery-item-tools">
             <span class="label label-danger" ng-show="item.deleted">Deleted</span>
-            <div class="input-group" ng-show="item.edited">
-                <input class="form-control" type="text" placeholder="Weight in grams" ng-model="item.newWeight"
-                       ng-disabled="item.loading">
+            <div class="input-group" ng-show="item.asServedItemModel.edited">
+                <input class="form-control" type="text" placeholder="Weight in grams"
+                       ng-model="item.asServedItemModel.newWeight"
+                       ng-disabled="item.asServedItemModel.loading">
                 <div class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="saveItem(item)" ng-disabled="item.loading">
-                        <i class="fa" ng-class="{'fa-check': !item.loading, 'fa-spinner fa-spin': item.loading}"></i>
+                    <button class="btn btn-default" type="button" ng-click="saveItem(item)"
+                            ng-disabled="item.asServedItemModel.loading">
+                        <i class="fa" ng-class="{'fa-check': !item.asServedItemModel.loading,
+                                                 'fa-spinner fa-spin': item.asServedItemModel.loading}"></i>
                     </button>
                 </div>
             </div>
-            <a class="child-visible-on-hover no-text-decoration" href="" ng-click="item.edit()"
-               ng-class="{hide: item.edited}">
+            <a class="child-visible-on-hover no-text-decoration" href=""
+               ng-click="item.asServedItemModel.edit()"
+               ng-class="{hide: item.asServedItemModel.edited}">
             <span class="dashed">
                 {{ item.weight }}g
             </span>

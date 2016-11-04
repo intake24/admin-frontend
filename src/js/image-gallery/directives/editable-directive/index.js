@@ -12,7 +12,8 @@ module.exports = function (app) {
         function controller(scope, element, attributes) {
 
             scope.focused = false;
-            scope.placeholder = "" || attributes.placeholder
+            scope.placeholder = "" || attributes.placeholder;
+            scope.required = attributes.required;
 
             scope.getPlaceholderIsVisible = function () {
                 return scope.ngModel.replace(/\s+/gi, "") == "" && !scope.focused;
@@ -26,8 +27,12 @@ module.exports = function (app) {
                 scope.focused = false;
             };
 
-            scope.focus = function() {
+            scope.focus = function () {
                 element[0].querySelector('[contenteditable]').focus();
+            };
+
+            scope.getValid = function () {
+                return scope.ngModel == "" && scope.required;
             };
 
         }

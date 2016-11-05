@@ -9,17 +9,15 @@
             i.fa.fa-angle-down
         ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="tools-dropdown")
             li
-                a(href="" ng-click="selectAll()") Select all
-            li
-                a(href="" ng-click="deselectAll()" ng-show="getItemsSelected()") Deselect all
-            li
                 a(href="" ng-click="toggleShowDeleted()") {{ showDeleted ? 'Hide deleted' : 'Show deleted' }}
-            li.divider(ng-show="getItemsSelected()")
-            li
-                a(href="" ng-click="removeSelected()" ng-show="getItemsSelected()") Remove selected
 
 .intk-gallery
-    p(ng-hide="getFilteredItems().length > 0") No items found
-    as-served-set(name="item.id" description="item.description" items="item.images" show-deleted="showDeleted" ng-repeat="item in getFilteredItems() track by $index")
+    p(class="as-served-set-blank-text" ng-hide="getFilteredItems().length > 0") No items found
+    as-served-set(name="item.id"
+    description="item.description"
+    items="item.images"
+    deleted="item.deleted"
+    show-deleted="showDeleted"
+    ng-repeat="item in getFilteredItems() track by $index")
 
 image-select-drawer

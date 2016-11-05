@@ -31,8 +31,8 @@ module.exports = function (app) {
                 element[0].querySelector('[contenteditable]').focus();
             };
 
-            scope.getValid = function () {
-                return scope.ngModel == "" && scope.required;
+            scope.getNotValid = function () {
+                return scope.ngModel.replace(/\s+/gi, "") == "" && scope.required;
             };
 
         }
@@ -41,7 +41,8 @@ module.exports = function (app) {
             restrict: 'E',
             link: controller,
             scope: {
-                ngModel: '=',
+                ngModel: "=",
+                ngDisabled: "=?"
             },
             templateUrl: 'src/js/image-gallery/directives/editable-directive/editable-directive.html'
         };

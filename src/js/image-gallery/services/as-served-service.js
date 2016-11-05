@@ -24,7 +24,7 @@ function serviceFun($q, $timeout) {
 
             return deferred.promise;
         },
-        generateNewItem: function (imgSrc, imgTags) {
+        generateBlankItem: function (imgSrc, imgTags) {
             return {id: undefined, src: imgSrc, tags: imgTags, weight: 0, deleted: false};
         },
         add: function (imgId, weight) {

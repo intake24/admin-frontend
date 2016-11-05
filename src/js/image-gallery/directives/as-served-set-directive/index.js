@@ -7,11 +7,15 @@
 var AsServedItemModel = require("./as-served-item-model");
 
 module.exports = function (app) {
-    app.directive('asServedSet', ["DrawersService", "AsServedService", directiveFun]);
+    app.directive('asServedSet', ["$timeout", "DrawersService", "AsServedSetService", "AsServedService",
+        directiveFun]);
 
-    function directiveFun(DrawersService, AsServedService) {
+    function directiveFun($timeout, DrawersService, AsServedSetService, AsServedService) {
 
         function controller(scope, element, attributes) {
+
+            var updateTimeout,
+                updateAfter = 500;
 
             scope.newName = scope.name;
             scope.newDescription = scope.description;
@@ -19,8 +23,8 @@ module.exports = function (app) {
             scope.edited = false;
             scope.deleted = scope.deleted || false;
 
-            scope.getFilteredItems = function() {
-                return scope.items.filter(function(el) {
+            scope.getFilteredItems = function () {
+                return scope.items.filter(function (el) {
                     return !el.deleted || scope.showDeleted;
                 });
             };
@@ -34,7 +38,7 @@ module.exports = function (app) {
                         return;
                     }
                     unregister();
-                    var newItem = AsServedService.generateNewItem(newValue.src, newValue.tags);
+                    var newItem = AsServedService.generateBlankItem(newValue.src, newValue.tags);
                     newItem.asServedItemModel = new AsServedItemModel(newItem);
                     newItem.asServedItemModel.edit();
                     scope.items.unshift(newItem);
@@ -88,8 +92,19 @@ module.exports = function (app) {
                 }
                 item.asServedItemModel.loading = true;
                 AsServedService.remove(item.id).then(function () {
-                    var i = scope.items.indexOf(item);
-                    scope.items.splice(i, 1);
+                    item.deleted = true;
+                });
+            };
+
+            scope.removeSet = function () {
+                if (!confirm("Are you sure you want to delete this set?")) {
+                    return;
+                }
+                scope.loading = true;
+                AsServedSetService.remove(scope.name).then(function () {
+                    scope.deleted = true;
+                }).finally(function () {
+                    scope.loading = false;
                 });
             };
 
@@ -101,6 +116,28 @@ module.exports = function (app) {
                 });
             });
 
+            scope.$watch("[name, description]", function (newValue, oldValue) {
+                $timeout.cancel(updateTimeout);
+                updateTimeout = $timeout(function () {
+                    update(newValue, oldValue);
+                }, updateAfter);
+            });
+
+            function update(newValue, oldValue) {
+                if (newValue[0] == oldValue[0] && newValue[1] == oldValue[1]) {
+                    return;
+                }
+                var checkedName = scope.name.replace(/\s+/gi, "") == "",
+                    checkedDescription = scope.description.replace(/\s+/gi, "") == "";
+                if (checkedName || checkedDescription) {
+                    return;
+                }
+                scope.loading = true;
+                AsServedSetService.edit(scope.name, scope.description).finally(function () {
+                    scope.loading = false;
+                });
+            }
+
         }
 
         return {
@@ -110,8 +147,8 @@ module.exports = function (app) {
                 name: "=?",
                 description: "=?",
                 items: "=?",
-                selected: "=?",
-                showDeleted: "=?"
+                deleted: "=?",
+                showDeleted: "=?",
             },
             templateUrl: 'src/js/image-gallery/directives/as-served-set-directive/as-served-set-directive.html'
         };

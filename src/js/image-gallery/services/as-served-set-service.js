@@ -36,6 +36,9 @@ function serviceFun($q, $timeout) {
             }, Math.random() * 500);
             return deferred.promise;
         },
+        generateBlankItem: function() {
+            return {id: "", description: "", images: [], deleted: false};
+        },
         edit: function (setId, description) {
             var deferred = $q.defer();
             $timeout(function () {

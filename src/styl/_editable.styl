@@ -26,11 +26,15 @@ editable
         opacity 1
 
     &-placeholder
-      color $placeholder-color
-      border-bottom 1px solid $placeholder-color
+      opacity 0.7
+      border-bottom 1px solid
 
       &.error
         $error-color = lighten($color-red, 30%)
+        opacity 1
         color $error-color
         border-bottom-color $error-color
+
+    &-disabled
+      opacity 0.7
 

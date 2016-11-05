@@ -1,6 +1,7 @@
 <div class="pull-right" uib-dropdown>
-    <button class="btn btn-default" uib-dropdown-toggle>
-        <i class="fa fa-ellipsis-v"></i>
+    <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
+        <i class="fa" ng-class="{'fa-ellipsis-v': !loading,
+                                 'fa-spinner fa-spin': loading}"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
         <li>
@@ -10,7 +11,7 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="" ng-click="">
+            <a href="" ng-click="removeSet()">
                 Remove set
             </a>
         </li>
@@ -19,13 +20,15 @@
 
 <div class="as-served-set-info">
     <h1 class="as-served-set-title">
-        <editable ng-model="name" placeholder="Type something" required></editable>
+        <span class="label label-danger" ng-show="deleted">Deleted</span>
+        <editable ng-model="name" placeholder="Type something" ng-disabled="deleted" required></editable>
     </h1>
     <p class="as-served-set-description">
-        <editable ng-model="description" placeholder="Type something" required></editable>
+        <editable ng-model="description" placeholder="Type something" ng-disabled="deleted" required></editable>
     </p>
 </div>
 <div class="as-served-set-images">
+    <p class="page-block" ng-hide="getFilteredItems().length">No images</p>
     <div class="intk-gallery-item" ng-repeat="item in getFilteredItems() track by $index">
         <div class="intk-gallery-item-img">
             <img-loader src="item.src"></img-loader>
@@ -49,10 +52,10 @@
                         </li>
                     </ul>
                 </div>
-                <button class="btn-select">
+                <span class="btn-select">
                     <i class="fa"
                        ng-class="{'fa-spinner fa-spin': item.asServedItemModel.loading }"></i>
-                </button>
+                </span>
             </div>
         </div>
         <div class="intk-gallery-item-tools">
@@ -70,13 +73,17 @@
                 </div>
             </div>
             <a class="child-visible-on-hover no-text-decoration" href=""
+               ng-hide="item.deleted"
                ng-click="item.asServedItemModel.edit()"
                ng-class="{hide: item.asServedItemModel.edited}">
-            <span class="dashed">
-                {{ item.weight }}g
-            </span>
+                <span class="dashed">
+                    {{ item.weight }}g
+                </span>
                 <i class="fa fa-pencil visible-on-hover"></i>
             </a>
+            <span ng-show="item.deleted">
+                {{ item.weight }}g
+            </span>
         </div>
     </div>
 </div>

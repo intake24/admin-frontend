@@ -10,6 +10,8 @@ $intk-tag-input-selector = intk-tag-input
 $intk-tag-input-item = 4px
 $intk-gallery-tools-padding = 4px 4px 10px 4px
 
+$intk-gallery-as-served-set-padding = 4px 15px 0px 15px
+
 .intk-gallery {
   padding-top: 20px;
 
@@ -149,7 +151,7 @@ tag-input {
 as-served-set {
   $border = 1px solid $subgroup-border-color;
   display: block;
-  padding: 4px 15px 0px 15px;
+  padding: $intk-gallery-as-served-set-padding;
   margin-bottom: 20px;
   border-top: $border;
   border-bottom: $border;
@@ -165,5 +167,9 @@ as-served-set {
 
   &-title {
     font-size: 22px;
+  }
+
+  &-blank-text {
+    padding $intk-gallery-as-served-set-padding
   }
 }

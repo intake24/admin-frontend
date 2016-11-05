@@ -4,7 +4,7 @@
 
 'use strict';
 
-var ImageModel = require("../models/image-model");
+var ImageModel = require("./image-model");
 
 module.exports = function (app) {
     app.controller('ImageGalleryMain', ["$scope", "ImageService", controllerFun]);
@@ -23,7 +23,7 @@ function controllerFun($scope, ImageService) {
 
     $scope.getFilteredImages = function () {
         return $scope.images.filter(function (image) {
-            return image.tags.join(' ').search($scope.searchQuery) > -1 &&
+            return image.tags.join(' ').toLowerCase().search($scope.searchQuery) > -1 &&
                 (!image.deleted || $scope.showDeleted);
         });
     };
@@ -104,8 +104,7 @@ function controllerFun($scope, ImageService) {
     function removeItem(image) {
         image.loading = true;
         ImageService.remove(image.id).then(function () {
-            var i = $scope.images.indexOf(image);
-            $scope.images.splice(i, 1);
+            image.deleted = true;
         });
     }
 
@@ -122,3 +121,4 @@ function readImageFromFile(file, onLoad) {
     };
     reader.readAsDataURL(file);
 }
+

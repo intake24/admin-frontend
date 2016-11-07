@@ -1,4 +1,0 @@
-.sidebar(ng-class='{"active": $parent.sidebaropen}' ng-controller='ImageGalleryNavigationController')
-	ul
-		li.sidebar-btn(ng-repeat="item in menuItems")
-			a(href="#{{item.href}}" ng-class="{'active': getItemIsActive(item)}") {{ item.name }}

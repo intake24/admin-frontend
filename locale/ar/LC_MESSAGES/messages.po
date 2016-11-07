@@ -427,3 +427,6 @@ msgstr "اختر صورة"
 
 msgid "drawers_images_query_placeholder"
 msgstr "بحث صور"
+
+msgid "sidebar_food_explorer"
+msgstr "المستكشف الغذاء"

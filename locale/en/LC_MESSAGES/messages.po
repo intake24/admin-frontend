@@ -423,3 +423,6 @@ msgstr "Select image"
 msgid "drawers_images_query_placeholder"
 msgstr "Search images"
 
+msgid "sidebar_food_explorer"
+msgstr "Food explorer"
+

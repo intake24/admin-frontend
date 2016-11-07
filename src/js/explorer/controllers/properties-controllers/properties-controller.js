@@ -8,13 +8,13 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('PropertiesController',
-        ['$scope', 'CurrentItem', 'SharedData', 'FoodDataReader',
+        ['$scope', '$rootScope', 'CurrentItem', 'SharedData', 'FoodDataReader',
             'FoodDataWriter', 'UserFoodData', 'Packer', '$q', 'MessageService', 'Locales',
             controllerFun]);
 };
 
-function controllerFun($scope, currentItem, sharedData, foodDataReader, foodDataWriter, userFoodData,
-                       packer, $q, MessageService, LocalesService) {
+function controllerFun($scope, $rootScope, currentItem, sharedData, foodDataReader, foodDataWriter,
+                       userFoodData, packer, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
 
@@ -149,7 +149,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             else
                 return false;
         }
-    }
+    };
 
     function reloadData() {
         clearData();
@@ -258,14 +258,14 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             return !angular.equals(packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main), packer.packCategoryMainRecordUpdate($scope.itemDefinition.main));
         else
             return false;
-    }
+    };
 
     $scope.categoryLocalRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)
             return !angular.equals(packer.packCategoryLocalRecordUpdate($scope.originalItemDefinition.local), packer.packCategoryLocalRecordUpdate($scope.itemDefinition.local));
         else
             return false;
-    }
+    };
 
     $scope.foodMainRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
@@ -275,7 +275,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
         else
             return false;
-    }
+    };
 
     $scope.loadLocalRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
@@ -285,15 +285,15 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
         }
         else
             return false;
-    }
+    };
 
     $scope.foodChanged = function () {
         return $scope.foodMainRecordChanged() || $scope.loadLocalRecordChanged();
-    }
+    };
 
     $scope.categoryChanged = function () {
         return $scope.categoryMainRecordChanged() || $scope.categoryLocalRecordChanged();
-    }
+    };
 
     $scope.itemChanged = function () {
         if ($scope.newItem)
@@ -322,7 +322,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
             else
                 return "";
         }
-    }
+    };
 
     $scope.updateCategory = function () {
         disableButtons();
@@ -343,7 +343,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
                     notifyItemUpdated();
                 });
-    }
+    };
 
     function createUpdateEvent() {
         return {
@@ -429,12 +429,12 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
 
                     notifyItemUpdated();
                 });
-    }
+    };
 
     $scope.discardChanges = function () {
         reloadData();
         MessageService.showMessage(gettext('Changes discarded'), 'success');
-    }
+    };
 
     $scope.saveNewFood = function () {
         var packed = packer.packNewFoodRecord($scope.itemDefinition);
@@ -448,11 +448,11 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 // Check if this was caused by a 409, and show a better message
                 console.error(response);
             });
-    }
+    };
 
     $scope.cancelNewFood = function () {
         currentItem.setCurrentItem(null);
-    }
+    };
 
     $scope.saveNewCategory = function () {
         var packed = packer.packNewCategoryRecord($scope.itemDefinition);
@@ -466,13 +466,17 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
                 // Check if this was caused by a 409, and show a better message
                 console.error(response);
             });
-    }
+    };
 
     $scope.cancelNewCategory = function () {
         currentItem.setCurrentItem(null);
-    }
+    };
 
     $scope.deleteItem = function () {
         currentItem.delete();
-    }
+    };
+
+    $scope.cloneFood = function () {
+        $rootScope.$broadcast('intake24.admin.food_db.CloneFood');
+    };
 }

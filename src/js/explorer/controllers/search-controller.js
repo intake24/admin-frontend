@@ -3,10 +3,11 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.controller('SearchController', ['$scope', '$timeout', 'FoodDataReader', 'Packer', controllerFun]);
+    app.controller('SearchController', ['$scope', '$rootScope', '$timeout',
+        'FoodDataReader', 'Packer', controllerFun]);
 };
 
-function controllerFun($scope, $timeout, foodDataReader, packer) {
+function controllerFun($scope, $rootScope, $timeout, foodDataReader, packer) {
 
     var queryTimeout = 500,
         timeoutPromise;
@@ -15,14 +16,29 @@ function controllerFun($scope, $timeout, foodDataReader, packer) {
     $scope.searchResultsAreVisible = false;
     $scope.query = "";
     $scope.focused = false;
+
     $scope.getActive = function () {
         return this.query != '' || this.focused;
     };
+
     $scope.setFocused = function () {
         this.focused = true;
     };
+
     $scope.setUnfocused = function () {
         this.focused = false;
+    };
+
+    $scope.clear = function () {
+        this.query = "";
+    };
+
+    $scope.addNewFood = function () {
+        $rootScope.$broadcast('intake24.admin.food_db.AddNewFood');
+    };
+
+    $scope.addNewCategory = function () {
+        $rootScope.$broadcast('intake24.admin.food_db.AddNewCategory');
     };
 
     $scope.$watch('query', function (oldValue, newValue) {

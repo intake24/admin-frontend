@@ -17,8 +17,8 @@
 									ng-click='discardChanges()'
 									ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
 				span #{ gettext("Discard changes") }
-			button.intake-btn.danger(type="button"
-									ng-click='deleteItem()'
-									ng-disabled="forceDisabledButtons")
+			button.intake-btn.danger.pull-right(type="button"
+												ng-click='deleteItem()'
+												ng-disabled="forceDisabledButtons")
 				span #{ gettext("Delete") }
 			.clearfloat

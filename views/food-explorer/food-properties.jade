@@ -22,7 +22,11 @@
 					ng-click="discardChanges()"
 					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()" )
 				span #{ gettext("Discard changes") }
-			button(class="intake-btn danger"
+			button(class="intake-btn warning"
+					ng-click="cloneFood()"
+					ng-disabled="forceDisabledButtons" )
+						span #{ gettext("Clone food") }
+			button(class="intake-btn danger pull-right"
 					id="btn-delete-food"
 					ng-click="deleteItem()"
 					ng-disabled="forceDisabledButtons")

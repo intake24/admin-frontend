@@ -44,7 +44,7 @@ module.exports = function (app) {
                 ngModel: "=",
                 ngDisabled: "=?"
             },
-            templateUrl: 'src/js/image-gallery/directives/editable-directive/editable-directive.html'
+            template: require("./editable-directive.html")
         };
     }
 

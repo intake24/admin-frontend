@@ -30,7 +30,7 @@ module.exports = function (app) {
             scope: {
                 onChange: "&"
             },
-            templateUrl: 'src/js/image-gallery/directives/file-button-directive/file-button-directive.html'
+            template: require("./file-button-directive.html")
         };
     }
 

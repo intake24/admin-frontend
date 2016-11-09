@@ -11,7 +11,8 @@ function serviceFun() {
         drawerAsServedImageSet: DrawerStateFactory(),
         drawerGuideImage: DrawerStateFactory(),
         drawerDrinkware: DrawerStateFactory(),
-        drawerAssociatedFood: DrawerStateFactory()
+        drawerAssociatedFood: DrawerStateFactory(),
+        imageDrawer: DrawerStateFactory(),
     };
 }
 

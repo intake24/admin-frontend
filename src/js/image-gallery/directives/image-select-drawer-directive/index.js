@@ -52,7 +52,7 @@ module.exports = function (app) {
             restrict: "E",
             link: controller,
             scope: {},
-            templateUrl: "src/js/image-gallery/directives/image-select-drawer-directive/image-select-drawer-directive.html"
+            template: require("./image-select-drawer-directive.html")
         };
     }
 

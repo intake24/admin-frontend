@@ -32,7 +32,7 @@ module.exports = function (app) {
             scope: {
                 ngModel: '=',
             },
-            templateUrl: 'src/js/image-gallery/directives/search-input-directive/search-input-directive.html'
+            template: require("./search-input-directive.html")
         };
     }
 

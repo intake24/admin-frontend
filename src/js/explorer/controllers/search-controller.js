@@ -21,18 +21,6 @@ function controllerFun($scope, $rootScope, $timeout, foodDataReader, packer) {
         return this.query != '' || this.focused;
     };
 
-    $scope.setFocused = function () {
-        this.focused = true;
-    };
-
-    $scope.setUnfocused = function () {
-        this.focused = false;
-    };
-
-    $scope.clear = function () {
-        this.query = "";
-    };
-
     $scope.addNewFood = function () {
         $rootScope.$broadcast('intake24.admin.food_db.AddNewFood');
     };

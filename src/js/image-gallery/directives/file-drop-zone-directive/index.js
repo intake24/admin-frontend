@@ -43,7 +43,7 @@ module.exports = function (app) {
             scope: {
                 onDropped: "&"
             },
-            templateUrl: 'src/js/image-gallery/directives/file-drop-zone-directive/file-drop-zone-directive.html'
+            template: require("./file-drop-zone-directive.html")
         };
     }
 

@@ -3,7 +3,7 @@ span.food-list-container-node(ng-class="{active: value.selected}")
     a(ng-click='expandNode(value)')
         span(ng-if='value.type == "category" || value.type == "uncategorised"')
             i(class='fa fa-caret-down fa-fw' ng-show='!value.loadingChildren && value.open')
-            i(class='fa #{lang_dir == "ltr" ? "fa-caret-right" : "fa-caret-left" } fa-fw'
+            i(class='fa fa-caret-right fa-fw'
             ng-hide='(value.loadingChildren || value.open)')
 
         i(class='fa fa-spinner fa-spin fa-fw' ng-class="{hidden: !value.loadingChildren}")

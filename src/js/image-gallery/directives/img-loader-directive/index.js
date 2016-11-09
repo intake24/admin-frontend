@@ -30,7 +30,7 @@ module.exports = function (app) {
             scope: {
                 src: '=?',
             },
-            templateUrl: 'src/js/image-gallery/directives/img-loader-directive/img-loader-directive.html'
+            template: require("./img-loader-directive.html")
         };
     }
 

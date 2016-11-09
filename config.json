@@ -8,8 +8,6 @@
   "buildJsTo": "public/intake24-admin.js",
   "copyFontsFrom": ["node_modules/font-awesome/fonts/*", "node_modules/bootstrap/dist/fonts/*"],
   "copyFontsTo": "public/fonts/",
-  "galleryTemplatesSrc": "src/js/image-gallery/**/*.html",
-  "galleryTemplatesDest": "src/temp/gallery-templates.js",
   "uglifyJs": false,
   "includeCssMaps": true,
   "includeJsMaps": true,

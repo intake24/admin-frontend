@@ -1,14 +1,5 @@
 .search-input-group(ng-controller='SearchController')
-	search-input
-		.search-field-wrapper(ng-class="{active: getActive()}")
-			.search-field
-				i.fa.fa-search
-				input(type='text' id='search-field'
-						ng-model="query"
-						ng-focus="setFocused()"
-						ng-blur="setUnfocused()")
-				a.search-field-clear(href="" ng-click="clear()" ng-show="query")
-					i.fa.fa-times-circle
+	search-input(ng-model="query")
 	.search-input-addon(uib-dropdown)
 		button(type="button" uib-dropdown-toggle id="tools-dropdown")
 			i.fa.fa-plus

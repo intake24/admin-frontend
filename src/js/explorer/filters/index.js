@@ -7,5 +7,4 @@ module.exports = function(app) {
     require('./guide-image-filter')(app);
     require('./drink-scale-filter')(app);
     require('./serving-image-set-filter')(app);
-    require('../../shared/filters/ng-text-cut-filter')(app);
 };

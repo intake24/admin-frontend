@@ -3,16 +3,9 @@
 module.exports = function (grunt) {
 
     var config = grunt.config.get('environment'),
-        jsTask = (config.uglifyJs ? 'uglify' : 'concat');
+        jsTask = (config.uglifyJs ? 'uglify' : 'copy:scripts');
 
     grunt.config.set('watch', {
-        templates: {
-            files: [config.galleryTemplatesSrc],
-            tasks: ['ngtemplates', jsTask],
-            options: {
-                debounceDelay: 5000
-            }
-        },
         stylus: {
             files: [config.stylusWatch],
             tasks: ['stylus', 'cssmin'],

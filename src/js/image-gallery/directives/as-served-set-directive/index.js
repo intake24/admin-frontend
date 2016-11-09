@@ -150,7 +150,7 @@ module.exports = function (app) {
                 deleted: "=?",
                 showDeleted: "=?",
             },
-            templateUrl: 'src/js/image-gallery/directives/as-served-set-directive/as-served-set-directive.html'
+            template: require("./as-served-set-directive.html")
         };
     }
 

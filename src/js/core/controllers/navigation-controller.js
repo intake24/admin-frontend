@@ -26,6 +26,19 @@ function controllerFun($scope, $location, locales, appRoutes) {
             href: appRoutes.imageGalleryAsServed.pattern,
             active: false,
             parent: "imageGalleries"
+        },
+        userManager: {
+            href: appRoutes.userManagerRoute.pattern,
+            collapsed: true,
+            active: false
+        },
+        userManagerAdmins: {
+            href: appRoutes.userManagerAdmins.pattern,
+            active: false
+        },
+        userManagerRespondents: {
+            href: appRoutes.userManagerRespondents.pattern,
+            active: false
         }
     };
 

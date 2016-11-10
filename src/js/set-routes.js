@@ -17,7 +17,18 @@ module.exports = function (app) {
         imageGalleryAsServed: {
             pattern: '/galleries/as-served',
             template: require("./image-gallery/templates/image-gallery-as-served.jade")
-        }
+        },
+        userManagerRoute: {
+            pattern: '/users'
+        },
+        userManagerRespondents: {
+            pattern: '/users/respondents',
+            template: require("./user-manager-respondents/index.html")
+        },
+        userManagerAdmins: {
+            pattern: '/users/admins',
+            template: require("./user-manager-admins/index.html")
+        },
     };
 
     app.constant('appRoutes', routes);
@@ -38,6 +49,17 @@ module.exports = function (app) {
             })
             .when(routes.imageGalleryRoute.pattern, {
                 redirectTo: routes.imageGalleryMain.pattern
+            })
+            .when(routes.userManagerAdmins.pattern, {
+                template: routes.userManagerAdmins.template,
+                controller: 'UserManagerAdmins'
+            })
+            .when(routes.userManagerRespondents.pattern, {
+                template: routes.userManagerRespondents.template,
+                controller: 'UserManagerRespondents'
+            })
+            .when(routes.userManagerRoute.pattern, {
+                redirectTo: routes.userManagerRespondents.pattern
             })
             .otherwise({
                 redirectTo: routes.foodExplorer.pattern

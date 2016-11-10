@@ -426,3 +426,15 @@ msgstr "Search images"
 msgid "sidebar_food_explorer"
 msgstr "Food explorer"
 
+msgid "sidebar_galleries"
+msgstr "Galleries"
+
+msgid "sidebar_users"
+msgstr "Users"
+
+msgid "sidebar_users_respondents"
+msgstr "Respondents"
+
+msgid "sidebar_users_admins"
+msgstr "Admins"
+

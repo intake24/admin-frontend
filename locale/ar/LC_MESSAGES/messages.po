@@ -430,3 +430,15 @@ msgstr "بحث صور"
 
 msgid "sidebar_food_explorer"
 msgstr "المستكشف الغذاء"
+
+msgid "sidebar_galleries"
+msgstr "Galleries"
+
+msgid "sidebar_users"
+msgstr "Users"
+
+msgid "sidebar_users_respondents"
+msgstr "Respondents"
+
+msgid "sidebar_users_admins"
+msgstr "Admins"

@@ -16,7 +16,7 @@ module.exports = function (app) {
         },
         imageGalleryAsServed: {
             pattern: '/galleries/as-served',
-            template: require("./image-gallery/templates/image-gallery-main.jade")
+            template: require("./image-gallery/templates/image-gallery-as-served.jade")
         }
     };
 

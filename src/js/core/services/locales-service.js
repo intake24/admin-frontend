@@ -16,6 +16,8 @@ function serviceFun($window, $rootScope, localeData, packer) {
 		reloadLocales();
 	});
 
+	reloadLocales();
+
 	function unpackLocale(packed) {
 		return {
 			id : packed.id,

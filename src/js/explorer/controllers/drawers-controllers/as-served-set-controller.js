@@ -24,6 +24,8 @@ function controllerFun($scope, foodDataReader, DrawersService) {
         reloadAsServedSets();
     });
 
+    reloadAsServedSets();
+
     $scope.setAsServedImageSet = function (image_set_id) {
         DrawersService.drawerAsServedImageSet.setValue(image_set_id);
         this.close();

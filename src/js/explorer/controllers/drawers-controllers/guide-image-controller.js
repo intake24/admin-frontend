@@ -16,6 +16,8 @@ function controllerFun($scope, foodDataReader, DrawersService) {
         reloadGuideImages();
     });
 
+    reloadGuideImages();
+
     function reloadGuideImages() {
         foodDataReader.getGuideImages().then(function (guideImages) {
                 $scope.guideImages = _.values(guideImages);

@@ -23,6 +23,8 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, food
         reloadRootCategoriesDeferred();
     });
 
+    reloadRootCategoriesDeferred();
+
     $scope.$on("intake24.admin.food_db.CurrentItemUpdated", function (event, updateEvent) {
         var selectedNodeRemoved = false;
 

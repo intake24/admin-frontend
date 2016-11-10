@@ -23,6 +23,8 @@ function controllerFun($scope, foodDataReader, DrawersService) {
         reloadDrinkwareSets();
     });
 
+    reloadDrinkwareSets();
+
     $scope.setDrinkwareSet = function (drinkware_set_id) {
         DrawersService.drawerDrinkware.setValue(drinkware_set_id);
         this.close();

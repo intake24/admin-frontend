@@ -19,9 +19,9 @@ html(lang='#{lang}' dir='#{lang_dir}')
         header
             #sidebar-button(ng-click="sidebarToggle()")
                 i.fa.fa-bars
-            a(href='/' class="no-text-decoration")
+            a(ng-href='\#{{brandHref}}' class="no-text-decoration")
                 h4 <strong>Intake24</strong> Admin
-            a(href='#' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
+            a(href='' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
                 i.fa.fa-user
                 p {{authUsername || 'Login / Register'}}
 

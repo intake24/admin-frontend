@@ -7,17 +7,6 @@ module.exports = function (app) {
 };
 
 function serviceFun($rootScope, $timeout) {
-    function init() {
-        if (!Cookies.get('auth-token')) {
-            return;
-        }
-        $timeout(function () {
-            $rootScope.$broadcast('intake24.admin.LoggedIn');
-        });
-    }
-
-    init();
-
     return {
         set: function (username, token) {
             Cookies.set('auth-token', token);

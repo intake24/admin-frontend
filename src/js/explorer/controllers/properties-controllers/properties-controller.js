@@ -133,6 +133,9 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, foodDataRead
         reloadNutrientCodeTables();
     });
 
+    reloadFoodGroups();
+    reloadNutrientCodeTables();
+
     $scope.$watch("itemChanged()", function (newVal, oldVal) {
         currentItem.setChangedState(newVal);
     });

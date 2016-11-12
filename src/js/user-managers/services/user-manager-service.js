@@ -58,5 +58,12 @@ function serviceFun($q, $timeout) {
             }, Math.random() * 500);
             return deferred.promise;
         },
+        restore: function (login) {
+            var deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve();
+            }, Math.random() * 500);
+            return deferred.promise;
+        },
     }
 }

@@ -28,16 +28,25 @@
     </p>
     <ul class="user-manager-list">
         <li ng-repeat="item in getFilteredItems() | orderBy: 'login'">
-            {{item.login}}
+            <span ng-class="{'text-muted': item.deleted}">
+                {{item.login}}
+            </span>
             <span class="label label-danger" ng-show="item.deleted">
                 Deleted
             </span>
-            <button type="button" class="btn btn-link btn-sm" ng-click="editItem(item)">
-                <i class="fa fa-pencil"></i>
-            </button>
-            <button type="button" class="btn btn-link btn-sm" ng-click="removeItem(item)">
-                <i class="fa fa-times"></i>
-            </button>
+            <span ng-hide="item.deleted">
+                <button type="button" class="btn btn-link btn-sm" ng-click="editItem(item)">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button type="button" class="btn btn-link btn-sm" ng-click="removeItem(item)">
+                    <i class="fa fa-times"></i>
+                </button>
+            </span>
+            <span ng-show="item.deleted">
+                <button type="button" class="btn btn-link btn-sm" ng-click="restoreItem(item)">
+                    restore
+                </button>
+            </span>
         </li>
     </ul>
 </div>

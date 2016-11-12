@@ -58,6 +58,15 @@ function controllerFun($scope, UserManagerService, UserManagerDrawerService) {
         });
     };
 
+    $scope.restoreItem = function (item) {
+        if (!confirm("Are you sure you want to restore this user?")) {
+            return;
+        }
+        UserManagerService.restore(item.login).then(function () {
+            item.deleted = false;
+        });
+    };
+
     UserManagerService.allRespondents().then(function (data) {
         $scope.items = data;
     });

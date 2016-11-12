@@ -6,17 +6,36 @@
                 <i class="fa fa-plus"></i>
             </button>
         </div>
+        <div class="search-input-addon" uib-dropdown>
+            <button type="button" uib-dropdown-toggle id="user-manager-tools-dropdown">
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu
+                aria-labelledby="user-manager-tools-dropdown">
+                <li>
+                    <a href="" ng-click="toggleShowDeleted()">
+                        {{ showDeleted ? 'Hide deleted' : 'Show deleted' }}
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <div class="container-fluid">
+    <p ng-hide="getFilteredItems().length">
+        No users found
+    </p>
     <ul class="user-manager-list">
         <li ng-repeat="item in getFilteredItems() | orderBy: 'login'">
             {{item.login}}
+            <span class="label label-danger" ng-show="item.deleted">
+                Deleted
+            </span>
             <button type="button" class="btn btn-link btn-sm" ng-click="editItem(item)">
                 <i class="fa fa-pencil"></i>
             </button>
-            <button type="button" class="btn btn-link btn-sm">
+            <button type="button" class="btn btn-link btn-sm" ng-click="removeItem(item)">
                 <i class="fa fa-times"></i>
             </button>
         </li>

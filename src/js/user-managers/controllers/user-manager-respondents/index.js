@@ -15,6 +15,10 @@ function controllerFun($scope, UserManagerService, UserManagerDrawerService) {
     $scope.items = [];
     $scope.showDeleted = false;
 
+    $scope.toggleShowDeleted = function() {
+        $scope.showDeleted = !$scope.showDeleted;
+    };
+
     $scope.getFilteredItems = function () {
         return $scope.items.filter(function (item) {
             return item.login.toLowerCase().search($scope.searchQuery) > -1 &&
@@ -42,6 +46,15 @@ function controllerFun($scope, UserManagerService, UserManagerDrawerService) {
             UserManagerService.edit(item.login, newItem.login, newItem.password).then(function () {
                 item.login = newItem.login;
             });
+        });
+    };
+
+    $scope.removeItem = function (item) {
+        if (!confirm("Are you sure you want to delete this user?")) {
+            return;
+        }
+        UserManagerService.remove(item.login).then(function () {
+            item.deleted = true;
         });
     };
 

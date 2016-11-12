@@ -16,8 +16,7 @@ var moduleRequirements = ["ngCookies", "ui.bootstrap", "ngSanitize", "ngAnimate"
 require("./core")(app);
 require("./explorer")(app);
 require("./image-gallery")(app);
-require("./user-manager-admins")(app);
-require("./user-manager-respondents")(app);
+require("./user-managers")(app);
 require("./set-routes")(app);
 
 window.api_base_url = process.env.API_BASE_URL;

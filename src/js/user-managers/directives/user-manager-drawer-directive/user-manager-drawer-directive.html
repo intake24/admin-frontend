@@ -1,0 +1,33 @@
+<div class="drawer-backdrop" ng-show="isOpen"></div>
+<div class="drawer drawer-narrow no-padding" ng-show="isOpen">
+    <button class="button-close-drawer" ng-click="close()">
+        <i class="fa fa-times"></i>
+    </button>
+    <div class="drawer-title">
+        {{ title }}
+    </div>
+    <div class="drawer-content">
+        <form>
+            <div class="form-group" ng-class="{'has-error': !loginIsValid()}">
+                <label for="user-manager-drawer-login">User login</label>
+                <input type="text" id="user-manager-drawer-login"
+                       placeholder="Type user login"
+                       ng-model="login">
+            </div>
+            <div class="form-group">
+                <label for="user-manager-drawer-password">Password</label>
+                <input type="text" id="user-manager-drawer-password"
+                       placeholder="Type user password"
+                       ng-model="password">
+            </div>
+            <div class="form-group drawer-form-buttons">
+                <button type="button" class="intake-btn success" ng-click="save()">
+                    Save
+                </button>
+                <button type="button" class="intake-btn" ng-click="close()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

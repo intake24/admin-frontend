@@ -34,11 +34,13 @@ function controllerFun($scope, $location, locales, appRoutes) {
         },
         userManagerAdmins: {
             href: appRoutes.userManagerAdmins.pattern,
-            active: false
+            active: false,
+            parent: "userManager"
         },
         userManagerRespondents: {
             href: appRoutes.userManagerRespondents.pattern,
-            active: false
+            active: false,
+            parent: "userManager"
         }
     };
 

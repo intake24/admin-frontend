@@ -1,25 +1,18 @@
 'use strict';
 
 module.exports = function (app) {
-    app.service('DrawersService', [serviceFun]);
+    app.service('UserManagerDrawerService', [serviceFun]);
 };
 
 function serviceFun() {
 
-    return {
-        drawerManageCategories: DrawerStateFactory(),
-        drawerAsServedImageSet: DrawerStateFactory(),
-        drawerGuideImage: DrawerStateFactory(),
-        drawerDrinkware: DrawerStateFactory(),
-        drawerAssociatedFood: DrawerStateFactory(),
-        imageDrawer: DrawerStateFactory(),
-        userMangerDrawer: DrawerStateFactory()
-    };
+    return DrawerStateFactory();
 }
 
 function DrawerStateFactory() {
     var isOpen = false,
         value = undefined,
+        onSaveListener = undefined,
         DrawerState = function () {
         };
 
@@ -37,6 +30,17 @@ function DrawerStateFactory() {
     };
     DrawerState.prototype.getValue = function () {
         return value;
+    };
+    DrawerState.prototype.onSave = function (fn) {
+        onSaveListener = fn;
+    };
+    DrawerState.prototype.fireSave = function () {
+        if (onSaveListener) {
+            onSaveListener();
+        }
+    };
+    DrawerState.prototype.offSave = function () {
+        onSaveListener = undefined;
     };
 
     return new DrawerState();

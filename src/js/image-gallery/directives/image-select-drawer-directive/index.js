@@ -4,7 +4,7 @@
 
 'use strict';
 
-var ImageModel = require("../../models/image-model");
+var ImageModel = require("../../controllers/image-gallery-main-controller/image-model");
 
 module.exports = function (app) {
     app.directive("imageSelectDrawer", ["$window", "ImageService", "DrawersService", directiveFun]);

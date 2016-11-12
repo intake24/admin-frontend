@@ -1,0 +1,26 @@
+<div class="page-block">
+    <div class="search-input-group">
+        <search-input ng-model="searchQuery"></search-input>
+        <div class="search-input-addon">
+            <button type="button" ng-click="addItem()">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <ul class="user-manager-list">
+        <li ng-repeat="item in getFilteredItems() | orderBy: 'login'">
+            {{item.login}}
+            <button type="button" class="btn btn-link btn-sm" ng-click="editItem(item)">
+                <i class="fa fa-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-link btn-sm">
+                <i class="fa fa-times"></i>
+            </button>
+        </li>
+    </ul>
+</div>
+
+<user-manger-drawer></user-manger-drawer>

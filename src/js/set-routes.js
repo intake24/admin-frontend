@@ -23,11 +23,11 @@ module.exports = function (app) {
         },
         userManagerRespondents: {
             pattern: '/users/respondents',
-            template: require("./user-manager-respondents/index.html")
+            template: require("./user-managers/controllers/user-manager-respondents/index.html")
         },
         userManagerAdmins: {
             pattern: '/users/admins',
-            template: require("./user-manager-admins/index.html")
+            template: require("./user-managers/controllers/user-manager-admins/index.html")
         },
     };
 

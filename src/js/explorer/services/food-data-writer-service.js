@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.service('FoodDataWriterService', ['$http', 'Locales', serviceFun]);
+    app.service('FoodDataWriterService', ['$http', 'LocalesService', serviceFun]);
 };
 
-function serviceFun($http, locales) {
+function serviceFun($http, LocalesService) {
 
     return {
         addFoodToCategory: function (category_code, food_code) {
@@ -32,7 +32,7 @@ function serviceFun($http, locales) {
         },
 
         updateCategoryLocalRecord: function (category_code, definition) {
-            return $http.post(api_base_url + 'admin/categories/' + locales.current() + '/' + category_code, definition);
+            return $http.post(api_base_url + 'admin/categories/' + LocalesService.current() + '/' + category_code, definition);
         },
 
         updateFoodMainRecord: function (food_code, definition) {
@@ -48,7 +48,7 @@ function serviceFun($http, locales) {
         },
 
         updateFoodLocalRecord: function (food_code, definition) {
-            return $http.post(api_base_url + 'admin/foods/' + locales.current() + '/' + food_code, definition);
+            return $http.post(api_base_url + 'admin/foods/' + LocalesService.current() + '/' + food_code, definition);
         },
 
         checkFoodCode: function (food_code) {

@@ -5,12 +5,13 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReaderService',
-            'FoodDataWriterService', 'PackerService', '$q', '$rootScope', 'MessageService', 'Locales',
+            'FoodDataWriterService', 'PackerService', '$q', '$rootScope', 'MessageService', 'LocalesService',
             controllerFun]);
 };
 
 function controllerFun($scope, $timeout, sharedData, problems, currentItem, FoodDataReaderService,
-                       FoodDataWriterService, PackerService, $q, $rootScope, MessageService, locales) {
+                       FoodDataWriterService, PackerService, $q, $rootScope, MessageService,
+                       LocalesService) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodDataReaderService, PackerService,
         loadChildrenDeferred);
@@ -175,7 +176,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
-            FoodDataReaderService.getFoodDefinition(item.code, locales.current())
+            FoodDataReaderService.getFoodDefinition(item.code, LocalesService.current())
                 .then(function (targetFoodData) {
                     var unpacked = PackerService.unpackFoodRecord(targetFoodData);
                     unpacked.main.englishDescription = "Copy of " + unpacked.main.englishDescription;

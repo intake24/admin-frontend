@@ -3,10 +3,10 @@
 var _ = require('underscore');
 
 module.exports = function(app) {
-    app.service('Locales', ['$window', '$rootScope', 'LocaleData', 'PackerService', serviceFun]);
+    app.service('LocalesService', ['$window', '$rootScope', '$http', 'PackerService', serviceFun]);
 };
 
-function serviceFun($window, $rootScope, localeData, PackerService) {
+function serviceFun($window, $rootScope, $http, PackerService) {
 
 	var locales = [];
 
@@ -31,10 +31,9 @@ function serviceFun($window, $rootScope, localeData, PackerService) {
 	}
 
 	function reloadLocales() {
-		localeData.getAllLocales( function(data) {
+		$http.get(api_base_url + 'admin/locales').then(function(data) {
 			locales = _.map(data, unpackLocale);
-		},
-		function(response) {
+		}, function(response) {
 			console.error("Failed to load locale information");
 		});
 	}

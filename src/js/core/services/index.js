@@ -7,7 +7,6 @@
 module.exports = function(app) {
     require("./drawers-service")(app);
     require("./http-request-interceptor")(app);
-    require("./locale-data-service")(app);
     require("./locales-service")(app);
     require("./message-service")(app);
     require("./modal-service")(app);

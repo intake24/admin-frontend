@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('NavigationController', ["$scope", "$location", "Locales", "appRoutes", controllerFun]);
+    app.controller('NavigationController', ["$scope", "$location", "LocalesService", "appRoutes", controllerFun]);
 };
 
-function controllerFun($scope, $location, locales, appRoutes) {
+function controllerFun($scope, $location, LocalesService, appRoutes) {
 
     $scope.menuItems = {
         foodExplorer: {
@@ -49,12 +49,12 @@ function controllerFun($scope, $location, locales, appRoutes) {
     };
 
     $scope.$watch(function () {
-        return locales.list();
+        return LocalesService.list();
     }, function (event) {
-        $scope.locales = locales.list();
+        $scope.locales = LocalesService.list();
     });
 
-    $scope.currentLocale = locales.current();
+    $scope.currentLocale = LocalesService.current();
 
     $scope.$on("$routeChangeSuccess", setActiveRoute);
 

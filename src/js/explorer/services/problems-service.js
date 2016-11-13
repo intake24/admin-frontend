@@ -3,18 +3,18 @@
 var Cookies = require('js-cookie');
 
 module.exports = function (app) {
-    app.service('Problems', ['$http', 'Locales', serviceFun]);
+    app.service('Problems', ['$http', 'LocalesService', serviceFun]);
 };
 
-function serviceFun($http, locales) {
+function serviceFun($http, LocalesService) {
 
     return {
         getCategoryProblemsRecursive: function (code, onSuccess, onFailure) {
-            return $http.get(api_base_url + 'admin/categories/' + locales.current() + '/' + code + '/recursive-problems');
+            return $http.get(api_base_url + 'admin/categories/' + LocalesService.current() + '/' + code + '/recursive-problems');
         },
 
         getFoodProblems: function (code, onSuccess, onFailure) {
-            return $http.get(api_base_url + 'admin/foods/' + locales.current() + '/' + code + '/problems');
+            return $http.get(api_base_url + 'admin/foods/' + LocalesService.current() + '/' + code + '/problems');
         }
     };
 }

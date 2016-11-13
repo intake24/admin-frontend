@@ -4,16 +4,15 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('ExplorerController',
-        ['$scope', '$timeout', 'SharedData', 'Problems', 'CurrentItem', 'FoodDataReaderService',
-            'FoodDataWriterService', 'PackerService', '$q', '$rootScope', 'MessageService', 'LocalesService',
+        ['$scope', '$timeout', 'SharedData', 'FoodService', 'CurrentItem',
+            'PackerService', '$q', '$rootScope', 'MessageService', 'LocalesService',
             controllerFun]);
 };
 
-function controllerFun($scope, $timeout, sharedData, problems, currentItem, FoodDataReaderService,
-                       FoodDataWriterService, PackerService, $q, $rootScope, MessageService,
-                       LocalesService) {
+function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
+                       PackerService, $q, $rootScope, MessageService, LocalesService) {
 
-    var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodDataReaderService, PackerService,
+    var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService, PackerService,
         loadChildrenDeferred);
 
     // Load shared data
@@ -176,19 +175,19 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
-            FoodDataReaderService.getFoodDefinition(item.code, LocalesService.current())
+            FoodService.getFoodDefinition(item.code, LocalesService.current())
                 .then(function (targetFoodData) {
                     var unpacked = PackerService.unpackFoodRecord(targetFoodData);
                     unpacked.main.englishDescription = "Copy of " + unpacked.main.englishDescription;
                     var newFoodDef = PackerService.packNewFoodRecord(unpacked);
 
-                    return FoodDataWriterService.createNewFoodWithTempCode(newFoodDef)
+                    return FoodService.createNewFoodWithTempCode(newFoodDef)
                         .then(function (newCode) {
                             var newLocalData = angular.copy(targetFoodData.local);
                             newLocalData.baseVersion = [];
                             newLocalData.associatedFoods = _.map(targetFoodData.associatedFoods, PackerService.stripAssociatedFoodHeader);
                             newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
-                            return FoodDataWriterService.updateFoodLocalRecord(newCode, newLocalData)
+                            return FoodService.updateFoodLocalRecord(newCode, newLocalData)
                                 .then(function () {
                                     MessageService.showMessage("Food cloned", "success");
                                     makeVisibleAndSelect({
@@ -214,9 +213,9 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
             if (confirm("Delete " + item.displayName + " (" + item.code + ") ?")) {
                 var deferred;
                 if (item.type == 'category')
-                    deferred = FoodDataWriterService.deleteCategory(item.code);
+                    deferred = FoodService.deleteCategory(item.code);
                 else if (item.type == 'food')
-                    deferred = FoodDataWriterService.deleteFood(item.code);
+                    deferred = FoodService.deleteFood(item.code);
 
                 deferred.then(function () {
                     clearSelection();
@@ -313,11 +312,11 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
 
     function loadProblemsForNodeDeferred(node) {
         if ((node.type == 'category') && ( node.code != '$UNCAT'))
-            return problems.getCategoryProblemsRecursive(node.code).then(function (problems) {
+            return FoodService.getCategoryProblemsRecursive(node.code).then(function (problems) {
                 node.recursiveProblems = problems;
             })
         else if ((node.type == 'category') && (node.code == '$UNCAT')) {
-            return FoodDataReaderService.getUncategorisedFoods().then(function (uncategorisedFoods) {
+            return FoodService.getUncategorisedFoods().then(function (uncategorisedFoods) {
                 node.recursiveProblems = {
                     foodProblems: _.map(_.take(uncategorisedFoods, 10), function (food) {
                         var unpacked = PackerService.unpackFoodHeader(food);
@@ -332,7 +331,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
             });
         }
         else if (node.type == 'food')
-            return problems.getFoodProblems(node.code).then(function (problems) {
+            return FoodService.getFoodProblems(node.code).then(function (problems) {
                 node.problems = problems;
             });
         else
@@ -340,7 +339,7 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
     }
 
     function reloadRootCategoriesDeferred() {
-        return FoodDataReaderService.getRootCategories().then(function (categories) {
+        return FoodService.getRootCategories().then(function (categories) {
             $scope.rootCategories = _.map(categories, PackerService.unpackCategoryHeader);
 
             $scope.rootCategories.unshift(
@@ -365,11 +364,11 @@ function controllerFun($scope, $timeout, sharedData, problems, currentItem, Food
         var childrenDeferred;
 
         if (node.code == "$UNCAT")
-            childrenDeferred = FoodDataReaderService.getUncategorisedFoods().then(function (foods) {
+            childrenDeferred = FoodService.getUncategorisedFoods().then(function (foods) {
                 return _.map(foods, PackerService.unpackFoodHeader);
             });
         else
-            childrenDeferred = FoodDataReaderService.getCategoryContents(node.code).then(function (contents) {
+            childrenDeferred = FoodService.getCategoryContents(node.code).then(function (contents) {
                 var subcategories = _.map(contents.subcategories, PackerService.unpackCategoryHeader);
                 var foods = _.map(contents.foods, PackerService.unpackFoodHeader);
                 return subcategories.concat(foods);

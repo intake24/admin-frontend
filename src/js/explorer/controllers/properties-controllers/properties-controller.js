@@ -8,12 +8,12 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('PropertiesController',
-        ['$scope', '$rootScope', 'CurrentItem', 'SharedData', 'FoodDataReaderService',
-            'FoodDataWriterService', 'UserFoodData', 'PackerService', '$q', 'MessageService',
+        ['$scope', '$rootScope', 'CurrentItem', 'SharedData', 'FoodService',
+            'UserFoodData', 'PackerService', '$q', 'MessageService',
             'LocalesService', controllerFun]);
 };
 
-function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataReaderService, FoodDataWriterService,
+function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
                        userFoodData, PackerService, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
@@ -172,13 +172,13 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     function loadMainRecord() {
 
         if ($scope.currentItem.type == 'category') {
-            return FoodDataReaderService.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
+            return FoodService.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = PackerService.unpackCategoryRecord(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         } else if ($scope.currentItem.type == 'food') {
-            return FoodDataReaderService.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
+            return FoodService.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
                 function (definition) {
                     $scope.itemDefinition = PackerService.unpackFoodRecord(definition);
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
@@ -204,14 +204,14 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     }
 
     function reloadFoodGroups() {
-        FoodDataReaderService.getFoodGroups().then(
+        FoodService.getFoodGroups().then(
             function (groups) {
                 $scope.foodGroups = _.map(_.values(groups), PackerService.unpackFoodGroup);
             });
     }
 
     function reloadNutrientCodeTables() {
-        FoodDataReaderService.fetchNutrientTables().then(function (tables) {
+        FoodService.fetchNutrientTables().then(function (tables) {
             $scope.nutrientCodeSection.tables = tables;
         });
     }
@@ -238,7 +238,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
             return;
         }
 
-        var deferred = ($scope.currentItem.type == 'food') ? FoodDataWriterService.checkFoodCode(code) : FoodDataWriterService.checkCategoryCode(code);
+        var deferred = ($scope.currentItem.type == 'food') ? FoodService.checkFoodCode(code) : FoodService.checkCategoryCode(code);
 
         deferred.then(
             function (codeValid) {
@@ -380,7 +380,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     function updateFoodMainRecord() {
         if ($scope.foodMainRecordChanged()) {
             var packed = PackerService.packFoodMainRecordUpdate($scope.itemDefinition.main);
-            return FoodDataWriterService.updateFoodMainRecord($scope.originalItemDefinition.main.code, packed);
+            return FoodService.updateFoodMainRecord($scope.originalItemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
@@ -389,7 +389,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     function updateFoodLocalRecord() {
         if ($scope.loadLocalRecordChanged()) {
             var packed = PackerService.packFoodLocalRecordUpdate($scope.itemDefinition.local);
-            return FoodDataWriterService.updateFoodLocalRecord($scope.itemDefinition.main.code, packed);
+            return FoodService.updateFoodLocalRecord($scope.itemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
@@ -398,7 +398,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     function updateCategoryMainRecord() {
         if ($scope.categoryMainRecordChanged()) {
             var packed = PackerService.packCategoryMainRecordUpdate($scope.itemDefinition.main);
-            return FoodDataWriterService.updateCategoryMainRecord($scope.originalItemDefinition.main.code, packed)
+            return FoodService.updateCategoryMainRecord($scope.originalItemDefinition.main.code, packed)
         } else {
             return $q.when(true);
         }
@@ -407,7 +407,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     function updateCategoryLocalRecord() {
         if ($scope.categoryLocalRecordChanged()) {
             var packed = PackerService.packCategoryLocalRecordUpdate($scope.itemDefinition.local);
-            return FoodDataWriterService.updateCategoryLocalRecord($scope.itemDefinition.main.code, packed);
+            return FoodService.updateCategoryLocalRecord($scope.itemDefinition.main.code, packed);
         } else {
             return $q.when(true);
         }
@@ -442,7 +442,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     $scope.saveNewFood = function () {
         var packed = PackerService.packNewFoodRecord($scope.itemDefinition);
 
-        FoodDataWriterService.createNewFood(packed)
+        FoodService.createNewFood(packed)
             .then(function () {
                 MessageService.showMessage(gettext('New food added'), 'success');
                 notifyItemUpdated();
@@ -460,7 +460,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodDataRead
     $scope.saveNewCategory = function () {
         var packed = PackerService.packNewCategoryRecord($scope.itemDefinition);
 
-        FoodDataWriterService.createNewCategory(packed)
+        FoodService.createNewCategory(packed)
             .then(function () {
                 MessageService.showMessage(gettext('New category added'), 'success');
                 notifyItemUpdated();

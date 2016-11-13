@@ -4,17 +4,17 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('AsServedSetController',
-        ['$scope', 'FoodDataReaderService', 'DrawersService', controllerFun]);
+        ['$scope', 'FoodService', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, FoodDataReaderService, DrawersService) {
+function controllerFun($scope, FoodService, DrawersService) {
 
     $scope.asServedImageSets = null;
 
     $scope.isOpen = DrawersService.drawerAsServedImageSet.getOpen();
 
     function reloadAsServedSets() {
-        FoodDataReaderService.getAsServedImageSets().then(function (asServedSets) {
+        FoodService.getAsServedImageSets().then(function (asServedSets) {
                 $scope.asServedImageSets = _.values(asServedSets);
             },
             $scope.handleError);

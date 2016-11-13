@@ -1,4 +1,5 @@
 div(ng-controller='CategoryManagerController')
+	.drawer-backdrop(ng-show="isOpen")
 	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
@@ -21,11 +22,10 @@ div(ng-controller='CategoryManagerController')
 				ng-click='reloadCategories()') #{ gettext("Done") }
 		.clearfloat
 
-	.drawer-backdrop(ng-show="isOpen")
-
 //- Image set selection drawer
 
 div(ng-controller='AsServedSetController')
+	.drawer-backdrop(ng-show="isOpen")
 	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
@@ -37,10 +37,9 @@ div(ng-controller='AsServedSetController')
 					li(ng-click='setAsServedImageSet(as_served_image_set.id)' ng-repeat='as_served_image_set in asServedImageSets | asServedFilter:query | orderBy:description')
 						{{ as_served_image_set.description }} ({{ as_served_image_set.id }})
 
-	.drawer-backdrop(ng-show="isOpen")
-
 //- Guide image selection drawer
 div(ng-controller='GuideImageController')
+	.drawer-backdrop(ng-show="isOpen")
 	.drawer.drawer-narrow.no-padding.animated(ng-show="isOpen")
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
@@ -52,10 +51,9 @@ div(ng-controller='GuideImageController')
 					li(ng-click='setGuideImage(guide_image_set.id)' ng-model='guideImages' ng-repeat='guide_image_set in guideImages | guideImageFilter:query | orderBy: "id"')
 						{{ guide_image_set.id }} ({{ guide_image_set.description }})
 
-	.drawer-backdrop(ng-show="isOpen")
-
 //- Drinkware selection drawer
 div(ng-controller='DrinkwareController')
+	.drawer-backdrop(ng-show="isOpen")
 	.drawer.drawer-narrow.no-padding.animated(ng-show="isOpen")
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
@@ -67,9 +65,8 @@ div(ng-controller='DrinkwareController')
 					li(ng-click='setDrinkwareSet(drinkware_set.id)' ng-model='drinkwareSets' ng-repeat='drinkware_set in drinkwareSets | drinkScaleFilter:query | orderBy: "id"')
 						{{ drinkware_set.description }}
 
-	.drawer-backdrop(ng-show="isOpen")
-
 div(ng-controller='AssociatedFoodDrawerController')
+	.drawer-backdrop(ng-show="isOpen")
 	.drawer.drawer-narrow.no-padding(ng-show="isOpen")
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
@@ -83,5 +80,3 @@ div(ng-controller='AssociatedFoodDrawerController')
 					li(ng-repeat='item in items | orderBy:["type", "displayName"]' ng-click='select(item)')
 						i.fa.fa-folder-o(ng-if='item.type == "category"' style='margin-right: 8px')
 						{{ item.displayName }}
-
-	.drawer-backdrop(ng-show="isOpen")

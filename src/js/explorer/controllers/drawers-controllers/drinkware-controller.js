@@ -3,17 +3,17 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.controller('DrinkwareController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
+    app.controller('DrinkwareController', ['$scope', 'FoodDataReaderService', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, DrawersService) {
+function controllerFun($scope, FoodDataReaderService, DrawersService) {
 
     $scope.drinkwareSets = null;
 
     $scope.isOpen = DrawersService.drawerDrinkware.getOpen();
 
     function reloadDrinkwareSets() {
-        foodDataReader.getDrinkwareSets().then(function (drinkwareSets) {
+        FoodDataReaderService.getDrinkwareSets().then(function (drinkwareSets) {
                 $scope.drinkwareSets = _.values(drinkwareSets);
             },
             $scope.handleError);

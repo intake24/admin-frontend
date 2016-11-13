@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (app) {
-    app.service('FoodDataWriter', ['$http', 'Locales', serviceFun]);
+    app.service('FoodDataWriterService', ['$http', 'Locales', serviceFun]);
 };
 
 function serviceFun($http, locales) {

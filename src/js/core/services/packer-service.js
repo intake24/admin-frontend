@@ -12,7 +12,7 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.service('Packer', [serviceFun]);
+    app.service('PackerService', [serviceFun]);
 };
 
 function serviceFun() {

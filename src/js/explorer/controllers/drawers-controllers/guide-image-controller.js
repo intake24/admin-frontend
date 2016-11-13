@@ -3,10 +3,11 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.controller('GuideImageController', ['$scope', 'FoodDataReader', 'DrawersService', controllerFun]);
+    app.controller('GuideImageController', ['$scope', 'FoodDataReaderService', 'DrawersService',
+        controllerFun]);
 };
 
-function controllerFun($scope, foodDataReader, DrawersService) {
+function controllerFun($scope, FoodDataReaderService, DrawersService) {
 
     $scope.guideImages = null;
 
@@ -19,7 +20,7 @@ function controllerFun($scope, foodDataReader, DrawersService) {
     reloadGuideImages();
 
     function reloadGuideImages() {
-        foodDataReader.getGuideImages().then(function (guideImages) {
+        FoodDataReaderService.getGuideImages().then(function (guideImages) {
                 $scope.guideImages = _.values(guideImages);
             },
             $scope.handleError);

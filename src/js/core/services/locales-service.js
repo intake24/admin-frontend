@@ -3,10 +3,10 @@
 var _ = require('underscore');
 
 module.exports = function(app) {
-    app.service('Locales', ['$window', '$rootScope', 'LocaleData', 'Packer', serviceFun]);
+    app.service('Locales', ['$window', '$rootScope', 'LocaleData', 'PackerService', serviceFun]);
 };
 
-function serviceFun($window, $rootScope, localeData, packer) {
+function serviceFun($window, $rootScope, localeData, PackerService) {
 
 	var locales = [];
 
@@ -26,7 +26,7 @@ function serviceFun($window, $rootScope, localeData, packer) {
 			respondentLanguage: packed.respondentLanguage,
 			adminLanguage: packed.adminLanguage,
 			flagCode: packed.flagCode,
-			prototypeLocale: packer.unpackOption(packed.prototypeLocale)
+			prototypeLocale: PackerService.unpackOption(packed.prototypeLocale)
 		}
 	}
 

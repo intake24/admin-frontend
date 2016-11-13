@@ -4,15 +4,20 @@
                                  'fa-spinner fa-spin': loading}"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-        <li>
+        <li ng-hide="deleted">
             <a href="" ng-click="addItem()">
                 Add image
             </a>
         </li>
-        <li class="divider"></li>
+        <li class="divider" ng-hide="deleted"></li>
         <li>
-            <a href="" ng-click="removeSet()">
+            <a href="" ng-hide="deleted" ng-click="removeSet()">
                 Remove set
+            </a>
+        </li>
+        <li ng-show="deleted">
+            <a href="" ng-click="restoreSet()">
+                Restore set
             </a>
         </li>
     </ul>
@@ -33,21 +38,27 @@
         <div class="intk-gallery-item-img">
             <img-loader src="item.src"></img-loader>
             <div class="intk-gallery-item-blank"
-                 ng-class="{'visible': item.asServedItemModel.loading}">
+                 ng-class="{'visible': item.asServedItemModel.loading}"
+                 ng-hide="deleted">
                 <div class="pull-right" uib-dropdown>
                     <button class="btn btn-default btn-tools" uib-dropdown-toggle>
                         <i class="fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-                        <li>
+                        <li ng-hide="item.deleted">
                             <a href="" ng-click="changeImage(item)">
                                 Change image
                             </a>
                         </li>
-                        <li class="divider"></li>
-                        <li>
+                        <li class="divider" ng-hide="item.deleted"></li>
+                        <li ng-hide="item.deleted">
                             <a href="" ng-click="removeItem(item)">
                                 Remove image
+                            </a>
+                        </li>
+                        <li ng-show="item.deleted">
+                            <a href="" ng-click="restoreItem(item)">
+                                Restore image
                             </a>
                         </li>
                     </ul>

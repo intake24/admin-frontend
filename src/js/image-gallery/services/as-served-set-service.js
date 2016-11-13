@@ -52,6 +52,13 @@ function serviceFun($q, $timeout) {
                 deferred.resolve();
             }, Math.random() * 500);
             return deferred.promise;
+        },
+        restore: function (setId) {
+            var deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve();
+            }, Math.random() * 500);
+            return deferred.promise;
         }
     }
 }

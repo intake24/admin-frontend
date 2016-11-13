@@ -77,6 +77,18 @@ function controllerFun($scope, ImageService) {
         removeItem(image);
     };
 
+    $scope.restoreItem = function (item) {
+        if (!confirm("Are you sure you want to restore this image?")) {
+            return;
+        }
+        item.loading = true;
+        ImageService.restore(item.id).then(function (data) {
+            item.deleted = false;
+        }).finally(function() {
+            item.loading = false;
+        });
+    };
+
     $scope.copyTags = function (image) {
         $scope.copiedTags = image.tags.slice();
     };
@@ -105,6 +117,8 @@ function controllerFun($scope, ImageService) {
         image.loading = true;
         ImageService.remove(image.id).then(function () {
             image.deleted = true;
+        }).finally(function() {
+            image.loading = false;
         });
     }
 

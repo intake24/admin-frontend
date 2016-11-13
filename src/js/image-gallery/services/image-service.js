@@ -24,6 +24,13 @@ function serviceFun($q, $timeout) {
 
             return deferred.promise;
         },
+        restore: function (id) {
+            var deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve();
+            }, Math.random() * 500);
+            return deferred.promise;
+        },
         remove: function (id) {
             var deferred = $q.defer();
             $timeout(function () {

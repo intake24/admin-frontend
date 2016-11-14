@@ -4,9 +4,11 @@ var _ = require('underscore');
 
 var findNodeInTreeFactory = function ($scope, $q, foodDataReader, packer, loadChildrenDeferred) {
 
-    function findNodeInTree(node) {
+    // FIXME: Can there be two nodes with the same code but different types (food, category)?
 
-        var match = {type: node.type, code: node.code},
+    function findNodeInTree(code, type) {
+
+        var match = {type: type, code: code},
             deferred = $q.defer();
 
         // First check if the node is one of the root categories
@@ -15,7 +17,7 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, packer, loadCh
         if (targetNode) {
             deferred.resolve(targetNode);
         } else {
-            getParentBranch(node).then(function (allCategories) {
+            getParentBranch(code, type).then(function (allCategories) {
                 lookInTree(deferred, allCategories, match);
             });
         }
@@ -23,13 +25,13 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, packer, loadCh
         return deferred.promise;
     }
 
-    function getParentBranch(node) {
+    function getParentBranch(code, type) {
         var allParentCategoriesDeferred = null;
 
-        if (node.type == "food") {
-            allParentCategoriesDeferred = foodDataReader.getFoodAllCategories(node.code);
-        } else if (node.type == "category") {
-            allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(node.code);
+        if (type == "food") {
+            allParentCategoriesDeferred = foodDataReader.getFoodAllCategories(code);
+        } else if (type == "category") {
+            allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(code);
         }
 
         return allParentCategoriesDeferred;

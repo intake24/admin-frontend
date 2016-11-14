@@ -5,10 +5,10 @@
 "use strict";
 
 module.exports = function (app) {
-    app.service("FoodService", ["$http", "LocalesService", serviceFun]);
+    app.service("FoodService", ["$http", "$q", "LocalesService", "PackerService", serviceFun]);
 };
 
-function serviceFun($http, LocalesService) {
+function serviceFun($http, $q, LocalesService, PackerService) {
 
     return {
         getRootCategories: function () {
@@ -23,12 +23,12 @@ function serviceFun($http, LocalesService) {
             return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/" + code);
         },
 
-        getCategoryDefinition: function (code, locale) {
-            return $http.get(api_base_url + "admin/categories/" + locale + "/" + code);
+        getCategoryDefinition: function (code) {
+            return $http.get(api_base_url + "admin/categories/" + LocalesService.current() + "/" + code);
         },
 
-        getFoodDefinition: function (code, locale) {
-            return $http.get(api_base_url + "admin/foods/" + locale + "/" + code);
+        getFoodDefinition: function (code) {
+            return $http.get(api_base_url + "admin/foods/" + LocalesService.current() + "/" + code);
         },
 
         getCategoryParentCategories: function (code) {
@@ -141,6 +141,8 @@ function serviceFun($http, LocalesService) {
 
         getFoodProblems: function (code, onSuccess, onFailure) {
             return $http.get(api_base_url + 'admin/foods/' + LocalesService.current() + '/' + code + '/problems');
-        }
+        },
+
+        cloneFood: require("./clone-food-service-factory")($q, PackerService)
     };
 }

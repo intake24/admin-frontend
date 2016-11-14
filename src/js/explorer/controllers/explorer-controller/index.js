@@ -82,7 +82,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         processNodes($scope.rootCategories, null);
 
         if (selectedNodeRemoved || updateEvent.newItem)
-            makeVisibleAndSelect(updateEvent.header);
+            makeVisibleAndSelect(updateEvent.header.code, updateEvent.header.type);
     });
 
     function parentCategoryNodeForNewItem() {
@@ -175,30 +175,10 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
-            FoodService.getFoodDefinition(item.code, LocalesService.current())
-                .then(function (targetFoodData) {
-                    var unpacked = PackerService.unpackFoodRecord(targetFoodData);
-                    unpacked.main.englishDescription = "Copy of " + unpacked.main.englishDescription;
-                    var newFoodDef = PackerService.packNewFoodRecord(unpacked);
-
-                    return FoodService.createNewFoodWithTempCode(newFoodDef)
-                        .then(function (newCode) {
-                            var newLocalData = angular.copy(targetFoodData.local);
-                            newLocalData.baseVersion = [];
-                            newLocalData.associatedFoods = _.map(targetFoodData.associatedFoods, PackerService.stripAssociatedFoodHeader);
-                            newLocalData.localDescription = newLocalData.localDescription.length == 1 ? [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
-                            return FoodService.updateFoodLocalRecord(newCode, newLocalData)
-                                .then(function () {
-                                    MessageService.showMessage("Food cloned", "success");
-                                    makeVisibleAndSelect({
-                                        type: "food",
-                                        code: newCode,
-                                        englishDescription: targetFoodData.englishDescription,
-                                        localDescription: targetFoodData.local.localDescription,
-                                        displayName: targetFoodData.local.localDescription.defined ? targetFoodData.local.localDescription.value : targetFoodData.englishDescription
-                                    });
-                                })
-                        })
+            FoodService.cloneFood(item.code)
+                .then(function (newCode) {
+                    MessageService.showMessage("Food cloned", "success");
+                    makeVisibleAndSelect(newCode, "food");
                 });
         } else
             MessageService.showMessage("Select a food to clone", "warning");
@@ -280,34 +260,34 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
     }
 
     function updatePotentiallyAffectedNodes(changedNode) {
-      function isDescendant(node, ofNode) {
-        return isAncestor(ofNode, node);
-      }
-
-      function isAncestor(node, ofNode) {
-        var p = ofNode.parentNode;
-        while (p) {
-          if (p.code == node.code && p.type == node.type)
-            return true;
-          else
-            p = p.parentNode;
+        function isDescendant(node, ofNode) {
+            return isAncestor(ofNode, node);
         }
-        return false;
-      }
 
-      function processNodes(nodes) {
-        _.each(nodes, function(node) {
-            if (isAncestor(changedNode, node) || isDescendant(changedNode, node)) {
-              loadProblemsForNodeDeferred(node);
+        function isAncestor(node, ofNode) {
+            var p = ofNode.parentNode;
+            while (p) {
+                if (p.code == node.code && p.type == node.type)
+                    return true;
+                else
+                    p = p.parentNode;
             }
+            return false;
+        }
 
-            if (node.type == 'category' && node.children && node.open)
-              processNodes(node.children);
-        });
-      }
+        function processNodes(nodes) {
+            _.each(nodes, function (node) {
+                if (isAncestor(changedNode, node) || isDescendant(changedNode, node)) {
+                    loadProblemsForNodeDeferred(node);
+                }
 
-      loadProblemsForNodeDeferred(changedNode);
-      processNodes($scope.rootCategories);
+                if (node.type == 'category' && node.children && node.open)
+                    processNodes(node.children);
+            });
+        }
+
+        loadProblemsForNodeDeferred(changedNode);
+        processNodes($scope.rootCategories);
     }
 
     function loadProblemsForNodeDeferred(node) {
@@ -404,15 +384,16 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         }, 10);
     }
 
-    function makeVisibleAndSelect(node) {
-        findNodeInTree(node).then(function (n) {
+    function makeVisibleAndSelect(code, type) {
+        //Fixme. This should be a directive
+        findNodeInTree(code, type).then(function (n) {
             clearSelection();
             showNodeProperties(n);
             // Timeout is set to wait for the children to be loaded and then scroll to the selected element.
             // Fixme: Timeout is bad.
             $timeout(function () {
                 var targetElement = document.querySelector("#food-list-col ul span.active"),
-                    container = document.getElementById("food-list-col"),
+                    container = document.querySelector("#food-list-col .food-list"),
                     to = targetElement.offsetTop - document.querySelector("header").offsetHeight - 5;
                 scrollTo(container, to, 250);
             }, 250);
@@ -471,7 +452,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
     $scope.expandNode = expandNode;
 
     $scope.searchResultSelected = function ($event, node) {
-        makeVisibleAndSelect(node);
+        makeVisibleAndSelect(node.code, node.type);
     };
 
     $scope.discardCategoryChanges = function () {

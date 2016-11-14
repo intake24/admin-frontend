@@ -158,7 +158,7 @@ function serviceFun() {
         unpacked.displayName = unpacked.id.toString() + ". " + (unpacked.localDescription.defined ? unpacked.localDescription.value : unpacked.englishDescription);
 
         return unpacked;
-    }
+    };
 
     instance.unpackAssociatedFood = function (packed) {
         var foodOrCategory;
@@ -174,7 +174,7 @@ function serviceFun() {
             linkAsMain: packed.linkAsMain,
             genericName: packed.genericName
         };
-    }
+    };
 
     instance.unpackPortionSizes = function (packedPortionSizes) {
 
@@ -205,7 +205,7 @@ function serviceFun() {
                             index = indexArray[0];
 
                             if (!unpacked.parameters.units[index]) {
-                                unpacked.parameters.units[index] = new Object();
+                                unpacked.parameters.units[index] = {};
                             }
 
                             if (parameter.name.indexOf("name") > -1) {
@@ -213,7 +213,7 @@ function serviceFun() {
                             } else if (parameter.name.indexOf("weight") > -1) {
                                 unpacked.parameters.units[index].value = parameter.value; // value
                             } else if (parameter.name.indexOf("omit-food-description") > -1) {
-                                unpacked.parameters.units[index].omitFoodDescription = (parameter.value == "true") ? true : false; // omit food description
+                                unpacked.parameters.units[index].omitFoodDescription = parameter.value == "true"; // omit food description
                             }
                         }
                         ;
@@ -256,7 +256,7 @@ function serviceFun() {
                         } else if (param.name == 'initial-fill-level') {
                             unpacked.parameters.initial_fill_level = param.value;
                         } else if (param.name == 'skip-fill-level') {
-                            unpacked.parameters.skip_fill_level = (param.value == "true") ? true : false;
+                            unpacked.parameters.skip_fill_level = param.value == "true";
                         }
 
                     });
@@ -299,7 +299,7 @@ function serviceFun() {
             sameAsBeforeOption: instance.packOption(unpacked.sameAsBeforeOption),
             reasonableAmount: instance.packOption(unpacked.reasonableAmount)
         };
-    }
+    };
 
     instance.packCategoryMainRecordUpdate = function (unpacked) {
         return {
@@ -309,7 +309,7 @@ function serviceFun() {
             isHidden: unpacked.isHidden,
             attributes: instance.packInheritableAttributes(unpacked.attributes)
         };
-    }
+    };
 
     instance.packFoodMainRecordUpdate = function (unpacked) {
         return {
@@ -323,7 +323,7 @@ function serviceFun() {
             }),
             localeRestrictions: unpacked.localeRestrictions
         };
-    }
+    };
 
     instance.packNewFoodRecord = function (unpacked) {
         return {
@@ -376,7 +376,7 @@ function serviceFun() {
             brandNames: [],
             doNotUse: unpacked.doNotUseInThisLocale
         };
-    }
+    };
 
     instance.packCategoryLocalRecordUpdate = function (unpacked) {
         return {
@@ -384,7 +384,7 @@ function serviceFun() {
             localDescription: instance.packOption(unpacked.localDescription),
             portionSize: instance.packPortionSizes(unpacked.portionSize)
         };
-    }
+    };
 
     instance.packPortionSizes = function (unpackedPortionSizes) {
         return _.map(unpackedPortionSizes, function (portionSize, index) {
@@ -429,7 +429,7 @@ function serviceFun() {
                             value: parameter.omitFoodDescription.toString()
                         });
 
-                    })
+                    });
 
                     break;
 

@@ -12,23 +12,45 @@ function serviceFun($http, $q, LocalesService, PackerService) {
 
     return {
         getRootCategories: function () {
-            return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/root-categories");
+            return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/root-categories")
+                .then(function (data) {
+                    var result = data.map(PackerService.unpackCategoryHeader);
+                    result.unshift({
+                        displayName: "Uncategorised foods", //FIXME: use localised string
+                        code: "$UNCAT",
+                        type: "category",
+                        children: []
+                    });
+                    return result;
+                });
         },
 
         getUncategorisedFoods: function () {
             return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/uncategorised-foods")
+                .then(function (data) {
+                    return data.map(PackerService.unpackFoodHeader);
+                });
         },
 
         getCategoryContents: function (code) {
-            return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/" + code);
+            return $http.get(api_base_url + "admin/browse/" + LocalesService.current() + "/" + code)
+                .then(function (data) {
+                    return PackerService.unpackCategoryContents(data);
+                });
         },
 
         getCategoryDefinition: function (code) {
-            return $http.get(api_base_url + "admin/categories/" + LocalesService.current() + "/" + code);
+            return $http.get(api_base_url + "admin/categories/" + LocalesService.current() + "/" + code)
+                .then(function (data) {
+                    return PackerService.unpackCategoryRecord(data);
+                });
         },
 
         getFoodDefinition: function (code) {
-            return $http.get(api_base_url + "admin/foods/" + LocalesService.current() + "/" + code);
+            return $http.get(api_base_url + "admin/foods/" + LocalesService.current() + "/" + code)
+                .then(function (data) {
+                    return PackerService.unpackFoodRecord(data);
+                });
         },
 
         getCategoryParentCategories: function (code) {
@@ -48,7 +70,10 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         getFoodGroups: function () {
-            return $http.get(api_base_url + "admin/food-groups/" + LocalesService.current());
+            return $http.get(api_base_url + "admin/food-groups/" + LocalesService.current())
+                .then(function(data) {
+                    return PackerService.unpackFoodGroups(data);
+                });
         },
 
         getAsServedImageSets: function () {
@@ -64,11 +89,17 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         searchCategories: function (query, onSuccess, onFailure) {
-            return $http.get(api_base_url + "admin/quick-search/" + LocalesService.current() + "/categories/" + query);
+            return $http.get(api_base_url + "admin/quick-search/" + LocalesService.current() + "/categories/" + query)
+                .then(function (data) {
+                    return data.map(PackerService.unpackCategoryHeader);
+                });
         },
 
         searchFoods: function (query, onSuccess, onFailure) {
-            return $http.get(api_base_url + "admin/quick-search/" + LocalesService.current() + "/foods/" + query);
+            return $http.get(api_base_url + "admin/quick-search/" + LocalesService.current() + "/foods/" + query)
+                .then(function (data) {
+                    return data.map(PackerService.unpackFoodHeader);
+                });
         },
 
         fetchNutrientTables: function () {
@@ -103,8 +134,9 @@ function serviceFun($http, $q, LocalesService, PackerService) {
             return $http.post(api_base_url + 'admin/categories/' + LocalesService.current() + '/' + category_code, definition);
         },
 
-        updateFoodMainRecord: function (food_code, definition) {
-            return $http.post(api_base_url + 'admin/foods/' + food_code, definition);
+        updateFoodMainRecord: function (food_code, mainRecord) {
+            var packed = PackerService.packFoodMainRecordUpdate(mainRecord);
+            return $http.post(api_base_url + 'admin/foods/' + food_code, packed);
         },
 
         createNewFood: function (definition) {
@@ -115,8 +147,9 @@ function serviceFun($http, $q, LocalesService, PackerService) {
             return $http.post(api_base_url + 'admin/foods/new-with-temp-code', definition);
         },
 
-        updateFoodLocalRecord: function (food_code, definition) {
-            return $http.post(api_base_url + 'admin/foods/' + LocalesService.current() + '/' + food_code, definition);
+        updateFoodLocalRecord: function (food_code, localRecord) {
+            var packed = PackerService.packFoodLocalRecordUpdate(localRecord);
+            return $http.post(api_base_url + 'admin/foods/' + LocalesService.current() + '/' + food_code, packed);
         },
 
         checkFoodCode: function (food_code) {

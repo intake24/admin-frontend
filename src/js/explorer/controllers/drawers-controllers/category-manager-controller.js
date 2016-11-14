@@ -19,10 +19,10 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('CategoryManagerController',
-        ['$scope', 'FoodService', 'PackerService', 'DrawersService', controllerFun]);
+        ['$scope', 'FoodService', 'DrawersService', controllerFun]);
 };
 
-function controllerFun($scope, FoodService, PackerService, DrawersService) {
+function controllerFun($scope, FoodService, DrawersService) {
 
     $scope.searchQuery = '';
 
@@ -83,7 +83,7 @@ function controllerFun($scope, FoodService, PackerService, DrawersService) {
             return;
         }
         FoodService.searchCategories($scope.searchQuery).then(function (categories) {
-                $scope.searchResults = _.map(categories, PackerService.unpackCategoryHeader);
+                $scope.searchResults = categories;
             },
             $scope.handleError
         );

@@ -5,14 +5,14 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', 'SharedData', 'FoodService', 'CurrentItem',
-            'PackerService', '$q', '$rootScope', 'MessageService', 'LocalesService',
+            '$q', '$rootScope', 'MessageService',
             controllerFun]);
 };
 
 function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
-                       PackerService, $q, $rootScope, MessageService, LocalesService) {
+                       $q, $rootScope, MessageService) {
 
-    var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService, PackerService,
+    var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
 
     // Load shared data
@@ -291,45 +291,36 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
     }
 
     function loadProblemsForNodeDeferred(node) {
-        if ((node.type == 'category') && ( node.code != '$UNCAT'))
+        if ((node.type == 'category') && ( node.code != '$UNCAT')) {
             return FoodService.getCategoryProblemsRecursive(node.code).then(function (problems) {
                 node.recursiveProblems = problems;
-            })
+            });
+        }
         else if ((node.type == 'category') && (node.code == '$UNCAT')) {
             return FoodService.getUncategorisedFoods().then(function (uncategorisedFoods) {
                 node.recursiveProblems = {
                     foodProblems: _.map(_.take(uncategorisedFoods, 10), function (food) {
-                        var unpacked = PackerService.unpackFoodHeader(food);
                         return {
-                            foodName: unpacked.displayName,
-                            foodCode: unpacked.code,
+                            foodName: food.displayName,
+                            foodCode: food.code,
                             problemCode: "food_not_categorised"
                         }
                     }),
                     categoryProblems: []
                 }
             });
-        }
-        else if (node.type == 'food')
+        } else if (node.type == 'food')
             return FoodService.getFoodProblems(node.code).then(function (problems) {
                 node.problems = problems;
             });
-        else
+        else {
             return $q.reject("Node has no type tag -- probably incorrect argument");
+        }
     }
 
     function reloadRootCategoriesDeferred() {
         return FoodService.getRootCategories().then(function (categories) {
-            $scope.rootCategories = _.map(categories, PackerService.unpackCategoryHeader);
-
-            $scope.rootCategories.unshift(
-                {
-                    displayName: "Uncategorised foods", //FIXME: use localised string
-                    code: "$UNCAT",
-                    type: "category",
-                    children: []
-                }
-            );
+            $scope.rootCategories = categories;
 
             return $q.all(_.map($scope.rootCategories, function (node) {
                 return loadProblemsForNodeDeferred(node)
@@ -344,14 +335,10 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         var childrenDeferred;
 
         if (node.code == "$UNCAT")
-            childrenDeferred = FoodService.getUncategorisedFoods().then(function (foods) {
-                return _.map(foods, PackerService.unpackFoodHeader);
-            });
+            childrenDeferred = FoodService.getUncategorisedFoods();
         else
             childrenDeferred = FoodService.getCategoryContents(node.code).then(function (contents) {
-                var subcategories = _.map(contents.subcategories, PackerService.unpackCategoryHeader);
-                var foods = _.map(contents.foods, PackerService.unpackFoodHeader);
-                return subcategories.concat(foods);
+                return contents.subcategories.slice().concat(contents.foods);
             });
 
         return childrenDeferred.then(function (children) {

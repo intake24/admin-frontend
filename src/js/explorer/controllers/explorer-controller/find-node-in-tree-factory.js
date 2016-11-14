@@ -2,7 +2,7 @@
 
 var _ = require('underscore');
 
-var findNodeInTreeFactory = function ($scope, $q, foodDataReader, packer, loadChildrenDeferred) {
+var findNodeInTreeFactory = function ($scope, $q, foodDataReader, loadChildrenDeferred) {
 
     // FIXME: Can there be two nodes with the same code but different types (food, category)?
 
@@ -53,7 +53,7 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, packer, loadCh
     function lookInUncategorised(match, deferred) {
         foodDataReader.getUncategorisedFoods().then(function (foods) {
             $scope.rootCategories[0].open = true;
-            $scope.rootCategories[0].children = _.map(foods, packer.unpackFoodHeader);
+            $scope.rootCategories[0].children = foods;
             var targetNode = _.findWhere($scope.rootCategories[0].children, match);
             if (targetNode) {
                 deferred.resolve(targetNode);

@@ -141,11 +141,22 @@ function serviceFun() {
         return unpacked;
     };
 
+    instance.unpackCategoryContents = function (packed) {
+        return {
+            subcategories: packed.subcategories.map(instance.unpackCategoryHeader),
+            foods: packed.foods.map(instance.unpackFoodHeader)
+        };
+    };
+
     instance.unpackFoodHeader = function (packed) {
         var unpacked = instance.unpackCommonHeaderFields(packed);
         unpacked.doNotUseInThisLocale = packed.doNotUse;
         unpacked.type = 'food';
         return unpacked;
+    };
+
+    instance.unpackFoodGroups = function (packed) {
+        return _.map(_.values(packed), instance.unpackFoodGroup);
     };
 
     instance.unpackFoodGroup = function (packed) {

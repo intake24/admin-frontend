@@ -172,15 +172,15 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     function loadMainRecord() {
 
         if ($scope.currentItem.type == 'category') {
-            return FoodService.getCategoryDefinition($scope.currentItem.code, LocalesService.current()).then(
-                function (definition) {
-                    $scope.itemDefinition = PackerService.unpackCategoryRecord(definition);
+            return FoodService.getCategoryDefinition($scope.currentItem.code)
+                .then(function (definition) {
+                    $scope.itemDefinition = definition;
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         } else if ($scope.currentItem.type == 'food') {
-            return FoodService.getFoodDefinition($scope.currentItem.code, LocalesService.current()).then(
-                function (definition) {
-                    $scope.itemDefinition = PackerService.unpackFoodRecord(definition);
+            return FoodService.getFoodDefinition($scope.currentItem.code)
+                .then(function (definition) {
+                    $scope.itemDefinition = definition;
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         }
@@ -204,10 +204,9 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     }
 
     function reloadFoodGroups() {
-        FoodService.getFoodGroups().then(
-            function (groups) {
-                $scope.foodGroups = _.map(_.values(groups), PackerService.unpackFoodGroup);
-            });
+        FoodService.getFoodGroups().then(function (groups) {
+            $scope.foodGroups = groups;
+        });
     }
 
     function reloadNutrientCodeTables() {
@@ -379,8 +378,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateFoodMainRecord() {
         if ($scope.foodMainRecordChanged()) {
-            var packed = PackerService.packFoodMainRecordUpdate($scope.itemDefinition.main);
-            return FoodService.updateFoodMainRecord($scope.originalItemDefinition.main.code, packed);
+            return FoodService.updateFoodMainRecord($scope.originalItemDefinition.main.code, $scope.itemDefinition.main);
         } else {
             return $q.when(true);
         }
@@ -388,8 +386,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateFoodLocalRecord() {
         if ($scope.loadLocalRecordChanged()) {
-            var packed = PackerService.packFoodLocalRecordUpdate($scope.itemDefinition.local);
-            return FoodService.updateFoodLocalRecord($scope.itemDefinition.main.code, packed);
+            return FoodService.updateFoodLocalRecord($scope.itemDefinition.main.code, $scope.itemDefinition.local);
         } else {
             return $q.when(true);
         }

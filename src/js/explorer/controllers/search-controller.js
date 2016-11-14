@@ -4,10 +4,10 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('SearchController', ['$scope', '$rootScope', '$timeout',
-        'FoodService', 'PackerService', controllerFun]);
+        'FoodService', controllerFun]);
 };
 
-function controllerFun($scope, $rootScope, $timeout, FoodService, PackerService) {
+function controllerFun($scope, $rootScope, $timeout, FoodService) {
 
     var queryTimeout = 500,
         timeoutPromise;
@@ -30,10 +30,10 @@ function controllerFun($scope, $rootScope, $timeout, FoodService, PackerService)
     };
 
     $scope.$watch('query', function (oldValue, newValue) {
-      if (newValue) {
-        $timeout.cancel(timeoutPromise);
-        timeoutPromise = $timeout(performFoodSearch, queryTimeout);
-      }
+        if (newValue) {
+            $timeout.cancel(timeoutPromise);
+            timeoutPromise = $timeout(performFoodSearch, queryTimeout);
+        }
     });
 
     function performFoodSearch() {
@@ -48,12 +48,12 @@ function controllerFun($scope, $rootScope, $timeout, FoodService, PackerService)
         }
 
         FoodService.searchCategories(query).then(function (categories) {
-                $scope.searchResults = $scope.searchResults.concat(_.map(categories, PackerService.unpackCategoryHeader));
+                $scope.searchResults = $scope.searchResults.concat(categories);
             },
             $scope.handleError);
 
         FoodService.searchFoods(query).then(function (foods) {
-                $scope.searchResults = $scope.searchResults.concat(_.map(foods, PackerService.unpackFoodHeader));
+                $scope.searchResults = $scope.searchResults.concat(foods);
             },
             $scope.handleError);
     }

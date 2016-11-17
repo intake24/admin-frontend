@@ -10,7 +10,6 @@ module.exports = function (app) {
 function controllerFun($scope, SharedData) {
 
     $scope.sharedData = SharedData;
-    $scope.portionSizesValidations = [];
 
     $scope.addPortionSize = function () {
         $scope.portionSizes.push({
@@ -26,21 +25,43 @@ function controllerFun($scope, SharedData) {
         $scope.portionSizes.splice(index, 1);
     };
 
-    $scope.$watchCollection('$parent.itemDefinition.local.portionSize', function () {
+    $scope.$watch('$parent.itemDefinition.local.portionSize', function () {
         if ($scope.$parent.itemDefinition == null) {
             $scope.portionSizes = null;
             return;
         } else {
             $scope.portionSizes = $scope.$parent.itemDefinition.local.portionSize;
+            $scope.$parent.$parent.portionSizeIsValid = _.all($scope.portionSizes, isPortionSizeMethodValid);
         }
-    });
+    }, true);
 
-    $scope.$watchCollection('portionSizesValidations', function () {
-        $scope.$parent.$parent.portionSizeIsValid = _.reduce($scope.portionSizesValidations, function (a, b) {
-                return a && b;
-            }) ||
-            $scope.$parent.$parent.currentItem.type != 'food' ||
-            $scope.portionSizesValidations.length == 0;
-    });
+    function isPortionSizeMethodValid(psm) {
+        var generalParametersValid = psm.description != undefined && psm.description != '' && psm.imageUrl != undefined && psm.imageUrl != '';
 
+        if (!generalParametersValid)
+          return false;
+        else {
+          switch (psm.method) {
+            case 'standard-portion':
+              return psm.parameters.units.length > 0 && _.all(psm.parameters.units, function(unit) { return unit.name != '' && unit.value != ''; });
+            case 'as-served':
+              return psm.parameters.serving_image_set != undefined && psm.parameters.serving_image_set != '' &&
+                (psm.parameters.leftovers_image_set != undefined && psm.parameters.leftovers_image_set != '' || !psm.parameters.useLeftoverImages);
+            case 'guide-image':
+              return psm.parameters.guide_image_id != undefined && psm.parameters.guide_image_id != '';
+            case 'cereal':
+              return psm.parameters.cereal_type != undefined && psm.parameters.cereal_type != '';
+            case 'drink-scale':
+              return true;
+            case 'milk-on-cereal':
+              return true;
+            case 'milk-in-a-hot-drink':
+              return true;
+            case 'pizza':
+              return true;
+            default:
+              throw controllerName + ': unexpected portion size method.'
+        }
+      }
+    }
 }

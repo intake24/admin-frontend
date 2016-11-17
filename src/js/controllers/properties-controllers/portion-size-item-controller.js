@@ -30,27 +30,33 @@ function controllerFun($scope, DrawersService, SharedData) {
     };
 
     $scope.selectServingImageSet = function (resultObj) {
+        var drawer = DrawersService.drawerAsServedImageSet;
         selectedItem = resultObj;
         targetField = 'serving_image_set';
-        DrawersService.drawerAsServedImageSet.setValue(selectedItem.serving_image_set);
-        DrawersService.drawerAsServedImageSet.open();
+        drawer.setValue(selectedItem.leftovers_image_set);
+        setValueFromDrawer(drawer);
     };
 
     $scope.selectLeftoversImageSet = function (resultObj) {
+        var drawer = DrawersService.drawerAsServedImageSet;
         selectedItem = resultObj;
         targetField = 'leftovers_image_set';
-        DrawersService.drawerAsServedImageSet.setValue(selectedItem.leftovers_image_set);
-        DrawersService.drawerAsServedImageSet.open();
+        drawer.setValue(selectedItem.leftovers_image_set);
+        setValueFromDrawer(drawer);
     };
 
     $scope.showGuideImageDrawer = function (resultObj) {
+        var drawer = DrawersService.drawerGuideImage;
         selectedItem = resultObj;
-        DrawersService.drawerGuideImage.open();
+        targetField = "guide_image_id";
+        setValueFromDrawer(drawer);
     };
 
     $scope.showDrinkwareDrawer = function (resultObj, resultField) {
+        var drawer = DrawersService.drawerDrinkware;
         selectedItem = resultObj;
-        DrawersService.drawerDrinkware.open();
+        targetField = "drinkware_id";
+        setValueFromDrawer(drawer);
     };
 
     $scope.portionSizeMethodModel = function (portionSize) {
@@ -111,57 +117,6 @@ function controllerFun($scope, DrawersService, SharedData) {
         return unit.name == '' || unit.value == '';
     };
 
-    $scope.$watch(function () {
-        return DrawersService.drawerAsServedImageSet.getValue();
-    }, function () {
-        if (!selectedItem) {
-            return;
-        }
-        selectedItem[targetField] = DrawersService.drawerAsServedImageSet.getValue();
-    });
-
-    $scope.$watch(function () {
-        return DrawersService.drawerAsServedImageSet.getOpen();
-    }, function () {
-        if (!DrawersService.drawerAsServedImageSet.getOpen()) {
-            selectedItem = null;
-        }
-    });
-
-    $scope.$watch(function () {
-        return DrawersService.drawerGuideImage.getValue();
-    }, function () {
-        if (!selectedItem) {
-            return;
-        }
-        selectedItem.guide_image_id = DrawersService.drawerGuideImage.getValue();
-    });
-
-    $scope.$watch(function () {
-        return DrawersService.drawerGuideImage.getOpen();
-    }, function () {
-        if (!DrawersService.drawerGuideImage.getOpen()) {
-            selectedItem = null;
-        }
-    });
-
-    $scope.$watch(function () {
-        return DrawersService.drawerDrinkware.getValue();
-    }, function () {
-        if (!selectedItem) {
-            return;
-        }
-        selectedItem.drinkware_id = DrawersService.drawerDrinkware.getValue();
-    });
-
-    $scope.$watch(function () {
-        return DrawersService.drawerDrinkware.getOpen();
-    }, function () {
-        if (!DrawersService.drawerDrinkware.getOpen()) {
-            selectedItem = null;
-        }
-    });
-
     $scope.$watch('portionSize.description', function (newVal, oldVal) {
         if (newVal != oldVal) {
             setDescriptionImage();
@@ -171,6 +126,16 @@ function controllerFun($scope, DrawersService, SharedData) {
     function setDescriptionImage() {
         $scope.portionSize.imageUrl = PORTION_IMAGES[$scope.portionSize.description];
         $scope.imageUrlEditable = false;
+    }
+
+    function setValueFromDrawer(drawer) {
+        var callback = function (value) {
+            selectedItem[targetField] = value;
+            selectedItem = null;
+            drawer.offValueSet(callback);
+        };
+        drawer.open();
+        drawer.onValueSet(callback);
     }
 
 }

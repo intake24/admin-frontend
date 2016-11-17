@@ -18,6 +18,7 @@ function serviceFun() {
 function DrawerStateFactory() {
     var isOpen = false,
         value = undefined,
+        valueSetListeners = [],
         DrawerState = function () {
         };
 
@@ -32,9 +33,23 @@ function DrawerStateFactory() {
     };
     DrawerState.prototype.setValue = function (val) {
         value = val;
+        valueSetListeners.forEach(function(fn) {
+            fn(val);
+        });
     };
-    DrawerState.prototype.getValue = function () {
+    DrawerState.prototype.getValue = function (val) {
         return value;
+    };
+    DrawerState.prototype.onValueSet = function (fn) {
+        valueSetListeners.push(fn);
+    };
+    DrawerState.prototype.offValueSet = function (fn) {
+        if (fn) {
+            var i = valueSetListeners.indexOf(fn);
+            valueSetListeners.splice(i, 1);
+        } else {
+            valueSetListeners.length = 0;
+        }
     };
 
     return new DrawerState();

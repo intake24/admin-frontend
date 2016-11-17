@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function(app) {
-    app.controller('AssociatedFoodController', ['$scope', 'DrawersService', function($scope, DrawersService) {
+module.exports = function (app) {
+    app.controller('AssociatedFoodController', ['$scope', 'DrawersService', function ($scope, DrawersService) {
         controllerFun.call($scope, DrawersService);
     }]);
 };
@@ -26,15 +26,20 @@ function controllerFun(DrawersService) {
     };
 
     this.showAssociatedFoodDrawer = function (obj) {
+        var callback = function(value) {
+            selectedItem.foodOrCategory = value;
+            DrawersService.drawerAssociatedFood.offValueSet(callback);
+        };
         selectedItem = obj;
         DrawersService.drawerAssociatedFood.open();
+        DrawersService.drawerAssociatedFood.onValueSet(callback);
     };
 
-    this.$watch(function() {
+    this.$watch(function () {
         return DrawersService.drawerAssociatedFood.getValue();
-    }, function() {
+    }, function () {
         if (selectedItem) {
-          selectedItem.foodOrCategory = DrawersService.drawerAssociatedFood.getValue();
-    }
-  });
+            selectedItem.foodOrCategory = DrawersService.drawerAssociatedFood.getValue();
+        }
+    });
 }

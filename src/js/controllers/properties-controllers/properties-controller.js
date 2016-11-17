@@ -87,6 +87,7 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     $scope.notValid = function () {
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
             $scope.itemDefinition.main.englishDescription == '' ||
+            $scope.currentItem.type == "food" &&
             $scope.itemDefinition.local.associatedFoods.filter(function(item) {
                 return !item.foodOrCategory;
             }).length > 0;

@@ -66,15 +66,19 @@ function controllerFun($scope, DrawersService, SharedData) {
 
                 // Ignore default undefined selection
                 if (portionSize.method)
-                    portionSize.cachedParameters[portionSize.method] = portionSize.parameters;
+                    portionSize.cachedParameters[portionSize.method] = angular.copy(portionSize.parameters);
 
                 if (portionSize.cachedParameters[new_method_id])
                     portionSize.parameters = portionSize.cachedParameters[new_method_id];
                 else {
-                    // Use default parameters
-                    var parameters = {description: "", useForRecipes: false, imageUrl: "images/placeholder.jpg"}
+                    // Default common fields
+                    portionSize.description = "";
+                    portionSize.useForRecipes = false;
+                    portionSize.imageUrl = "images/placeholder.jpg";
 
-                    // Add method-specific default parameters if required
+                    var parameters = {};
+
+                    // Method-specific default parameters
                     switch (new_method_id) {
                         case "as-served":
                             parameters.useLeftoverImages = false;
@@ -89,6 +93,7 @@ function controllerFun($scope, DrawersService, SharedData) {
                         default:
                             break;
                     }
+
                     portionSize.parameters = parameters;
                 }
                 portionSize.method = new_method_id;
@@ -106,13 +111,8 @@ function controllerFun($scope, DrawersService, SharedData) {
     };
 
     $scope.unitHasError = function (unit) {
-        return !standardPortionUnitIsValid.call(unit);
+        return unit.name == '' || unit.value == '';
     };
-
-    $scope.$watch('portionSize', function () {
-        var index = $scope.$parent.portionSizes.indexOf($scope.portionSize);
-        $scope.$parent.portionSizesValidations[index] = portionSizeIsValid.call($scope.portionSize);
-    }, true);
 
     $scope.$watch(function () {
         return DrawersService.drawerAsServedImageSet.getValue();
@@ -172,71 +172,4 @@ function controllerFun($scope, DrawersService, SharedData) {
         }
     });
 
-}
-
-function portionSizeIsValid() {
-    var parametersEvaluationMethod;
-    switch (this.method) {
-        case 'standard-portion':
-            parametersEvaluationMethod = standardPortionParametersAreValid;
-            break;
-        case 'as-served':
-            parametersEvaluationMethod = asServedParametersAreValid;
-            break;
-        case 'guide-image':
-            parametersEvaluationMethod = guideImageParametersAreValid;
-            break;
-        case 'cereal':
-            parametersEvaluationMethod = cerealParametersAreValid;
-            break;
-        case 'drink-scale':
-            parametersEvaluationMethod = parametersAreValid;
-            break;
-        case 'milk-on-cereal':
-            parametersEvaluationMethod = parametersAreValid;
-            break;
-        case 'milk-in-a-hot-drink':
-            parametersEvaluationMethod = parametersAreValid;
-            break;
-        case 'pizza':
-            parametersEvaluationMethod = parametersAreValid;
-            break;
-        default:
-            throw controllerName + ': unexpected portion size method.'
-    }
-    return portionGeneralParametersAreValid.call(this) && parametersEvaluationMethod.call(this.parameters);
-}
-
-function portionGeneralParametersAreValid() {
-    return this.description != undefined && this.description != '' &&
-        this.imageUrl != undefined && this.imageUrl != '';
-}
-
-function standardPortionParametersAreValid() {
-    var unitsAreValid = true;
-    _.each(this.units, function (unit) {
-        unitsAreValid = unitsAreValid && standardPortionUnitIsValid.call(unit);
-    });
-    return this.units.length > 0 && unitsAreValid;
-}
-
-function standardPortionUnitIsValid() {
-    return this.name != '' && this.value != '';
-}
-
-function asServedParametersAreValid() {
-    return this.serving_image_set != undefined && this.serving_image_set != '' &&
-        (this.leftovers_image_set != undefined && this.leftovers_image_set != '' || !this.useLeftoverImages);
-}
-
-function guideImageParametersAreValid() {
-    return this.guide_image_id != undefined && this.guide_image_id != '';
-}
-
-function cerealParametersAreValid() {
-    return this.cereal_type != undefined && this.cereal_type != '';
-}
-
-function parametersAreValid() {
-    return true;
 }

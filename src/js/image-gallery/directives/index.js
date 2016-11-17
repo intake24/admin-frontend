@@ -10,4 +10,5 @@ module.exports = function(app) {
     require('./as-served-set-directive')(app);
     require('./contenteditable')(app);
     require('./editable-directive')(app);
+    require("./on-scrolled-to-bottom")(app);
 };

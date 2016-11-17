@@ -12,17 +12,19 @@ var SAMPLE_IMAGES = [
 ];
 
 module.exports = function (app) {
-    app.service('ImageService', ['$q', '$timeout', serviceFun]);
+    app.service("ImageService", ["$http", "$httpParamSerializerJQLike", "$q", "$timeout", serviceFun]);
 };
 
-function serviceFun($q, $timeout) {
+function serviceFun($http, $httpParamSerializerJQLike, $q, $timeout) {
 
     return {
-        all: function () {
-            var deferred = $q.defer();
-            deferred.resolve(SAMPLE_IMAGES);
-
-            return deferred.promise;
+        query: function(offset, limit, search) {
+            var url = "http://api-test.intake24.co.uk/admin/images/source",
+                params = {offset: offset, limit: limit};
+            if (search) {
+                params.search = search;
+            }
+            return $http.get(url+"?"+$httpParamSerializerJQLike(params))
         },
         restore: function (id) {
             var deferred = $q.defer();

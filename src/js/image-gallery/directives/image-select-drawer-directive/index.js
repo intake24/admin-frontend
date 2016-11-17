@@ -39,11 +39,9 @@ module.exports = function (app) {
                 scope.isOpen = DrawersService.imageDrawer.getOpen();
             });
 
-            ImageService.all().then(function (data) {
+            ImageService.query(0,100).then(function (data) {
                 scope.items = data.map(function (image) {
-                    return new ImageModel(image.id, image.src, image.tags, image.deleted);
-                }).filter(function (image) {
-                    return !image.deleted;
+                    return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
                 });
             });
         }

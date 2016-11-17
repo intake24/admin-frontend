@@ -7,15 +7,26 @@
 var ImageModel = require("./image-model");
 
 module.exports = function (app) {
-    app.controller('ImageGalleryMain', ["$scope", "ImageService", controllerFun]);
+    app.controller('ImageGalleryMain', ["$scope", "$timeout", "ImageService", controllerFun]);
 };
 
-function controllerFun($scope, ImageService) {
+function controllerFun($scope, $timeout, ImageService) {
+
+    var LIMIT = 10,
+        SEARCH_DELAY = 500;
+
+    var page = 0,
+        searchPage = 0,
+        previousLoadedImagePage = undefined,
+        previousLoadedSearchPage = undefined,
+        searchTimeout;
 
     $scope.images = [];
-    $scope.searchQuery = '';
+    $scope.searchedImages = [];
+    $scope.searchQuery = "";
     $scope.copiedTags = [];
     $scope.showDeleted = false;
+    $scope.loadingImages = false;
 
     $scope.toggleShowDeleted = function () {
         $scope.showDeleted = !$scope.showDeleted;
@@ -84,7 +95,7 @@ function controllerFun($scope, ImageService) {
         item.loading = true;
         ImageService.restore(item.id).then(function (data) {
             item.deleted = false;
-        }).finally(function() {
+        }).finally(function () {
             item.loading = false;
         });
     };
@@ -107,17 +118,63 @@ function controllerFun($scope, ImageService) {
             }).length > 0;
     };
 
-    ImageService.all().then(function (data) {
-        $scope.images = data.map(function (image) {
-            return new ImageModel(image.id, image.src, image.tags, image.deleted);
-        });
+    $scope.loadImages = loadImages;
+    $scope.searchImages = searchImages;
+
+    $scope.getSearchQueryNotEmpty = function () {
+        return $scope.searchQuery.replace(/\s+/gi, "") != "";
+    };
+
+    $scope.$watch("searchQuery", function () {
+        if (!$scope.getSearchQueryNotEmpty()) {
+            $scope.searchedImages.length = 0;
+        } else {
+            $timeout.cancel(searchTimeout);
+            searchTimeout = $timeout(searchImages, SEARCH_DELAY);
+        }
     });
+
+    loadImages();
+
+    function loadImages() {
+        $scope.loadingImages = true;
+        ImageService.query(page * LIMIT, LIMIT).then(function (data) {
+            if (previousLoadedImagePage != page) {
+                Array.prototype.push.apply($scope.images, data.map(function (image) {
+                    return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
+                }));
+            }
+            previousLoadedImagePage = page;
+            if (data.length) {
+                page++;
+            }
+        }).finally(function () {
+            $scope.loadingImages = false;
+        });
+    }
+
+    function searchImages() {
+        $scope.loadingImages = true;
+        ImageService.query(searchPage * LIMIT, LIMIT, $scope.searchQuery).then(function (data) {
+            if (previousLoadedSearchPage != searchPage) {
+                Array.prototype.push.apply($scope.searchedImages, data.map(function (image) {
+                    return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
+                }));
+            }
+            previousLoadedSearchPage = searchPage;
+            if (data.length) {
+                searchPage++;
+            }
+        }).finally(function () {
+            $scope.loadingImages = false;
+        });
+    }
 
     function removeItem(image) {
         image.loading = true;
         ImageService.remove(image.id).then(function () {
             image.deleted = true;
-        }).finally(function() {
+        }).finally(function () {
             image.loading = false;
         });
     }

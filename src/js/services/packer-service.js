@@ -458,11 +458,10 @@ function serviceFun() {
                     break;
 
                 case "drink-scale":
-
                     packedPortionSize.parameters = [
                         {name: "drinkware-id", value: portionSize.parameters.drinkware_id},
                         {name: "initial-fill-level", value: portionSize.parameters.initial_fill_level.toString()},
-                        {name: "skip-fill-level", value: portionSize.parameters.skip_fill_level.toString()}
+                        {name: "skip-fill-level", value: (portionSize.parameters.skip_fill_level || false).toString()}
                     ];
 
                     break;

@@ -25,7 +25,7 @@ function controllerFun($scope, DrawersService, SharedData) {
 
     $scope.imageUrlEditable = false;
 
-    $scope.toggleImageUrlEdit = function() {
+    $scope.toggleImageUrlEdit = function () {
         $scope.imageUrlEditable = !$scope.imageUrlEditable;
     };
 
@@ -71,11 +71,6 @@ function controllerFun($scope, DrawersService, SharedData) {
                 if (portionSize.cachedParameters[new_method_id])
                     portionSize.parameters = portionSize.cachedParameters[new_method_id];
                 else {
-                    // Default common fields
-                    portionSize.description = "";
-                    portionSize.useForRecipes = false;
-                    portionSize.imageUrl = "images/placeholder.jpg";
-
                     var parameters = {};
 
                     // Method-specific default parameters
@@ -88,8 +83,10 @@ function controllerFun($scope, DrawersService, SharedData) {
                             break;
                         case "drink-scale":
                             parameters.initial_fill_level = 0.9;
+                            break;
                         case "cereal":
                             parameters.cereal_type = "hoop";
+                            break;
                         default:
                             break;
                     }
@@ -167,9 +164,13 @@ function controllerFun($scope, DrawersService, SharedData) {
 
     $scope.$watch('portionSize.description', function (newVal, oldVal) {
         if (newVal != oldVal) {
-            $scope.portionSize.imageUrl = PORTION_IMAGES[$scope.portionSize.description];
-            $scope.imageUrlEditable = false;
+            setDescriptionImage();
         }
     });
+
+    function setDescriptionImage() {
+        $scope.portionSize.imageUrl = PORTION_IMAGES[$scope.portionSize.description];
+        $scope.imageUrlEditable = false;
+    }
 
 }

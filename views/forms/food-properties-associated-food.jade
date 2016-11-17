@@ -12,7 +12,7 @@
             label.col-xs-3.control-label #{ gettext("Food or category code") }
             .col-xs-9
                 .form-control-static
-                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)')
+                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)' ng-class="{'has-error': !assFood.foodOrCategory}")
                         span(ng-if='!assFood.foodOrCategory')
                             p #{ gettext("properties_select_associated_food") }
                         span(ng-if='assFood.foodOrCategory')

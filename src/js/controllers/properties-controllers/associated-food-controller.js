@@ -16,7 +16,8 @@ function controllerFun(DrawersService) {
             foodOrCategory: null,
             mainFood: false,
             linkAsMain: false,
-            promptText: ""
+            promptText: "",
+            genericName: ""
         })
     };
 
@@ -26,7 +27,7 @@ function controllerFun(DrawersService) {
     };
 
     this.showAssociatedFoodDrawer = function (obj) {
-        var callback = function(value) {
+        var callback = function (value) {
             selectedItem.foodOrCategory = value;
             DrawersService.drawerAssociatedFood.offValueSet(callback);
         };

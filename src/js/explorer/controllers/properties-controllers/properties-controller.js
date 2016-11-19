@@ -86,7 +86,11 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     $scope.notValid = function () {
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
-            $scope.itemDefinition.main.englishDescription == '';
+            $scope.itemDefinition.main.englishDescription == '' ||
+            $scope.currentItem.type == "food" &&
+            $scope.itemDefinition.local.associatedFoods.filter(function(item) {
+                return !item.foodOrCategory;
+            }).length > 0;
     };
 
     $scope.$watch('itemDefinition.main.code', function () {
@@ -256,11 +260,14 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     }
 
     $scope.categoryMainRecordChanged = function () {
-        if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(PackerService.packCategoryMainRecordUpdate($scope.originalItemDefinition.main), PackerService.packCategoryMainRecordUpdate($scope.itemDefinition.main));
-        else
+        if ($scope.originalItemDefinition && $scope.itemDefinition) {
+            var packedOriginalBasic = packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main);
+            var packedCurrentBasic = packer.packCategoryMainRecordUpdate($scope.itemDefinition.main);
+            return !angular.equals(packedOriginalBasic, packedCurrentBasic);
+        } else {
             return false;
-    };
+        }
+    }
 
     $scope.categoryLocalRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition)

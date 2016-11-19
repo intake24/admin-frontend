@@ -89,12 +89,14 @@ function serviceFun() {
                     sameAsBeforeOption: instance.unpackOption(packed.main.attributes.sameAsBeforeOption),
                     reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount)
                 },
-                parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader)
+                parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader),
+                localeRestrictions: packed.main.localeRestrictions
             },
             local: {
                 version: instance.unpackOption(packed.local.version),
                 localDescription: instance.unpackOption(packed.local.localDescription),
-                portionSize: instance.unpackPortionSizes(packed.local.portionSize)
+                portionSize: instance.unpackPortionSizes(packed.local.portionSize),
+                doNotUseInThisLocale: packed.local.doNotUse
             }
         };
     };
@@ -103,9 +105,7 @@ function serviceFun() {
         var unpacked = instance.unpackCommonRecordFields(packed);
 
         unpacked.main.groupCode = packed.main.groupCode;
-        unpacked.main.localeRestrictions = packed.main.localeRestrictions;
         unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
-        unpacked.local.doNotUseInThisLocale = packed.local.doNotUse;
         unpacked.local.brandNames = packed.local.brandNames;
         unpacked.local.associatedFoods = _.map(packed.local.associatedFoods, instance.unpackAssociatedFood);
 
@@ -318,7 +318,11 @@ function serviceFun() {
             code: unpacked.code,
             englishDescription: unpacked.englishDescription,
             isHidden: unpacked.isHidden,
-            attributes: instance.packInheritableAttributes(unpacked.attributes)
+            attributes: instance.packInheritableAttributes(unpacked.attributes),
+            localeRestrictions: unpacked.localeRestrictions,
+            parentCategories: _.map(unpacked.parentCategories, function (header) {
+                return header.code;
+            }),
         };
     };
 
@@ -393,7 +397,8 @@ function serviceFun() {
         return {
             baseVersion: instance.packOption(unpacked.version),
             localDescription: instance.packOption(unpacked.localDescription),
-            portionSize: instance.packPortionSizes(unpacked.portionSize)
+            portionSize: instance.packPortionSizes(unpacked.portionSize),
+            doNotUse: unpacked.doNotUseInThisLocale
         };
     };
 
@@ -469,11 +474,10 @@ function serviceFun() {
                     break;
 
                 case "drink-scale":
-
                     packedPortionSize.parameters = [
                         {name: "drinkware-id", value: portionSize.parameters.drinkware_id},
                         {name: "initial-fill-level", value: portionSize.parameters.initial_fill_level.toString()},
-                        {name: "skip-fill-level", value: portionSize.parameters.skip_fill_level.toString()}
+                        {name: "skip-fill-level", value: (portionSize.parameters.skip_fill_level || false).toString()}
                     ];
 
                     break;

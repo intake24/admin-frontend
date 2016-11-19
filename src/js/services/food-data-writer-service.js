@@ -24,6 +24,7 @@ function serviceFun($http, locales) {
         },
 
         updateCategoryMainRecord: function (category_code, definition) {
+            console.log(definition);
             return $http.post(api_base_url + 'admin/categories/' + category_code, definition);
         },
 

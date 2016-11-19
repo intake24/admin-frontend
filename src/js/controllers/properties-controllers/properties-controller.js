@@ -258,10 +258,13 @@ function controllerFun($scope, currentItem, sharedData, foodDataReader, foodData
     }
 
     $scope.categoryMainRecordChanged = function () {
-        if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main), packer.packCategoryMainRecordUpdate($scope.itemDefinition.main));
-        else
+        if ($scope.originalItemDefinition && $scope.itemDefinition) {
+            var packedOriginalBasic = packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main);
+            var packedCurrentBasic = packer.packCategoryMainRecordUpdate($scope.itemDefinition.main);
+            return !angular.equals(packedOriginalBasic, packedCurrentBasic);
+        } else {
             return false;
+        }
     }
 
     $scope.categoryLocalRecordChanged = function () {

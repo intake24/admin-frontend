@@ -261,8 +261,8 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     $scope.categoryMainRecordChanged = function () {
         if ($scope.originalItemDefinition && $scope.itemDefinition) {
-            var packedOriginalBasic = packer.packCategoryMainRecordUpdate($scope.originalItemDefinition.main);
-            var packedCurrentBasic = packer.packCategoryMainRecordUpdate($scope.itemDefinition.main);
+            var packedOriginalBasic = PackerService.packCategoryMainRecordUpdate($scope.originalItemDefinition.main);
+            var packedCurrentBasic = PackerService.packCategoryMainRecordUpdate($scope.itemDefinition.main);
             return !angular.equals(packedOriginalBasic, packedCurrentBasic);
         } else {
             return false;

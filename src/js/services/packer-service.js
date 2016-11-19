@@ -480,12 +480,15 @@ function serviceFun() {
                     break;
 
                 case "milk-on-cereal":
+                    packedPortionSize.parameters = [];
                     break;
 
                 case "pizza":
+                    packedPortionSize.parameters = [];
                     break;
 
                 case "milk-in-a-hot-drink":
+                    packedPortionSize.parameters = [];
                     break;
 
                 default:

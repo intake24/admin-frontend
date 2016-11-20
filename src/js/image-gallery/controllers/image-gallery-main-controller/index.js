@@ -63,25 +63,29 @@ function controllerFun($scope, $timeout, ImageService) {
             return;
         }
         $scope.images.forEach(function (image) {
-            sendRemoveItemRequest(image);
+            if (image.selected) {
+                sendRemoveItemRequest(image);
+            }
         });
     };
 
-    $scope.removeItem = function (image) {
-        if (!confirm("Are you sure you want to delete this image?")) {
-            return;
-        }
-        sendRemoveItemRequest(image);
+    $scope.onRemoved = function(id) {
+        var item = $scope.images.filter(function(el) {
+            return el.id == id;
+        })[0];
+        removeItem(item);
     };
 
-    $scope.copyTags = function (image) {
-        $scope.copiedTags = image.tags.slice();
+    $scope.onTagsCopied = function (tags) {
+        $scope.copiedTags = tags;
     };
 
     $scope.pasteTagsToSelected = function () {
         if ($scope.copiedTags != undefined && $scope.copiedTags.length > 0) {
             $scope.images.forEach(function (image) {
-                image.tags = $scope.copiedTags.slice();
+                if (image.selected) {
+                    image.tags = $scope.copiedTags.slice();
+                }
             });
         }
     };

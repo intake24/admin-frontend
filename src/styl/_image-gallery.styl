@@ -13,7 +13,15 @@ $intk-gallery-tools-padding = 4px 4px 10px 4px
 $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
 
 .intk-gallery {
+  margin-top: 50px;
   padding-top: 20px;
+
+  &-search {
+    position: fixed;
+    top: header-height;
+    left: sidebar-color;
+    z-index: 1;
+  }
 
   &-item {
     display: inline-block;
@@ -134,7 +142,6 @@ tag-input {
     &-item {
       display: inline-block;
       margin-right: $intk-tag-input-item;
-      line-height: 1em;
 
       a {
         color: #fff;
@@ -146,6 +153,8 @@ tag-input {
       border: none;
       outline: none;
       background: transparent;
+      padding-top: 3px;
+      vertical-align: bottom;
     }
 
     &.disabled {

@@ -11,4 +11,5 @@ module.exports = function(app) {
     require('./contenteditable')(app);
     require('./editable-directive')(app);
     require("./on-scrolled-to-bottom")(app);
+    require("./image-gallery-main-item")(app);
 };

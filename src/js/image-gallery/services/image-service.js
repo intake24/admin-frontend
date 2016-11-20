@@ -63,12 +63,9 @@ function serviceFun($http, $httpParamSerializerJQLike, $q, $timeout, HttpRequest
 
             return deferred.promise;
         },
-        restore: function (id) {
-            var deferred = $q.defer();
-            $timeout(function () {
-                deferred.resolve();
-            }, Math.random() * 500);
-            return deferred.promise;
+        patch: function (id, tags) {
+            var url = "http://api-test.intake24.co.uk/admin/images/source/" + id;
+            return $http.patch(url, {keywords: tags});
         },
         remove: function (id) {
             var deferred = $q.defer();

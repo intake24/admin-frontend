@@ -1,0 +1,21 @@
+.intk-gallery-item
+    .intk-gallery-item-img
+        img-loader(src="src")
+        .intk-gallery-item-blank(ng-class="{'visible': selected || loading}")
+            div.pull-right(uib-dropdown)
+                button.btn.btn-default.btn-tools(uib-dropdown-toggle)
+                    i.fa.fa-ellipsis-v
+                ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu)
+                    li
+                        a(href="" ng-click="copyTags()") Copy tags
+                    li(ng-show="copiedTagsNotSame() && copiedTagsNotEmpty()")
+                        a(href="" ng-click="pasteTags()") Paste tags
+                    li.divider
+                    li
+                        a(href="" ng-click="removeItem()") Remove image
+
+            button.btn-select(ng-click="select()")
+                i.fa(ng-class="{'fa-check-circle-o': getItemSelected(), 'fa-circle-o': getItemDeselected(), 'fa-spinner fa-spin': loading }")
+
+    .intk-gallery-item-tools
+        tag-input(tags="tags" disabled="loading")

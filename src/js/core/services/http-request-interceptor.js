@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 module.exports = function (app) {
-    app.service('HttpRequestInterceptor', ['$q', 'MessageService', 'UserStateService',
+    app.service("HttpRequestInterceptor", ["$q", "MessageService", "UserStateService",
         function ($q, MessageService, UserStateService) {
             return {
                 request: function (config) {
-                    config.headers['X-Auth-Token'] = UserStateService.getAuthCookies();
+                    config.headers["X-Auth-Token"] = UserStateService.getAuthCookies();
                     return config;
                 },
                 response: function (response) {
@@ -17,18 +17,24 @@ module.exports = function (app) {
                     }
                 },
                 responseError: function (rejection) {
-                    console.log(rejection);
                     if (rejection.status == 401) {
-                        if (rejection.config.url == api_base_url + 'signin') {
-                            MessageService.showMessage(gettext('Failed to log you in'), 'danger');
+                        if (rejection.config.url == api_base_url + "signin") {
+                            MessageService.showMessage(gettext("Failed to log you in"), "danger");
                         } else {
-                            MessageService.showMessage(gettext('Your session has expired. Please log in.'), 'danger');
+                            MessageService.showMessage(gettext("Your session has expired. Please log in."), "danger");
                         }
                         UserStateService.logout();
                     } else {
-                        MessageService.showMessage(gettext('Something went wrong. Please check the console for details.'), 'danger');
+                        MessageService.showMessage(gettext("Something went wrong. Please check the console for details."), "danger");
                     }
                     return $q.reject(rejection);
+                },
+                xmlHttpRequestConfig: function(xmlHttpReq) {
+                    var self = this;
+                    xmlHttpReq.setRequestHeader("X-Auth-Token", UserStateService.getAuthCookies());
+                    xmlHttpReq.addEventListener("load", function() {
+                        self.responseError(xmlHttpReq);
+                    });
                 }
             };
         }]);

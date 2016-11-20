@@ -1,4 +1,4 @@
-<div class="tag-input" ng-hide="disabled">
+<div class="tag-input" ng-class="{disabled: disabled}">
     <span class="tag-input-item label label-primary" ng-repeat="tag in tags track by $index">
         {{ tag }}
         <a href="" ng-click="removeTag($index)">&times;</a>

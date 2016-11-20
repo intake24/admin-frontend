@@ -5,21 +5,16 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("onScrolledToBottom", ["$window", "$timeout", directiveFun]);
+    app.directive("onScrolledToBottom", ["$window", directiveFun]);
 
-    function directiveFun($window, $timeout) {
+    function directiveFun($window) {
 
         function controller(scope, element, attributes) {
 
-            var DELAY = 500,
-                timeout,
-                onScrolled = scope.$eval(attributes.onScrolledToBottom);
+            var onScrolled = scope.$eval(attributes.onScrolledToBottom);
 
             angular.element($window).on("scroll", function () {
-                $timeout.cancel(timeout);
-                timeout = $timeout(function () {
-                    triggerIfScrolledToBottom(element, $window, onScrolled);
-                }, DELAY);
+                triggerIfScrolledToBottom(element, $window, onScrolled);
             });
 
         }

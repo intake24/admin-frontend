@@ -16,28 +16,12 @@ function controllerFun($scope, $timeout, ImageService) {
         SEARCH_DELAY = 500;
 
     var page = 0,
-        searchPage = 0,
-        previousLoadedImagePage = undefined,
-        previousLoadedSearchPage = undefined,
-        searchTimeout;
+        loadImagesTimeout;
 
     $scope.images = [];
-    $scope.searchedImages = [];
     $scope.searchQuery = "";
     $scope.copiedTags = [];
-    $scope.showDeleted = false;
     $scope.loadingImages = false;
-
-    $scope.toggleShowDeleted = function () {
-        $scope.showDeleted = !$scope.showDeleted;
-    };
-
-    $scope.getFilteredImages = function () {
-        return $scope.images.filter(function (image) {
-            return image.tags.join(' ').toLowerCase().search($scope.searchQuery) > -1 &&
-                (!image.deleted || $scope.showDeleted);
-        });
-    };
 
     $scope.onFilesChange = function (fileList) {
         for (var i = 0; i < fileList.length; i++) {
@@ -45,9 +29,14 @@ function controllerFun($scope, $timeout, ImageService) {
             if (!file.type.match(/image.*/)) {
                 continue;
             }
-            readImageFromFile(file, function (img) {
-                $scope.images.unshift(img);
-                $scope.$apply();
+            var image = new ImageModel();
+            image.loading = true;
+            $scope.images.unshift(image);
+            ImageService.add(file).then(function (data) {
+                image.src = data.src;
+                image.loading = false;
+            }, function () {
+                removeItem(image);
             });
         }
     };
@@ -57,7 +46,7 @@ function controllerFun($scope, $timeout, ImageService) {
     };
 
     $scope.selectAll = function () {
-        $scope.getFilteredImages().forEach(function (image) {
+        $scope.images.forEach(function (image) {
             image.selected = true;
         });
     };
@@ -74,10 +63,7 @@ function controllerFun($scope, $timeout, ImageService) {
             return;
         }
         $scope.images.forEach(function (image) {
-            if (!image.selected) {
-                return;
-            }
-            removeItem(image);
+            sendRemoveItemRequest(image);
         });
     };
 
@@ -85,19 +71,7 @@ function controllerFun($scope, $timeout, ImageService) {
         if (!confirm("Are you sure you want to delete this image?")) {
             return;
         }
-        removeItem(image);
-    };
-
-    $scope.restoreItem = function (item) {
-        if (!confirm("Are you sure you want to restore this image?")) {
-            return;
-        }
-        item.loading = true;
-        ImageService.restore(item.id).then(function (data) {
-            item.deleted = false;
-        }).finally(function () {
-            item.loading = false;
-        });
+        sendRemoveItemRequest(image);
     };
 
     $scope.copyTags = function (image) {
@@ -106,7 +80,7 @@ function controllerFun($scope, $timeout, ImageService) {
 
     $scope.pasteTagsToSelected = function () {
         if ($scope.copiedTags != undefined && $scope.copiedTags.length > 0) {
-            $scope.getFilteredImages().forEach(function (image) {
+            $scope.images.forEach(function (image) {
                 image.tags = $scope.copiedTags.slice();
             });
         }
@@ -118,33 +92,26 @@ function controllerFun($scope, $timeout, ImageService) {
             }).length > 0;
     };
 
-    $scope.loadImages = loadImages;
-    $scope.searchImages = searchImages;
-
-    $scope.getSearchQueryNotEmpty = function () {
-        return $scope.searchQuery.replace(/\s+/gi, "") != "";
+    $scope.loadImages = function () {
+        $timeout.cancel(loadImagesTimeout);
+        $scope.loadingImages = true;
+        loadImagesTimeout = $timeout(loadImages, SEARCH_DELAY);
     };
 
     $scope.$watch("searchQuery", function () {
-        if (!$scope.getSearchQueryNotEmpty()) {
-            $scope.searchedImages.length = 0;
-        } else {
-            $timeout.cancel(searchTimeout);
-            searchTimeout = $timeout(searchImages, SEARCH_DELAY);
-        }
+        $scope.images.length = 0;
+        page = 0;
+        $scope.loadImages();
     });
 
     loadImages();
 
     function loadImages() {
-        $scope.loadingImages = true;
-        ImageService.query(page * LIMIT, LIMIT).then(function (data) {
-            if (previousLoadedImagePage != page) {
-                Array.prototype.push.apply($scope.images, data.map(function (image) {
-                    return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
-                }));
-            }
-            previousLoadedImagePage = page;
+        ImageService.query(page * LIMIT, LIMIT, $scope.searchQuery).then(function (data) {
+            Array.prototype.push.apply($scope.images, data.map(function (image) {
+                return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
+            }));
+            // Increment page only if data came. If the data length is 0, try to reload it next time
             if (data.length) {
                 page++;
             }
@@ -153,43 +120,19 @@ function controllerFun($scope, $timeout, ImageService) {
         });
     }
 
-    function searchImages() {
-        $scope.loadingImages = true;
-        ImageService.query(searchPage * LIMIT, LIMIT, $scope.searchQuery).then(function (data) {
-            if (previousLoadedSearchPage != searchPage) {
-                Array.prototype.push.apply($scope.searchedImages, data.map(function (image) {
-                    return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
-                }));
-            }
-            previousLoadedSearchPage = searchPage;
-            if (data.length) {
-                searchPage++;
-            }
-        }).finally(function () {
-            $scope.loadingImages = false;
-        });
-    }
-
-    function removeItem(image) {
+    function sendRemoveItemRequest(image) {
         image.loading = true;
         ImageService.remove(image.id).then(function () {
-            image.deleted = true;
+            removeItem(image);
         }).finally(function () {
             image.loading = false;
         });
     }
 
-}
+    function removeItem(image) {
+        var i = $scope.images.indexOf(image);
+        $scope.images.splice(i, 1);
+    }
 
-function readImageFromFile(file, onLoad) {
-    var reader = new FileReader(),
-        image = new ImageModel();
-    reader.onload = function (e) {
-        image.src = e.target.result;
-        if (onLoad) {
-            onLoad(image);
-        }
-    };
-    reader.readAsDataURL(file);
 }
 

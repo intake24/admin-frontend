@@ -15,7 +15,7 @@
 				span #{ gettext("Accept changes") }
 			button.intake-btn.warning(type="button"
 									ng-click='discardChanges()'
-									ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
+									ng-disabled="!itemChanged() || forceDisabledButtons")
 				span #{ gettext("Discard changes") }
 			button.intake-btn.danger(type="button"
 									ng-click='deleteItem()'

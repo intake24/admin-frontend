@@ -67,12 +67,16 @@ function serviceFun($http, $httpParamSerializerJQLike, $q, $timeout, HttpRequest
             var url = "http://api-test.intake24.co.uk/admin/images/source/" + id;
             return $http.patch(url, {keywords: tags});
         },
-        remove: function (id) {
-            var deferred = $q.defer();
-            $timeout(function () {
-                deferred.resolve();
-            }, Math.random() * 500);
-            return deferred.promise;
+        remove: function (ids) {
+            var url = "http://api-test.intake24.co.uk/admin/images/source/delete";
+            return $http({
+                method: "DELETE",
+                url: url,
+                data: ids,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            });
         }
     }
 }

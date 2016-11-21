@@ -16,6 +16,7 @@ function controllerFun($scope, $timeout, ImageService) {
         SEARCH_DELAY = 500;
 
     var page = 0,
+        pageOffset = 0,
         loadImagesTimeout;
 
     $scope.images = [];
@@ -35,6 +36,7 @@ function controllerFun($scope, $timeout, ImageService) {
             ImageService.add(file).then(function (data) {
                 image.src = data.src;
                 image.loading = false;
+                pageOffset++;
             }, function () {
                 removeItem(image);
             });
@@ -62,18 +64,32 @@ function controllerFun($scope, $timeout, ImageService) {
         if (!confirm("Are you sure you want to delete selected images?")) {
             return;
         }
-        $scope.images.forEach(function (image) {
-            if (image.selected) {
-                sendRemoveItemRequest(image);
-            }
+        var selectedImages = $scope.images.filter(function (el) {
+            return el.selected;
+        });
+        selectedImages.forEach(function (image) {
+            image.loading = true;
+        });
+        ImageService.remove(selectedImages.map(function (image) {
+            return image.id;
+        })).then(function () {
+            pageOffset -= selectedImages.length;
+            loadNImages(selectedImages.length);
+            selectedImages.forEach(removeItem);
+        }).finally(function () {
+            selectedImages.forEach(function (image) {
+                image.loading = false;
+            });
         });
     };
 
-    $scope.onRemoved = function(id) {
-        var item = $scope.images.filter(function(el) {
+    $scope.onRemoved = function (id) {
+        var item = $scope.images.filter(function (el) {
             return el.id == id;
         })[0];
         removeItem(item);
+        pageOffset--;
+        loadNImages(1);
     };
 
     $scope.onTagsCopied = function (tags) {
@@ -105,16 +121,27 @@ function controllerFun($scope, $timeout, ImageService) {
     $scope.$watch("searchQuery", function () {
         $scope.images.length = 0;
         page = 0;
+        pageOffset = 0;
         $scope.loadImages();
     });
 
     loadImages();
 
+    function loadNImages(n) {
+        ImageService.query(page * LIMIT + pageOffset, n, $scope.searchQuery).then(function (data) {
+            getImageModelsFromServerData(data);
+            // Increment page only if data came. If the data length is 0, try to reload it next time
+            if (data.length) {
+                pageOffset += n;
+            }
+        }).finally(function () {
+            $scope.loadingImages = false;
+        });
+    }
+
     function loadImages() {
-        ImageService.query(page * LIMIT, LIMIT, $scope.searchQuery).then(function (data) {
-            Array.prototype.push.apply($scope.images, data.map(function (image) {
-                return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
-            }));
+        ImageService.query(page * LIMIT + pageOffset, LIMIT, $scope.searchQuery).then(function (data) {
+            getImageModelsFromServerData(data);
             // Increment page only if data came. If the data length is 0, try to reload it next time
             if (data.length) {
                 page++;
@@ -124,13 +151,10 @@ function controllerFun($scope, $timeout, ImageService) {
         });
     }
 
-    function sendRemoveItemRequest(image) {
-        image.loading = true;
-        ImageService.remove(image.id).then(function () {
-            removeItem(image);
-        }).finally(function () {
-            image.loading = false;
-        });
+    function getImageModelsFromServerData(data) {
+        Array.prototype.push.apply($scope.images, data.map(function (image) {
+            return new ImageModel(image.id, image.fixedSizeUrl, image.keywords);
+        }));
     }
 
     function removeItem(image) {

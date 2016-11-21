@@ -52,7 +52,7 @@ function directiveFun($timeout, ImageService) {
                 return;
             }
             scope.loading = true;
-            ImageService.remove(scope.id).then(function () {
+            ImageService.remove([scope.id]).then(function () {
                 if (scope.onRemoved) {
                     scope.onRemoved(scope.id);
                 }

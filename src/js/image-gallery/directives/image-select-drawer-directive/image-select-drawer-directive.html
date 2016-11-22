@@ -1,19 +1,21 @@
 <div class="drawer-backdrop" ng-show="isOpen"></div>
-<div class="drawer drawer-narrow no-padding" ng-show="isOpen">
-    <button class="button-close-drawer" ng-click="close()">
-        <i class="fa fa-times"></i>
-    </button>
-    <div class="drawer-title">
-        {{ title }}
-    </div>
-    <input type="text" placeholder="{{ placeholder }}" ng-model="searchQuery">
-    <div class="drawer-content">
-        <div class="list-container">
-            <div class="drawer-image-item" ng-repeat="item in getFilteredItems()">
-                <a href="" ng-click="select(item)">
-                    <img-loader src="item.src"></img-loader>
-                </a>
+<on-scrolled-to-bottom on-bottom="loadItems">
+    <div class="drawer drawer-narrow no-padding" ng-show="isOpen">
+        <button class="button-close-drawer" ng-click="close()">
+            <i class="fa fa-times"></i>
+        </button>
+        <div class="drawer-title">
+            {{ title }}
+        </div>
+        <input type="text" placeholder="{{ placeholder }}" ng-model="searchQuery">
+        <div class="drawer-content">
+            <div class="list-container">
+                <div class="drawer-image-item" ng-repeat="item in items track by item.id">
+                    <a href="" ng-click="select(item)">
+                        <img-loader src="item.src"></img-loader>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</on-scrolled-to-bottom>

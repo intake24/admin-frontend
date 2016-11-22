@@ -5,29 +5,20 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('ImageGalleryAsServed', ["$scope", "AsServedSetService", controllerFun]);
+    app.controller("ImageGalleryAsServed", ["$scope", "AsServedSetService", controllerFun]);
 };
 
 function controllerFun($scope, AsServedSetService) {
 
     $scope.items = [];
-    $scope.searchQuery = '';
-    $scope.showDeleted = false;
+    $scope.searchQuery = "";
 
-    $scope.toggleShowDeleted = function () {
-        $scope.showDeleted = !$scope.showDeleted;
-    };
-
-    $scope.getFilteredItems = function () {
-        return $scope.items.filter(function (item) {
-            var joinedImageTags = item.images.map(function (i) {
-                return i.tags.join(" ");
-            }).join(" ");
-
-            return [item.id, item.description, joinedImageTags]
-                    .join(" ").toLowerCase().search($scope.searchQuery) > -1 &&
-                (!item.deleted || $scope.showDeleted);
-        });
+    $scope.onRemoved = function(id) {
+        var item = $scope.items.filter(function(el) {
+            return el.id == id;
+        })[0];
+        var i = $scope.items.indexOf(item);
+        $scope.items.splice(i, 1);
     };
 
     $scope.addItem = function () {

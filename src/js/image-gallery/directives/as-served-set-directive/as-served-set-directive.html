@@ -4,20 +4,15 @@
                                  'fa-spinner fa-spin': loading}"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-        <li ng-hide="deleted">
+        <li>
             <a href="" ng-click="addItem()">
                 Add image
             </a>
         </li>
-        <li class="divider" ng-hide="deleted"></li>
+        <li class="divider"></li>
         <li>
-            <a href="" ng-hide="deleted" ng-click="removeSet()">
+            <a href="" ng-click="removeSet()">
                 Remove set
-            </a>
-        </li>
-        <li ng-show="deleted">
-            <a href="" ng-click="restoreSet()">
-                Restore set
             </a>
         </li>
     </ul>
@@ -25,40 +20,33 @@
 
 <div class="as-served-set-info">
     <h1 class="as-served-set-title">
-        <span class="label label-danger" ng-show="deleted">Deleted</span>
-        <editable ng-model="name" placeholder="Type something" ng-disabled="deleted" required></editable>
+        <editable ng-model="name" placeholder="Type something" required></editable>
     </h1>
     <p class="as-served-set-description">
-        <editable ng-model="description" placeholder="Type something" ng-disabled="deleted" required></editable>
+        <editable ng-model="description" placeholder="Type something" required></editable>
     </p>
 </div>
 <div class="as-served-set-images">
-    <p class="page-block" ng-hide="getFilteredItems().length">No images</p>
-    <div class="intk-gallery-item" ng-repeat="item in getFilteredItems() track by $index">
+    <p class="page-block" ng-hide="items.length">No images</p>
+    <div class="intk-gallery-item" ng-repeat="item in items track by item.id">
         <div class="intk-gallery-item-img">
             <img-loader src="item.src"></img-loader>
             <div class="intk-gallery-item-blank"
-                 ng-class="{'visible': item.asServedItemModel.loading}"
-                 ng-hide="deleted">
+                 ng-class="{'visible': item.asServedItemModel.loading}">
                 <div class="pull-right" uib-dropdown>
                     <button class="btn btn-default btn-tools" uib-dropdown-toggle>
                         <i class="fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-                        <li ng-hide="item.deleted">
+                        <li>
                             <a href="" ng-click="changeImage(item)">
                                 Change image
                             </a>
                         </li>
-                        <li class="divider" ng-hide="item.deleted"></li>
-                        <li ng-hide="item.deleted">
+                        <li class="divider"></li>
+                        <li>
                             <a href="" ng-click="removeItem(item)">
                                 Remove image
-                            </a>
-                        </li>
-                        <li ng-show="item.deleted">
-                            <a href="" ng-click="restoreItem(item)">
-                                Restore image
                             </a>
                         </li>
                     </ul>
@@ -70,7 +58,6 @@
             </div>
         </div>
         <div class="intk-gallery-item-tools">
-            <span class="label label-danger" ng-show="item.deleted">Deleted</span>
             <div class="input-group" ng-show="item.asServedItemModel.edited">
                 <input class="form-control" type="text" placeholder="Weight in grams"
                        ng-model="item.asServedItemModel.newWeight"
@@ -84,7 +71,6 @@
                 </div>
             </div>
             <a class="child-visible-on-hover no-text-decoration" href=""
-               ng-hide="item.deleted"
                ng-click="item.asServedItemModel.edit()"
                ng-class="{hide: item.asServedItemModel.edited}">
                 <span class="dashed">
@@ -92,9 +78,6 @@
                 </span>
                 <i class="fa fa-pencil visible-on-hover"></i>
             </a>
-            <span ng-show="item.deleted">
-                {{ item.weight }}g
-            </span>
         </div>
     </div>
 </div>

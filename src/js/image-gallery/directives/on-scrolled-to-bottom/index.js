@@ -11,23 +11,43 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
 
-            var onScrolled = scope.$eval(attributes.onScrolledToBottom);
+            var targetElement = element[0].children[0].children[0];
 
-            angular.element($window).on("scroll", function () {
-                triggerIfScrolledToBottom(element, $window, onScrolled);
-            });
+            if (scope.bindToWindow != undefined) {
+                angular.element($window).bind("scroll", function () {
+                    triggerIfWindowScrolledToBottom(targetElement, $window, scope.onBottom);
+                });
+            } else {
+                targetElement.bind("scroll", function () {
+                    triggerIfElementScrolledToBottom(targetElement, scope.onBottom);
+                });
+            }
 
         }
 
-        function triggerIfScrolledToBottom(element, $window, callback) {
-            if (($window.pageYOffset + $window.innerHeight) >= element[0].offsetHeight) {
+        function triggerIfElementScrolledToBottom(element, callback) {
+            if (element.scrollTop == (element.scrollHeight - element.offsetHeight)) {
+                console.log("Element scrolled");
+                callback();
+            }
+        }
+
+        function triggerIfWindowScrolledToBottom(element, $window, callback) {
+            if (($window.pageYOffset + $window.innerHeight) >= element.offsetHeight) {
+                console.log("Window scrolled");
                 callback();
             }
         }
 
         return {
-            restrict: 'A',
-            link: controller
+            restrict: 'E',
+            link: controller,
+            transclude: true,
+            scope: {
+                onBottom: "=?",
+                bindToWindow: "=?"
+            },
+            template: "<ng-transclude></ng-transclude>"
         };
     }
 };

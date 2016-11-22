@@ -21,13 +21,6 @@ module.exports = function (app) {
             scope.newDescription = scope.description;
             scope.loading = false;
             scope.edited = false;
-            scope.deleted = scope.deleted || false;
-
-            scope.getFilteredItems = function () {
-                return scope.items.filter(function (el) {
-                    return !el.deleted || scope.showDeleted;
-                });
-            };
 
             scope.addItem = function () {
                 DrawersService.imageDrawer.open();
@@ -92,19 +85,8 @@ module.exports = function (app) {
                 }
                 item.asServedItemModel.loading = true;
                 AsServedService.remove(item.id).then(function () {
-                    item.deleted = true;
-                }).finally(function() {
-                    item.asServedItemModel.loading = false;
-                });
-            };
-
-            scope.restoreItem = function (item) {
-                if (!confirm("Are you sure you want to restore this image?")) {
-                    return;
-                }
-                item.asServedItemModel.loading = true;
-                AsServedService.restore(item.id).then(function (data) {
-                    item.deleted = false;
+                    var i = items.indexOf(item);
+                    items.splice(i, 1);
                 }).finally(function() {
                     item.asServedItemModel.loading = false;
                 });
@@ -116,19 +98,9 @@ module.exports = function (app) {
                 }
                 scope.loading = true;
                 AsServedSetService.remove(scope.name).then(function () {
-                    scope.deleted = true;
-                }).finally(function () {
-                    scope.loading = false;
-                });
-            };
-
-            scope.restoreSet = function () {
-                if (!confirm("Are you sure you want to restore this set?")) {
-                    return;
-                }
-                scope.loading = true;
-                AsServedSetService.restore(item.id).then(function (data) {
-                    item.deleted = false;
+                    if (scope.onRemoved) {
+                        scope.onRemoved(scope.name);
+                    }
                 }).finally(function () {
                     scope.loading = false;
                 });
@@ -173,8 +145,7 @@ module.exports = function (app) {
                 name: "=?",
                 description: "=?",
                 items: "=?",
-                deleted: "=?",
-                showDeleted: "=?",
+                onRemoved: "=?"
             },
             template: require("./as-served-set-directive.html")
         };

@@ -5,10 +5,10 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller("ImageGalleryAsServed", ["$scope", "AsServedSetService", controllerFun]);
+    app.controller("ImageGalleryAsServed", ["$scope", "$window", "AsServedSetService", controllerFun]);
 };
 
-function controllerFun($scope, AsServedSetService) {
+function controllerFun($scope, $window, AsServedSetService) {
 
     $scope.items = [];
     $scope.listIsLoading = true;
@@ -32,6 +32,7 @@ function controllerFun($scope, AsServedSetService) {
 
     $scope.addItem = function () {
         $scope.items.unshift(AsServedSetService.generateBlankItem());
+        $window.scrollTo(0, 0);
     };
 
     AsServedSetService.all().then(function (data) {

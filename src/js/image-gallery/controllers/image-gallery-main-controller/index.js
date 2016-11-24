@@ -113,6 +113,9 @@ function controllerFun($scope, $timeout, ImageService) {
     };
 
     $scope.loadImages = function () {
+        if ($scope.loadingImages) {
+            return;
+        }
         $timeout.cancel(loadImagesTimeout);
         $scope.loadingImages = true;
         loadImagesTimeout = $timeout(loadImages, SEARCH_DELAY);

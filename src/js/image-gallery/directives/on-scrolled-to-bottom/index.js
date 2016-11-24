@@ -11,28 +11,41 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
 
-            var targetElement = element[0].children[0].children[0];
+            var targetElement = element[0].children[0].children[0],
+                bindFn;
 
-            if (scope.bindToWindow != undefined) {
-                angular.element($window).bind("scroll", function () {
-                    triggerIfWindowScrolledToBottom(targetElement, $window, scope.onBottom);
-                });
-            } else {
-                angular.element(targetElement).bind("scroll", function () {
-                    triggerIfElementScrolledToBottom(targetElement, scope.onBottom);
-                });
+            scope.$on("$destroy", function () {
+                if (scope.bindToWindow != undefined) {
+                    angular.element($window).off("scroll", bindFn);
+                } else {
+                    angular.element(targetElement).off("scroll", bindFn);
+                }
+            });
+
+            init();
+
+            function init() {
+                if (scope.bindToWindow != undefined) {
+                    bindFn = function () {
+                        triggerIfWindowScrolledToBottom(targetElement, $window, scope.onBottom);
+                    };
+                    angular.element($window).on("scroll", bindFn);
+                } else {
+                    bindFn = function () {
+                        triggerIfElementScrolledToBottom(targetElement, scope.onBottom);
+                    };
+                    angular.element(targetElement).on("scroll", bindFn);
+                }
             }
 
             function triggerIfElementScrolledToBottom(element, callback) {
                 if (element.scrollTop == (element.scrollHeight - element.offsetHeight)) {
-                    console.log("Scrolled");
                     callback();
                 }
             }
 
             function triggerIfWindowScrolledToBottom(element, $window, callback) {
                 if (($window.pageYOffset + $window.innerHeight) >= element.offsetHeight) {
-                    console.log("Scrolled");
                     callback();
                 }
             }

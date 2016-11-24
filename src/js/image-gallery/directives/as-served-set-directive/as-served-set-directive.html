@@ -1,21 +1,26 @@
-<div class="pull-right" uib-dropdown>
-    <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
-        <i class="fa" ng-class="{'fa-ellipsis-v': !loading,
-                                 'fa-spinner fa-spin': loading}"></i>
+<div class="pull-right">
+    <button class="btn btn-default" ng-click="toggle()" ng-disabled="loading">
+        <i class="fa" ng-class="{'fa-angle-down': collapsed, 'fa-angle-up': !collapsed}"></i>
     </button>
-    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-        <li>
-            <a href="" ng-click="addItem()">
-                Add image
-            </a>
-        </li>
-        <li class="divider"></li>
-        <li>
-            <a href="" ng-click="removeSet()">
-                Remove set
-            </a>
-        </li>
-    </ul>
+    <span uib-dropdown>
+        <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
+            <i class="fa" ng-class="{'fa-ellipsis-v': !loading,
+                                 'fa-spinner fa-spin': loading}"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+            <li ng-hide="collapsed">
+                <a href="" ng-click="addItem()">
+                    Add image
+                </a>
+            </li>
+            <li class="divider" ng-hide="collapsed"></li>
+            <li>
+                <a href="" ng-click="removeSet()">
+                    Remove set
+                </a>
+            </li>
+        </ul>
+    </span>
 </div>
 
 <div class="as-served-set-info">
@@ -26,7 +31,7 @@
         <editable ng-model="description" placeholder="Type something" required></editable>
     </p>
 </div>
-<div class="as-served-set-images">
+<div class="as-served-set-images" ng-hide="collapsed">
     <p class="page-block" ng-hide="items.length">No images</p>
     <div class="intk-gallery-item" ng-repeat="item in items track by item.id">
         <div class="intk-gallery-item-img">

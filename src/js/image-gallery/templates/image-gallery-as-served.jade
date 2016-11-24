@@ -5,11 +5,14 @@
             i.fa.fa-plus
 
 .intk-gallery
-    p(class="as-served-set-blank-text" ng-hide="items.length > 0") No items found
     as-served-set(name="item.id"
     description="item.description"
     items="item.images"
     on-removed="onRemoved"
-    ng-repeat="item in items track by item.id")
+    ng-repeat="item in items track by item.id"
+    ng-class="{'visible': itemIsFiltered(item)}")
+
+    p(class="as-served-set-blank-text" ng-hide="getListIsNotEmpty()") No items found
+    p(class="as-served-set-blank-text" ng-show="listIsLoading") Loading...
 
 image-select-drawer

@@ -170,11 +170,21 @@ tag-input {
 as-served-set {
   $border = 1px solid $subgroup-border-color;
   display: block;
-  padding: $intk-gallery-as-served-set-padding;
-  margin-bottom: 20px;
-  border-top: $border;
-  border-bottom: $border;
-  background: $subgroup-background-color;
+  height: 0;
+  overflow: hidden;
+  padding: 0 15px 0 15px;
+  transition all $transition;
+
+  &.visible {
+    padding: $intk-gallery-as-served-set-padding;
+    margin-bottom: 20px;
+    border-top: $border;
+    border-bottom: $border;
+    background: $subgroup-background-color;
+    height: auto;
+    overflow: visible;
+  }
+
 }
 
 .as-served-set {

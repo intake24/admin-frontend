@@ -2,12 +2,12 @@
  * Created by Tim Osadchiy on 01/11/2016.
  */
 
-'use strict';
+"use strict";
 
 var AsServedItemModel = require("./as-served-item-model");
 
 module.exports = function (app) {
-    app.directive('asServedSet', ["$timeout", "DrawersService", "AsServedSetService", "AsServedService",
+    app.directive("asServedSet", ["$timeout", "DrawersService", "AsServedSetService", "AsServedService",
         directiveFun]);
 
     function directiveFun($timeout, DrawersService, AsServedSetService, AsServedService) {
@@ -20,7 +20,11 @@ module.exports = function (app) {
             scope.newName = scope.name;
             scope.newDescription = scope.description;
             scope.loading = false;
-            scope.edited = false;
+            scope.collapsed = true;
+
+            scope.toggle = function () {
+                scope.collapsed = !scope.collapsed;
+            };
 
             scope.addItem = function () {
                 DrawersService.imageDrawer.open();
@@ -87,7 +91,7 @@ module.exports = function (app) {
                 AsServedService.remove(item.id).then(function () {
                     var i = items.indexOf(item);
                     items.splice(i, 1);
-                }).finally(function() {
+                }).finally(function () {
                     item.asServedItemModel.loading = false;
                 });
             };
@@ -106,7 +110,10 @@ module.exports = function (app) {
                 });
             };
 
-            scope.$watch('items', function () {
+            scope.$watch("items", function () {
+                if (scope.items == undefined) {
+                    return;
+                }
                 scope.items.forEach(function (item) {
                     if (!item.asServedItemModel) {
                         item.asServedItemModel = new AsServedItemModel(item);
@@ -139,7 +146,7 @@ module.exports = function (app) {
         }
 
         return {
-            restrict: 'E',
+            restrict: "E",
             link: controller,
             scope: {
                 name: "=?",

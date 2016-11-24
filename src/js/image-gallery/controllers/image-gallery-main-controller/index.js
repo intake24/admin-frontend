@@ -7,10 +7,10 @@
 var ImageModel = require("./image-model");
 
 module.exports = function (app) {
-    app.controller('ImageGalleryMain', ["$scope", "$timeout", "ImageService", controllerFun]);
+    app.controller('ImageGalleryMain', ["$scope", "$window", "$timeout", "ImageService", controllerFun]);
 };
 
-function controllerFun($scope, $timeout, ImageService) {
+function controllerFun($scope, $window, $timeout, ImageService) {
 
     var LIMIT = 10,
         SEARCH_DELAY = 500;
@@ -41,6 +41,7 @@ function controllerFun($scope, $timeout, ImageService) {
                 removeItem(image);
             });
         }
+        $window.scrollTo(0, 0);
     };
 
     $scope.select = function (item) {

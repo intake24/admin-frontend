@@ -25,9 +25,11 @@ function DrawerStateFactory() {
         };
 
     DrawerState.prototype.open = function () {
+        document.body.classList.add("no-scroll");
         isOpen = true;
     };
     DrawerState.prototype.close = function () {
+        document.body.classList.remove("no-scroll");
         isOpen = false;
     };
     DrawerState.prototype.getOpen = function () {

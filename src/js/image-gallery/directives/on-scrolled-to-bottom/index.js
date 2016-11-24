@@ -18,25 +18,25 @@ module.exports = function (app) {
                     triggerIfWindowScrolledToBottom(targetElement, $window, scope.onBottom);
                 });
             } else {
-                targetElement.bind("scroll", function () {
+                angular.element(targetElement).bind("scroll", function () {
                     triggerIfElementScrolledToBottom(targetElement, scope.onBottom);
                 });
             }
 
-        }
-
-        function triggerIfElementScrolledToBottom(element, callback) {
-            if (element.scrollTop == (element.scrollHeight - element.offsetHeight)) {
-                console.log("Element scrolled");
-                callback();
+            function triggerIfElementScrolledToBottom(element, callback) {
+                if (element.scrollTop == (element.scrollHeight - element.offsetHeight)) {
+                    console.log("Scrolled");
+                    callback();
+                }
             }
-        }
 
-        function triggerIfWindowScrolledToBottom(element, $window, callback) {
-            if (($window.pageYOffset + $window.innerHeight) >= element.offsetHeight) {
-                console.log("Window scrolled");
-                callback();
+            function triggerIfWindowScrolledToBottom(element, $window, callback) {
+                if (($window.pageYOffset + $window.innerHeight) >= element.offsetHeight) {
+                    console.log("Scrolled");
+                    callback();
+                }
             }
+
         }
 
         return {

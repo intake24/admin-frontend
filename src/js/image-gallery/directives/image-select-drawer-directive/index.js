@@ -36,8 +36,8 @@ module.exports = function (app) {
             };
 
             scope.loadItems = function () {
-                $timeout.cancel(loadImagesTimeout);
                 scope.loadingImages = true;
+                $timeout.cancel(loadImagesTimeout);
                 loadImagesTimeout = $timeout(loadItems, SEARCH_DELAY);
             };
 

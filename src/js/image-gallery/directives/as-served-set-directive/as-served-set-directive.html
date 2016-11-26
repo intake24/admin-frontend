@@ -1,6 +1,17 @@
 <div class="pull-right">
-    <button class="btn btn-default" ng-click="toggle()" ng-disabled="loading">
-        <i class="fa" ng-class="{'fa-angle-down': collapsed, 'fa-angle-up': !collapsed}"></i>
+    <button class="btn btn-default"
+            ng-click="toggle()"
+            ng-disabled="loading || getNotValid()">
+        <i class="fa" ng-class="{'fa-pencil': collapsed && !loading,
+                                 'fa-check': !collapsed && !loading,
+                                 'fa-spinner fa-spin': loading}"></i>
+    </button>
+    <button class="btn btn-default"
+            ng-click="cancel()"
+            ng-disabled="loading"
+            ng-hide="collapsed">
+        <i class="fa" ng-class="{'fa-angle-left': !loading,
+                                 'fa-spinner fa-spin': loading}"></i>
     </button>
     <span uib-dropdown>
         <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
@@ -8,7 +19,7 @@
                                  'fa-spinner fa-spin': loading}"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-            <li ng-hide="collapsed">
+            <li>
                 <a href="" ng-click="addItem()">
                     Add image
                 </a>
@@ -25,19 +36,19 @@
 
 <div class="as-served-set-info">
     <h1 class="as-served-set-title">
-        <editable ng-model="name" placeholder="Type something" required></editable>
+        <editable ng-model="newName" placeholder="Type something" ng-hide="collapsed" required></editable>
+        <span ng-show="collapsed">{{name}}</span>
     </h1>
     <p class="as-served-set-description">
-        <editable ng-model="description" placeholder="Type something" required></editable>
+        <editable ng-model="newDescription" placeholder="Type something" ng-hide="collapsed" required></editable>
+        <span ng-show="collapsed">{{description}}</span>
     </p>
 </div>
 <div class="as-served-set-images" ng-hide="collapsed">
-    <p class="page-block" ng-hide="items.length">No images</p>
-    <div class="intk-gallery-item" ng-repeat="item in items track by item.id">
+    <div class="intk-gallery-item" ng-repeat="item in items track by item.sourceId">
         <div class="intk-gallery-item-img">
-            <img-loader src="item.src"></img-loader>
-            <div class="intk-gallery-item-blank"
-                 ng-class="{'visible': item.asServedItemModel.loading}">
+            <img-loader src="item.imageUrl"></img-loader>
+            <div class="intk-gallery-item-blank">
                 <div class="pull-right" uib-dropdown>
                     <button class="btn btn-default btn-tools" uib-dropdown-toggle>
                         <i class="fa fa-ellipsis-v"></i>
@@ -56,33 +67,19 @@
                         </li>
                     </ul>
                 </div>
-                <span class="btn-select">
-                    <i class="fa"
-                       ng-class="{'fa-spinner fa-spin': item.asServedItemModel.loading }"></i>
-                </span>
             </div>
         </div>
         <div class="intk-gallery-item-tools">
-            <div class="input-group" ng-show="item.asServedItemModel.edited">
+            <div class="input-group">
                 <input class="form-control" type="text" placeholder="Weight in grams"
-                       ng-model="item.asServedItemModel.newWeight"
-                       ng-disabled="item.asServedItemModel.loading">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="saveItem(item)"
-                            ng-disabled="item.asServedItemModel.loading">
-                        <i class="fa" ng-class="{'fa-check': !item.asServedItemModel.loading,
-                                                 'fa-spinner fa-spin': item.asServedItemModel.loading}"></i>
-                    </button>
+                       ng-model="item.weight">
+                <div class="input-group-addon">
+                    g
                 </div>
             </div>
-            <a class="child-visible-on-hover no-text-decoration" href=""
-               ng-click="item.asServedItemModel.edit()"
-               ng-class="{hide: item.asServedItemModel.edited}">
-                <span class="dashed">
-                    {{ item.weight }}g
-                </span>
-                <i class="fa fa-pencil visible-on-hover"></i>
-            </a>
         </div>
     </div>
+    <a href="" class="intk-gallery-add-item" ng-click="addItem()">
+        Add image
+    </a>
 </div>

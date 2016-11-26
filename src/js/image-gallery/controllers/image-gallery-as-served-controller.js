@@ -22,10 +22,7 @@ function controllerFun($scope, $window, AsServedSetService) {
         return [item.id, item.description].join(" ").match(new RegExp($scope.searchQuery, "gi"));
     };
 
-    $scope.onRemoved = function (id) {
-        var item = $scope.items.filter(function (el) {
-            return el.id == id;
-        })[0];
+    $scope.onRemoved = function (item) {
         var i = $scope.items.indexOf(item);
         $scope.items.splice(i, 1);
     };

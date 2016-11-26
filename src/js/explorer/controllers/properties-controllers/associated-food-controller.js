@@ -35,12 +35,4 @@ function controllerFun(DrawersService) {
         DrawersService.drawerAssociatedFood.open();
         DrawersService.drawerAssociatedFood.onValueSet(callback);
     };
-
-    this.$watch(function () {
-        return DrawersService.drawerAssociatedFood.getValue();
-    }, function () {
-        if (selectedItem) {
-            selectedItem.foodOrCategory = DrawersService.drawerAssociatedFood.getValue();
-        }
-    });
 }

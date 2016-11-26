@@ -12,15 +12,17 @@ module.exports = function (app) {
 
 function serviceFun($q, $http, $timeout) {
 
+    var BASE_URL = "http://api-test.intake24.co.uk/admin/portion-size/as-served";
+
     return {
         all: function () {
-            return $http.get("http://api-test.intake24.co.uk/admin/portion-size/as-served").then(function (data) {
+            return $http.get(BASE_URL).then(function (data) {
                 return _.map(data, function (el) {
                     return el;
                 }).sort(function (a, b) {
                     if (a.id.toLowerCase() > b.id.toLowerCase()) {
                         return 1;
-                    } else if (a.id.toLowerCase() < b.id.toLowerCase()){
+                    } else if (a.id.toLowerCase() < b.id.toLowerCase()) {
                         return -1;
                     } else {
                         return 0;
@@ -28,32 +30,30 @@ function serviceFun($q, $http, $timeout) {
                 });
             });
         },
-        add: function (setId, description) {
-            var deferred = $q.defer();
-            var newItem = {id: setId, description: description, images: [], deleted: false};
-            $timeout(function () {
-                deferred.resolve(newItem);
-            }, Math.random() * 500);
-            return deferred.promise;
+        get: function (id) {
+            return $http.get(BASE_URL + "/" + id);
+        },
+        add: function (id, description, images) {
+            return $http.post(BASE_URL + "/new-from-source", {
+                id: id,
+                description: description,
+                images: images
+            });
+        },
+        patch: function(id, newId, newDescription, images) {
+            return $http.put(BASE_URL + "/" + id, {
+                id: newId,
+                description: newDescription,
+                images: images
+            });
         },
         generateBlankItem: function () {
-            return {id: "", description: "", images: [], deleted: false};
+            return {id: "", description: "", images: []};
         },
-        edit: function (setId, description) {
-            var deferred = $q.defer();
-            $timeout(function () {
-                deferred.resolve();
-            }, Math.random() * 500);
-            return deferred.promise;
+        generateBlankImage: function(id, src) {
+            return {sourceId: id, imageUrl: src, weight: 0};
         },
         remove: function (setId) {
-            var deferred = $q.defer();
-            $timeout(function () {
-                deferred.resolve();
-            }, Math.random() * 500);
-            return deferred.promise;
-        },
-        restore: function (setId) {
             var deferred = $q.defer();
             $timeout(function () {
                 deferred.resolve();

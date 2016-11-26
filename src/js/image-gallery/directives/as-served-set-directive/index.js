@@ -4,96 +4,59 @@
 
 "use strict";
 
-var AsServedItemModel = require("./as-served-item-model");
-
 module.exports = function (app) {
-    app.directive("asServedSet", ["$timeout", "DrawersService", "AsServedSetService", "AsServedService",
+    app.directive("asServedSet", ["DrawersService", "AsServedSetService",
         directiveFun]);
 
-    function directiveFun($timeout, DrawersService, AsServedSetService, AsServedService) {
+    function directiveFun(DrawersService, AsServedSetService) {
 
         function controller(scope, element, attributes) {
-
-            var updateTimeout,
-                updateAfter = 500;
 
             scope.newName = scope.name;
             scope.newDescription = scope.description;
             scope.loading = false;
-            scope.collapsed = true;
+            scope.collapsed = scope.name != "";
 
             scope.toggle = function () {
-                scope.collapsed = !scope.collapsed;
+                if (scope.collapsed) {
+                    getDetails();
+                } else {
+                    update();
+                }
             };
 
             scope.addItem = function () {
-                DrawersService.imageDrawer.open();
-                var unregister = scope.$watch(function () {
-                    return DrawersService.imageDrawer.getValue();
-                }, function (newValue) {
-                    if (!newValue) {
+                if (scope.collapsed) {
+                    scope.toggle();
+                }
+                var callback = function (value) {
+                    if (!value) {
                         return;
                     }
-                    unregister();
-                    var newItem = AsServedService.generateBlankItem(newValue.src, newValue.tags);
-                    newItem.asServedItemModel = new AsServedItemModel(newItem);
-                    newItem.asServedItemModel.edit();
-                    scope.items.unshift(newItem);
-                    DrawersService.imageDrawer.setValue(undefined);
-                });
+                    var newItem = AsServedSetService.generateBlankImage(value.id, value.src);
+                    scope.items.push(newItem);
+                    DrawersService.imageDrawer.offValueSet(callback);
+                };
+                DrawersService.imageDrawer.open();
+                DrawersService.imageDrawer.onValueSet(callback);
             };
 
             scope.changeImage = function (item) {
-                DrawersService.imageDrawer.open();
-                var unregister = scope.$watch(function () {
-                    return DrawersService.imageDrawer.getValue();
-                }, function (imageModel) {
-                    if (!imageModel) {
+                var callback = function (value) {
+                    if (!value) {
                         return;
                     }
-                    unregister();
-                    item.asServedItemModel.newSrc = imageModel.src;
-                    item.asServedItemModel.newTags = imageModel.tags;
-                    scope.saveItem(item);
-                    DrawersService.imageDrawer.setValue(undefined);
-                });
-            };
-
-            scope.saveItem = function (item) {
-                var promise;
-
-                item.asServedItemModel.loading = true;
-
-                if (item.id == undefined) {
-                    promise = AsServedService
-                        .add(123, item.asServedItemModel.newWeight).then(function (data) {
-                            item.id = data.id;
-                            item.asServedItemModel.acceptChanges();
-                        });
-                } else {
-                    promise = AsServedService.edit(item.id,
-                        item.asServedItemModel.newSrc,
-                        item.asServedItemModel.newWeight)
-                        .then(function (data) {
-                            item.asServedItemModel.acceptChanges();
-                        });
-                }
-                promise.finally(function () {
-                    item.asServedItemModel.loading = false;
-                });
+                    item.sourceId = value.id;
+                    item.imageUrl = value.src;
+                    DrawersService.imageDrawer.offValueSet(callback);
+                };
+                DrawersService.imageDrawer.open();
+                DrawersService.imageDrawer.onValueSet(callback);
             };
 
             scope.removeItem = function (item) {
-                if (!confirm("Are you sure you want to delete this image?")) {
-                    return;
-                }
-                item.asServedItemModel.loading = true;
-                AsServedService.remove(item.id).then(function () {
-                    var i = items.indexOf(item);
-                    items.splice(i, 1);
-                }).finally(function () {
-                    item.asServedItemModel.loading = false;
-                });
+                var i = scope.items.indexOf(item);
+                scope.items.splice(i, 1);
             };
 
             scope.removeSet = function () {
@@ -103,44 +66,74 @@ module.exports = function (app) {
                 scope.loading = true;
                 AsServedSetService.remove(scope.name).then(function () {
                     if (scope.onRemoved) {
-                        scope.onRemoved(scope.name);
+                        scope.onRemoved(scope.referenceObj);
                     }
                 }).finally(function () {
                     scope.loading = false;
                 });
             };
 
-            scope.$watch("items", function () {
-                if (scope.items == undefined) {
-                    return;
+            scope.cancel = function () {
+                scope.collapsed = true;
+                if (scope.name != "") {
+                    rejectChanges();
+                } else if (scope.onRemoved) {
+                    scope.onRemoved(scope.referenceObj);
                 }
-                scope.items.forEach(function (item) {
-                    if (!item.asServedItemModel) {
-                        item.asServedItemModel = new AsServedItemModel(item);
-                    }
-                });
-            });
+            };
 
-            scope.$watch("[name, description]", function (newValue, oldValue) {
-                $timeout.cancel(updateTimeout);
-                updateTimeout = $timeout(function () {
-                    update(newValue, oldValue);
-                }, updateAfter);
-            });
+            scope.getNotValid = function () {
+                var nameIsNotValid = scope.newName.replace(/\s+/gi, "") == "",
+                    descriptionIsNotValid = scope.newDescription.replace(/\s+/gi, "") == "";
+                return nameIsNotValid || descriptionIsNotValid ||
+                    (scope.items != undefined && scope.items.length == 0);
+            };
 
-            function update(newValue, oldValue) {
-                if (newValue[0] == oldValue[0] && newValue[1] == oldValue[1]) {
-                    return;
-                }
-                var checkedName = scope.name.replace(/\s+/gi, "") == "",
-                    checkedDescription = scope.description.replace(/\s+/gi, "") == "";
-                if (checkedName || checkedDescription) {
-                    return;
-                }
+            function getDetails() {
                 scope.loading = true;
-                AsServedSetService.edit(scope.name, scope.description).finally(function () {
+                AsServedSetService.get(scope.name).then(function (data) {
+                    scope.items = data.images;
+                    scope.collapsed = false;
+                }).then(function () {
                     scope.loading = false;
                 });
+            }
+
+            function update() {
+                var promise;
+                if (scope.getNotValid()) {
+                    return;
+                }
+                var images = scope.items.map(function (item) {
+                    return {
+                        sourceImageId: item.sourceId,
+                        weight: item.weight
+                    };
+                });
+
+                scope.loading = true;
+                if (scope.name == "") {
+                    promise = AsServedSetService.add(scope.newName, scope.newDescription, images);
+                } else {
+                    promise = AsServedSetService.patch(scope.name, scope.newName, scope.newDescription, images);
+                }
+                promise.then(acceptChanges, rejectChanges)
+                    .then(function () {
+                        scope.collapsed = true;
+                    })
+                    .finally(function () {
+                        scope.loading = false;
+                    });
+            }
+
+            function acceptChanges() {
+                scope.name = scope.newName;
+                scope.description = scope.newDescription;
+            }
+
+            function rejectChanges() {
+                scope.newName = scope.name;
+                scope.newDescription = scope.description;
             }
 
         }
@@ -152,6 +145,7 @@ module.exports = function (app) {
                 name: "=?",
                 description: "=?",
                 items: "=?",
+                referenceObj: "=?",
                 onRemoved: "=?"
             },
             template: require("./as-served-set-directive.html")

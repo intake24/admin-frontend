@@ -1,6 +1,6 @@
 @import "_variables.styl";
 
-$intk-img-gallery-item-width = 350px
+$intk-img-gallery-item-width = 300px
 $intk-img-gallery-item-margin-right = 15px
 $intk-img-gallery-item-margin-bottom = 20px
 $intk-img-gallery-item-border-radius = 4px
@@ -19,11 +19,18 @@ $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
   &-search {
     position: fixed;
     top: header-height;
-    left: sidebar-color;
-    z-index: 1;
+    left: sidebar-width;
+    z-index: 5;
   }
 
-  &-item {
+  &-add-item {
+    height: ($intk-img-gallery-item-width * 9 / 16);
+    text-align: center;
+    line-height: 10em;
+  }
+
+  &-item,
+  &-add-item {
     display: inline-block;
     vertical-align: top;
     width: $intk-img-gallery-item-width;
@@ -34,6 +41,9 @@ $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
     overflow: hidden;
     border: 1px solid $intk-img-gallery-item-border-color;
     background #fff
+  }
+
+  &-item {
 
     &-img {
       width: 100%;
@@ -173,7 +183,8 @@ as-served-set {
   height: 0;
   overflow: hidden;
   padding: 0 15px 0 15px;
-  transition all $transition;
+  opacity: 0;
+  transition opacity $transition, padding $transition, margin $transition;
 
   &.visible {
     padding: $intk-gallery-as-served-set-padding;
@@ -181,6 +192,7 @@ as-served-set {
     border-top: $border;
     border-bottom: $border;
     background: $subgroup-background-color;
+    opacity: 1;
     height: auto;
     overflow: visible;
   }

@@ -8,6 +8,7 @@
     as-served-set(name="item.id"
     description="item.description"
     items="item.images"
+    reference-obj="item"
     on-removed="onRemoved"
     ng-repeat="item in items track by item.id"
     ng-class="{'visible': itemIsFiltered(item)}")

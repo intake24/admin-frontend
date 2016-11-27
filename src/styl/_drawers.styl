@@ -21,18 +21,6 @@
     opacity 0
     transform translate3d(100%, 0, 0)
 
-  &-image-item
-    height 150px
-    overflow hidden
-    margin-bottom 4px
-
-    img-loader
-      transition transform $transition
-
-    &:hover
-      img-loader
-        transform scale(1.2)
-
 
   input
     $border-color = #e1e1e1
@@ -177,11 +165,6 @@ html[dir="rtl"]
             &.selected
               border-left none
               border-right warning-color 3px solid
-
-
-image-select-drawer
-  position relative
-  z-index 1001
 
 
 .no-scroll

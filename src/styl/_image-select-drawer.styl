@@ -1,0 +1,50 @@
+@import '_variables'
+
+image-select-drawer
+  position relative
+  z-index 1001
+
+.drawer
+  &-image-item
+    position relative
+    height 150px
+    overflow hidden
+    margin-bottom 4px
+
+    &-blank
+      width 100%
+      height 100%
+      position absolute
+      top 0
+      left 0
+      background #000
+      opacity 0
+
+      &.visible
+        opacity 0.5
+
+    img-loader
+      transition transform $transition
+
+    &:hover
+      img-loader
+        transform scale(1.2)
+
+      .drawer-image-item-blank
+        opacity 0.5
+
+    &-icon-select
+      $size = 90px;
+      font-size 0.8 * $size
+      width $size
+      height $size
+      margin-top -($size/ 2)
+      margin-left -($size/ 2)
+      color #fff
+      position absolute
+      top 50%
+      left 50%
+      text-align center
+      background transparent
+      border none
+      outline none

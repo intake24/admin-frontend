@@ -29,14 +29,36 @@ module.exports = function (app) {
                 if (scope.collapsed) {
                     scope.toggle();
                 }
-                var callback = function (value) {
-                    if (!value) {
+                var newItems = [];
+                var callback = function (images) {
+                    if (!images) {
                         return;
                     }
-                    var newItem = AsServedSetService.generateBlankImage(value.id, value.src);
-                    scope.items.push(newItem);
-                    DrawersService.imageDrawer.offValueSet(callback);
+                    newItems.forEach(function (item) {
+                        var i = scope.items.indexOf(item);
+                        scope.items.splice(i, 1);
+                    });
+                    newItems = [];
+                    images.forEach(function (image) {
+                        var it = scope.items.filter(function(el) {
+                            return el.sourceId == image.id;
+                        })[0];
+                        if (it) {
+                            return;
+                        }
+                        var newItem = AsServedSetService.generateBlankImage(image.id, image.src);
+                        scope.items.push(newItem);
+                        newItems.push(newItem);
+                    });
                 };
+                var unregister = scope.$watch(function () {
+                    return DrawersService.imageDrawer.getOpen();
+                }, function () {
+                    if (!DrawersService.imageDrawer.getOpen()) {
+                        DrawersService.imageDrawer.offValueSet(callback);
+                        unregister();
+                    }
+                });
                 DrawersService.imageDrawer.open();
                 DrawersService.imageDrawer.onValueSet(callback);
             };

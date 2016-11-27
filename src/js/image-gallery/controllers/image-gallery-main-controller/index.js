@@ -12,7 +12,7 @@ module.exports = function (app) {
 
 function controllerFun($scope, $window, $timeout, ImageService) {
 
-    var LIMIT = 10,
+    var LIMIT = 12,
         SEARCH_DELAY = 500;
 
     var page = 0,

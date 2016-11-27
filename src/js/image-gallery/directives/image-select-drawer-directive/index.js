@@ -20,6 +20,7 @@ module.exports = function (app) {
                 loadImagesTimeout;
 
             scope.items = [];
+            scope.selectedItems = [];
             scope.loadingImages = false;
             scope.title = $window.gettext("drawers_images_title");
             scope.placeholder = $window.gettext("drawers_images_query_placeholder");
@@ -30,9 +31,24 @@ module.exports = function (app) {
             };
 
             scope.select = function (item) {
-                scope.selectedItem = item;
-                DrawersService.imageDrawer.setValue(angular.copy(item));
-                scope.close();
+                item.selected = !item.selected;
+                var img = scope.selectedItems.filter(function (el) {
+                    return el.id == item.id;
+                })[0];
+                if (img != undefined) {
+                    var i = scope.selectedItems.indexOf(img);
+                    scope.selectedItems.splice(i, 1);
+                } else {
+                    scope.selectedItems.push(item);
+                }
+                DrawersService.imageDrawer.setValue(angular.copy(scope.selectedItems));
+            };
+
+            scope.getItemIsSelected = function (item) {
+                var img = scope.selectedItems.filter(function (el) {
+                    return el.id == item.id;
+                })[0];
+                return img != undefined;
             };
 
             scope.loadItems = function () {
@@ -51,7 +67,14 @@ module.exports = function (app) {
                 return DrawersService.imageDrawer.getOpen();
             }, function () {
                 scope.isOpen = DrawersService.imageDrawer.getOpen();
+                if (!scope.isOpen) {
+                    refresh();
+                }
             });
+
+            function refresh() {
+                scope.selectedItems = [];
+            }
 
             function loadItems() {
                 ImageService.query(page * LIMIT, LIMIT, scope.searchQuery).then(function (data) {

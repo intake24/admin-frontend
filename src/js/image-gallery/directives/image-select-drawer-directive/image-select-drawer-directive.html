@@ -13,6 +13,11 @@
             <div class="drawer-image-item" ng-repeat="item in items track by item.id">
                 <a href="" ng-click="select(item)">
                     <img-loader src="item.src"></img-loader>
+                    <div class="drawer-image-item-blank" ng-class="{visible: getItemIsSelected(item)}">
+                        <i class="fa drawer-image-item-icon-select"
+                            ng-class="{'fa-check-circle-o ': getItemIsSelected(item),
+                                       'fa-circle-o': !getItemIsSelected(item)}"></i>
+                    </div>
                 </a>
             </div>
         </div>

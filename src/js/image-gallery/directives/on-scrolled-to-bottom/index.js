@@ -5,36 +5,37 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("onScrolledToBottom", ["$window", directiveFun]);
+    app.directive("onScrolledToBottom", ["$window", "$timeout", directiveFun]);
 
-    function directiveFun($window) {
+    function directiveFun($window, $timeout) {
 
         function controller(scope, element, attributes) {
 
-            var targetElement = element[0].children[0].children[0],
-                bindFn;
+            var bindFn;
 
             scope.$on("$destroy", function () {
                 if (scope.bindToWindow != undefined) {
                     angular.element($window).off("scroll", bindFn);
                 } else {
-                    angular.element(targetElement).off("scroll", bindFn);
+                    angular.element(element).off("scroll", bindFn);
                 }
             });
 
-            init();
+            $timeout(init);
 
             function init() {
-                if (scope.bindToWindow != undefined) {
+                var callback = scope.$eval(attributes.onScrolledToBottom);
+
+                if (attributes.bindToWindow != undefined) {
                     bindFn = function () {
-                        triggerIfWindowScrolledToBottom(targetElement, $window, scope.onBottom);
+                        triggerIfWindowScrolledToBottom(element[0], $window, callback);
                     };
                     angular.element($window).on("scroll", bindFn);
                 } else {
                     bindFn = function () {
-                        triggerIfElementScrolledToBottom(targetElement, scope.onBottom);
+                        triggerIfElementScrolledToBottom(element[0], callback);
                     };
-                    angular.element(targetElement).on("scroll", bindFn);
+                    element.on("scroll", bindFn);
                 }
             }
 
@@ -53,14 +54,8 @@ module.exports = function (app) {
         }
 
         return {
-            restrict: 'E',
-            link: controller,
-            transclude: true,
-            scope: {
-                onBottom: "=?",
-                bindToWindow: "=?"
-            },
-            template: "<ng-transclude></ng-transclude>"
+            restrict: 'A',
+            link: controller
         };
     }
 };

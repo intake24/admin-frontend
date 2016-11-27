@@ -20,12 +20,10 @@
                 a(href="" ng-click="removeSelected()" ng-show="getImagesSelected()") Remove selected
 
 file-drop-zone.intk-gallery(on-dropped="onFilesChange(fileList)")
-    on-scrolled-to-bottom(on-bottom="loadImages" bind-to-window)
-        .container-fluid
+    .container-fluid(on-scrolled-to-bottom="loadImages" bind-to-window)
+        image-gallery-main-item(id="item.id" src="item.src" tags="item.tags" copied-tags="copiedTags"
+        selected="item.selected" loading="item.loading" on-tags-copied="onTagsCopied" on-removed="onRemoved"
+        ng-repeat="item in images track by $index")
 
-            image-gallery-main-item(id="item.id" src="item.src" tags="item.tags" copied-tags="copiedTags"
-            selected="item.selected" loading="item.loading" on-tags-copied="onTagsCopied" on-removed="onRemoved"
-            ng-repeat="item in images track by $index")
-
-            p.page-block(ng-show="images.length == 0 && !loadingImages") No images found
-            p.page-block(ng-show="loadingImages") Loading...
+        p.page-block(ng-show="images.length == 0 && !loadingImages") No images found
+        p.page-block(ng-show="loadingImages") Loading...

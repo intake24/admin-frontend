@@ -40,7 +40,7 @@ module.exports = function (app) {
                     });
                     newItems = [];
                     images.forEach(function (image) {
-                        var it = scope.items.filter(function(el) {
+                        var it = scope.items.filter(function (el) {
                             return el.sourceId == image.id;
                         })[0];
                         if (it) {
@@ -64,13 +64,14 @@ module.exports = function (app) {
             };
 
             scope.changeImage = function (item) {
-                var callback = function (value) {
-                    if (!value) {
+                var callback = function (images) {
+                    if (!images) {
                         return;
                     }
-                    item.sourceId = value.id;
-                    item.imageUrl = value.src;
+                    item.sourceId = images[0].id;
+                    item.imageUrl = images[0].src;
                     DrawersService.imageDrawer.offValueSet(callback);
+                    DrawersService.imageDrawer.close();
                 };
                 DrawersService.imageDrawer.open();
                 DrawersService.imageDrawer.onValueSet(callback);
@@ -139,10 +140,7 @@ module.exports = function (app) {
                 } else {
                     promise = AsServedSetService.patch(scope.name, scope.newName, scope.newDescription, images);
                 }
-                promise.then(acceptChanges, rejectChanges)
-                    .then(function () {
-                        scope.collapsed = true;
-                    })
+                promise.then(acceptChanges)
                     .finally(function () {
                         scope.loading = false;
                     });
@@ -151,11 +149,13 @@ module.exports = function (app) {
             function acceptChanges() {
                 scope.name = scope.newName;
                 scope.description = scope.newDescription;
+                scope.collapsed = true;
             }
 
             function rejectChanges() {
                 scope.newName = scope.name;
                 scope.newDescription = scope.description;
+                scope.collapsed = true;
             }
 
         }

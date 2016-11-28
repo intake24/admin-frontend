@@ -15,7 +15,7 @@ module.exports = function (app) {
             scope.newName = scope.name;
             scope.newDescription = scope.description;
             scope.loading = false;
-            scope.collapsed = scope.name != "";
+            scope.collapsed = true;
 
             scope.toggle = function () {
                 if (scope.collapsed) {
@@ -111,6 +111,14 @@ module.exports = function (app) {
                 return nameIsNotValid || descriptionIsNotValid ||
                     (scope.items != undefined && scope.items.length == 0);
             };
+
+            scope.$watch("name", function () {
+                // If we don't set this watcher, the data from previously created set is copied to the new set.
+                if (scope.name == "") {
+                    rejectChanges();
+                    scope.collapsed = false;
+                }
+            });
 
             function getDetails() {
                 scope.loading = true;

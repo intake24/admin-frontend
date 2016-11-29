@@ -21,6 +21,32 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
     $scope.selectedNode = null;
     $scope.explorerIsVisible = true;
 
+    $scope.searchTools = {
+        showLocalDescription: true,
+        showFoodNotUsedInLocale: false
+    };
+
+    $scope.toggleShowLocalDescription = function () {
+        $scope.searchTools.showLocalDescription = !$scope.searchTools.showLocalDescription;
+    };
+
+    $scope.toggleShowFoodNotUsedInLocale = function () {
+        $scope.searchTools.showFoodNotUsedInLocale = !$scope.searchTools.showFoodNotUsedInLocale;
+    };
+
+    $scope.getNodeDisplayName = function(node) {
+        if (!$scope.searchTools.showLocalDescription) {
+            return node.englishDescription;
+        } else {
+            return node.localDescription && node.localDescription.defined ?
+                node.localDescription.value : node.englishDescription;
+        }
+    };
+
+    $scope.getNodeIsHidden = function(node) {
+        return node.doNotUseInThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
+    };
+
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadRootCategoriesDeferred();
     });

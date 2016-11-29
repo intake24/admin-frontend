@@ -17,6 +17,7 @@ function serviceFun($http, $q, LocalesService, PackerService) {
                     var result = data.map(PackerService.unpackCategoryHeader);
                     result.unshift({
                         displayName: "Uncategorised foods", //FIXME: use localised string
+                        englishDescription: "Uncategorised foods",
                         code: "$UNCAT",
                         type: "category",
                         children: []

@@ -12,7 +12,9 @@ span.food-list-container-node(ng-class="{active: value.selected}")
 
     a(ng-click='showNodeProperties(value)')
 
-        span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ value.displayName }}
+        span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ getNodeDisplayName(value) }}
 
 ul(ng-if='value.children')
-    li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]' ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"')
+    li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]'
+    ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"'
+    ng-hide="getNodeIsHidden(value)")

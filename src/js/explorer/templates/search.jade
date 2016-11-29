@@ -1,15 +1,27 @@
 .search-input-group(ng-controller='SearchController')
 	search-input(ng-model="query")
 	.search-input-addon(uib-dropdown)
-		button(type="button" uib-dropdown-toggle id="tools-dropdown")
+		button(type="button" uib-dropdown-toggle id="add-item-dropdown")
 			i.fa.fa-plus
-		ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="tools-dropdown")
+		ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="add-item-dropdown")
 			li
 				a(href="" ng-click="addNewCategory()") #{ gettext("Add new category") }
 			li
 				a(href="" ng-click="addNewFood()") #{ gettext("Add new food") }
+	.search-input-addon(uib-dropdown)
+		button(type="button" uib-dropdown-toggle id="tools-dropdown")
+			i.fa.fa-angle-down
+		ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="tools-dropdown")
+			li
+				a(href="" ng-click="toggleShowLocalDescription()")
+					span(ng-show="$parent.searchTools.showLocalDescription") Show english description
+					span(ng-hide="$parent.searchTools.showLocalDescription") Show local description
+			li
+				a(href="" ng-click="toggleShowFoodNotUsedInLocale()")
+					span(ng-show="$parent.searchTools.showFoodNotUsedInLocale") Hide food not used in this locale
+					span(ng-hide="$parent.searchTools.showFoodNotUsedInLocale") Show food not used in this locale
 	#search-results(ng-class="{visible: searchResultsAreVisible}")
 		ul(ng-model='search')
 			li(ng-repeat='value in searchResults | orderBy:["type", "displayName"]' ng-class='' ng-click='resultClicked($event, value)')
 				i.fa.fa-folder-o(ng-if='value.type == "category"' style='margin-right: 8px')
-				{{ value.displayName }}
+				{{ $parent.getNodeDisplayName(value) }}

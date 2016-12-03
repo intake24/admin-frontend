@@ -124,15 +124,15 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         updateCategoryMainRecord: function (category_code, definition) {
-            return $http.post(api_base_url + 'admin/categories/' + category_code, definition);
+            return $http.post(api_base_url + 'admin/categories/' + category_code, PackerService.packCategoryMainRecordUpdate(definition));
         },
 
         createNewCategory: function (definition) {
-            return $http.post(api_base_url + 'admin/categories/new', definition);
+            return $http.post(api_base_url + 'admin/categories/new', PackerService.packNewCategoryRecord(definition));
         },
 
         updateCategoryLocalRecord: function (category_code, definition) {
-            return $http.post(api_base_url + 'admin/categories/' + LocalesService.current() + '/' + category_code, definition);
+            return $http.post(api_base_url + 'admin/categories/' + LocalesService.current() + '/' + category_code, PackerService.packCategoryLocalRecordUpdate(definition));
         },
 
         updateFoodMainRecord: function (food_code, mainRecord) {
@@ -141,7 +141,7 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         createNewFood: function (definition) {
-            return $http.post(api_base_url + 'admin/foods/new', definition);
+            return $http.post(api_base_url + 'admin/foods/new', PackerService.packNewFoodRecord(definition));
         },
 
         createNewFoodWithTempCode: function (definition) {

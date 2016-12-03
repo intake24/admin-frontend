@@ -404,8 +404,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateCategoryMainRecord() {
         if ($scope.categoryMainRecordChanged()) {
-            var packed = PackerService.packCategoryMainRecordUpdate($scope.itemDefinition.main);
-            return FoodService.updateCategoryMainRecord($scope.originalItemDefinition.main.code, packed)
+            return FoodService.updateCategoryMainRecord($scope.originalItemDefinition.main.code, $scope.itemDefinition.main)
         } else {
             return $q.when(true);
         }
@@ -413,8 +412,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateCategoryLocalRecord() {
         if ($scope.categoryLocalRecordChanged()) {
-            var packed = PackerService.packCategoryLocalRecordUpdate($scope.itemDefinition.local);
-            return FoodService.updateCategoryLocalRecord($scope.itemDefinition.main.code, packed);
+            return FoodService.updateCategoryLocalRecord($scope.itemDefinition.main.code, $scope.itemDefinition.local);
         } else {
             return $q.when(true);
         }
@@ -447,9 +445,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     };
 
     $scope.saveNewFood = function () {
-        var packed = PackerService.packNewFoodRecord($scope.itemDefinition);
-
-        FoodService.createNewFood(packed)
+        FoodService.createNewFood($scope.itemDefinition)
             .then(function () {
                 MessageService.showMessage(gettext('New food added'), 'success');
                 notifyItemUpdated();
@@ -465,9 +461,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     };
 
     $scope.saveNewCategory = function () {
-        var packed = PackerService.packNewCategoryRecord($scope.itemDefinition);
-
-        FoodService.createNewCategory(packed)
+        FoodService.createNewCategory($scope.itemDefinition)
             .then(function () {
                 MessageService.showMessage(gettext('New category added'), 'success');
                 notifyItemUpdated();

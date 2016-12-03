@@ -88,7 +88,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
             $scope.itemDefinition.main.englishDescription == '' ||
             $scope.currentItem.type == "food" &&
-            $scope.itemDefinition.local.associatedFoods.filter(function(item) {
+            $scope.itemDefinition.local.associatedFoods.filter(function (item) {
                 return !item.foodOrCategory;
             }).length > 0;
     };
@@ -267,13 +267,16 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
         } else {
             return false;
         }
-    }
+    };
 
     $scope.categoryLocalRecordChanged = function () {
-        if ($scope.originalItemDefinition && $scope.itemDefinition)
-            return !angular.equals(PackerService.packCategoryLocalRecordUpdate($scope.originalItemDefinition.local), PackerService.packCategoryLocalRecordUpdate($scope.itemDefinition.local));
-        else
+        if ($scope.originalItemDefinition && $scope.itemDefinition) {
+            var packedOriginal = PackerService.packCategoryLocalRecordUpdate($scope.originalItemDefinition.local);
+            var packedCurrent = PackerService.packCategoryLocalRecordUpdate($scope.itemDefinition.local);
+            return !angular.equals(packedOriginal, packedCurrent);
+        } else {
             return false;
+        }
     };
 
     $scope.foodMainRecordChanged = function () {
@@ -377,11 +380,11 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
         currentItem.itemUpdated(updateEvent);
     }
 
-    // These functions return a future/promise/deferred (see https://docs.angularjs.org/api/ng/service/$q)
-    // that will generate an async HTTP request to update the basic/local food
-    // record if required.
-    // Will return a dummy 'true' value if no changes are detected.
-    // Resulting value is not important, but HTTP errors must be handled further.
+// These functions return a future/promise/deferred (see https://docs.angularjs.org/api/ng/service/$q)
+// that will generate an async HTTP request to update the basic/local food
+// record if required.
+// Will return a dummy 'true' value if no changes are detected.
+// Resulting value is not important, but HTTP errors must be handled further.
 
     function updateFoodMainRecord() {
         if ($scope.foodMainRecordChanged()) {

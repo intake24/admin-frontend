@@ -17,7 +17,9 @@ module.exports = function (app) {
                     }
                 },
                 responseError: function (rejection) {
-                    if (rejection.status == 401) {
+                    if (rejection.status == 200) {
+
+                    } else if (rejection.status == 401) {
                         if (rejection.config.url == api_base_url + "signin") {
                             MessageService.showMessage(gettext("Failed to log you in"), "danger");
                         } else {
@@ -29,10 +31,10 @@ module.exports = function (app) {
                     }
                     return $q.reject(rejection);
                 },
-                xmlHttpRequestConfig: function(xmlHttpReq) {
+                xmlHttpRequestConfig: function (xmlHttpReq) {
                     var self = this;
                     xmlHttpReq.setRequestHeader("X-Auth-Token", UserStateService.getAuthCookies());
-                    xmlHttpReq.addEventListener("load", function() {
+                    xmlHttpReq.addEventListener("load", function () {
                         self.responseError(xmlHttpReq);
                     });
                 }

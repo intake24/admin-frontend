@@ -21,7 +21,12 @@
         <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
             <li>
                 <a href="" ng-click="addItem()">
-                    Add image
+                    Add image from gallery
+                </a>
+            </li>
+            <li>
+                <a href="" file-button on-change="onFilesChange(fileList)">
+                    Add image from file
                 </a>
             </li>
             <li class="divider" ng-hide="collapsed"></li>
@@ -44,42 +49,44 @@
         <span ng-show="collapsed">{{description}}</span>
     </p>
 </div>
-<div class="as-served-set-images" ng-hide="collapsed">
-    <div class="intk-gallery-item" ng-repeat="item in items track by item.sourceId">
-        <div class="intk-gallery-item-img">
-            <img-loader src="item.imageUrl"></img-loader>
-            <div class="intk-gallery-item-blank">
-                <div class="pull-right" uib-dropdown>
-                    <button class="btn btn-default btn-tools" uib-dropdown-toggle>
-                        <i class="fa fa-ellipsis-v"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-                        <li>
-                            <a href="" ng-click="changeImage(item)">
-                                Change image
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="" ng-click="removeItem(item)">
-                                Remove image
-                            </a>
-                        </li>
-                    </ul>
+<file-drop-zone on-dropped="onFilesChange(fileList)">
+    <div class="as-served-set-images" ng-hide="collapsed">
+        <div class="intk-gallery-item" ng-repeat="item in items track by $index">
+            <div class="intk-gallery-item-img">
+                <img-loader src="item.imageUrl"></img-loader>
+                <div class="intk-gallery-item-blank" ng-class="{'visible': item.loading}">
+                    <div class="pull-right" uib-dropdown>
+                        <button class="btn btn-default btn-tools" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                            <li>
+                                <a href="" ng-click="changeImage(item)">
+                                    Change image
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="" ng-click="removeItem(item)">
+                                    Remove image
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <span class="btn-select">
+                        <i class="fa" ng-class="{'fa-spinner fa-spin': item.loading }"></i>
+                    </span>
                 </div>
             </div>
-        </div>
-        <div class="intk-gallery-item-tools">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Weight in grams"
-                       ng-model="item.weight">
-                <div class="input-group-addon">
-                    g
+            <div class="intk-gallery-item-tools">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Weight in grams"
+                           ng-model="item.weight">
+                    <div class="input-group-addon">
+                        g
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <a href="" class="intk-gallery-add-item" ng-click="addItem()">
-        Add image
-    </a>
-</div>
+</file-drop-zone>

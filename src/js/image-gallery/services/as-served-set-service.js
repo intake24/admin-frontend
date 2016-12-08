@@ -47,10 +47,10 @@ function serviceFun($q, $http, $timeout) {
                 images: images
             });
         },
-        generateBlankItem: function () {
+        getBlankItem: function () {
             return {id: "", description: "", images: []};
         },
-        generateBlankImage: function(id, src) {
+        getImageObj: function(id, src) {
             return {sourceId: id, imageUrl: src, weight: 0};
         },
         remove: function (setId) {

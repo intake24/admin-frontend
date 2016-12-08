@@ -1,9 +1,8 @@
 .search-input-group.intk-gallery-search
     search-input(ng-model="searchQuery")
     .search-input-addon
-        file-button(on-change="onFilesChange(fileList)")
-            button(type="button")
-                i.fa.fa-plus
+        button(type="button" file-button on-change="onFilesChange(fileList)")
+            i.fa.fa-plus
     .search-input-addon(uib-dropdown auto-close="outsideClick")
         button(type="button" uib-dropdown-toggle id="tools-dropdown")
             i.fa.fa-angle-down

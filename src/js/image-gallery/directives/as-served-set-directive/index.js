@@ -5,10 +5,10 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("asServedSet", ["DrawersService", "AsServedSetService",
+    app.directive("asServedSet", ["$timeout", "DrawersService", "AsServedSetService", "ImageService",
         directiveFun]);
 
-    function directiveFun(DrawersService, AsServedSetService) {
+    function directiveFun($timeout, DrawersService, AsServedSetService, ImageService) {
 
         function controller(scope, element, attributes) {
 
@@ -46,7 +46,7 @@ module.exports = function (app) {
                         if (it) {
                             return;
                         }
-                        var newItem = AsServedSetService.generateBlankImage(image.id, image.src);
+                        var newItem = AsServedSetService.getImageObj(image.id, image.src);
                         scope.items.push(newItem);
                         newItems.push(newItem);
                     });
@@ -112,6 +112,18 @@ module.exports = function (app) {
                     (scope.items != undefined && scope.items.length == 0);
             };
 
+            scope.onFilesChange = function (fileList) {
+                if (scope.collapsed) {
+                    getDetails().then(function () {
+                        $timeout(function() {
+                            addItemsFromMultipleFiles(fileList);
+                        });
+                    });
+                } else {
+                    addItemsFromMultipleFiles(fileList);
+                }
+            };
+
             scope.$watch("name", function () {
                 // If we don't set this watcher, the data from previously created set is copied to the new set.
                 if (scope.name == "") {
@@ -122,7 +134,7 @@ module.exports = function (app) {
 
             function getDetails() {
                 scope.loading = true;
-                AsServedSetService.get(scope.name).then(function (data) {
+                return AsServedSetService.get(scope.name).then(function (data) {
                     scope.items = data.images;
                     scope.collapsed = false;
                 }).then(function () {
@@ -164,6 +176,29 @@ module.exports = function (app) {
                 scope.newName = scope.name;
                 scope.newDescription = scope.description;
                 scope.collapsed = true;
+            }
+
+            function addItemsFromMultipleFiles(fileList) {
+                for (var i = 0; i < fileList.length; i++) {
+                    var file = fileList.item(i);
+                    if (!file.type.match(/image.*/)) {
+                        continue;
+                    }
+                    addItemFromFile(file);
+                }
+            }
+
+            function addItemFromFile(file) {
+                var image = AsServedSetService.getImageObj();
+                image.loading = true;
+                scope.items.unshift(image);
+                ImageService.addForAsServed(scope.name, file).then(function (data) {
+                    image.sourceId = data.id;
+                    image.imageUrl = data.src;
+                    image.loading = false;
+                }, function () {
+                    scope.removeItemscope(image);
+                });
             }
 
         }

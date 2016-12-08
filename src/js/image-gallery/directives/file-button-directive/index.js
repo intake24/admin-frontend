@@ -10,27 +10,24 @@ module.exports = function (app) {
     function directiveFun() {
 
         function controller(scope, element, attributes) {
-            var $input = element.find('input')[0],
-                $button = element.find('button');
+            element.bind("click", function (e) {
+                var $input = angular.element("<input type='file' class='hidden' multiple>");
+                $input[0].onchange = function () {
+                    scope.onChange({fileList: $input[0].files});
 
-            $input.onchange = function() {
-                scope.onChange({fileList: $input.files});
-                scope.$apply();
-            };
-
-            $button.bind("click", function (e) {
-                $input.click();
+                    $input.remove();
+                };
+                element.after($input);
+                $input[0].click();
             });
         }
 
         return {
-            restrict: 'E',
+            restrict: 'A',
             link: controller,
-            transclude: true,
             scope: {
                 onChange: "&"
-            },
-            template: require("./file-button-directive.html")
+            }
         };
     }
 

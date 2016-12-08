@@ -34,7 +34,7 @@ function controllerFun($scope, $window, AsServedSetService) {
         if (newItemExists) {
             return;
         }
-        var newItem = AsServedSetService.generateBlankItem();
+        var newItem = AsServedSetService.getBlankItem();
         $scope.items.unshift(newItem);
         $window.scrollTo(0, 0);
     };

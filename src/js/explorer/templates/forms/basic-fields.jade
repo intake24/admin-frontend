@@ -5,7 +5,7 @@
 		input(class='form-control' type='text' placeholder='#{ gettext("e.g. Beans on toast") }'
 			id="basic-fields-english-description"
 			ng-model='itemDefinition.main.englishDescription')
-.form-group(ng-hide='SharedData.locale.intake_locale=="en_GB"')
+.form-group(ng-hide='SharedData.locale.intake_locale=="en_GB" || newItem')
 	label.col-xs-3.control-label(for="basic-fields-local-description")
 		| #{ gettext("Local Description") }
 	.col-xs-9

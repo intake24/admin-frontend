@@ -6,6 +6,7 @@
 
 module.exports = function(app) {
     require("./controllers")(app);
+    require("./directives")(app);
     require("./filters")(app);
     require("./services")(app);
     require("./config")(app);

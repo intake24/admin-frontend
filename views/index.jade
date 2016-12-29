@@ -33,10 +33,7 @@ html(lang='#{lang}' dir='#{lang_dir}')
 
         include modals
 
-        .flash-message(class="{{class}}" ng-controller="MessagesController" ng-class="{active: visible}")
-            div {{message}}
-            #flash-dismiss-btn(ng-click='hide()')
-                i(class='fa fa-close')
+        messages-directive
 
         #authenticate-overlay
             #authenticate-logo

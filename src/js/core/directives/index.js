@@ -6,4 +6,5 @@
 
 module.exports = function (app) {
     require("./message-directive")(app);
+    require("./auth-directive")(app);
 };

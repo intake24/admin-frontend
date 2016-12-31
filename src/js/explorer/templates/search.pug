@@ -24,4 +24,4 @@
 		ul(ng-model='search')
 			li(ng-repeat='value in searchResults | orderBy:["type", "displayName"]' ng-class='' ng-click='resultClicked($event, value)')
 				i.fa.fa-folder-o(ng-if='value.type == "category"' style='margin-right: 8px')
-				{{ $parent.getNodeDisplayName(value) }}
+				| {{ $parent.getNodeDisplayName(value) }}

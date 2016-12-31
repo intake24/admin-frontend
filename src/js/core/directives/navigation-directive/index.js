@@ -83,6 +83,6 @@ function directiveFun($location, LocalesService, appRoutes) {
         restrict: "E",
         link: controller,
         scope: {},
-        template: require("./navigation-directive.jade")
+        template: require("./navigation-directive.pug")
     };
 }

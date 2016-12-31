@@ -4,27 +4,27 @@ script(id='food-local-view-popover-template', type='text/ng-template')
 		p(ng-if="localFoodData == null") #{ gettext("Local view unavailable") }
 		.local-view(ng-if="localFoodData != null")
 			label #{ gettext("Local description") }: 
-			{{ localFoodData.localDescription }}
+			| {{ localFoodData.localDescription }}
 
 			.div(ng-repeat='(id, code) in localFoodData.nutrientTableCodes')
 				label #{ gettext("Nutrient table code")}({{ id }}): 
-				{{ localFoodData.nutrientTableCodes[id] }}
+				| {{ localFoodData.nutrientTableCodes[id] }}
 				
 			label #{ gettext("Food group") }: 
-			{{ localFoodData.groupCode }}
+			| {{ localFoodData.groupCode }}
 				
 			label #{ gettext("Ready meal option") }: 
-			{{ localFoodData.readyMealOption }}
+			| {{ localFoodData.readyMealOption }}
 
 			label #{ gettext("Same as before option") }: 
-			{{ localFoodData.sameAsBeforeOption }}
+			| {{ localFoodData.sameAsBeforeOption }}
 			
 			label #{ gettext("Reasonable amount (g/ml)") }:
-			{{ localFoodData.reasonableAmount }}
+			| {{ localFoodData.reasonableAmount }}
 
 			label #{ gettext("Portion size estimation") }:
 			.div(ng-repeat='method in localFoodData.portionSize')
 				label {{ method.method }} ({{method.description}}): 
-				{{ method.parameters }}
+				| {{ method.parameters }}
 
-			{{ localFoodDataSources }}
+			| {{ localFoodDataSources }}

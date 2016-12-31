@@ -68,6 +68,6 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
         restrict: "E",
         link: controller,
         scope: {},
-        template: require("./auth-directive.jade")
+        template: require("./auth-directive.pug")
     };
 }

@@ -35,7 +35,7 @@ div(ng-controller='AsServedSetController')
 			.list-container
 				ul
 					li(ng-click='setAsServedImageSet(as_served_image_set.id)' ng-repeat='as_served_image_set in asServedImageSets | asServedFilter:query | orderBy:description')
-						{{ as_served_image_set.description }} ({{ as_served_image_set.id }})
+						| {{ as_served_image_set.description }} ({{ as_served_image_set.id }})
 
 //- Guide image selection drawer
 div(ng-controller='GuideImageController')
@@ -49,7 +49,7 @@ div(ng-controller='GuideImageController')
 			.list-container
 				ul
 					li(ng-click='setGuideImage(guide_image_set.id)' ng-model='guideImages' ng-repeat='guide_image_set in guideImages | guideImageFilter:query | orderBy: "id"')
-						{{ guide_image_set.id }} ({{ guide_image_set.description }})
+						| {{ guide_image_set.id }} ({{ guide_image_set.description }})
 
 //- Drinkware selection drawer
 div(ng-controller='DrinkwareController')
@@ -63,7 +63,7 @@ div(ng-controller='DrinkwareController')
 			.list-container
 				ul
 					li(ng-click='setDrinkwareSet(drinkware_set.id)' ng-model='drinkwareSets' ng-repeat='drinkware_set in drinkwareSets | drinkScaleFilter:query | orderBy: "id"')
-						{{ drinkware_set.description }}
+						| {{ drinkware_set.description }}
 
 div(ng-controller='AssociatedFoodDrawerController')
 	.drawer-backdrop(ng-show="isOpen")
@@ -79,4 +79,4 @@ div(ng-controller='AssociatedFoodDrawerController')
 				ul
 					li(ng-repeat='item in items | orderBy:["type", "displayName"]' ng-click='select(item)')
 						i.fa.fa-folder-o(ng-if='item.type == "category"' style='margin-right: 8px')
-						{{ item.displayName }}
+						| {{ item.displayName }}

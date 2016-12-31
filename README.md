@@ -29,7 +29,7 @@ To build scripts and styles for production run `grunt --config={your_config.json
 	i18n is implemented using 'i18n-abide' by Mozilla ('https://github.com/mozilla/i18n-abide')
 
 	# Scrape strings into a POT file
-	/Users/edjenkins/MAMP/intake-node/node_modules/i18n-abide/node_modules/.bin/jsxgettext --keyword=_ -L jade --output-dir=/Users/edjenkins/MAMP/intake-node/locale/templates/LC_MESSAGES --from-code=utf-8 --output=messages.pot `find /Users/edjenkins/MAMP/intake-node -name '*.jade' | grep -v node_modules | grep -v .git`
+	/Users/edjenkins/MAMP/intake-node/node_modules/i18n-abide/node_modules/.bin/jsxgettext --keyword=_ -L pug --output-dir=/Users/edjenkins/MAMP/intake-node/locale/templates/LC_MESSAGES --from-code=utf-8 --output=messages.pot `find /Users/edjenkins/MAMP/intake-node -name '*.pug' | grep -v node_modules | grep -v .git`
 
 	# Create PO files
 	msginit --input=locale/templates/LC_MESSAGES/messages.pot --output-file=locale/ar/LC_MESSAGES/messages.po -l ar

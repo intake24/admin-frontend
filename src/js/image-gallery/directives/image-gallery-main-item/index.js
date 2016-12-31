@@ -86,6 +86,6 @@ function directiveFun($timeout, ImageService) {
             onTagsCopied: "=?",
             onRemoved: "=?"
         },
-        template: require("./image-gallery-main-item.jade")
+        template: require("./image-gallery-main-item.pug")
     };
 }

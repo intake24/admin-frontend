@@ -30,6 +30,6 @@ function directiveFun(MessageService) {
         restrict: "E",
         link: controller,
         scope: {},
-        template: require("./message-directive.jade")
+        template: require("./message-directive.pug")
     };
 }

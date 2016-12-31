@@ -1,7 +1,7 @@
 'use strict';
 
 var envify = require('envify/custom'),
-    jadeify = require("jadeify"),
+    pugify = require("pugify"),
     stringify = require("stringify");
 
 module.exports = function (grunt) {
@@ -24,7 +24,9 @@ module.exports = function (grunt) {
                 }), stringify({
                     appliesTo: {includeExtensions: ['.html']},
                     minify: true
-                }), jadeify]
+                }), pugify.pug({
+                    pretty: false
+                })]
             }
         }
     });

@@ -5,18 +5,18 @@ module.exports = function (app) {
     var routes = {
         foodExplorer: {
             pattern: '/',
-            template: require("./explorer/templates/index.jade")
+            template: require("./explorer/templates/index.pug")
         },
         imageGalleryRoute: {
             pattern: '/galleries',
         },
         imageGalleryMain: {
             pattern: '/galleries/main',
-            template: require("./image-gallery/templates/image-gallery-main.jade")
+            template: require("./image-gallery/templates/image-gallery-main.pug")
         },
         imageGalleryAsServed: {
             pattern: '/galleries/as-served',
-            template: require("./image-gallery/templates/image-gallery-as-served.jade")
+            template: require("./image-gallery/templates/image-gallery-as-served.pug")
         },
         userManagerRoute: {
             pattern: '/users'

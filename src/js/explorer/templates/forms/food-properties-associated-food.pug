@@ -17,7 +17,7 @@
                             p #{ gettext("properties_select_associated_food") }
                         span(ng-if='assFood.foodOrCategory')
                             i.fa.fa-folder-o(ng-if='assFood.foodOrCategory.type == "category"' style='margin-right: 8px')
-                            {{ assFood.foodOrCategory.displayName }}
+                            | {{ assFood.foodOrCategory.displayName }}
         .form-group
             label.col-xs-3.control-label(for="associated-food-prompt-text-{{$index}}")
                 | #{ gettext("associated_food_question") }

@@ -6,6 +6,4 @@
 
 module.exports = function(app) {
     require("./admin-controller")(app);
-    require("./auth-controller")(app);
-    require("./navigation-controller")(app);
 };

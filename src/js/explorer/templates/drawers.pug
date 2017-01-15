@@ -6,7 +6,7 @@ div(ng-controller='CategoryManagerController')
 		.drawer-title #{ gettext("Manage Categories") }
 		.drawer-content
 			.categories-container
-				input(type='text' placeholder='#{ gettext("Search categories") }'
+				input(type='text' placeholder=gettext("Search categories")
 						ng-model='searchQuery')
 				ul(ng-if="searchQuery != ''")
 					li(ng-repeat='category in searchResults | orderBy:"displayName"'
@@ -30,7 +30,7 @@ div(ng-controller='AsServedSetController')
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
 		.drawer-title #{ gettext("Select Image Set") }
-		input(type='text' ng-model='query' placeholder='#{ gettext("Search image sets") }')
+		input(type='text' ng-model='query' placeholder=gettext("Search image sets"))
 		.drawer-content
 			.list-container
 				ul
@@ -44,7 +44,7 @@ div(ng-controller='GuideImageController')
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
 		.drawer-title #{ gettext("Select Guide Image") }
-		input(type='text' ng-model='query' placeholder='#{ gettext("Search guide images") }')
+		input(type='text' ng-model='query' placeholder=gettext("Search guide images"))
 		.drawer-content
 			.list-container
 				ul
@@ -58,7 +58,7 @@ div(ng-controller='DrinkwareController')
 		.button-close-drawer(ng-click="close()")
 			i.fa.fa-times
 		.drawer-title #{ gettext("Select Drinkware Set") }
-		input(type='text' ng-model='query' placeholder='#{ gettext("Search drinkware sets") }')
+		input(type='text' ng-model='query' placeholder=gettext("Search drinkware sets"))
 		.drawer-content
 			.list-container
 				ul
@@ -72,7 +72,7 @@ div(ng-controller='AssociatedFoodDrawerController')
 			i.fa.fa-times
 		.drawer-title #{ gettext("modals_associated_food_title") }
 		input(type='text'
-				placeholder='#{ gettext("modals_associated_food_query_placeholder") }'
+				placeholder=gettext("modals_associated_food_query_placeholder")
 				ng-model='query')
 		.drawer-content
 			.list-container

@@ -2,7 +2,7 @@
 	label.col-xs-3.control-label(for="basic-fields-english-description")
 		| #{ gettext("Description") }
 	.col-xs-9
-		input(class='form-control' type='text' placeholder='#{ gettext("e.g. Beans on toast") }'
+		input(class='form-control' type='text' placeholder=gettext("e.g. Beans on toast")
 			id="basic-fields-english-description"
 			ng-model='itemDefinition.main.englishDescription')
 .form-group(ng-hide='SharedData.locale.intake_locale=="en_GB" || newItem')
@@ -16,6 +16,6 @@
 	label.col-xs-3.control-label(for="basic-fields-main-code")
 		| #{ gettext("Intake24 code") }
 	.col-xs-9
-		input(class='form-control' type='text' placeholder='#{ gettext("ALBU") }'
+		input(class='form-control' type='text' placeholder=gettext("ALBU")
 				id="basic-fields-main-code"
 				ng-model='itemDefinition.main.code')

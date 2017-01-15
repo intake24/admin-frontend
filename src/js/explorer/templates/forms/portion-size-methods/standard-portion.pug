@@ -14,13 +14,13 @@ table.table.table-hover.units-list
         tr.unit-row(ng-repeat='unit in portionSize.parameters.units'
         ng-class="{'danger': unitHasError(unit)}")
             td
-                ui-select(ng-model="unit.name" title="{{ $select.selected.name || unit.name || '#{ gettext('properties_portion_size_standard_portion_unit_name_select') }' }}")
-                    ui-select-match(placeholder="#{ gettext('properties_portion_size_standard_portion_unit_name_select') }")
+                ui-select(ng-model="unit.name" title=`{{ $select.selected.name || unit.name || \"${ gettext('properties_portion_size_standard_portion_unit_name_select') }\" }}`)
+                    ui-select-match(placeholder=`${ gettext('properties_portion_size_standard_portion_unit_name_select') }`)
                         span(ng-bind="($select.selected.name || unit.name) | ngTextCutFilter : 14")
                     ui-select-choices(repeat="item.id as item in (standardUnits | filter: {name: $select.search})")
                         span(ng-bind="item.name")
             td
-                input.form-control(type='text' placeholder ='#{ gettext("Value") }' ng-model='unit.value')
+                input.form-control(type='text' placeholder = `${ gettext("Value") }` ng-model='unit.value')
             td
                 input(type='checkbox' ng-model='unit.omitFoodDescription')
             td

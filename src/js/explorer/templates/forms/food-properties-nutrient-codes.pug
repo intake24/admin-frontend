@@ -6,7 +6,7 @@
         .col-xs-6
             .input-group
                 input.form-control(id='input-{{ id }}-code' type='text'
-                                    placeholder='#{ gettext("e.g. 10968") }'
+                                    placeholder=gettext("e.g. 10968")
                                     ng-model='itemDefinition.local.nutrientTableCodes[id]')
                 .input-group-btn
                     button.btn.btn-default(type="button" ng-click="nutrientCodeSection.removeTable(id)")

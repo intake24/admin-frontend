@@ -31,7 +31,7 @@
 			.row
 				.col-xs-4
 					input.form-control(type="text"
-									placeholder="#{ gettext('e.g. 600') }"
+									placeholder=gettext('e.g. 600')
 									id="inheritable-reasonable-amount"
 									ng-disabled="!itemDefinition.main.attributes.reasonableAmount.defined"
 									ng-model="itemDefinition.main.attributes.reasonableAmount.value")

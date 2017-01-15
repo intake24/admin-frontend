@@ -6,15 +6,15 @@ form
                 | {{ id }}
             .col-xs-9
                 input.form-control(id='input-{{ id }}-code' type='text'
-                placeholder='#{ gettext("e.g. 10968") }'
+                placeholder=gettext("e.g. 10968")
                 ng-model='itemDefinition.local.nutrientTableCodes[id]')
         .form-group
             label.col-xs-3.control-label(for='food-group-dropdown')
                 | #{ gettext("Food group") }
             .col-xs-9
                 ui-select(id="food-group-dropdown"
-                ng-model="itemDefinition.main.groupCode" title="#{ gettext('properties_food_group_select') }")
-                    ui-select-match(placeholder="#{ gettext('properties_food_group_select') }")
+                        ng-model="itemDefinition.main.groupCode" title=gettext('properties_food_group_select'))
+                    ui-select-match(placeholder=gettext('properties_food_group_select'))
                         span(ng-bind="($select.selected.displayName)")
                     ui-select-choices(repeat="item.id as item in (foodGroups | filter: {displayName: $select.search})")
                         span(ng-bind="item.displayName")

@@ -5,7 +5,7 @@
     ng-init="portionSize=portionSize")
         .form-group
             .col-xs-12
-                button.close(type="button" title='#{ gettext("Delete this method") }'
+                button.close(type="button" title=gettext("Delete this method")
                 ng-click='deletePortionSize($index)') &times;
 
         .form-group(ng-class="{'has-error': !portionSize.description}")
@@ -13,7 +13,7 @@
                 | #{ gettext("properties_portion_size_description") }
             .col-xs-9
                 ui-select(id="portion-size-description-{{$index}}"
-                ng-model="portionSize.description" title="#{ gettext('properties_portion_size_description_select') }")
+                ng-model="portionSize.description" title=gettext('properties_portion_size_description_select'))
                     ui-select-match(placeholder="#{ gettext('properties_portion_size_description_select') }")
                         span(ng-bind="($select.selected.name || portionSize.description)")
                     ui-select-choices(repeat="item.id as item in (portionSizeDescriptions | filter: {name: $select.search})")
@@ -24,13 +24,13 @@
             .col-xs-9
                 p(class="form-control-static" ng-hide="imageUrlEditable")
                     a.child-visible-on-hover.no-text-decoration(href=""
-                    title="#{ gettext('properties_portion_size_image_edit') }" ng-click="toggleImageUrlEdit()")
+                    title=gettext('properties_portion_size_image_edit') ng-click="toggleImageUrlEdit()")
                         span.dashed {{ portionSize.imageUrl }}
                         | &nbsp;
                         i.fa.fa-pencil.visible-on-hover
                 div(ng-show="imageUrlEditable")
                     input.form-control(id="portion-size-imgurl-{{$index}}"
-                    placeholder='#{ gettext("e.g. path/filename.jpg") }'
+                    placeholder=gettext("e.g. path/filename.jpg")
                     ng-model='portionSize.imageUrl'
                     ng-class="{'invalid': !portionSize.imageUrl}")
         .form-group

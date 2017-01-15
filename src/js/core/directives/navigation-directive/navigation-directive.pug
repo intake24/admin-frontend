@@ -9,3 +9,27 @@
                     a(ng-href="/{{value.id}}/{{value.adminLanguage}}\#{{menuItems.foodExplorer.href}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
                         | &nbsp;{{ value.localName }}
+
+        li.sidebar-btn(ng-class="{'active': !menuItems.imageGalleries.collapsed}")
+            a(ng-click='toggleItem("imageGalleries")')
+                | #{ gettext("sidebar_galleries") }
+                i.fa(ng-class="!menuItems.imageGalleries.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
+            ul.nested-li
+                li.sidebar-btn()
+                    a(ng-href="\#{{menuItems.imageGalleryMain.href}}" ng-class="{'active': menuItems.imageGalleryMain.active}")
+                        | #{ gettext("image_gallery_main_gallery") }
+                li.sidebar-btn()
+                    a(ng-href="\#{{menuItems.imageGalleryAsServed.href}}" ng-class="{'active': menuItems.imageGalleryAsServed.active}")
+                        | #{ gettext("image_gallery_as_served") }
+
+        li.sidebar-btn(ng-class="{'active': !menuItems.userManager.collapsed}")
+            a(ng-click='toggleItem("userManager")')
+                | #{ gettext("sidebar_users") }
+                i.fa(ng-class="!menuItems.userManager.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
+            ul.nested-li
+                li.sidebar-btn()
+                    a(ng-href="\#{{menuItems.userManagerRespondents.href}}" ng-class="{'active': menuItems.userManagerRespondents.active}")
+                        | #{ gettext("sidebar_users_respondents") }
+                li.sidebar-btn()
+                    a(ng-href="\#{{menuItems.userManagerAdmins.href}}" ng-class="{'active': menuItems.userManagerAdmins.active}")
+                        | #{ gettext("sidebar_users_admins") }

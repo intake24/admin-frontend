@@ -14,7 +14,7 @@
             .col-xs-9
                 ui-select(id="portion-size-description-{{$index}}"
                 ng-model="portionSize.description" title=gettext('properties_portion_size_description_select'))
-                    ui-select-match(placeholder="#{ gettext('properties_portion_size_description_select') }")
+                    ui-select-match(placeholder=gettext('properties_portion_size_description_select'))
                         span(ng-bind="($select.selected.name || portionSize.description)")
                     ui-select-choices(repeat="item.id as item in (portionSizeDescriptions | filter: {name: $select.search})")
                         span(ng-bind="item.name")

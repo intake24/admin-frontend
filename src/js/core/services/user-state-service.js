@@ -7,24 +7,39 @@ module.exports = function (app) {
 };
 
 function serviceFun($rootScope, $timeout) {
+
+    var REFRESH_TOKEN = "refresh-token",
+        ACCESS_TOKEN = "access-token",
+        USER_NAME = "auth-username";
+
     return {
-        set: function (username, token) {
-            Cookies.set('auth-token', token);
-            Cookies.set('auth-username', username);
+        init: function (username, refreshToken) {
+            Cookies.set(USER_NAME, username);
+            this.setRefreshToken(refreshToken);
+        },
+        setRefreshToken: function (refreshToken) {
+            Cookies.set(REFRESH_TOKEN, refreshToken);
+        },
+        setAcccessToken: function (accessToken) {
+            Cookies.set(ACCESS_TOKEN, accessToken);
             $rootScope.$broadcast('intake24.admin.LoggedIn');
         },
         logout: function () {
-            Cookies.remove('auth-token');
-            Cookies.set('auth-username', '');
+            Cookies.remove(REFRESH_TOKEN);
+            Cookies.remove(ACCESS_TOKEN);
+            Cookies.set(USER_NAME, '');
         },
         getUsername: function () {
-            return Cookies.get('auth-username');
+            return Cookies.get(USER_NAME);
         },
         getAuthenticated: function () {
-            return Cookies.get('auth-token') != undefined && Cookies.get('auth-token') != '';
+            return Cookies.get(REFRESH_TOKEN) != undefined && Cookies.get(REFRESH_TOKEN) != '';
         },
-        getAuthCookies: function () {
-            return Cookies.get('auth-token');
+        getAccessToken: function () {
+            return Cookies.get(ACCESS_TOKEN);
+        },
+        getRefreshToken: function () {
+            return Cookies.get(REFRESH_TOKEN);
         }
     }
 }

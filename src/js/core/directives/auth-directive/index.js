@@ -24,9 +24,16 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
 
         scope.login = function () {
             UserRequestService.login(scope.username, scope.password).then(function (data) {
-                UserStateService.set(scope.username, data.token);
-                ModalService.hideAll();
-                scope.password = "";
+                UserStateService.init(scope.username, data.refreshToken);
+                UserRequestService.refresh().then(function (data) {
+                    UserStateService.setAcccessToken(data.accessToken);
+                    UserStateService.setRefreshToken(data.refreshToken);
+                    ModalService.hideAll();
+                }, function () {
+                    UserStateService.logout();
+                }).finally(function () {
+                    scope.password = "";
+                });
             });
         };
 

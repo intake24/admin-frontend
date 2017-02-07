@@ -1,0 +1,22 @@
+{
+  "apiBaseUrl": "http://api-test.intake24.co.uk/",
+  "stylusFrom": "src/styl/style.styl",
+  "stylusWatch": "src/styl/**/**",
+  "stylusTo": "src/temp/style.css",
+  "browserifyFrom": "src/js/index.js",
+  "browserifyTo": "src/temp/intake24-admin.browserified.js",
+  "buildJsTo": "public/intake24-admin.js",
+  "copyFontsFrom": ["node_modules/font-awesome/fonts/*", "node_modules/bootstrap/dist/fonts/*"],
+  "copyFontsTo": "public/fonts/",
+  "uglifyJs": false,
+  "includeCssMaps": true,
+  "includeJsMaps": true,
+  "minifyCssFrom": ["node_modules/font-awesome/css/font-awesome.min.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "node_modules/ui-select/dist/select.min.css",
+                "src/temp/style.css"],
+  "minifyCssTo": "public/style.css",
+  "watchStylus": true,
+  "watchJs": true,
+  "watchDebounceDelay": 5000
+}

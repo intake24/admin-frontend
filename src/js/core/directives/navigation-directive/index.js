@@ -14,40 +14,44 @@ function directiveFun($location, LocalesService, appRoutes) {
 
         scope.menuItems = {
             foodExplorer: {
-                href: appRoutes.foodExplorer.pattern,
+                href: appRoutes.foodExplorer,
                 collapsed: true,
                 active: false
             },
             imageGalleries: {
-                href: appRoutes.imageGalleryRoute.pattern,
+                href: appRoutes.imageGalleryRoute,
                 collapsed: true,
                 active: false
             },
             imageGalleryMain: {
-                href: appRoutes.imageGalleryMain.pattern,
+                href: appRoutes.imageGalleryMain,
                 active: false,
                 parent: "imageGalleries"
             },
             imageGalleryAsServed: {
-                href: appRoutes.imageGalleryAsServed.pattern,
+                href: appRoutes.imageGalleryAsServed,
                 active: false,
                 parent: "imageGalleries"
             },
             userManager: {
-                href: appRoutes.userManagerRoute.pattern,
+                href: appRoutes.userManagerRoute,
                 collapsed: true,
                 active: false
             },
             userManagerAdmins: {
-                href: appRoutes.userManagerAdmins.pattern,
+                href: appRoutes.userManagerAdmins,
                 active: false,
                 parent: "userManager"
             },
             userManagerRespondents: {
-                href: appRoutes.userManagerRespondents.pattern,
+                href: appRoutes.userManagerRespondents,
                 active: false,
                 parent: "userManager"
+            },
+            demographicGroups: {
+
             }
+
         };
 
         scope.toggleItem = function (itemName) {

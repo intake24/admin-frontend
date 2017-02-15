@@ -3,66 +3,48 @@
 module.exports = function (app) {
 
     var routes = {
-        foodExplorer: {
-            pattern: '/',
-            template: require("./explorer/templates/index.pug")
-        },
-        imageGalleryRoute: {
-            pattern: '/galleries',
-        },
-        imageGalleryMain: {
-            pattern: '/galleries/main',
-            template: require("./image-gallery/templates/image-gallery-main.pug")
-        },
-        imageGalleryAsServed: {
-            pattern: '/galleries/as-served',
-            template: require("./image-gallery/templates/image-gallery-as-served.pug")
-        },
-        userManagerRoute: {
-            pattern: '/users'
-        },
-        userManagerRespondents: {
-            pattern: '/users/respondents',
-            template: require("./user-managers/controllers/user-manager-respondents/index.html")
-        },
-        userManagerAdmins: {
-            pattern: '/users/admins',
-            template: require("./user-managers/controllers/user-manager-admins/index.html")
-        },
+        foodExplorer: "/",
+        imageGalleryRoute: '/galleries',
+        imageGalleryMain: "/galleries/main",
+        imageGalleryAsServed: "/galleries/as-served",
+        userManagerRoute: '/users',
+        userManagerRespondents: '/users/respondents',
+        userManagerAdmins: '/users/admins',
+        demographicGroups: '/surveyFeedback'
     };
 
     app.constant('appRoutes', routes);
 
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-            .when(routes.foodExplorer.pattern, {
-                template: routes.foodExplorer.template,
+            .when(routes.foodExplorer, {
+                template: require("./explorer/templates/index.pug"),
                 controller: 'MainController'
             })
-            .when(routes.imageGalleryMain.pattern, {
-                template: routes.imageGalleryMain.template,
+            .when(routes.imageGalleryMain, {
+                template: require("./image-gallery/templates/image-gallery-main.pug"),
                 controller: 'ImageGalleryMain'
             })
-            .when(routes.imageGalleryAsServed.pattern, {
-                template: routes.imageGalleryAsServed.template,
+            .when(routes.imageGalleryAsServed, {
+                template: require("./image-gallery/templates/image-gallery-as-served.pug"),
                 controller: 'ImageGalleryAsServed'
             })
-            .when(routes.imageGalleryRoute.pattern, {
-                redirectTo: routes.imageGalleryMain.pattern
+            .when(routes.imageGalleryRoute, {
+                redirectTo: routes.imageGalleryMain
             })
-            .when(routes.userManagerAdmins.pattern, {
-                template: routes.userManagerAdmins.template,
+            .when(routes.userManagerAdmins, {
+                template: require("./user-managers/controllers/user-manager-admins/index.html"),
                 controller: 'UserManagerAdmins'
             })
-            .when(routes.userManagerRespondents.pattern, {
-                template: routes.userManagerRespondents.template,
+            .when(routes.userManagerRespondents, {
+                template: require("./user-managers/controllers/user-manager-respondents/index.html"),
                 controller: 'UserManagerRespondents'
             })
-            .when(routes.userManagerRoute.pattern, {
-                redirectTo: routes.userManagerRespondents.pattern
+            .when(routes.userManagerRoute, {
+                redirectTo: routes.userManagerRespondents
             })
             .otherwise({
-                redirectTo: routes.foodExplorer.pattern
+                redirectTo: routes.foodExplorer
             });
     }]);
 };

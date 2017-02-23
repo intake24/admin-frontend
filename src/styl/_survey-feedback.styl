@@ -1,0 +1,24 @@
+survey-feedback {
+  &-item {
+    $border = 1px solid $subgroup-border-color;
+    display: block;
+    $side-padding = 20px
+    $border-radius = 4px
+    border $subgroup-border-color 1px solid
+    border-radius $border-radius
+    background $subgroup-background-color
+    margin-bottom 10px
+    padding 10px $side-padding
+  }
+
+  &-scale-sector,
+  &-demographic-group {
+    display: block;
+    margin-bottom: 10px;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $subgroup-border-color;
+    }
+
+  }
+}

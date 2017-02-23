@@ -1,3 +1,9 @@
+$text-color = #333
+
+body
+  color #333
+  font-size 14px
+
 .text
   &-muted
     color #777
@@ -12,8 +18,17 @@ a
     color darken($anchor-color, $hover-darken)
     text-decoration underline
 
+  &.text-restore-color
+    color $text-color
+
+    &:hover
+    &:focus
+      color darken($text-color, $hover-darken)
+
 .dashed
-  border-bottom 1px dashed
+  &:hover
+  &:focus
+    border-bottom 1px dashed
 
   &:hover
   &:focus
@@ -26,3 +41,30 @@ a
   &:focus
   &:active
     text-decoration none
+
+h1
+  font-size 36px
+
+h2
+  font-size 30px
+
+h3
+  font-size 24px
+
+h4
+  font-size 18px
+
+h5
+  font-size 14px
+
+h6
+  font-size 12px
+
+h1
+h2
+h3
+h4
+h5
+h6
+p
+  margin-bottom 10px

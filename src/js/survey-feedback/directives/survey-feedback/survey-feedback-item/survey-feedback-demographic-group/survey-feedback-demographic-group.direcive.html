@@ -1,0 +1,97 @@
+<div class="page-block">
+    <h3 ng-hide="editState">
+        {{getTitle() || "No title"}}
+        <span uib-dropdown>
+            <button type="button" class="btn btn-link" uib-dropdown-toggle>
+                <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                <li>
+                    <a href="" ng-click="addScaleSector()">
+                        Add feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="" ng-click="edit()">Edit</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="" ng-click="remove()">Remove</a>
+                </li>
+            </ul>
+        </span>
+    </h3>
+    <div class="page-block" ng-show="editState">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <label class="control-label">
+                        Sex
+                    </label>
+                </div>
+                <div class="col-xs-9">
+                    <select class="form-control" ng-model="newSex">
+                        <option ng-repeat="item in sexNames"
+                                value="{{item.id}}">
+                            {{item.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <label class="control-label">
+                        Age range
+                    </label>
+                </div>
+                <div class="col-xs-9">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="number" class="form-control" min="0" placeholder="Start"
+                                   ng-model="newAge.start">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="number" class="form-control" min="0" placeholder="End" ng-model="newAge.end">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-default" ng-click="cancel()">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-success"
+                            ng-click="save()"
+                            ng-disabled="!formIsValid()">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="page-block">
+        <a href="" class="dashed"
+           ng-click="toggleFolded()"
+           ng-show="scaleSectors.length">
+            {{folded ? "Show feedback" : "Hide feedback"}}
+        </a>
+        <span class="text-muted" ng-hide="scaleSectors.length || editState">
+            No feedback
+        </span>
+    </div>
+    <div ng-hide="folded">
+        <survey-feedback-scale-sector
+                id="item.id"
+                demographic-group-id="id"
+                name="item.name"
+                description="item.description"
+                sentiment="item.sentiment"
+                range="item.range"
+                edit-state="item.editState"
+                units="units"
+                on-removed="onScaleSectorRemoved(item)"
+                scale-sectors="scaleSectors"
+                ng-repeat="item in scaleSectors | orderBy: 'range.start'"></survey-feedback-scale-sector>
+    </div>
+</div>

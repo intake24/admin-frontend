@@ -10,7 +10,7 @@ module.exports = function (app) {
         userManagerRoute: '/users',
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
-        demographicGroups: '/surveyFeedback'
+        surveyFeedback: '/survey-feedback'
     };
 
     app.constant('appRoutes', routes);
@@ -39,6 +39,10 @@ module.exports = function (app) {
             .when(routes.userManagerRespondents, {
                 template: require("./user-managers/controllers/user-manager-respondents/index.html"),
                 controller: 'UserManagerRespondents'
+            })
+            .when(routes.surveyFeedback, {
+                template: require("./survey-feedback/survey-feedback.pug"),
+                controller: 'SurveyFeedbackController'
             })
             .when(routes.userManagerRoute, {
                 redirectTo: routes.userManagerRespondents

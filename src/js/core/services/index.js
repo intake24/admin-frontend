@@ -13,4 +13,5 @@ module.exports = function(app) {
     require("./packer-service")(app);
     require("./user-request-service")(app);
     require("./user-state-service")(app);
+    require("./nutrient-types")(app);
 };

@@ -1,0 +1,87 @@
+<div class="page-block" ng-hide="editState">
+    <h4 ng-class="getSentimentClass()">
+        {{getTitle()}}
+        <span uib-dropdown>
+            <button type="button" class="btn btn-link" uib-dropdown-toggle>
+                <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                <li>
+                    <a href="" ng-click="edit()">Edit</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="" ng-click="remove()">Remove</a>
+                </li>
+            </ul>
+        </span>
+    </h4>
+    <p class="text-muted" ng-hide="description">
+        No description
+    </p>
+    <p ng-show="description">
+        {{ description }}
+    </p>
+</div>
+<div ng-show="editState">
+    <form class="form-horizontal">
+        <div class="form-group" ng-class="{'has-error': !formValidation.rangeIsValid}">
+            <div class="col-xs-3">
+                <label class="control-label">Intake range ({{units}})</label>
+            </div>
+            <div class="col-xs-9">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input type="number" min="0" class="form-control" placeholder="Start"
+                               ng-model="newRange.start">
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="number" min="0" class="form-control" placeholder="End"
+                               ng-model="newRange.end">
+                    </div>
+                </div>
+                <p class="help-block" ng-show="rangeErrorMessages.length">
+                    <span class="text-danger" ng-repeat="mes in rangeErrorMessages">{{mes}}&nbsp;</span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': !formValidation.sentimentIsValid}">
+            <div class="col-xs-3">
+                <label class="control-label">Sentiment</label>
+            </div>
+            <div class="col-xs-9">
+                <select class="form-control" ng-model="newSentiment">
+                    <option ng-repeat="item in sentiments" value="{{item.id}}">
+                        {{item.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': !formValidation.nameIsValid}">
+            <div class="col-xs-3">
+                <label class="control-label">Short description</label>
+            </div>
+            <div class="col-xs-9">
+                <input type="text" class="form-control" ng-model="newName">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <label class="control-label">Description</label>
+            </div>
+            <div class="col-xs-9">
+                <textarea class="form-control" ng-model="newDescription"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12 text-right">
+                <button type="button" class="btn btn-default" ng-click="cancel()">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-success" ng-click="save()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,70 @@
+<div ng-hide="editState">
+    <div class="pull-right" uib-dropdown>
+        <button class="btn btn-default btn-sm" uib-dropdown-toggle="">
+            <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu="">
+            <li>
+                <a href="" ng-click="addDemographicGroup()">Add demographic group</a>
+            </li>
+            <li>
+                <a href="" ng-click="edit()">Edit</a>
+            </li>
+        </ul>
+    </div>
+
+    <h2>
+        {{uiSelect.nutrientType.description}}
+    </h2>
+</div>
+<div ng-show="editState">
+    <div class="form-group">
+        <ui-select ng-model="uiSelect.nutrientType" title="Some text">
+            <ui-select-match placeholder="Some text">
+                <span ng-bind="$select.selected.description"></span>
+            </ui-select-match>
+            <ui-select-choices
+                    repeat="item in (nutrientTypesDictionary | filter: {description: $select.search})">
+                <span ng-bind="item.description"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div class="form-group text-right">
+        <button type="button" class="btn btn-default" ng-click="cancel()">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-success"
+                ng-disabled="!saveButtonIsActive()"
+                ng-click="save()">
+            Save
+        </button>
+    </div>
+</div>
+
+<div class="page-block">
+    <a href="" class="dashed"
+       ng-click="toggleFolded()"
+       ng-show="demographicGroups.length">
+        {{ folded ? "Show demographic groups" : "Hide demographic groups" }}
+    </a>
+    <span class="text-muted"
+          ng-hide="demographicGroups.length || editState">
+        No demographic groups
+    </span>
+</div>
+
+<div class="page-block" ng-hide="folded">
+    <survey-feedback-demographic-group id="item.id"
+                                       nutrient-type-id="nutrientTypeId"
+                                       sex="item.sex"
+                                       age="item.age"
+                                       height="item.height"
+                                       weight="item.height"
+                                       physical-level-id="item.physicalLevelId"
+                                       scale-sectors="item.scaleSectors"
+                                       edit-state="item.editState"
+                                       units="uiSelect.nutrientType.unit"
+                                       on-removed="onDemographicGroupRemoved(item)"
+                                       ng-repeat="item in demographicGroups | orderBy : ['sex', 'age.start']"
+    ></survey-feedback-demographic-group>
+</div>

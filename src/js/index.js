@@ -17,6 +17,7 @@ require("./core")(app);
 require("./explorer")(app);
 require("./image-gallery")(app);
 require("./user-managers")(app);
+require("./survey-feedback")(app);
 require("./set-routes")(app);
 
 window.api_base_url = process.env.API_BASE_URL;

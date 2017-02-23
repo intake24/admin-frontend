@@ -1,0 +1,26 @@
+<div class="page-block">
+    <div class="search-input-group">
+        <search-input ng-model="searchQuery"></search-input>
+        <div class="search-input-addon">
+            <button type="button" ng-click="addItem()">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div ng-class="'col-sm-' + getColClassNumber()"
+             ng-repeat="col in getCols() track by $index">
+            <survey-feedback-item nutrient-type-id="item.nutrientTypeId"
+                                  demographic-groups="item.demographicGroups"
+                                  nutrient-types-dictionary="nutrientTypesDictionary"
+                                  edit-state="item.editState"
+                                  on-removed="removeItem(item)"
+                                  ng-repeat="item in getColData($index)"></survey-feedback-item>
+        </div>
+    </div>
+
+</div>

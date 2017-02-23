@@ -16,11 +16,25 @@ function directiveFun(DemographicGroupsService) {
 
         scope.formValidation = {};
 
+        scope.folded = true;
         scope.loading = false;
 
         scope.rangeErrorMessages = [];
 
         refreshFields(scope);
+
+        scope.sentiments = [
+            {id: "neutral", name: "Neutral", className: ""},
+            {id: "highly_negative", name: "Highly negative", className: "text-danger"},
+            {id: "negative", name: "Negative", className: "text-danger"},
+            {id: "warning", name: "Warning", className: "text-warning"},
+            {id: "positive", name: "Positive", className: "text-success"},
+            {id: "highly_positive", name: "Highly positive", className: "text-success"}
+        ];
+
+        scope.toggleFolded = function () {
+            scope.folded = !scope.folded;
+        };
 
         scope.getTitle = function () {
             return [
@@ -37,7 +51,6 @@ function directiveFun(DemographicGroupsService) {
             if (!formIsValid(scope)) {
                 return;
             }
-
             var defered;
             scope.loading = true;
             if (!scope.id) {
@@ -70,15 +83,6 @@ function directiveFun(DemographicGroupsService) {
                 scope.onRemoved();
             }
         };
-
-        scope.sentiments = [
-            {id: "neutral", name: "Neutral", className: ""},
-            {id: "highly_negative", name: "Highly negative", className: "text-danger"},
-            {id: "negative", name: "Negative", className: "text-danger"},
-            {id: "warning", name: "Warning", className: "text-warning"},
-            {id: "positive", name: "Positive", className: "text-success"},
-            {id: "highly_positive", name: "Highly positive", className: "text-success"}
-        ];
 
         scope.getSentimentClass = function () {
             return scope.sentiments.filter(function (item) {
@@ -115,14 +119,15 @@ function updateScope(scope, serverData) {
     scope.name = serverData.name;
     scope.sentiment = serverData.sentiment;
     scope.description = serverData.description;
+    scope.newDescription = serverData.description;
     scope.range.start = serverData.range.start;
     scope.range.end = serverData.range.end;
 }
 
 function refreshFields(scope) {
     scope.newName = scope.name;
-    scope.newDescription = scope.description;
     scope.newSentiment = scope.sentiment;
+    scope.newDescription = scope.description;
     scope.newRange = {
         start: scope.range.start,
         end: scope.range.end
@@ -163,8 +168,8 @@ function formIsValid(scope) {
     } else {
 
         var overlappingRanges = scope.scaleSectors.filter(function (item) {
-            return item.id!=scope.id &&
-                item.range.start <= scope.newRange.end &&
+            return item.id != scope.id &&
+                item.range.start < scope.newRange.end &&
                 scope.newRange.start < item.range.end;
         });
 

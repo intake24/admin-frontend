@@ -13,7 +13,11 @@ function serviceFun($http, $q) {
         login: function (username, password, survey_id) {
             var defer = $q.defer(),
                 url = window.api_base_url + "signin",
-                data = {survey_id: survey_id || "", username: username, password: password};
+                data = {
+                    survey_id: survey_id ? [survey_id] : [],
+                    username: username,
+                    password: password
+                };
 
             $http.post(url, data).then(function successCallback(data) {
                 defer.resolve(data);

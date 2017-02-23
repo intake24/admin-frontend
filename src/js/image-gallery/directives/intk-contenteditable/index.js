@@ -5,7 +5,7 @@
 'use strict';
 
 module.exports = function (app) {
-    app.directive('contenteditable', ['$sce', directiveFun]);
+    app.directive('intkContenteditable', ['$sce', directiveFun]);
 
     function directiveFun($sce) {
 

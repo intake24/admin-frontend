@@ -15,7 +15,7 @@ function directiveFun(DemographicGroupsService) {
 
     function controller(scope, element, attribute) {
 
-        scope.folded = false;
+        scope.folded = true;
         scope.loading = false;
         scope.onRemoved = scope.onRemoved || function () {
             };

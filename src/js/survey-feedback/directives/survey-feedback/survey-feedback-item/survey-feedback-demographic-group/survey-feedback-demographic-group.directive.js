@@ -17,7 +17,7 @@ function directiveFun(DemographicGroupsService) {
 
         refreshFields(scope);
 
-        scope.folded = false;
+        scope.folded = true;
         scope.loading = false;
 
         scope.sexNames = [

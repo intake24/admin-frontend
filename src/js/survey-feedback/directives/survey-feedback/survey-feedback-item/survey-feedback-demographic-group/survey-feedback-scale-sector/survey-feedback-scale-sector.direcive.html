@@ -20,8 +20,11 @@
         No description
     </p>
     <p ng-show="description">
-        {{ description }}
+        <a href="" class="dashed" ng-click="toggleFolded()">
+            {{folded ? 'Show description' : 'Hide description'}}
+        </a>
     </p>
+    <p ng-show="description && !folded" ng-bind-html="newDescription"></p>
 </div>
 <div ng-show="editState">
     <form class="form-horizontal">
@@ -70,7 +73,7 @@
                 <label class="control-label">Description</label>
             </div>
             <div class="col-xs-9">
-                <textarea class="form-control" ng-model="newDescription"></textarea>
+                <text-angular ng-model="newDescription"></text-angular>
             </div>
         </div>
         <div class="form-group">

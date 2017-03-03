@@ -15,14 +15,35 @@ function directiveFun(DemographicGroupsService) {
 
     function controller(scope, element, attribute) {
 
+        scope.uiSelect = {
+            nutrientType: null
+        };
+
+        refreshFields(scope);
+
         scope.folded = true;
         scope.loading = false;
         scope.onRemoved = scope.onRemoved || function () {
             };
 
-        scope.uiSelect = {
-            nutrientType: null
-        };
+        scope.nutrientRuleTypes = [
+            {
+                id: "range", name: "Range",
+                description: "Feedback is based on the consumption of selected " +
+                "nutrient by a participant fitting into the defined ranges."
+            },
+            {
+                id: "energy_divided_by_bmr", name: "Energy / BMR",
+                description: "This rule is normally applied to Energy. " +
+                "Feedback is based on the Energy consumed by " +
+                "a participant divided by BMR fitting into the defined ranges."
+            },
+            {
+                id: "percentage_of_energy", name: "Percentage of energy",
+                description: "Feedback is based on the contribution of the selected nutrient " +
+                "to Energy consumed by a participant."
+            }
+        ];
 
         scope.edit = function () {
             scope.editState = true;
@@ -45,6 +66,7 @@ function directiveFun(DemographicGroupsService) {
 
         scope.cancel = function () {
             scope.editState = false;
+            refreshFields(scope);
             if (!scope.nutrientTypeId) {
                 scope.onRemoved();
             }
@@ -77,10 +99,33 @@ function directiveFun(DemographicGroupsService) {
             }
         };
 
+        scope.getNutrientKCalPerUnitVisible = function () {
+            return scope.newNutrientRuleType == "percentage_of_energy";
+        };
+
+        scope.getUnit = function() {
+
+            if (scope.newNutrientRuleType == "percentage_of_energy") {
+                return "%";
+            } else if (scope.newNutrientRuleType == "energy_divided_by_bmr") {
+                return "kcal^2 / day"
+            } else {
+                return scope.uiSelect.nutrientType ? scope.uiSelect.nutrientType.unit : "";
+            }
+
+        };
+
         scope.$watchCollection("nutrientTypesDictionary", function () {
-            scope.uiSelect.nutrientType = scope.nutrientTypesDictionary.filter(function (item) {
-                return item.nutrientId == scope.nutrientTypeId;
+            selectDefaultNutrient(scope);
+        });
+
+        scope.$watchCollection("[newNutrientRuleType, nutrientRuleType]", function () {
+            var nutrientRuleType = scope.editState ? scope.newNutrientRuleType : scope.nutrientRuleType;
+            var item = scope.nutrientRuleTypes.filter(function (item) {
+                return item.id == nutrientRuleType;
             })[0];
+            scope.nutrientRuleTypeName = item ? item.name : "";
+            scope.nutrientRuleTypeHelp = item ? item.description : "";
         });
 
     }
@@ -89,6 +134,8 @@ function directiveFun(DemographicGroupsService) {
         restrict: "E",
         scope: {
             nutrientTypeId: "=?",
+            nutrientRuleType: "=?",
+            nutrientTypeKCalPerUnit: "=?",
             demographicGroups: "=?",
             nutrientTypesDictionary: "=?",
             editState: "=?",
@@ -100,8 +147,30 @@ function directiveFun(DemographicGroupsService) {
 
 }
 
+function updateScope(scope, data) {
+    scope.nutrientTypeId = data.nutrientTypeId;
+    scope.nutrientRuleType = data.nutrientRuleType;
+    scope.nutrientTypeKCalPerUnit = data.nutrientTypeKCalPerUnit;
+}
+
+function refreshFields(scope) {
+    scope.newNutrientRuleType = scope.nutrientRuleType;
+    scope.newNutrientTypeKCalPerUnit = scope.nutrientTypeKCalPerUnit;
+    selectDefaultNutrient(scope);
+}
+
 function formIsValid(scope) {
-    return scope.uiSelect.nutrientType != null;
+    var checkKCal = scope.getNutrientKCalPerUnitVisible();
+    if (checkKCal) {
+        try {
+            parseFloat(scope.newNutrientTypeKCalPerUnit);
+            return scope.uiSelect.nutrientType != null;
+        } catch (e) {
+            return false;
+        }
+    } else {
+        return scope.uiSelect.nutrientType != null;
+    }
 }
 
 function getDemographicGroupRequest(scope, demographicGroup) {
@@ -113,6 +182,8 @@ function getDemographicGroupRequest(scope, demographicGroup) {
         weight: demographicGroup.weight,
         physicalLevelId: demographicGroup.physicalLevelId,
         nutrientTypeId: scope.uiSelect.nutrientType.nutrientId,
+        nutrientRuleType: scope.newNutrientRuleType,
+        nutrientTypeKCalPerUnit: scope.newNutrientTypeKCalPerUnit,
         scaleSectors: demographicGroup.scaleSectors || []
     };
 }
@@ -139,6 +210,8 @@ function createNew(scope, DemographicGroupsService) {
         scope.editState = false;
         scope.folded = false;
         data.editState = true;
+        updateScope(scope, data);
+        refreshFields(scope);
         scope.demographicGroups.push(data);
     }).finally(function () {
         scope.loading = false;
@@ -164,8 +237,16 @@ function executePatchQue(scope, DemographicGroupsService, requestQue) {
         return;
     }
     DemographicGroupsService.patch(item.id, item.req).then(function (data) {
+        updateScope(scope, data);
+        refreshFields(scope);
         findAndUpdateDemographicGroup(scope, data);
     }).finally(function () {
         executePatchQue(scope, DemographicGroupsService, requestQue);
     });
+}
+
+function selectDefaultNutrient(scope) {
+    scope.uiSelect.nutrientType = scope.nutrientTypesDictionary.filter(function (item) {
+        return item.nutrientId == scope.nutrientTypeId;
+    })[0];
 }

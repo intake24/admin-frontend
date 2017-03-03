@@ -15,6 +15,8 @@
         <div ng-class="'col-sm-' + getColClassNumber()"
              ng-repeat="col in getCols() track by $index">
             <survey-feedback-item nutrient-type-id="item.nutrientTypeId"
+                                  nutrient-rule-type="item.nutrientRuleType"
+                                  nutrient-type-k-cal-per-unit="item.nutrientTypeKCalPerUnit"
                                   demographic-groups="item.demographicGroups"
                                   nutrient-types-dictionary="nutrientTypesDictionary"
                                   edit-state="item.editState"

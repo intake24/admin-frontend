@@ -66,7 +66,7 @@ function directiveFun(DemographicGroupsService, NutrientTypes) {
 
 }
 
-function organiseData(demographicGroupsData, nutrientTypes) {
+function organiseData(demographicGroupsData) {
     var result = [];
     demographicGroupsData.forEach(function (item, index) {
         if (result.filter(function (r) {
@@ -80,14 +80,20 @@ function organiseData(demographicGroupsData, nutrientTypes) {
                 demographicGroups.push(subItem);
             }
         });
-        result.push(generateNutrientItem(item.nutrientTypeId, demographicGroups));
+        result.push(generateNutrientItem(item.nutrientTypeId,
+            item.nutrientRuleType,
+            item.nutrientTypeKCalPerUnit,
+            demographicGroups));
     });
     return result;
 }
 
-function generateNutrientItem(nutrientTypeId, demographicGroups) {
+function generateNutrientItem(nutrientTypeId, nutrientRuleType,
+                              nutrientTypeKCalPerUnit, demographicGroups) {
     return {
         nutrientTypeId: nutrientTypeId,
+        nutrientRuleType: nutrientRuleType,
+        nutrientTypeKCalPerUnit: nutrientTypeKCalPerUnit,
         demographicGroups: demographicGroups || [],
         editState: false
     }

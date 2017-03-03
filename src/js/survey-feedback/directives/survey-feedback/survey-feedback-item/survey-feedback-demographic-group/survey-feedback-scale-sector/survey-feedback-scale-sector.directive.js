@@ -39,7 +39,7 @@ function directiveFun(DemographicGroupsService) {
         scope.getTitle = function () {
             return [
                 scope.name,
-                [scope.range.start, scope.range.end].join("-") + scope.units,
+                [scope.range.start, scope.range.end].join("-") + " " + scope.units,
             ].join(", ");
         };
 

@@ -16,6 +16,9 @@
     <h2>
         {{uiSelect.nutrientType.description}}
     </h2>
+    <p>
+        <b>{{nutrientRuleTypeName}}.</b> {{nutrientRuleTypeHelp}}
+    </p>
 </div>
 <div ng-show="editState">
     <div class="form-group">
@@ -28,6 +31,21 @@
                 <span ng-bind="item.description"></span>
             </ui-select-choices>
         </ui-select>
+    </div>
+    <div class="form-group">
+        <select class="form-control" ng-model="newNutrientRuleType">
+            <option ng-repeat="item in nutrientRuleTypes"
+                    value="{{item.id}}">
+                {{item.name}}
+            </option>
+        </select>
+        <p class="help-block">
+            {{nutrientRuleTypeHelp}}
+        </p>
+    </div>
+    <div class="form-group" ng-show="getNutrientKCalPerUnitVisible()">
+        <input type="text" class="form-control" placeholder="KCal per unit"
+               ng-model="newNutrientTypeKCalPerUnit">
     </div>
     <div class="form-group text-right">
         <button type="button" class="btn btn-default" ng-click="cancel()">
@@ -63,7 +81,7 @@
                                        physical-level-id="item.physicalLevelId"
                                        scale-sectors="item.scaleSectors"
                                        edit-state="item.editState"
-                                       units="uiSelect.nutrientType.unit"
+                                       units="getUnit()"
                                        on-removed="onDemographicGroupRemoved(item)"
                                        ng-repeat="item in demographicGroups | orderBy : ['sex', 'age.start']"
     ></survey-feedback-demographic-group>

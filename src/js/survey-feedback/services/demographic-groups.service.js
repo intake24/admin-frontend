@@ -40,6 +40,8 @@ function serviceFun($http, $window) {
         return {
             id: data.id,
             nutrientTypeId: data.nutrientTypeId,
+            nutrientRuleType: data.nutrientRuleType,
+            nutrientTypeKCalPerUnit: data.nutrientTypeKCalPerUnit[0],
             sex: data.sex[0],
             age: data.age[0],
             height: data.height[0],
@@ -53,6 +55,9 @@ function serviceFun($http, $window) {
         return {
             id: data.id,
             nutrientTypeId: data.nutrientTypeId,
+            nutrientRuleType: data.nutrientRuleType,
+            nutrientTypeKCalPerUnit: data.nutrientTypeKCalPerUnit ? [data.nutrientTypeKCalPerUnit] : [],
+            rulesDescription: data.rulesDescription,
             sex: data.sex ? [data.sex] : [],
             age: data.age ? [data.age] : [],
             height: data.height ? [data.height] : [],

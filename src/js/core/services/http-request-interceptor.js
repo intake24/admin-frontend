@@ -1,10 +1,31 @@
 "use strict";
 
 module.exports = function (app) {
-    app.service("HttpRequestInterceptor", ["$q", "MessageService", "UserStateService",
-        function ($q, MessageService, UserStateService) {
+    app.service("HttpRequestInterceptor", ["$q", "$injector", "MessageService", "UserStateService",
+        function ($q, $injector, MessageService, UserStateService) {
+
+            function retryRequest(rejection) {
+                if (UserStateService.getRefreshToken() == null &&
+                    UserStateService.getAccessToken() == null) {
+                    return $q.reject(rejection);
+                }
+                var $timeout = $injector.get('$timeout');
+                return $timeout(function () {
+                    var $http = $injector.get('$http'),
+                        url = window.api_base_url + "refresh";
+                    return $http.post(url).then(function (data) {
+                        UserStateService.setAcccessToken(data.accessToken);
+                        return $http(rejection.config);
+                    }, function () {
+                        UserStateService.logout();
+                    });
+
+                });
+            }
+
             return {
                 request: function (config) {
+
                     if (config.url == window.api_base_url + "refresh") {
                         config.headers["X-Auth-Token"] = UserStateService.getRefreshToken();
                         return config;
@@ -30,24 +51,7 @@ module.exports = function (app) {
                         if (rejection.config.url == window.api_base_url + "signin") {
                             MessageService.showMessage(gettext("Failed to log you in"), "danger");
                         } else {
-                            // Fixme: Replay request failed on expired access token
-                            var url = window.api_base_url + "refresh";
-                            var xhr = new XMLHttpRequest();
-                            xhr.open("POST", url, true);
-                            xhr.setRequestHeader("Content-type", "application/json");
-                            xhr.setRequestHeader("X-Auth-Token", UserStateService.getRefreshToken());
-
-                            xhr.onreadystatechange = function () {//Call a function when the state changes.
-                                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                                    var data = JSON.parse(xhr.response);
-                                    UserStateService.setAcccessToken(data.accessToken);
-                                    UserStateService.setRefreshToken(data.refreshToken)
-                                } else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 401) {
-                                    UserStateService.logout();
-                                    MessageService.showMessage(gettext("Your session has expired. Please log in."), "danger");
-                                }
-                            };
-                            xhr.send();
+                            return retryRequest(rejection);
                         }
 
                     } else {

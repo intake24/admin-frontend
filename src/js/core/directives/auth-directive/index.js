@@ -27,7 +27,6 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
                 UserStateService.init(scope.username, data.refreshToken);
                 UserRequestService.refresh().then(function (data) {
                     UserStateService.setAcccessToken(data.accessToken);
-                    UserStateService.setRefreshToken(data.refreshToken);
                     ModalService.hideAll();
                 }, function () {
                     UserStateService.logout();

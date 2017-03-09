@@ -19,10 +19,10 @@ function serviceFun($rootScope, $timeout) {
         },
         setRefreshToken: function (refreshToken) {
             Cookies.set(REFRESH_TOKEN, refreshToken);
+            $rootScope.$broadcast('intake24.admin.LoggedIn');
         },
         setAcccessToken: function (accessToken) {
             Cookies.set(ACCESS_TOKEN, accessToken);
-            $rootScope.$broadcast('intake24.admin.LoggedIn');
         },
         logout: function () {
             Cookies.remove(REFRESH_TOKEN);

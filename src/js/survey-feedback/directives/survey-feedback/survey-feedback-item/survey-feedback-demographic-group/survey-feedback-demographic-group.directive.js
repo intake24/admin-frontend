@@ -114,6 +114,7 @@ function directiveFun(DemographicGroupsService) {
         scope: {
             id: "=?",
             nutrientTypeId: "=?",
+            nutrientRuleType: "=?",
             sex: "=?",
             age: "=?",
             height: "=?",
@@ -155,6 +156,7 @@ function getDemographicGroupRequest(scope) {
         weight: scope.weight,
         physicalLevelId: scope.physicalLevelId,
         nutrientTypeId: scope.nutrientTypeId,
+        nutrientRuleType: scope.nutrientRuleType,
         scaleSectors: scope.scaleSectors
     };
 }

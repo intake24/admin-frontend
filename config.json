@@ -1,5 +1,5 @@
 {
-  "apiBaseUrl": "http://localhost:9000/",
+  "apiBaseUrl": "http://api-test.intake24.co.uk/",
   "stylusFrom": "src/styl/style.styl",
   "stylusWatch": "src/styl/**/**",
   "stylusTo": "src/temp/style.css",

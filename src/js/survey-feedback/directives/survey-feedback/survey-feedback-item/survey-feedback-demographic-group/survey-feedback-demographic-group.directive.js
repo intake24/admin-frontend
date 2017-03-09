@@ -99,7 +99,7 @@ function directiveFun(DemographicGroupsService) {
         };
 
         scope.formIsValid = function () {
-            return scope.newSex || scope.newAge.start && scope.newAge.end;
+            return scope.newSex || scope.newAge.start != null && scope.newAge.end != null;
         };
 
         scope.onScaleSectorRemoved = function (item) {

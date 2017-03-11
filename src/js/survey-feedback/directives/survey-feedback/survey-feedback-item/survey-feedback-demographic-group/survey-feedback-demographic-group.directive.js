@@ -74,7 +74,11 @@ function directiveFun(DemographicGroupsService) {
             if (scope.id) {
                 def = DemographicGroupsService.patch(scope.id, getDemographicGroupRequest(scope));
             } else {
-                def = DemographicGroupsService.create(getDemographicGroupRequest(scope));
+                def = DemographicGroupsService.create(getDemographicGroupRequest(scope))
+                    .then(function (data) {
+                        scope.id = data.id;
+                        return data;
+                    });
             }
             def.then(function (data) {
                 updateScope(scope, data);
@@ -115,6 +119,7 @@ function directiveFun(DemographicGroupsService) {
             id: "=?",
             nutrientTypeId: "=?",
             nutrientRuleType: "=?",
+            nutrientTypeKCalPerUnit: "=?",
             sex: "=?",
             age: "=?",
             height: "=?",
@@ -157,6 +162,7 @@ function getDemographicGroupRequest(scope) {
         physicalLevelId: scope.physicalLevelId,
         nutrientTypeId: scope.nutrientTypeId,
         nutrientRuleType: scope.nutrientRuleType,
+        nutrientTypeKCalPerUnit: scope.nutrientTypeKCalPerUnit,
         scaleSectors: scope.scaleSectors
     };
 }

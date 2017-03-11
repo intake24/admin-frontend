@@ -4,6 +4,8 @@
 
 "use strict";
 
+var angular = require("angular");
+
 module.exports = function (app) {
 
     app.directive("surveyFeedback", ["DemographicGroupsService", "NutrientTypes", directiveFun]);
@@ -45,6 +47,10 @@ function directiveFun(DemographicGroupsService, NutrientTypes) {
 
         scope.getColClassNumber = function () {
             return Math.round(scope.pageWidthInCols / scope.numberOfCols);
+        };
+
+        scope.onItemCloned = function (item) {
+            scope.demographicGroups.unshift(cloneNutrientItem(item));
         };
 
         DemographicGroupsService.list().then(function (data) {
@@ -92,9 +98,31 @@ function generateNutrientItem(nutrientTypeId, nutrientRuleType,
                               nutrientTypeKCalPerUnit, demographicGroups) {
     return {
         nutrientTypeId: nutrientTypeId,
-        nutrientRuleType: nutrientRuleType,
+        nutrientRuleType: nutrientRuleType || "range",
         nutrientTypeKCalPerUnit: nutrientTypeKCalPerUnit,
         demographicGroups: demographicGroups || [],
         editState: false
     }
+}
+
+function cloneNutrientItem(item) {
+    var item = generateNutrientItem(
+        null,
+        item.nutrientRuleType,
+        item.nutrientTypeKCalPerUnit,
+        cloneDemographicGroups(item.demographicGroups)
+    );
+    item.editState = true;
+    return item;
+}
+
+function cloneDemographicGroups(dg) {
+    var c = angular.copy(dg);
+    c.forEach(function (g) {
+        g.id = null;
+        g.scaleSectors.forEach(function (s) {
+            s.id = null;
+        });
+    });
+    return c;
 }

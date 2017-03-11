@@ -21,6 +21,7 @@
                                   nutrient-types-dictionary="nutrientTypesDictionary"
                                   edit-state="item.editState"
                                   on-removed="removeItem(item)"
+                                  on-cloned="onItemCloned(item)"
                                   ng-repeat="item in getColData($index)"></survey-feedback-item>
         </div>
     </div>

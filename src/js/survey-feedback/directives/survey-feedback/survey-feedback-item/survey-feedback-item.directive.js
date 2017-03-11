@@ -6,12 +6,12 @@
 
 module.exports = function (app) {
 
-    app.directive("surveyFeedbackItem", ["DemographicGroupsService", directiveFun]);
+    app.directive("surveyFeedbackItem", ["$q", "DemographicGroupsService", directiveFun]);
     require("./survey-feedback-demographic-group/survey-feedback-demographic-group.directive")(app);
 
 };
 
-function directiveFun(DemographicGroupsService) {
+function directiveFun($q, DemographicGroupsService) {
 
     function controller(scope, element, attribute) {
 
@@ -42,6 +42,12 @@ function directiveFun(DemographicGroupsService) {
                 id: "percentage_of_energy", name: "Percentage of energy",
                 description: "Feedback is based on the contribution of the selected nutrient " +
                 "to Energy consumed by a participant."
+            },
+            {
+                id: "per_unit_of_weight", name: "Per KG of weight",
+                description: "Feedback is based on the consumption of selected " +
+                "nutrient by a participant per one's KG of weight " +
+                "fitting into the defined ranges."
             }
         ];
 
@@ -76,11 +82,23 @@ function directiveFun(DemographicGroupsService) {
             if (!formIsValid(scope)) {
                 return;
             }
+            scope.loading = true;
             if (!scope.nutrientTypeId) {
-                createNew(scope, DemographicGroupsService);
+                createNew(scope, DemographicGroupsService, $q).then(function () {
+                    scope.folded = false;
+                    scope.loading = false;
+                    scope.editState = false;
+                });
             } else {
-                patchDemographicGroups(scope, DemographicGroupsService);
+                patchDemographicGroups(scope, DemographicGroupsService, $q).then(function () {
+                    scope.loading = false;
+                    scope.editState = false;
+                });
             }
+        };
+
+        scope.clone = function () {
+            scope.onCloned()
         };
 
         scope.saveButtonIsActive = function () {
@@ -103,12 +121,12 @@ function directiveFun(DemographicGroupsService) {
             return scope.newNutrientRuleType == "percentage_of_energy";
         };
 
-        scope.getUnit = function() {
+        scope.getUnit = function () {
 
             if (scope.newNutrientRuleType == "percentage_of_energy") {
                 return "%";
             } else if (scope.newNutrientRuleType == "energy_divided_by_bmr") {
-                return "kcal^2 / day"
+                return ""
             } else {
                 return scope.uiSelect.nutrientType ? scope.uiSelect.nutrientType.unit : "";
             }
@@ -139,7 +157,8 @@ function directiveFun(DemographicGroupsService) {
             demographicGroups: "=?",
             nutrientTypesDictionary: "=?",
             editState: "=?",
-            onRemoved: "&"
+            onRemoved: "&",
+            onCloned: "&"
         },
         link: controller,
         template: require("./survey-feedback-item.direcive.html")
@@ -188,60 +207,116 @@ function getDemographicGroupRequest(scope, demographicGroup) {
     };
 }
 
-function findAndUpdateDemographicGroup(scope, demographicGroupData) {
-    var item = scope.demographicGroups.filter(function (item) {
-        return item.id == demographicGroupData.id;
-    })[0];
-    if (!item) {
+function updateDemographicGroup($q, DemographicGroupsService,
+                                demographicGroup, demographicGroupData) {
+    if (!demographicGroup) {
         return;
     }
-    item.sex = demographicGroupData.sex;
-    item.age = demographicGroupData.age;
-    item.height = demographicGroupData.height;
-    item.weight = demographicGroupData.weight;
-    item.physicalLevelId = demographicGroupData.physicalLevelId;
-    item.nutrientTypeId = demographicGroupData.nutrientTypeId;
+    demographicGroup.id = demographicGroupData.id;
+    demographicGroup.sex = demographicGroupData.sex;
+    demographicGroup.age = demographicGroupData.age;
+    demographicGroup.height = demographicGroupData.height;
+    demographicGroup.weight = demographicGroupData.weight;
+    demographicGroup.physicalLevelId = demographicGroupData.physicalLevelId;
+    demographicGroup.nutrientTypeId = demographicGroupData.nutrientTypeId;
+
+    return createScaleSectors($q, DemographicGroupsService, demographicGroup.id,
+        demographicGroup.scaleSectors);
 }
 
-function createNew(scope, DemographicGroupsService) {
+function createScaleSectors($q, DemographicGroupsService, demographicGroupId, scaleSectors) {
+    var requestQue = scaleSectors.filter(function (item) {
+        return item.id == null;
+    }).map(function (item) {
+        return {
+            reference: item,
+            req: {
+                name: item.name,
+                description: item.description,
+                sentiment: item.sentiment,
+                range: {
+                    start: item.range.start,
+                    end: item.range.end
+                }
+            }
+        };
+    });
+
+    return executeCreateScaleSectorsQueue($q, DemographicGroupsService,
+        demographicGroupId, requestQue);
+}
+
+function executeCreateScaleSectorsQueue($q, DemographicGroupsService, demographicGroupId,
+                                        requestQue) {
+    var item = requestQue.shift();
+    if (!item) {
+        return $q.resolve();
+    }
+    return DemographicGroupsService.createScaleSector(demographicGroupId, item.req)
+        .then(function (data) {
+            updateScaleSector(item.reference, data);
+            return executeCreateScaleSectorsQueue($q, DemographicGroupsService, demographicGroupId,
+                requestQue);
+        });
+}
+
+function updateScaleSector(scaleSector, data) {
+    if (!scaleSector) {
+        return;
+    }
+    scaleSector.id = data.id;
+    scaleSector.name = data.name;
+    scaleSector.description = data.description;
+    scaleSector.sentiment = data.sentiment;
+    scaleSector.range = {
+        start: data.range.start,
+        end: data.range.end
+    };
+}
+
+function createNew(scope, DemographicGroupsService, $q) {
     var req = getDemographicGroupRequest(scope);
     scope.loading = true;
-    DemographicGroupsService.create(req).then(function (data) {
-        scope.editState = false;
-        scope.folded = false;
-        data.editState = true;
+    return DemographicGroupsService.create(req).then(function (data) {
         updateScope(scope, data);
         refreshFields(scope);
-        scope.demographicGroups.push(data);
-    }).finally(function () {
-        scope.loading = false;
+        if (!scope.demographicGroups.length) {
+            data.editState = true;
+            scope.demographicGroups.push(data);
+            return $q.resolve();
+        } else {
+            return patchDemographicGroups(scope, DemographicGroupsService, $q);
+        }
     });
 }
 
-function patchDemographicGroups(scope, DemographicGroupsService) {
+function patchDemographicGroups(scope, DemographicGroupsService, $q) {
     var requestQue = scope.demographicGroups.map(function (item) {
         return {
             id: item.id,
+            reference: item,
             req: getDemographicGroupRequest(scope, item)
         };
     });
-    scope.loading = true;
-    executePatchQue(scope, DemographicGroupsService, requestQue);
+    return executePatchQueue(scope, DemographicGroupsService, $q, requestQue);
 }
 
-function executePatchQue(scope, DemographicGroupsService, requestQue) {
+function executePatchQueue(scope, DemographicGroupsService, $q, requestQue) {
     var item = requestQue.shift();
     if (!item) {
-        scope.loading = false;
-        scope.editState = false;
-        return;
+        return $q.resolve();
     }
-    DemographicGroupsService.patch(item.id, item.req).then(function (data) {
+    if (item.id == null) {
+        var service = DemographicGroupsService.create(item.req);
+    } else {
+        var service = DemographicGroupsService.patch(item.id, item.req);
+    }
+    return service.then(function (data) {
         updateScope(scope, data);
         refreshFields(scope);
-        findAndUpdateDemographicGroup(scope, data);
-    }).finally(function () {
-        executePatchQue(scope, DemographicGroupsService, requestQue);
+        return updateDemographicGroup($q, DemographicGroupsService, item.reference, data);
+    }).then(function () {
+        return executePatchQueue(scope, DemographicGroupsService, $q, requestQue);
     });
 }
 

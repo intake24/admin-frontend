@@ -5,6 +5,7 @@ module.exports = function (app) {
         function ($q, $injector, MessageService, UserStateService) {
 
             function retryRequest(rejection) {
+                // ToDo: All failed requests must be replayed once user has logged in
                 if (UserStateService.getRefreshToken() == null &&
                     UserStateService.getAccessToken() == null) {
                     return $q.reject(rejection);

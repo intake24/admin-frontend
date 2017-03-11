@@ -8,6 +8,11 @@
                 <a href="" ng-click="addDemographicGroup()">Add demographic group</a>
             </li>
             <li>
+                <a href="" ng-click="clone()">
+                    Clone
+                </a>
+            </li>
+            <li>
                 <a href="" ng-click="edit()">Edit</a>
             </li>
         </ul>
@@ -75,6 +80,7 @@
     <survey-feedback-demographic-group id="item.id"
                                        nutrient-type-id="nutrientTypeId"
                                        nutrient-rule-type="nutrientRuleType"
+                                       nutrient-type-k-cal-per-unit="nutrientTypeKCalPerUnit"
                                        sex="item.sex"
                                        age="item.age"
                                        height="item.height"

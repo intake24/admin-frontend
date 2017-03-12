@@ -161,7 +161,7 @@ function directiveFun($q, DemographicGroupsService) {
             onCloned: "&"
         },
         link: controller,
-        template: require("./survey-feedback-item.direcive.html")
+        template: require("./survey-feedback-item.directive.html")
     }
 
 }

@@ -4,11 +4,25 @@ module.exports = function (app) {
     app.service("HttpRequestInterceptor", ["$q", "$injector", "MessageService", "UserStateService",
         function ($q, $injector, MessageService, UserStateService) {
 
+            var pendingDefs = [];
+
+            UserStateService.onLoggedIn(function () {
+                pendingDefs.forEach(function (pen) {
+                    var $timeout = $injector.get('$timeout');
+                    $timeout(function () {
+                        var $http = $injector.get('$http');
+                        pen.deferred.resolve($http(pen.config));
+
+                    });
+                })
+            });
+
             function retryRequest(rejection) {
-                // ToDo: All failed requests must be replayed once user has logged in
                 if (UserStateService.getRefreshToken() == null &&
                     UserStateService.getAccessToken() == null) {
-                    return $q.reject(rejection);
+                    var def = $q.defer();
+                    pendingDefs.push({deferred: def, config: rejection.config});
+                    return def.promise;
                 }
                 var $timeout = $injector.get('$timeout');
                 return $timeout(function () {

@@ -24,12 +24,14 @@ function directiveFun(DemographicGroupsService) {
         refreshFields(scope);
 
         scope.sentiments = [
-            {id: "neutral", name: "Neutral", className: ""},
-            {id: "highly_negative", name: "Highly negative", className: "text-danger"},
-            {id: "negative", name: "Negative", className: "text-danger"},
-            {id: "warning", name: "Warning", className: "text-warning"},
-            {id: "positive", name: "Positive", className: "text-success"},
-            {id: "highly_positive", name: "Highly positive", className: "text-success"}
+            {id: "too_low", name: "Too low", className: "text-danger"},
+            {id: "low", name: "Low", className: "text-danger"},
+            {id: "bit_low", name: "A bit low", className: "text-warning"},
+            {id: "good", name: "Good", className: "text-success"},
+            {id: "excellent", name: "Excellent", className: "text-success"},
+            {id: "bit_high", name: "A bit high", className: "text-warning"},
+            {id: "high", name: "High", className: "text-danger"},
+            {id: "too_high", name: "Too high", className: "text-danger"}
         ];
 
         scope.toggleFolded = function () {

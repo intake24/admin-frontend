@@ -52,7 +52,7 @@ function serviceFun($rootScope, $timeout) {
         },
         getUserInfo: function () {
             try {
-                var tokenPart = this.getRefreshToken().split(".")[1],
+                var tokenPart = this.getAccessToken().split(".")[1],
                     parsedToken = JSON.parse(atob(tokenPart)),
                     credentials = JSON.parse(atob(parsedToken.sub)),
                     providerParts = credentials.providerKey.split("#");
@@ -62,6 +62,7 @@ function serviceFun($rootScope, $timeout) {
                 }
 
                 return {
+                    roles: parsedToken.i24r,
                     surveyId: providerParts[0],
                     userName: providerParts[1]
                 };

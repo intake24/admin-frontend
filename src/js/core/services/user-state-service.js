@@ -12,7 +12,8 @@ function serviceFun($rootScope, $timeout) {
         ACCESS_TOKEN = "access-token",
         USER_NAME = "auth-username";
 
-    var loggedInEventListeners = [];
+    var loggedInEventListeners = [],
+        userWasNotAuthenticated = true;
 
     function executeQueue() {
         loggedInEventListeners.forEach(function (fn) {
@@ -27,16 +28,20 @@ function serviceFun($rootScope, $timeout) {
         },
         setRefreshToken: function (refreshToken) {
             Cookies.set(REFRESH_TOKEN, refreshToken);
-            $rootScope.$broadcast('intake24.admin.LoggedIn');
-            executeQueue();
         },
         setAcccessToken: function (accessToken) {
             Cookies.set(ACCESS_TOKEN, accessToken);
+            executeQueue();
+            if (!userWasNotAuthenticated) {
+                $rootScope.$broadcast('intake24.admin.LoggedIn');
+                userWasNotAuthenticated = false;
+            }
         },
         logout: function () {
             Cookies.remove(REFRESH_TOKEN);
             Cookies.remove(ACCESS_TOKEN);
             Cookies.set(USER_NAME, '');
+            userWasNotAuthenticated = true;
         },
         getUsername: function () {
             return this.getUserInfo().userName;

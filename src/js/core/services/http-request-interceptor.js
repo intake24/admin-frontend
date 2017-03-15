@@ -12,30 +12,23 @@ module.exports = function (app) {
                     $timeout(function () {
                         var $http = $injector.get('$http');
                         pen.deferred.resolve($http(pen.config));
-
                     });
                 })
             });
 
             function retryRequest(rejection) {
-                if (UserStateService.getRefreshToken() == null &&
-                    UserStateService.getAccessToken() == null) {
-                    var def = $q.defer();
-                    pendingDefs.push({deferred: def, config: rejection.config});
-                    return def.promise;
-                }
+                var def = $q.defer();
+                pendingDefs.push({deferred: def, config: rejection.config});
                 var $timeout = $injector.get('$timeout');
-                return $timeout(function () {
+                $timeout(function () {
                     var $http = $injector.get('$http'),
                         url = window.api_base_url + "refresh";
                     return $http.post(url).then(function (data) {
                         UserStateService.setAcccessToken(data.accessToken);
-                        return $http(rejection.config);
-                    }, function () {
-                        UserStateService.logout();
                     });
 
                 });
+                return def.promise;
             }
 
             return {
@@ -65,6 +58,8 @@ module.exports = function (app) {
                     } else if (rejection.status == 401) {
                         if (rejection.config.url == window.api_base_url + "signin") {
                             MessageService.showMessage(gettext("Failed to log you in"), "danger");
+                        } else if (rejection.config.url == window.api_base_url + "refresh") {
+                            UserStateService.logout();
                         } else {
                             return retryRequest(rejection);
                         }

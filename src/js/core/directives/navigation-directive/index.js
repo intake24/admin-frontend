@@ -48,6 +48,10 @@ function directiveFun($location, LocalesService, appRoutes) {
                 active: false,
                 parent: "userManager"
             },
+            surveyManager: {
+                href: appRoutes.surveyManager,
+                active: false
+            },
             surveyFeedback: {
                 href: appRoutes.surveyFeedback,
                 active: false

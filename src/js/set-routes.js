@@ -10,6 +10,7 @@ module.exports = function (app) {
         userManagerRoute: '/users',
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
+        surveyManager: '/survey-manager',
         surveyFeedback: '/survey-feedback'
     };
 
@@ -39,6 +40,10 @@ module.exports = function (app) {
             .when(routes.userManagerRespondents, {
                 template: require("./user-managers/controllers/user-manager-respondents/index.html"),
                 controller: 'UserManagerRespondents'
+            })
+            .when(routes.surveyManager, {
+                template: require("./survey-manager/survey-manager.controller.html"),
+                controller: 'SurveyManagerController'
             })
             .when(routes.surveyFeedback, {
                 template: require("./survey-feedback/survey-feedback.pug"),

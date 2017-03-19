@@ -39,6 +39,21 @@
     padding 0
     width 100%
     li
+      &.group
+        width 100%
+        display table
+        a
+          display table-cell
+          &.addon-btn
+            width 48px
+            text-align center
+            padding 0
+            border none
+            transition(background $transition)
+            &:hover
+              background #2a383e
+            i
+              position static
       a
         border-left transparent 3px solid
         color white
@@ -54,7 +69,7 @@
           font-size 11px
           line-height 48px
           position absolute
-          right 10px
+          right 18px
           top 0px
           .flag
             margin-right 10px

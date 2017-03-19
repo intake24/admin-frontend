@@ -1,0 +1,36 @@
+@import '../_snippets.styl'
+
+.modal {
+
+  $transition-duration = .15s;
+  $transition-type = linear;
+
+  display: block;
+  opacity: 1;
+  transition(opacity $transition-type $transition-duration);
+
+  &.ng-hide {
+    opacity: 0;
+  }
+
+  &-dialog {
+    opacity: 1;
+    transition(margin-top $transition-type $transition-duration,
+    opacity $transition-type $transition-duration);
+
+    &.ng-hide {
+      opacity: 0;
+      margin-top: -50%;
+    }
+  }
+
+  &-backdrop {
+    opacity: .5;
+    transition(opacity $transition-type $transition-duration);
+
+    &.ng-hide {
+      opacity: 0;
+    }
+
+  }
+}

@@ -19,6 +19,7 @@ require("./core")(app);
 require("./explorer")(app);
 require("./image-gallery")(app);
 require("./user-managers")(app);
+require("./survey-manager")(app);
 require("./survey-feedback")(app);
 require("./set-routes")(app);
 require("./textangular-config")(app);

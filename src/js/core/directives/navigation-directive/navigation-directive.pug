@@ -1,39 +1,45 @@
 .sidebar(ng-class='{"active": $parent.sidebaropen}')
     ul
-        li.sidebar-btn(ng-class="{'active': !menuItems.foodExplorer.collapsed}")
+        li(ng-class="{'active': !menuItems.foodExplorer.collapsed}")
             a(ng-click='toggleItem("foodExplorer")' ng-class="{'active': menuItems.foodExplorer.active}")
                 | #{ gettext("sidebar_food_explorer") }
                 i.fa(ng-class="!menuItems.foodExplorer.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
-                li.sidebar-btn(ng-repeat='(index, value) in locales | orderBy:["localName"]')
+                li(ng-repeat='(index, value) in locales | orderBy:["localName"]')
                     a(ng-href="/{{value.id}}/{{value.adminLanguage}}\#{{menuItems.foodExplorer.href}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
                         | &nbsp;{{ value.localName }}
 
-        li.sidebar-btn(ng-class="{'active': !menuItems.imageGalleries.collapsed}")
+        li(ng-class="{'active': !menuItems.imageGalleries.collapsed}")
             a(ng-click='toggleItem("imageGalleries")')
                 | #{ gettext("sidebar_galleries") }
                 i.fa(ng-class="!menuItems.imageGalleries.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
-                li.sidebar-btn()
+                li
                     a(ng-href="\#{{menuItems.imageGalleryMain.href}}" ng-class="{'active': menuItems.imageGalleryMain.active}")
                         | #{ gettext("image_gallery_main_gallery") }
-                li.sidebar-btn()
+                li
                     a(ng-href="\#{{menuItems.imageGalleryAsServed.href}}" ng-class="{'active': menuItems.imageGalleryAsServed.active}")
                         | #{ gettext("image_gallery_as_served") }
 
-        li.sidebar-btn
+        li.group
+            a(ng-href="\#{{menuItems.surveyManager.href}}" ng-class="{'active': menuItems.surveyManager.active}")
+                | #{ gettext("sidebar_survey_manager") }
+            a.addon-btn(href="")
+                i.fa.fa-plus
+
+        li
             a(ng-href="\#{{menuItems.surveyFeedback.href}}" ng-class="{'active': menuItems.surveyFeedback.active}")
                 | #{ gettext("sidebar_survey_feedback") }
 
-        li.sidebar-btn(ng-class="{'active': !menuItems.userManager.collapsed}")
+        li(ng-class="{'active': !menuItems.userManager.collapsed}")
             a(ng-click='toggleItem("userManager")')
                 | #{ gettext("sidebar_users") }
                 i.fa(ng-class="!menuItems.userManager.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
-                li.sidebar-btn()
+                li
                     a(ng-href="\#{{menuItems.userManagerRespondents.href}}" ng-class="{'active': menuItems.userManagerRespondents.active}")
                         | #{ gettext("sidebar_users_respondents") }
-                li.sidebar-btn()
+                li
                     a(ng-href="\#{{menuItems.userManagerAdmins.href}}" ng-class="{'active': menuItems.userManagerAdmins.active}")
                         | #{ gettext("sidebar_users_admins") }

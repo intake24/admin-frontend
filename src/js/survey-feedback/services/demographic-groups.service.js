@@ -4,6 +4,8 @@
 
 "use strict";
 
+var getFormedUrl = require("../../core/utils/get-formed-url");
+
 module.exports = function (app) {
     app.service("DemographicGroupsService", ["$http", "$window", serviceFun]);
 };
@@ -14,27 +16,6 @@ function serviceFun($http, $window) {
         demographicGroupUrl = $window.api_base_url + "admin/demographic-groups/:id",
         scaleSectorsUrl = $window.api_base_url + "admin/demographic-groups/:id/scale-sectors",
         scaleSectorUrl = $window.api_base_url + "admin/demographic-group-scale-sectors/:id";
-
-    function getUrlParams(urlTemp) {
-        var res = {}, params = urlTemp.match(/:(.*?)(\-|\/|$)/g).map(function (st) {
-            return st.replace(/\//, "");
-        });
-        params.forEach(function (p) {
-            res[p.replace(/^:/, "")] = p;
-        });
-        return res;
-    }
-
-    function getFormedUrl(urlTemp, params) {
-        var urlParams = getUrlParams(urlTemp);
-        for (var k in params) {
-            if (!urlParams.hasOwnProperty(k)) {
-                throw urlTemp + " has no param " + k;
-            }
-            urlTemp = urlTemp.replace(urlParams[k], params[k]);
-        }
-        return urlTemp;
-    }
 
     function unpackServerData(data) {
         return {

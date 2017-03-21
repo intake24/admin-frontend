@@ -5,30 +5,34 @@
 "use strict";
 
 module.exports = function (app) {
-    app.controller("SurveyManagerController", ["$scope", "$location", "$route", "$routeParams", "appRoutes",
+    app.controller("SurveyManagerController", ["$scope", "$route", "appRoutes",
         controllerFun]);
 };
 
-function controllerFun($scope, $location, $route, $routeParams, appRoutes) {
+function controllerFun($scope, $route, appRoutes) {
 
     $scope.directiveViews = {
-        newSurvey: new DirectiveView(appRoutes.surveyManagerNew),
-        list: new DirectiveView(appRoutes.surveyManagerList),
-        survey: new DirectiveView(appRoutes.surveyManagerSurvey),
+        newSurvey: new DirectiveView([appRoutes.surveyManagerNew]),
+        list: new DirectiveView([appRoutes.surveyManagerList]),
+        survey: new DirectiveView([appRoutes.surveyManagerSurvey,
+                                   appRoutes.surveyManagerSurveyUsers,
+                                   appRoutes.surveyManagerSurveyResults]),
     };
 
-    activateSurvey($scope.directiveViews, $route.current.$$route.originalPath);
+    activateView($scope.directiveViews, $route.current.$$route.originalPath);
 
 }
 
-function DirectiveView(path) {
-    this.path = path;
+function DirectiveView(paths) {
+    this.paths = paths;
     this.active = false;
 }
 
-function activateSurvey(directiveViews, pathPattern) {
+function activateView(directiveViews, pathPattern) {
     for (var i in directiveViews) {
-        if (directiveViews[i].path == pathPattern) {
+        if (directiveViews[i].paths.filter(function (path) {
+                return path == pathPattern;
+            }).length) {
             directiveViews[i].active = true;
             return;
         }

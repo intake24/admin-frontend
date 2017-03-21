@@ -2,7 +2,7 @@
     <div class="search-input-group">
         <search-input ng-model="searchQuery"></search-input>
         <div class="search-input-addon">
-            <a href="#/survey-manager/new">
+            <a href="#{{newSurveyUrl}}">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -16,7 +16,7 @@
 
             <div class="bordered-list-item" ng-repeat="survey in filteredSurveys = (surveys | filter:searchQuery)">
                 <h4>
-                    <a href="">
+                    <a ng-href="#{{getSurveyUrl(survey.id)}}">
                         {{survey.id}}
                     </a>
                 </h4>

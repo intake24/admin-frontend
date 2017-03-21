@@ -1,3 +1,5 @@
-<survey-manager-new ng-show="directiveViews.newSurvey.active"></survey-manager-new>
+<survey-manager-new ng-if="directiveViews.newSurvey.active"></survey-manager-new>
 
-<survey-manager-list ng-show="directiveViews.list.active"></survey-manager-list>
+<survey-manager-list ng-if="directiveViews.list.active"></survey-manager-list>
+
+<survey-view ng-if="directiveViews.survey.active"></survey-view>

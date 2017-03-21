@@ -6,6 +6,7 @@
 
 module.exports = function (app) {
     require("./survey-manager.controller")(app);
-    require("./survey-manager-create-modal/survey-manager-create-modal.directive")(app);
+    require("./survey-manager-new/survey-manager-new.directive")(app);
+    require("./survey-manager-list/survey-manager-list.directive")(app);
     require("./survey.service")(app);
 };

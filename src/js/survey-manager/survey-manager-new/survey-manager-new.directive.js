@@ -5,7 +5,7 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyManagerCreateModal", ["LocalesService", "SurveyService", directiveFun]);
+    app.directive("surveyManagerNew", ["LocalesService", "SurveyService", directiveFun]);
 };
 
 function directiveFun(LocalesService, SurveyService) {
@@ -17,6 +17,8 @@ function directiveFun(LocalesService, SurveyService) {
         scope.allowGeneratedUsers = false;
         scope.externalFollowUpUrl = "";
         scope.supportEmail = "";
+
+        scope.loading = false;
 
         scope.formValidation = {
             name: true,
@@ -34,7 +36,10 @@ function directiveFun(LocalesService, SurveyService) {
             if (!validateForm(scope)) {
                 return;
             }
-            SurveyService.create(getRequest(scope));
+            scope.loading = true;
+            SurveyService.create(getRequest(scope)).finally(function () {
+                scope.loading = false;
+            });
         };
 
         scope.$watch(function () {
@@ -55,18 +60,18 @@ function directiveFun(LocalesService, SurveyService) {
         restrict: "E",
         scope: {},
         link: controller,
-        template: require("./survey-manager-create-modal.directive.html")
+        template: require("./survey-manager-new.directive.html")
     }
 
 }
 
 function getRequest(scope) {
     return {
-        surveyId: scope.name,
+        id: scope.name,
         schemeId: "default",
         localeId: scope.selectedLocale,
         allowGeneratedUsers: scope.allowGeneratedUsers,
-        externalFollowUpUrl: scope.externalFollowUpUrl,
+        externalFollowUpURL: scope.externalFollowUpURL,
         supportEmail: scope.supportEmail
     };
 }

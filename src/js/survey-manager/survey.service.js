@@ -12,26 +12,26 @@ module.exports = function (app) {
 
 function serviceFun($http, $window) {
 
-    var surveyUrl = $window.api_base_url + "admin/surveys";
+    var surveyUrl = $window.api_base_url + "surveys";
 
     function unpackServerData(data) {
         return {
-            surveyId: data.surveyId,
+            id: data.id,
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
-            externalFollowUpUrl: data.externalFollowUpUrl[0],
+            externalFollowUpURL: data.externalFollowUpURL[0],
             supportEmail: data.supportEmail
         }
     }
 
     function packClientData(data) {
         return {
-            surveyId: data.surveyId,
+            id: data.id,
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
-            externalFollowUpUrl: data.externalFollowUpUrl ? [data.externalFollowUpUrl] : [],
+            externalFollowUpURL: data.externalFollowUpURL ? [data.externalFollowUpURL] : [],
             supportEmail: data.supportEmail
         }
     }

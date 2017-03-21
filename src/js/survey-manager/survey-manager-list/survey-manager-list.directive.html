@@ -1,0 +1,31 @@
+<div class="page-block">
+    <div class="search-input-group">
+        <search-input ng-model="searchQuery"></search-input>
+        <div class="search-input-addon">
+            <a href="#/survey-manager/new">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Surveys</h1>
+
+            <div class="bordered-list-item" ng-repeat="survey in filteredSurveys = (surveys | filter:searchQuery)">
+                <h4>
+                    <a href="">
+                        {{survey.id}}
+                    </a>
+                </h4>
+                <p>{{survey.supportEmail}}</p>
+            </div>
+
+            <h4 ng-show="!filteredSurveys.length && !loading">No surveys found</h4>
+            <h4 ng-show="loading">Loading</h4>
+
+        </div>
+    </div>
+</div>

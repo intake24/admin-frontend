@@ -25,7 +25,7 @@
         li.group
             a(ng-href="\#{{menuItems.surveyManager.href}}" ng-class="{'active': menuItems.surveyManager.active}")
                 | #{ gettext("sidebar_survey_manager") }
-            a.addon-btn(href="")
+            a.addon-btn(ng-href="\#{{menuItems.surveyManagerNew.href}}")
                 i.fa.fa-plus
 
         li

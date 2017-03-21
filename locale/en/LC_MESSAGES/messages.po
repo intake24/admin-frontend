@@ -439,7 +439,7 @@ msgid "sidebar_users_admins"
 msgstr "Admins"
 
 msgid "sidebar_survey_manager"
-msgstr "Survey manager"
+msgstr "Surveys"
 
 msgid "sidebar_survey_feedback"
 msgstr "Survey feedback"

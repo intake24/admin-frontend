@@ -90,7 +90,9 @@ search-input
     display table-cell
     border-left $search-border-bottom
     border-bottom $search-border-bottom
+    vertical-align bottom
 
+    a
     button
       height 45px
       width 50px
@@ -98,10 +100,15 @@ search-input
       border-color transparent
       transition background $transition
       outline none
+      display block
+      color $text-color
+      padding 14px
+      text-align center
 
       &:hover
       &:focus
       &.active
+        color $text-color
         background white
 
 .view-toggle

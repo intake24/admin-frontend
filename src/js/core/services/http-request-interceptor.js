@@ -24,7 +24,7 @@ module.exports = function (app) {
                     var $http = $injector.get('$http'),
                         url = window.api_base_url + "refresh";
                     return $http.post(url).then(function (data) {
-                        UserStateService.setAcccessToken(data.accessToken);
+                        UserStateService.setAccessToken(data.accessToken);
                     });
 
                 });

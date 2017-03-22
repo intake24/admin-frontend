@@ -1,12 +1,10 @@
 'use strict';
 
-var Cookies = require('js-cookie');
-
 module.exports = function (app) {
-    app.service('UserStateService', ['$rootScope', '$timeout', serviceFun])
+    app.service('UserStateService', ['$rootScope', '$timeout', '$cookies', serviceFun])
 };
 
-function serviceFun($rootScope, $timeout) {
+function serviceFun($rootScope, $timeout, $cookies) {
 
     var REFRESH_TOKEN = "refresh-token",
         ACCESS_TOKEN = "access-token",
@@ -23,14 +21,14 @@ function serviceFun($rootScope, $timeout) {
 
     return {
         init: function (username, refreshToken) {
-            Cookies.set(USER_NAME, username);
+            $cookies.put(USER_NAME, username);
             this.setRefreshToken(refreshToken);
         },
         setRefreshToken: function (refreshToken) {
-            Cookies.set(REFRESH_TOKEN, refreshToken);
+            $cookies.put(REFRESH_TOKEN, refreshToken);
         },
-        setAcccessToken: function (accessToken) {
-            Cookies.set(ACCESS_TOKEN, accessToken);
+        setAccessToken: function (accessToken) {
+            $cookies.put(ACCESS_TOKEN, accessToken);
             executeQueue();
             if (!userWasNotAuthenticated) {
                 $rootScope.$broadcast('intake24.admin.LoggedIn');
@@ -38,22 +36,22 @@ function serviceFun($rootScope, $timeout) {
             }
         },
         logout: function () {
-            Cookies.remove(REFRESH_TOKEN);
-            Cookies.remove(ACCESS_TOKEN);
-            Cookies.set(USER_NAME, '');
+            $cookies.remove(REFRESH_TOKEN);
+            $cookies.remove(ACCESS_TOKEN);
+            $cookies.put(USER_NAME, '');
             userWasNotAuthenticated = true;
         },
         getUsername: function () {
             return this.getUserInfo().userName;
         },
         getAuthenticated: function () {
-            return Cookies.get(REFRESH_TOKEN) != null && Cookies.get(REFRESH_TOKEN) != '';
+            return $cookies.get(REFRESH_TOKEN) != null && $cookies.get(REFRESH_TOKEN) != '';
         },
         getAccessToken: function () {
-            return Cookies.get(ACCESS_TOKEN);
+            return $cookies.get(ACCESS_TOKEN);
         },
         getRefreshToken: function () {
-            return Cookies.get(REFRESH_TOKEN);
+            return $cookies.get(REFRESH_TOKEN);
         },
         getUserInfo: function () {
             try {

@@ -25,7 +25,8 @@ module.exports = function (grunt) {
                     appliesTo: {includeExtensions: ['.html']},
                     minify: true
                 }), pugify.pug({
-                    pretty: false
+                    pretty: false,
+                    compileDebug: false
                 })]
             }
         }

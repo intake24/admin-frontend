@@ -3,7 +3,7 @@ require("./gettext")();
 
 require("angular");
 require("textangular/dist/textAngular-sanitize.min");
-require("textAngular");
+require("textangular");
 require("angular-animate");
 require("angular-touch");
 require("angular-ui-bootstrap");

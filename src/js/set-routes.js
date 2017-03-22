@@ -21,7 +21,8 @@ module.exports = function (app) {
 
     app.constant('appRoutes', routes);
 
-    app.config(['$routeProvider', function ($routeProvider) {
+    app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
         $routeProvider
             .when(routes.foodExplorer, {
                 template: require("./explorer/templates/index.pug"),

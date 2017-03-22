@@ -42,3 +42,6 @@ src/js/temp
 public/*
 config.json
 
+#macOS crap
+.DS_Store
+

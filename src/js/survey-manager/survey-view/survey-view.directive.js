@@ -13,6 +13,10 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routePa
 
     function controller(scope, element, attribute) {
 
+        scope.title = ""
+
+        scope.survey = null;
+
         scope.surveyId = $routeParams.surveyId;
 
         scope.directiveViews = {
@@ -30,6 +34,11 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routePa
             }
             return r;
         };
+
+        SurveyService.get($routeParams.surveyId).then(function (data) {
+            scope.title = data.id;
+            scope.survey = data;
+        });
 
         activateView(scope.directiveViews, $route.current.$$route.originalPath);
 

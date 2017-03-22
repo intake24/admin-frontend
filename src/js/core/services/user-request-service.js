@@ -14,7 +14,7 @@ function serviceFun($http, $q) {
             var defer = $q.defer(),
                 url = window.api_base_url + "signin",
                 data = {
-                    survey_id: survey_id ? [survey_id] : [],
+                    survey_id: survey_id ? [survey_id] : [""],
                     username: username,
                     password: password
                 };

@@ -16,6 +16,7 @@ module.exports = function (grunt) {
 
     require('./grunt-tasks/clean')(grunt);
     require('./grunt-tasks/browserify')(grunt);
+    require('./grunt-tasks/babel')(grunt);
     require('./grunt-tasks/copy')(grunt);
     require('./grunt-tasks/stylus')(grunt);
     require('./grunt-tasks/css-minify')(grunt);
@@ -25,6 +26,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-stylus');
+    grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -33,6 +35,7 @@ module.exports = function (grunt) {
     tskList = ['clean', 'copy:fonts', 'stylus', 'cssmin', 'browserify'];
 
     if (config.uglifyJs) {
+        tskList.push('babel');
         tskList.push('uglify');
     } else {
         tskList.push('copy:scripts');

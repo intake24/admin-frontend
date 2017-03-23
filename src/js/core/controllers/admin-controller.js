@@ -6,6 +6,7 @@ module.exports = function (app) {
 };
 
 function controllerFun($scope, UserStateService, ModalService, appRoutes) {
+    $scope.bodyIsUnscrollable = false;
     $scope.authUsername = '';
     $scope.authenticated = false;
     $scope.sidebaropen = false;
@@ -17,9 +18,17 @@ function controllerFun($scope, UserStateService, ModalService, appRoutes) {
         ModalService.showLogoutModal();
     };
 
-    $scope.$watch(function() {
+    $scope.$watchCollection(function () {
+        return [ModalService.getModalAuthenticateVisible(),
+            ModalService.getModalLogOutVisible()];
+    }, function () {
+        $scope.bodyIsUnscrollable = ModalService.getModalAuthenticateVisible() ||
+            ModalService.getModalLogOutVisible();
+    });
+
+    $scope.$watch(function () {
         return UserStateService.getAuthenticated();
-    }, function() {
+    }, function () {
         $scope.authUsername = UserStateService.getUsername();
         $scope.authenticated = UserStateService.getAuthenticated();
     });

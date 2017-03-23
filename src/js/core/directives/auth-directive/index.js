@@ -51,11 +51,6 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
         }, function () {
             scope.modalAuthenticateVisible = ModalService.getModalAuthenticateVisible();
             scope.modalLogOutVisible = ModalService.getModalLogOutVisible();
-            if (scope.modalAuthenticateVisible || scope.modalLogOutVisible) {
-                document.body.className += " modal-open";
-            } else {
-                document.body.className = document.body.className.replace("modal-open", "");
-            }
         });
 
         scope.$watch(function () {

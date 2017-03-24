@@ -7,13 +7,14 @@
 module.exports = function (app) {
     app.directive("surveyView", ["LocalesService", "SurveyService", "appRoutes",
         "$route", "$routeParams", directiveFun]);
+    require("./survey-description/survey-description.directive")(app);
 };
 
 function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routeParams) {
 
     function controller(scope, element, attribute) {
 
-        scope.title = ""
+        scope.title = "";
 
         scope.survey = null;
 

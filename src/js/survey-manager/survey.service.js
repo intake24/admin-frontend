@@ -22,7 +22,9 @@ function serviceFun($http, $window) {
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
             externalFollowUpURL: data.externalFollowUpURL[0],
-            supportEmail: data.supportEmail
+            supportEmail: data.supportEmail,
+            startDate: data.startDate,
+            endDate: data.endDate,
         }
     }
 
@@ -33,7 +35,9 @@ function serviceFun($http, $window) {
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
             externalFollowUpURL: data.externalFollowUpURL ? [data.externalFollowUpURL] : [],
-            supportEmail: data.supportEmail
+            supportEmail: data.supportEmail,
+            startDate: data.startDate,
+            endDate: data.endDate
         }
     }
 

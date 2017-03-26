@@ -18,9 +18,8 @@ function controllerFun($scope, UserStateService, ModalService, appRoutes) {
         ModalService.showLogoutModal();
     };
 
-    $scope.$watchCollection(function () {
-        return [ModalService.getModalAuthenticateVisible(),
-            ModalService.getModalLogOutVisible()];
+    $scope.$watch(function () {
+        return ModalService.getModalIsVisible();
     }, function () {
         $scope.bodyIsUnscrollable = ModalService.getModalAuthenticateVisible() ||
             ModalService.getModalLogOutVisible();

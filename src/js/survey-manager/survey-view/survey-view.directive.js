@@ -9,6 +9,7 @@ module.exports = function (app) {
         "$route", "$routeParams", directiveFun]);
     require("./survey-description/survey-description.directive")(app);
     require("./survey-results/survey-results.directive")(app);
+    require("./survey-users/survey-users.directive")(app);
 };
 
 function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routeParams) {

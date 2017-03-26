@@ -1,0 +1,39 @@
+<div class="page-block">
+    <ul class="list-inline">
+        <li>
+            <ul class="nav nav-pills">
+                <li ng-class="{active: views.respondents.active}">
+                    <a href="" ng-click="selectView(views.respondents)">{{views.respondents.name}}</a>
+                </li>
+                <li ng-class="{active: views.staff.active}">
+                    <a href="" ng-click="selectView(views.staff)">{{views.staff.name}}</a>
+                </li>
+            </ul>
+        </li>
+        <li class="vertical-align-top">
+            <button type="button" class="btn btn-default" ng-click="newUser()">
+                {{views.respondents.active ? "New respondent" : ""}}
+                {{views.staff.active ? "New staff" : ""}}
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div>
+    <div class="bordered-list-item" ng-repeat="user in filteredUsers = (users | filter:searchQuery)">
+        <h4>
+            {{user.userName}}
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm">
+                    <i class="fa fa-pencil"></i>
+                </button>
+            </div>
+        </h4>
+    </div>
+</div>
+
+<survey-user-modal is-open="userModalIsOpen"
+                   user-type="views.staff.active ? userTypes.USER_TYPE_STAFF : userTypes.USER_TYPE_RESPONDENT"
+                   survey-id="surveyId"
+                   on-saved="onUserSaved(user)"
+></survey-user-modal>

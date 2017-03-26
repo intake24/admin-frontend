@@ -14,7 +14,9 @@ function serviceFun($http, $window) {
 
     var surveysUrl = $window.api_base_url + "surveys",
         surveyUrl = $window.api_base_url + "surveys/:surveyId",
-        surveyCsvResults = $window.api_base_url + "/surveys/:surveyId/submissions/csv";
+        surveyCsvResults = $window.api_base_url + "surveys/:surveyId/submissions/csv",
+        surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
+        surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
 
     function unpackServerData(data) {
         return {

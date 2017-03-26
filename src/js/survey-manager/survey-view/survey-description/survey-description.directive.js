@@ -5,12 +5,11 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyDescription", ["LocalesService", "SurveyService", "appRoutes",
-        "$route", "$routeParams", "uiDatetimePickerConfig", directiveFun]);
+    app.directive("surveyDescription", ["LocalesService", "SurveyService",
+        "uiDatetimePickerConfig", directiveFun]);
 };
 
-function directiveFun(LocalesService, SurveyService,
-                      appRoutes, $route, $routeParams, uiDatetimePickerConfig) {
+function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
 
     function controller(scope, element, attribute) {
 

@@ -13,7 +13,8 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     var surveysUrl = $window.api_base_url + "surveys",
-        surveyUrl = $window.api_base_url + "surveys/:surveyId";
+        surveyUrl = $window.api_base_url + "surveys/:surveyId",
+        surveyCsvResults = $window.api_base_url + "/surveys/:surveyId/submissions/csv";
 
     function unpackServerData(data) {
         return {
@@ -62,6 +63,12 @@ function serviceFun($http, $window) {
                 .then(function (data) {
                     return unpackServerData(data);
                 });
+        },
+        getCsvResults: function (surveyId, downloadReq) {
+            var url = getFormedUrl(surveyCsvResults, {surveyId: surveyId}) +
+                "?dateFrom=" + downloadReq.dateFrom +
+                "&dateTo=" + downloadReq.dateTo;
+            return $http.get(getFormedUrl(url));
         }
     };
 

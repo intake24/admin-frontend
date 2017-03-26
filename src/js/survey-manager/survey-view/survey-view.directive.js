@@ -8,6 +8,7 @@ module.exports = function (app) {
     app.directive("surveyView", ["LocalesService", "SurveyService", "appRoutes",
         "$route", "$routeParams", directiveFun]);
     require("./survey-description/survey-description.directive")(app);
+    require("./survey-results/survey-results.directive")(app);
 };
 
 function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routeParams) {

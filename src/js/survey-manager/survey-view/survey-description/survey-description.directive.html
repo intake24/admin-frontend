@@ -3,14 +3,14 @@
         <label class="control-label col-sm-2 col-xs-3">Survey name</label>
         <div class="col-sm-10 col-xs-9">
             <input type="text" class="form-control input-lg" placeholder="Survey name"
-                   ng-model="name">
+                   ng-model="newName">
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !formValidation.supportEmail}">
         <label class="control-label col-sm-2 col-xs-3">Contact email</label>
         <div class="col-sm-10 col-xs-9">
             <input type="text" class="form-control" placeholder="admin@example.com"
-                   ng-model="supportEmail">
+                   ng-model="newSupportEmail">
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !formValidation.surveyPeriod}">
@@ -24,7 +24,7 @@
                            is-open="datePickerState.startIsOpen"
                            ng-focus="openStartDatePicker()"
                            timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="startDate">
+                           ng-model="newStartDate">
                 </div>
                 <div class="col-xs-6">
                     <input type="text" class="form-control"
@@ -33,7 +33,7 @@
                            is-open="datePickerState.endIsOpen"
                            ng-focus="openEndDatePicker()"
                            timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="endDate">
+                           ng-model="newEndDate">
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2 col-xs-3">Locale</label>
         <div class="col-sm-10 col-xs-9">
-            <select class="form-control" ng-model="selectedLocale">
+            <select class="form-control" ng-model="newSelectedLocale">
                 <option ng-repeat="item in locales"
                         value="{{item.id}}">{{item.englishName}}
                 </option>
@@ -52,24 +52,24 @@
         <label class="control-label col-sm-2 col-xs-3">Follow up survey URL</label>
         <div class="col-sm-10 col-xs-9">
             <input type="text" class="form-control" placeholder="https://externalsurvey.com/mySurvey"
-                   ng-model="externalFollowUpUrl">
+                   ng-model="newExternalFollowUpUrl">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-xs-9 col-sm-offset-2 col-xs-offset-3">
             <label class="checkbox-inline">
-                <input type="checkbox" ng-model="allowGeneratedUsers">
+                <input type="checkbox" ng-model="newAllowGeneratedUsers">
                 Allow generate users
             </label>
         </div>
     </div>
     <div class="form-group text-right">
         <div class="col-xs-12 text-right">
-            <button class="btn btn-default" ng-click="cancel()">
+            <button class="btn btn-default" ng-click="cancel()" ng-disabled="loading">
                 Cancel
             </button>
-            <button class="btn btn-success" ng-click="save()">
-                Save
+            <button class="btn btn-success" ng-click="save()" ng-disabled="loading">
+                {{ loading ? 'Loading' : 'Save' }}
             </button>
         </div>
     </div>

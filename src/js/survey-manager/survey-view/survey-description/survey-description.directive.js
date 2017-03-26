@@ -28,7 +28,8 @@ function directiveFun(LocalesService, SurveyService,
 
         scope.formValidation = {
             name: true,
-            supportEmail: true
+            supportEmail: true,
+            surveyPeriod: true
         };
 
         scope.datePickerState = {
@@ -36,7 +37,6 @@ function directiveFun(LocalesService, SurveyService,
             endIsOpen: false
         };
 
-        scope.isVisible = true;
         scope.locales = [];
 
         scope.openStartDatePicker = function () {
@@ -47,8 +47,8 @@ function directiveFun(LocalesService, SurveyService,
             scope.datePickerState.endIsOpen = true;
         };
 
-        scope.close = function () {
-            scope.isVisible = !scope.isVisible;
+        scope.cancel = function () {
+            updateForm(scope);
         };
 
         scope.save = function () {
@@ -56,7 +56,7 @@ function directiveFun(LocalesService, SurveyService,
                 return;
             }
             scope.loading = true;
-            SurveyService.create(getRequest(scope)).finally(function () {
+            SurveyService.patch(scope.name, getRequest(scope)).finally(function () {
                 scope.loading = false;
             });
         };
@@ -69,6 +69,7 @@ function directiveFun(LocalesService, SurveyService,
 
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
+            updateForm(scope);
         });
 
     }
@@ -97,12 +98,17 @@ function getRequest(scope) {
 
 function validateForm(scope) {
 
-    scope.formValidation.name = scope.name.trim() != "";
+    scope.formValidation.name = scope.newName.trim() != "";
 
-    scope.formValidation.supportEmail = scope.supportEmail.trim() != "";
+    scope.formValidation.supportEmail = scope.newSupportEmail.trim() != "";
+
+    scope.formValidation.surveyPeriod = scope.newStartDate != null &&
+        scope.newEndDate != null &&
+        scope.newEndDate >= scope.newStartDate;
 
     return scope.formValidation.name &&
-        scope.formValidation.supportEmail;
+        scope.formValidation.supportEmail &&
+        scope.formValidation.surveyPeriod;
 
 }
 
@@ -117,4 +123,14 @@ function updateScope(scope, data) {
     scope.supportEmail = data.supportEmail;
     scope.startDate = new Date(data.startDate);
     scope.endDate = new Date(data.endDate);
+}
+
+function updateForm(scope) {
+    scope.newName = scope.name;
+    scope.newSelectedLocale = scope.selectedLocale;
+    scope.newAllowGeneratedUsers = scope.allowGeneratedUsers;
+    scope.newExternalFollowUpUrl = scope.externalFollowUpUrl;
+    scope.newSupportEmail = scope.supportEmail;
+    scope.newStartDate = scope.startDate;
+    scope.newEndDate = scope.endDate;
 }

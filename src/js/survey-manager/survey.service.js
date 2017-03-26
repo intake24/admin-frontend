@@ -56,6 +56,12 @@ function serviceFun($http, $window) {
             return $http.post(surveysUrl, packClientData(surveyReq)).then(function (data) {
                 return unpackServerData(data);
             });
+        },
+        patch: function (surveyId, surveyReq) {
+            return $http.patch(getFormedUrl(surveyUrl, {surveyId: surveyId}), surveyReq)
+                .then(function (data) {
+                    return unpackServerData(data);
+                });
         }
     };
 

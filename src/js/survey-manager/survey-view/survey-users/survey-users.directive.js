@@ -56,6 +56,10 @@ function directiveFun(AdminUsersService) {
 
         scope.selectView(scope.views.respondents);
 
+        scope.onFilesChange = function (fileList) {
+            console.log(fileList);
+        };
+
         scope.$watchCollection(function () {
             return [scope.surveyId, scope.views.staff.active, scope.views.respondents.active];
         }, function (newVal) {

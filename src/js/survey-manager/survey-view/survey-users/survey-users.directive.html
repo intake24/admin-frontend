@@ -1,5 +1,12 @@
 <div class="page-block row">
-    <div class="col-sm-7">
+    <div class="col-sm-5 col-sm-push-7">
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="Search"
+                   ng-model="searchQuery">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
+    </div>
+    <div class="col-sm-7 col-sm-pull-5">
         <ul class="list-inline">
             <li>
                 <ul class="nav nav-pills">
@@ -13,21 +20,21 @@
             </li>
             <li class="vertical-align-top">
                 <button type="button" class="btn btn-default" ng-click="newUser()">
-                    {{views.respondents.active ? "New respondent" : ""}}
-                    {{views.staff.active ? "New staff" : ""}}
+                    <span class="hidden-xs">
+                        {{views.respondents.active ? "New respondent" : ""}}
+                        {{views.staff.active ? "New staff" : ""}}
+                    </span>
+                    <i class="fa fa-plus visible-xs"></i>
                 </button>
-                <button type="button" class="btn btn-default">
-                    Upload CSV
-                </button>
+
+                <a href="" class="btn btn-default" file-button on-change="onFilesChange(fileList)">
+                    <span class="hidden-xs">
+                        Upload CSV
+                    </span>
+                    <i class="fa fa-upload visible-xs"></i>
+                </a>
             </li>
         </ul>
-    </div>
-    <div class="col-sm-5">
-        <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Search"
-                   ng-model="searchQuery">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-        </div>
     </div>
 </div>
 

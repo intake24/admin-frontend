@@ -8,4 +8,5 @@ module.exports = function (app) {
     require("./message-directive")(app);
     require("./auth-directive")(app);
     require("./navigation-directive")(app);
+    require('./file-button-directive')(app);
 };

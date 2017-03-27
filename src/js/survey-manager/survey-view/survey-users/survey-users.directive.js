@@ -30,6 +30,8 @@ function directiveFun(AdminUsersService) {
 
         scope.editedUser = null;
 
+        scope.loading = false;
+
         scope.newUser = function () {
             scope.userModalIsOpen = true;
         };
@@ -41,6 +43,11 @@ function directiveFun(AdminUsersService) {
                 }
             }
             view.active = true;
+        };
+
+        scope.editUser = function (user) {
+            scope.editedUser = user;
+            scope.userModalIsOpen = true;
         };
 
         scope.onUserSaved = function () {
@@ -55,12 +62,18 @@ function directiveFun(AdminUsersService) {
             if (scope.surveyId == null) {
                 return;
             } else if (scope.views.staff.active) {
+                scope.loading = true;
                 AdminUsersService.listSurveyStaff(scope.surveyId, 0, 999).then(function (data) {
                     scope.users = data;
+                }).finally(function () {
+                    scope.loading = false;
                 });
             } else if (scope.views.respondents.active) {
+                scope.loading = true;
                 AdminUsersService.listSurveyRespondents(scope.surveyId, 0, 999).then(function (data) {
                     scope.users = data;
+                }).finally(function () {
+                    scope.loading = false;
                 });
             }
         }, true);
@@ -76,7 +89,7 @@ function directiveFun(AdminUsersService) {
     return {
         restrict: "E",
         scope: {
-            surveyId: "=?"
+            surveyId: "=?",
         },
         link: controller,
         template: require("./survey-users.directive.html")

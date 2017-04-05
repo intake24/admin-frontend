@@ -10,12 +10,11 @@ module.exports = function (app) {
 
 function serviceFun($http, $q) {
     return {
-        login: function (username, password, survey_id) {
+        login: function (username, password) {
             var defer = $q.defer(),
                 url = window.api_base_url + "signin",
                 data = {
-                    survey_id: survey_id ? [survey_id] : [""],
-                    username: username,
+                    email: username,
                     password: password
                 };
 

@@ -12,19 +12,23 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12">
-            <h1>Surveys</h1>
 
-            <div class="bordered-list-item" ng-repeat="survey in filteredSurveys = (surveys | filter:searchQuery)">
-                <h4>
-                    <a ng-href="#{{getSurveyUrl(survey.id)}}">
-                        {{survey.id}}
-                    </a>
-                </h4>
-                <p>{{survey.supportEmail}}</p>
+            <h3>Surveys</h3>
+
+            <div ng-repeat="locale in filteredLocales">
+                <h4 class="group-header"><i class="flag {{locale.flagCode}}"></i>&nbsp;{{locale.englishName}}</h4>
+
+
+                <survey-manager-icon survey=survey
+                                     ng-repeat="survey in filteredSurveys[locale.id]"></survey-manager-icon>
+
             </div>
 
-            <h4 ng-show="!filteredSurveys.length && !loading">No surveys found</h4>
-            <h4 ng-show="loading">Loading</h4>
+            <h4 ng-show="noSurveys && !loading">No surveys found</h4>
+
+            <div ng-show="loading">
+                <i class="fa fa-refresh fa-spin fa-2x"></i>
+            </div>
 
         </div>
     </div>

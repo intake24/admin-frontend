@@ -76,6 +76,7 @@ function directiveFun(AdminUsersService) {
                 scope.loading = true;
                 AdminUsersService.listSurveyRespondents(scope.surveyId, 0, 999).then(function (data) {
                     scope.users = data;
+                    console.log(data);
                 }).finally(function () {
                     scope.loading = false;
                 });

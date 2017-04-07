@@ -31,6 +31,7 @@ function directiveFun(AdminUsersService) {
         scope.editedUser = null;
 
         scope.loading = false;
+        scope.fileLoading = false;
 
         scope.newUser = function () {
             scope.userModalIsOpen = true;
@@ -57,7 +58,19 @@ function directiveFun(AdminUsersService) {
         scope.selectView(scope.views.respondents);
 
         scope.onFilesChange = function (fileList) {
-            console.log(fileList);
+            var file = fileList[0],
+                def;
+            scope.fileLoading = true;
+            if (scope.surveyId == null) {
+                return;
+            } else if (scope.views.staff.active) {
+                def = AdminUsersService.uploadSurveyStaffCsv(scope.surveyId, file);
+            } else if (scope.views.respondents.active) {
+                def = AdminUsersService.uploadSurveyRespondentsCsv(scope.surveyId, file);
+            }
+            def.finally(function () {
+                scope.fileLoading = false;
+            });
         };
 
         scope.$watchCollection(function () {
@@ -76,7 +89,6 @@ function directiveFun(AdminUsersService) {
                 scope.loading = true;
                 AdminUsersService.listSurveyRespondents(scope.surveyId, 0, 999).then(function (data) {
                     scope.users = data;
-                    console.log(data);
                 }).finally(function () {
                     scope.loading = false;
                 });

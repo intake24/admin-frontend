@@ -13,7 +13,9 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     var surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
-        surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
+        surveyStaffCsv = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
+        surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents",
+        surveyRespondentsCsv = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv";
 
     function unpackPublicUserData(data) {
 
@@ -64,6 +66,24 @@ function serviceFun($http, $window) {
             var data = {userRecords: [userReq].map(packUserData)};
             return $http.post(url, data);
 
+        },
+        uploadSurveyStaffCsv: function (surveyId, file) {
+            var url = getFormedUrl(surveyStaffCsv, {surveyId: surveyId});
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.post(url, fd, {
+                transformRequest: angular.identity,
+                headers: {"Content-Type": undefined}
+            });
+        },
+        uploadSurveyRespondentsCsv: function (surveyId, file) {
+            var url = getFormedUrl(surveyRespondentsCsv, {surveyId: surveyId});
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.post(url, fd, {
+                transformRequest: angular.identity,
+                headers: {"Content-Type": undefined}
+            });
         }
     };
 

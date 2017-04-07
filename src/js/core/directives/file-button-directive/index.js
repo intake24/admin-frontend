@@ -11,7 +11,8 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
             element.bind("click", function (e) {
-                var $input = angular.element("<input type='file' class='hidden' multiple>");
+                var $input = angular.element("<input type='file' class='hidden'" +
+                    (scope.multiple ? ' multiple ' : '') + ">");
                 $input[0].onchange = function () {
                     scope.onChange({fileList: $input[0].files});
 
@@ -26,6 +27,7 @@ module.exports = function (app) {
             restrict: 'A',
             link: controller,
             scope: {
+                multiple: "=?",
                 onChange: "&"
             }
         };

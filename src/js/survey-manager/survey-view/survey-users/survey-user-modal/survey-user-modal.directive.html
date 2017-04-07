@@ -31,7 +31,14 @@
                                ng-model="userName"
                                ng-disabled="user">
                     </div>
-                    <div ng-hide="passwordEdit">
+                    <div class="form-group" ng-show="!user">
+                        <label class="control-label">
+                            Password
+                        </label>
+                        <input type="text" class="form-control" placeholder="$ecRet"
+                               ng-model="password">
+                    </div>
+                    <div ng-hide="passwordEdit && user">
                         <div class="form-group">
                             <label class="control-label">
                                 Name

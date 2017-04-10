@@ -13,7 +13,7 @@ module.exports = function (app) {
             taOptions.forceTextAngularSanitize = true; // set false to allow the textAngular-sanitize provider to be replaced
             taOptions.keyMappings = []; // allow customizable keyMappings for specialized key boards or languages
             taOptions.toolbar = [
-                ['h1', 'h2', 'h3', 'h4', 'p'],
+                ['h1', 'h2', 'h3', 'h4', 'p', 'insertLink'],
                 ['bold', 'italics', 'underline', 'ul', 'ol'],
                 ['redo', 'undo', 'clear'],
                 ['wordcount', 'charcount']

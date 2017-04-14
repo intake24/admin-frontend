@@ -21,7 +21,16 @@ function serviceFun($http, $window) {
 
         return {
             id: data.id,
-            userName: data.aliases[0],
+            email: data.email[0],
+            name: data.name[0],
+            phone: data.phone[0]
+        }
+    }
+
+    function unpackPublicUserDataWithAlias(data) {
+        return {
+            id: data.id,
+            userName: data.userName,
             email: data.email[0],
             name: data.name[0],
             phone: data.phone[0]
@@ -35,7 +44,6 @@ function serviceFun($http, $window) {
     function packUserData(data) {
         return {
             id: data.id,
-            aliases: data.userName ? [data.userName] : [],
             name: data.name ? [data.name] : [],
             email: data.email ? [data.email] : [],
             phone: data.phone ? [data.phone] : []
@@ -47,7 +55,7 @@ function serviceFun($http, $window) {
             var url = getFormedUrl(surveyRespondents, {surveyId: surveyId}) +
                 "?offset=" + offset +
                 "&limit=" + limit;
-            return $http.get(getFormedUrl(url)).then(unpackPublicUserDataList);
+            return $http.get(getFormedUrl(url)).then(function(users) { return users.map(unpackPublicUserDataWithAlias); });
         },
         listSurveyStaff: function (surveyId, offset, limit) {
             var url = getFormedUrl(surveyStaff, {surveyId: surveyId}) +

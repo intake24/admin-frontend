@@ -15,8 +15,8 @@ module.exports = function (app) {
                     (scope.multiple ? ' multiple ' : '') + ">");
                 $input[0].onchange = function () {
                     scope.onChange({fileList: $input[0].files});
-
                     $input.remove();
+                    scope.$apply();
                 };
                 element.after($input);
                 $input[0].click();

@@ -27,12 +27,16 @@
                     <i class="fa fa-plus visible-xs"></i>
                 </button>
 
-                <a href="" class="btn btn-default" file-button on-change="onFilesChange(fileList)">
+                <button type="button" class="btn btn-default"
+                   file-button
+                   on-change="onFilesChange(fileList)"
+                   ng-disabled="fileLoading">
+                    <i class="fa" ng-class="{'fa-spinner fa-spin': fileLoading, hide: !fileLoading}"></i>
                     <span class="hidden-xs">
                         Upload CSV
                     </span>
-                    <i class="fa fa-upload visible-xs"></i>
-                </a>
+                    <i class="fa fa-upload visible-xs" ng-hide="fileLoading"></i>
+                </button>
             </li>
         </ul>
     </div>
@@ -57,6 +61,7 @@
                    user="editedUser"
                    user-type="getUserType()"
                    survey-id="surveyId"
+                   on-saved="onUserSaved()"
                    on-created="onUserCreated"
                    on-deleted="onUserDeleted"
 ></survey-user-modal>

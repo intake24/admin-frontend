@@ -65,7 +65,11 @@ module.exports = function (app) {
                         }
 
                     } else {
-                        MessageService.showMessage(gettext("Something went wrong. Please check the console for details."), "danger");
+                        if (rejection.data.errorMessage) {
+                            MessageService.showMessage(rejection.data.errorMessage, "danger");
+                        } else {
+                            MessageService.showMessage(gettext("Something went wrong. Please check the console for details."), "danger");
+                        }
                     }
                     return $q.reject(rejection);
                 },

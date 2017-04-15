@@ -7,11 +7,11 @@
 var userTypes = require("./survey-users-types")();
 
 module.exports = function (app) {
-    app.directive("surveyUsers", ["AdminUsersService", directiveFun]);
+    app.directive("surveyUsers", ["AdminUsersService", "MessageService", directiveFun]);
     require("./survey-user-modal/survey-user-modal.directive")(app);
 };
 
-function directiveFun(AdminUsersService) {
+function directiveFun(AdminUsersService, MessageService) {
 
     function controller(scope, element, attribute) {
 
@@ -62,14 +62,20 @@ function directiveFun(AdminUsersService) {
             }
         };
 
+        scope.onUserSaved = function () {
+            successMessage(MessageService);
+        };
+
         scope.onUserCreated = function (user) {
             scope.users.push(user);
             getUsers(scope, AdminUsersService);
+            successMessage(MessageService);
         };
 
         scope.onUserDeleted = function () {
             var i = scope.users.indexOf(scope.editedUser);
             scope.users.splice(i, 1);
+            successMessage(MessageService);
         };
 
         scope.selectView(scope.views.respondents);
@@ -85,7 +91,9 @@ function directiveFun(AdminUsersService) {
             } else if (scope.views.respondents.active) {
                 def = AdminUsersService.uploadSurveyRespondentsCsv(scope.surveyId, file);
             }
-            def.finally(function () {
+            def.then(function () {
+                successMessage(MessageService);
+            }).finally(function () {
                 scope.fileLoading = false;
             });
         };
@@ -132,4 +140,8 @@ function getUsers(scope, service) {
             scope.loading = false;
         });
     }
+}
+
+function successMessage(MessageService) {
+    MessageService.showMessage("Users list was successfully updated", "success");
 }

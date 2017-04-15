@@ -16,8 +16,9 @@ function serviceFun($http, $window) {
         surveyStaffCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
         surveyRespondentsUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents",
         surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
-        usersDeleteUrlPattern = $window.api_base_url + "users/delete",
+        usersUrlPattern = $window.api_base_url + "users",
         userUrlPattern = $window.api_base_url + "users/:userId",
+        usersDeleteUrlPattern = $window.api_base_url + "users/delete",
         userPasswordUrlPattern = $window.api_base_url + "users/:userId/password";
 
     function unpackPublicUserDataWithAlias(data) {
@@ -35,7 +36,20 @@ function serviceFun($http, $window) {
         return dataList.map(unpackPublicUserDataWithAlias);
     }
 
-    function packCreateOrUpdateUserData(data) {
+    function packCreateUseData(data) {
+        return {
+            userInfo: {
+                name: data.name ? [data.name] : [],
+                email: data.email ? [data.email] : [],
+                phone: data.phone ? [data.phone] : [],
+                roles: data.roles,
+                customFields: {},
+            },
+            password: data.password
+        }
+    }
+
+    function packCreateOrUpdateRespondentData(data) {
         return {
             id: data.id,
             userName: data.userName,
@@ -72,14 +86,13 @@ function serviceFun($http, $window) {
         },
         createOrUpdateRespondent: function (userReq) {
             var url = getFormedUrl(surveyRespondentsUrlPattern, {surveyId: userReq.surveyId});
-            var data = {users: [userReq].map(packCreateOrUpdateUserData)};
+            var data = {users: [userReq].map(packCreateOrUpdateRespondentData)};
             return $http.post(url, data);
 
         },
-        createOrUpdateSurveyStaff: function (userReq) {
-            var url = getFormedUrl(surveyStaffUrlPattern, {surveyId: userReq.surveyId});
-            var data = {users: [userReq].map(packCreateOrUpdateUserData)};
-            return $http.post(url, data);
+        createUser: function (userReq) {
+            var data = packCreateUseData(userReq);
+            return $http.post(usersUrlPattern, data);
 
         },
         patchUser: function (userId, userReq) {

@@ -27,7 +27,8 @@ function directiveFun(AdminUsersService, ModalService) {
         scope.loading = false;
 
         scope.formValidation = {
-            userName: true
+            userName: true,
+            email: true
         };
 
         scope.switchPasswordView = function (bool) {
@@ -43,10 +44,7 @@ function directiveFun(AdminUsersService, ModalService) {
                 return;
             }
             scope.loading = true;
-            getRequest(scope, AdminUsersService).then(function (reqData) {
-                updateUser(scope);
-                scope.onSaved(reqData);
-            }).finally(function () {
+            getRequest(scope, AdminUsersService).finally(function () {
                 scope.loading = false;
             });
         };
@@ -57,7 +55,8 @@ function directiveFun(AdminUsersService, ModalService) {
             }
             scope.loading = true;
             AdminUsersService.deleteUser([scope.user.id]).then(function () {
-                scope.onSaved();
+                scope.isOpen = false;
+                scope.onDeleted();
             }).finally(function () {
                 scope.loading = false;
             });
@@ -71,7 +70,11 @@ function directiveFun(AdminUsersService, ModalService) {
                 ModalService.hideArbitraryModal(modalId);
             }
             updateScope(scope, scope.user);
-        })
+        });
+
+        scope.$watch("userType", function () {
+            scope.loginIsEmail = scope.userType == USER_TYPE_STAFF;
+        });
 
     }
 
@@ -82,7 +85,9 @@ function directiveFun(AdminUsersService, ModalService) {
             isOpen: "=?",
             user: "=?",
             userType: "=?",
-            onSaved: "&"
+            onSaved: "&",
+            onCreated: "=?",
+            onDeleted: "=?"
         },
         link: controller,
         template: require("./survey-user-modal.directive.html")
@@ -107,9 +112,6 @@ function updateScope(scope, user) {
 }
 
 function updateUser(scope) {
-    if (scope.user == null) {
-        scope.user = {};
-    }
     scope.user.userName = scope.userName;
     scope.user.name = scope.name;
     scope.user.email = scope.email;
@@ -117,8 +119,12 @@ function updateUser(scope) {
 }
 
 function formIsValid(scope) {
-    scope.formValidation.userName = scope.userName.trim() != "";
-    return scope.formValidation.userName;
+    if (scope.userType != USER_TYPE_STAFF) {
+        scope.formValidation.userName = scope.userName.trim() != "";
+    } else {
+        scope.formValidation.email = scope.email.trim() != "";
+    }
+    return scope.formValidation.userName && scope.formValidation.email;
 }
 
 function getRequest(scope, AdminUsersService) {
@@ -128,7 +134,9 @@ function getRequest(scope, AdminUsersService) {
             userName: scope.user.userName,
             password: scope.password
         };
-        serviceReq = AdminUsersService.patchUserPassword(scope.user.id, scope.password);
+        serviceReq = AdminUsersService.patchUserPassword(scope.user.id, scope.password).then(function () {
+            scope.isOpen = false;
+        });
     } else if (scope.user && !scope.passwordEdit) {
         reqData = {
             userName: scope.user.userName,
@@ -138,17 +146,24 @@ function getRequest(scope, AdminUsersService) {
             phone: scope.phone,
             roles: scope.user.roles
         };
-        serviceReq = AdminUsersService.patchUser(scope.user.id, reqData);
+        serviceReq = AdminUsersService.patchUser(scope.user.id, reqData).then(function () {
+            scope.isOpen = false;
+            updateUser(scope);
+            scope.onSaved(reqData);
+        });
     } else if (scope.userType == USER_TYPE_STAFF) {
         reqData = {
-            userName: scope.userName,
             password: scope.password,
             name: scope.name,
-            surveyId: scope.surveyId,
             email: scope.email,
-            phone: scope.phone
+            phone: scope.phone,
+            roles: [scope.surveyId + "/staff"],
         };
-        serviceReq = AdminUsersService.createOrUpdateSurveyStaff(reqData);
+        serviceReq = AdminUsersService.createUser(reqData).then(function (data) {
+            console.log(data);
+            scope.isOpen = false;
+            scope.onCreated(reqData);
+        });
     } else if (scope.userType == USER_TYPE_RESPONDENT) {
         reqData = {
             userName: scope.userName,
@@ -158,7 +173,11 @@ function getRequest(scope, AdminUsersService) {
             email: scope.email,
             phone: scope.phone
         };
-        serviceReq = AdminUsersService.createOrUpdateRespondent(reqData);
+        serviceReq = AdminUsersService.createOrUpdateRespondent(reqData).then(function (id) {
+            scope.isOpen = false;
+            reqData.id = id;
+            scope.onCreated(reqData);
+        });
     }
     return serviceReq.then(function () {
         return reqData;

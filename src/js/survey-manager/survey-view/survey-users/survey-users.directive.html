@@ -41,7 +41,7 @@
 <div>
     <div class="bordered-list-item" ng-repeat="user in filteredUsers = (users | filter:searchQuery)">
         <h4>
-            {{user.userName}}
+            {{getUserTitle(user)}}
             <div class="pull-right">
                 <button type="button" class="btn btn-default btn-sm" ng-click="editUser(user)">
                     <i class="fa fa-pencil"></i>
@@ -55,7 +55,8 @@
 
 <survey-user-modal is-open="userModalIsOpen"
                    user="editedUser"
-                   user-type="views.staff.active ? userTypes.USER_TYPE_STAFF : userTypes.USER_TYPE_RESPONDENT"
+                   user-type="getUserType()"
                    survey-id="surveyId"
-                   on-saved="onUserSaved()"
+                   on-created="onUserCreated"
+                   on-deleted="onUserDeleted"
 ></survey-user-modal>

@@ -26,8 +26,6 @@ function directiveFun(AdminUsersService) {
 
         scope.users = [];
 
-        scope.userTypes = userTypes;
-
         scope.editedUser = null;
 
         scope.loading = false;
@@ -52,8 +50,26 @@ function directiveFun(AdminUsersService) {
             scope.userModalIsOpen = true;
         };
 
-        scope.onUserSaved = function () {
-            console.log(scope.editedUser);
+        scope.getUserType = function () {
+            return scope.views.staff.active ? userTypes.USER_TYPE_STAFF : userTypes.USER_TYPE_RESPONDENT;
+        };
+
+        scope.getUserTitle = function (user) {
+            if (scope.views.staff.active) {
+                return user.name ? [user.name, user.email].join(", ") : user.email;
+            } else {
+                return user.name ? [user.name, user.userName].join(", ") : user.userName;
+            }
+        };
+
+        scope.onUserCreated = function (user) {
+            scope.users.push(user);
+            getUsers(scope, AdminUsersService);
+        };
+
+        scope.onUserDeleted = function () {
+            var i = scope.users.indexOf(scope.editedUser);
+            scope.users.splice(i, 1);
         };
 
         scope.selectView(scope.views.respondents);
@@ -76,24 +92,8 @@ function directiveFun(AdminUsersService) {
 
         scope.$watchCollection(function () {
             return [scope.surveyId, scope.views.staff.active, scope.views.respondents.active];
-        }, function (newVal) {
-            if (scope.surveyId == null) {
-                return;
-            } else if (scope.views.staff.active) {
-                scope.loading = true;
-                AdminUsersService.listSurveyStaff(scope.surveyId, 0, 999).then(function (data) {
-                    scope.users = data;
-                }).finally(function () {
-                    scope.loading = false;
-                });
-            } else if (scope.views.respondents.active) {
-                scope.loading = true;
-                AdminUsersService.listSurveyRespondents(scope.surveyId, 0, 999).then(function (data) {
-                    scope.users = data;
-                }).finally(function () {
-                    scope.loading = false;
-                });
-            }
+        }, function () {
+            getUsers(scope, AdminUsersService);
         }, true);
 
     }
@@ -112,4 +112,24 @@ function directiveFun(AdminUsersService) {
 function View(name) {
     this.name = name;
     this.active = false;
+}
+
+function getUsers(scope, service) {
+    if (scope.surveyId == null) {
+        return;
+    } else if (scope.views.staff.active) {
+        scope.loading = true;
+        service.listSurveyStaff(scope.surveyId, 0, 999).then(function (data) {
+            scope.users = data;
+        }).finally(function () {
+            scope.loading = false;
+        });
+    } else if (scope.views.respondents.active) {
+        scope.loading = true;
+        service.listSurveyRespondents(scope.surveyId, 0, 999).then(function (data) {
+            scope.users = data;
+        }).finally(function () {
+            scope.loading = false;
+        });
+    }
 }

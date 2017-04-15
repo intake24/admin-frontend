@@ -34,6 +34,7 @@ function directiveFun(AdminUsersService) {
         scope.fileLoading = false;
 
         scope.newUser = function () {
+            scope.editedUser = null;
             scope.userModalIsOpen = true;
         };
 
@@ -52,7 +53,7 @@ function directiveFun(AdminUsersService) {
         };
 
         scope.onUserSaved = function () {
-            console.log(user);
+            console.log(scope.editedUser);
         };
 
         scope.selectView(scope.views.respondents);
@@ -94,12 +95,6 @@ function directiveFun(AdminUsersService) {
                 });
             }
         }, true);
-
-        scope.$watch("userModalIsOpen", function (newVal) {
-            if (!newVal) {
-                scope.editedUser = null;
-            }
-        });
 
     }
 

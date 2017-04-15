@@ -12,20 +12,12 @@ module.exports = function (app) {
 
 function serviceFun($http, $window) {
 
-    var surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
-        surveyStaffCsv = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
-        surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents",
-        surveyRespondentsCsv = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv";
-
-    function unpackPublicUserData(data) {
-
-        return {
-            id: data.id,
-            email: data.email[0],
-            name: data.name[0],
-            phone: data.phone[0]
-        }
-    }
+    var surveyStaffUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff",
+        surveyStaffCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
+        surveyRespondentsUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents",
+        surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
+        userUrlPattern = $window.api_base_url + "users/:userId",
+        userPasswordUrlPattern = $window.api_base_url + "users/:userId/password";
 
     function unpackPublicUserDataWithAlias(data) {
         return {
@@ -33,50 +25,75 @@ function serviceFun($http, $window) {
             userName: data.userName,
             email: data.email[0],
             name: data.name[0],
-            phone: data.phone[0]
+            phone: data.phone[0],
+            roles: data.roles
         }
     }
 
-    function unpackPublicUserDataList(dataList) {
-        return dataList.map(unpackPublicUserData);
+    function unpackPublicUserDataWithAliasList(dataList) {
+        return dataList.map(unpackPublicUserDataWithAlias);
     }
 
-    function packUserData(data) {
+    function packCreateOrUpdateUserData(data) {
         return {
             id: data.id,
+            userName: data.userName,
+            password: data.password,
             name: data.name ? [data.name] : [],
             email: data.email ? [data.email] : [],
-            phone: data.phone ? [data.phone] : []
+            phone: data.phone ? [data.phone] : [],
+            customFields: {}
+        }
+    }
+
+    function packPatchUserData(data) {
+        return {
+            name: data.name ? [data.name] : [],
+            email: data.email ? [data.email] : [],
+            phone: data.phone ? [data.phone] : [],
+            roles: data.roles,
+            customFields: {}
         }
     }
 
     return {
         listSurveyRespondents: function (surveyId, offset, limit) {
-            var url = getFormedUrl(surveyRespondents, {surveyId: surveyId}) +
+            var url = getFormedUrl(surveyRespondentsUrlPattern, {surveyId: surveyId}) +
                 "?offset=" + offset +
                 "&limit=" + limit;
-            return $http.get(getFormedUrl(url)).then(function(users) { return users.map(unpackPublicUserDataWithAlias); });
+            return $http.get(getFormedUrl(url)).then(unpackPublicUserDataWithAliasList);
         },
         listSurveyStaff: function (surveyId, offset, limit) {
-            var url = getFormedUrl(surveyStaff, {surveyId: surveyId}) +
+            var url = getFormedUrl(surveyStaffUrlPattern, {surveyId: surveyId}) +
                 "?offset=" + offset +
                 "&limit=" + limit;
-            return $http.get(getFormedUrl(url)).then(unpackPublicUserDataList);
+            return $http.get(getFormedUrl(url)).then(unpackPublicUserDataWithAliasList);
         },
-        patchSurveyRespondent: function (userReq) {
-            var url = getFormedUrl(surveyRespondents, {surveyId: userReq.surveyId});
-            var data = {userRecords: [userReq].map(packUserData)};
+        createOrUpdateRespondent: function (userReq) {
+            var url = getFormedUrl(surveyRespondentsUrlPattern, {surveyId: userReq.surveyId});
+            var data = {users: [userReq].map(packCreateOrUpdateUserData)};
             return $http.post(url, data);
 
         },
-        patchSurveyStaff: function (userReq) {
-            var url = getFormedUrl(surveyStaff, {surveyId: userReq.surveyId});
-            var data = {userRecords: [userReq].map(packUserData)};
+        createOrUpdateSurveyStaff: function (userReq) {
+            var url = getFormedUrl(surveyStaffUrlPattern, {surveyId: userReq.surveyId});
+            var data = {users: [userReq].map(packCreateOrUpdateUserData)};
             return $http.post(url, data);
+
+        },
+        patchUser: function (userId, userReq) {
+            var url = getFormedUrl(userUrlPattern, {userId: userId});
+            var data = packPatchUserData(userReq);
+            return $http.patch(url, data);
+
+        },
+        patchUserPassword: function (userId, password) {
+            var url = getFormedUrl(userPasswordUrlPattern, {userId: userId});
+            return $http.patch(url, {password: password});
 
         },
         uploadSurveyStaffCsv: function (surveyId, file) {
-            var url = getFormedUrl(surveyStaffCsv, {surveyId: surveyId});
+            var url = getFormedUrl(surveyStaffCsvUrlPattern, {surveyId: surveyId});
             var fd = new FormData();
             fd.append("file", file);
             return $http.post(url, fd, {
@@ -85,7 +102,7 @@ function serviceFun($http, $window) {
             });
         },
         uploadSurveyRespondentsCsv: function (surveyId, file) {
-            var url = getFormedUrl(surveyRespondentsCsv, {surveyId: surveyId});
+            var url = getFormedUrl(surveyRespondentsCsvUrlPattern, {surveyId: surveyId});
             var fd = new FormData();
             fd.append("file", file);
             return $http.post(url, fd, {

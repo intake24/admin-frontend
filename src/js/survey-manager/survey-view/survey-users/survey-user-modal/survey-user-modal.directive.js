@@ -42,10 +42,10 @@ function directiveFun(AdminUsersService, ModalService) {
             if (!formIsValid(scope)) {
                 return;
             }
-            var userReq = getRequest(scope);
             scope.loading = true;
-            getRequest(scope, AdminUsersService).then(function () {
-                scope.onSaved(userReq);
+            getRequest(scope, AdminUsersService).then(function (reqData) {
+                updateUser(scope);
+                scope.onSaved(reqData);
             }).finally(function () {
                 scope.loading = false;
             });
@@ -94,42 +94,61 @@ function updateScope(scope, user) {
     }
 }
 
+function updateUser(scope) {
+    if (scope.user == null) {
+        scope.user = {};
+    }
+    scope.user.userName = scope.userName;
+    scope.user.name = scope.name;
+    scope.user.email = scope.email;
+    scope.user.phone = scope.phone;
+}
+
 function formIsValid(scope) {
-    scope.formValidation.userName = scope.user ? scope.user.userName : scope.newUserName;
+    scope.formValidation.userName = scope.userName.trim() != "";
     return scope.formValidation.userName;
 }
 
 function getRequest(scope, AdminUsersService) {
+    var serviceReq, reqData;
     if (scope.user && scope.passwordEdit) {
-        return AdminUsersService.patchUserPassword({
+        reqData = {
             userName: scope.user.userName,
             password: scope.password
-        });
+        };
+        serviceReq = AdminUsersService.patchUserPassword(scope.user.id, scope.password);
     } else if (scope.user && !scope.passwordEdit) {
-        return AdminUsersService.patchUser({
+        reqData = {
             userName: scope.user.userName,
             name: scope.name,
             surveyId: scope.surveyId,
             email: scope.email,
-            phone: scope.phone
-        });
+            phone: scope.phone,
+            roles: scope.user.roles
+        };
+        serviceReq = AdminUsersService.patchUser(scope.user.id, reqData);
     } else if (scope.userType == USER_TYPE_STAFF) {
-        return AdminUsersService.patchSurveyStaff({
+        reqData = {
             userName: scope.userName,
             password: scope.password,
             name: scope.name,
             surveyId: scope.surveyId,
             email: scope.email,
             phone: scope.phone
-        });
+        };
+        serviceReq = AdminUsersService.createOrUpdateSurveyStaff(reqData);
     } else if (scope.userType == USER_TYPE_RESPONDENT) {
-        return AdminUsersService.patchSurveyRespondent({
+        reqData = {
             userName: scope.userName,
             password: scope.password,
             name: scope.name,
             surveyId: scope.surveyId,
             email: scope.email,
             phone: scope.phone
-        });
+        };
+        serviceReq = AdminUsersService.createOrUpdateRespondent(reqData);
     }
+    return serviceReq.then(function () {
+        return reqData;
+    });
 }

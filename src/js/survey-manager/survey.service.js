@@ -61,10 +61,13 @@ function serviceFun($http, $window) {
             });
         },
         patch: function (surveyId, surveyReq) {
-            return $http.patch(getFormedUrl(surveyUrl, {surveyId: surveyId}), surveyReq)
+            return $http.patch(getFormedUrl(surveyUrl, {surveyId: surveyId}), packClientData(surveyReq))
                 .then(function (data) {
                     return unpackServerData(data);
                 });
+        },
+        delete: function (surveyId) {
+            return $http.delete(getFormedUrl(surveyUrl, {surveyId: surveyId}));
         },
         getCsvResults: function (surveyId, downloadReq) {
             var url = getFormedUrl(surveyCsvResults, {surveyId: surveyId}) +

@@ -47,7 +47,7 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
         };
 
         scope.cancel = function () {
-            updateForm(scope);
+            updateScope(scope, scope.survey);
         };
 
         scope.save = function () {
@@ -68,7 +68,6 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
 
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
-            updateForm(scope);
         });
 
     }
@@ -122,14 +121,4 @@ function updateScope(scope, data) {
     scope.supportEmail = data.supportEmail;
     scope.startDate = new Date(data.startDate);
     scope.endDate = new Date(data.endDate);
-}
-
-function updateForm(scope) {
-    scope.newName = scope.name;
-    scope.newSelectedLocale = scope.selectedLocale;
-    scope.newAllowGeneratedUsers = scope.allowGeneratedUsers;
-    scope.newExternalFollowUpUrl = scope.externalFollowUpUrl;
-    scope.newSupportEmail = scope.supportEmail;
-    scope.newStartDate = scope.startDate;
-    scope.newEndDate = scope.endDate;
 }

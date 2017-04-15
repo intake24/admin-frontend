@@ -6,17 +6,15 @@
 
 module.exports = function (app) {
     app.directive("surveyView", ["LocalesService", "SurveyService", "appRoutes",
-        "$route", "$routeParams", directiveFun]);
+        "$route", "$routeParams", "$location", directiveFun]);
     require("./survey-description/survey-description.directive")(app);
     require("./survey-results/survey-results.directive")(app);
     require("./survey-users/survey-users.directive")(app);
 };
 
-function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routeParams) {
+function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routeParams, $location) {
 
     function controller(scope, element, attribute) {
-
-        scope.title = "";
 
         scope.survey = null;
 
@@ -26,6 +24,15 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routePa
             general: new SurveyView("General", appRoutes.surveyManagerSurvey),
             users: new SurveyView("Users", appRoutes.surveyManagerSurveyUsers),
             results: new SurveyView("Results", appRoutes.surveyManagerSurveyResults)
+        };
+
+        scope.delete = function () {
+            if (!confirm("Are you sure you want to delete this survey?")) {
+                return;
+            }
+            SurveyService.delete(scope.surveyId).then(function () {
+                $location.path(appRoutes.surveyManagerList);
+            });
         };
 
         scope.getViewList = function () {
@@ -38,8 +45,13 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $route, $routePa
             return r;
         };
 
+        scope.$watch("survey.id", function (newVal, oldVal) {
+            if (newVal && oldVal && newVal != oldVal) {
+                $location.path(appRoutes.surveyManagerSurvey.replace(":surveyId", newVal)).replace();
+            }
+        });
+
         SurveyService.get($routeParams.surveyId).then(function (data) {
-            scope.title = data.id;
             scope.survey = data;
         });
 

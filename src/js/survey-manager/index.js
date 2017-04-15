@@ -11,4 +11,5 @@ module.exports = function (app) {
     require("./survey-manager-list/survey-manager-icon/survey-manager-icon.directive")(app);
     require("./survey-view/survey-view.directive")(app);
     require("./survey.service")(app);
+    require("./survey-edit-form/survey-edit-form.directive")(app);
 };

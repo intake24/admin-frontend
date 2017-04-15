@@ -65,7 +65,7 @@ module.exports = function (app) {
                         }
 
                     } else {
-                        if (rejection.data.errorMessage) {
+                        if (rejection.data && rejection.data.errorMessage) {
                             MessageService.showMessage(rejection.data.errorMessage, "danger");
                         } else {
                             MessageService.showMessage(gettext("Something went wrong. Please check the console for details."), "danger");

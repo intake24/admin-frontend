@@ -16,6 +16,7 @@ function serviceFun($http, $window) {
         surveyStaffCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
         surveyRespondentsUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents",
         surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
+        usersDeleteUrlPattern = $window.api_base_url + "users/delete",
         userUrlPattern = $window.api_base_url + "users/:userId",
         userPasswordUrlPattern = $window.api_base_url + "users/:userId/password";
 
@@ -86,6 +87,9 @@ function serviceFun($http, $window) {
             var data = packPatchUserData(userReq);
             return $http.patch(url, data);
 
+        },
+        deleteUser: function (userIds) {
+            return $http.post(usersDeleteUrlPattern, {userIds: userIds});
         },
         patchUserPassword: function (userId, password) {
             var url = getFormedUrl(userPasswordUrlPattern, {userId: userId});

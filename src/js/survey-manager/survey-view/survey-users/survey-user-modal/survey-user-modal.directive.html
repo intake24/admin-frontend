@@ -10,6 +10,9 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group" ng-show="user">
+                        <button type="button" class="btn btn-link pull-right" ng-click="deleteUser()">
+                            Delete user
+                        </button>
                         <ul class="nav nav-pills">
                             <li ng-class="{active: !passwordEdit}">
                                 <a href="" ng-click="switchPasswordView(false)">

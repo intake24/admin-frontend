@@ -51,6 +51,18 @@ function directiveFun(AdminUsersService, ModalService) {
             });
         };
 
+        scope.deleteUser = function () {
+            if (!confirm("Are you sure you want to delete this user?")) {
+                return;
+            }
+            scope.loading = true;
+            AdminUsersService.deleteUser([scope.user.id]).then(function () {
+                scope.onSaved();
+            }).finally(function () {
+                scope.loading = false;
+            });
+        };
+
         scope.$watch("isOpen", function (newVal) {
             var modalId = "surveyUserModal";
             if (newVal) {

@@ -15,7 +15,7 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $q) {
     function controller(scope, element, attribute) {
 
         function applyFilter() {
-            scope.filteredSurveys = _.groupBy(_.sortBy(_.filter(scope.allSurveys, function(survey) { return survey.id.includes(scope.searchQuery); }), function (survey) { return survey.id; }), function(survey) { return survey.localeId; });
+            scope.filteredSurveys = _.groupBy(_.sortBy(_.filter(scope.allSurveys, function(survey) { return survey.id.search(scope.searchQuery) > -1; }), function (survey) { return survey.id; }), function(survey) { return survey.localeId; });
             scope.filteredLocales = _.filter(scope.allLocales, function(locale) { return scope.filteredSurveys.hasOwnProperty(locale.id); });
             scope.noSurveys = _.isEmpty(scope.filteredSurveys);
         }

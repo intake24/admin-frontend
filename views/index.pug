@@ -12,7 +12,7 @@ html(lang=lang dir=lang_dir)
             window.intake24_locale = '#{intake24_locale}';
 
         //- Load current translation file
-        script(type="text/javascript" src=`/i18n/${lang}/messages.js`)
+        script(type="text/javascript" src='/i18n/' + lang + '/messages.js')
         script(type="text/javascript" src='/intake24-admin.js')
 
     body(ng-app='intake24.admin' ng-controller='AdminController'

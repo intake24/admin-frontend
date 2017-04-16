@@ -13,21 +13,24 @@ module.exports = function (app) {
                         var $http = $injector.get('$http');
                         pen.deferred.resolve($http(pen.config));
                     });
-                })
+                });
+                pendingDefs.length = 0;
             });
 
             function retryRequest(rejection) {
                 var def = $q.defer();
                 pendingDefs.push({deferred: def, config: rejection.config});
-                var $timeout = $injector.get('$timeout');
-                $timeout(function () {
-                    var $http = $injector.get('$http'),
-                        url = window.api_base_url + "refresh";
-                    return $http.post(url).then(function (data) {
-                        UserStateService.setAccessToken(data.accessToken);
-                    });
+                if (pendingDefs.length < 2) {
+                    var $timeout = $injector.get('$timeout');
+                    $timeout(function () {
+                        var $http = $injector.get('$http'),
+                            url = window.api_base_url + "refresh";
+                        return $http.post(url).then(function (data) {
+                            UserStateService.setAccessToken(data.accessToken);
+                        });
 
-                });
+                    });
+                }
                 return def.promise;
             }
 

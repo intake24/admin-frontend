@@ -8,7 +8,8 @@ function serviceFun($rootScope, $timeout, $cookies) {
 
     var REFRESH_TOKEN = "refresh-token",
         ACCESS_TOKEN = "access-token",
-        USER_NAME = "auth-username";
+        USER_NAME = "auth-username",
+        OPTIONS = {path: "/"};
 
     var loggedInEventListeners = [],
         userWasNotAuthenticated = true;
@@ -21,14 +22,14 @@ function serviceFun($rootScope, $timeout, $cookies) {
 
     return {
         init: function (username, refreshToken) {
-            $cookies.put(USER_NAME, username);
+            $cookies.put(USER_NAME, username, OPTIONS);
             this.setRefreshToken(refreshToken);
         },
         setRefreshToken: function (refreshToken) {
-            $cookies.put(REFRESH_TOKEN, refreshToken);
+            $cookies.put(REFRESH_TOKEN, refreshToken, OPTIONS);
         },
         setAccessToken: function (accessToken) {
-            $cookies.put(ACCESS_TOKEN, accessToken);
+            $cookies.put(ACCESS_TOKEN, accessToken, OPTIONS);
             executeQueue();
             if (!userWasNotAuthenticated) {
                 $rootScope.$broadcast('intake24.admin.LoggedIn');
@@ -36,9 +37,12 @@ function serviceFun($rootScope, $timeout, $cookies) {
             }
         },
         logout: function () {
+            // To make it work in IE
+            $cookies.put(REFRESH_TOKEN, "expired", { expires: new Date("1970-01-01"), path: "/"});
+            $cookies.put(ACCESS_TOKEN, "expired", { expires: new Date("1970-01-01"), path: "/"});
             $cookies.remove(REFRESH_TOKEN);
             $cookies.remove(ACCESS_TOKEN);
-            $cookies.put(USER_NAME, '');
+            $cookies.put(USER_NAME, '', OPTIONS);
             userWasNotAuthenticated = true;
         },
         getUsername: function () {

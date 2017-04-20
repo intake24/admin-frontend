@@ -21,6 +21,8 @@ function directiveFun(AdminUsersService, ModalService) {
         scope.name = "";
         scope.email = "";
         scope.phone = "";
+        scope.emailNotifications = true;
+        scope.smsNotifications = true;
 
         scope.passwordEdit = false;
 
@@ -54,7 +56,7 @@ function directiveFun(AdminUsersService, ModalService) {
                 return;
             }
             scope.loading = true;
-            AdminUsersService.deleteUser([scope.user.id]).then(function () {
+            AdminUsersService.deleteUser(scope.user.id).then(function () {
                 scope.isOpen = false;
                 scope.onDeleted();
             }).finally(function () {
@@ -102,12 +104,16 @@ function updateScope(scope, user) {
         scope.name = user.name;
         scope.email = user.email;
         scope.phone = user.phone;
+        scope.emailNotifications = user.emailNotifications;
+        scope.smsNotifications = user.smsNotifications;
     } else {
         scope.userName = "";
         scope.password = "";
         scope.name = "";
         scope.email = "";
         scope.phone = "";
+        scope.emailNotifications = true;
+        scope.smsNotifications = true;
     }
 }
 
@@ -144,6 +150,8 @@ function getRequest(scope, AdminUsersService) {
             surveyId: scope.surveyId,
             email: scope.email,
             phone: scope.phone,
+            emailNotifications: scope.emailNotifications,
+            smsNotifications: scope.smsNotifications,
             roles: scope.user.roles
         };
         serviceReq = AdminUsersService.patchUser(scope.user.id, reqData).then(function () {

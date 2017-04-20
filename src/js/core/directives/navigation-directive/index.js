@@ -4,11 +4,13 @@
 
 "use strict";
 
+var _ = require('underscore');
+
 module.exports = function (app) {
-    app.directive("navigationDirective", ["$location", "LocalesService", "appRoutes", directiveFun]);
+    app.directive("navigationDirective", ["$location", "LocalesService", "appRoutes", "UserStateService", directiveFun]);
 };
 
-function directiveFun($location, LocalesService, appRoutes) {
+function directiveFun($location, LocalesService, appRoutes, UserStateService) {
 
     function controller(scope, element, attributes) {
 
@@ -67,15 +69,29 @@ function directiveFun($location, LocalesService, appRoutes) {
             scope.menuItems[itemName].collapsed = !scope.menuItems[itemName].collapsed;
         };
 
-        scope.$watch(function () {
-            return LocalesService.list();
-        }, function (event) {
-            scope.locales = LocalesService.list();
-        });
+        scope.$watchGroup(
+            [
+                function() { return LocalesService.list(); },
+                function() { return UserStateService.getUserInfo(); }
+            ],
+            function (newValues, oldValues, scope) {
+
+                scope.currentUser = UserStateService.getUserInfo();
+                scope.locales = LocalesService.list();
+
+                scope.accessibleFoodLocales = _.filter(_.pluck(scope.locales, "id"), function (locale) {
+                    return scope.currentUser && scope.currentUser.canAccessFoodDatabase(locale.id);
+                });
+            }
+        );
 
         scope.currentLocale = LocalesService.current();
 
         scope.$on("$routeChangeSuccess", setActiveRoute);
+
+        scope.canAccessFoodLocale = function (locale) {
+            return _.contains(scope.accessibleFoodLocales, locale.id);
+        };
 
         function setActiveRoute() {
             for (var i in scope.menuItems) {

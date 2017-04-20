@@ -18,7 +18,7 @@ function serviceFun($http, $window) {
         surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
         usersUrlPattern = $window.api_base_url + "users",
         userUrlPattern = $window.api_base_url + "users/:userId",
-        usersDeleteUrlPattern = $window.api_base_url + "users/delete",
+        userDeleteUrlPattern = $window.api_base_url + "users/:userId",
         userPasswordUrlPattern = $window.api_base_url + "users/:userId/password";
 
     function unpackPublicUserDataWithAlias(data) {
@@ -28,6 +28,8 @@ function serviceFun($http, $window) {
             email: data.email[0],
             name: data.name[0],
             phone: data.phone[0],
+            emailNotifications: data.emailNotifications,
+            smsNotifications: data.smsNotifications,
             roles: data.roles
         }
     }
@@ -67,6 +69,8 @@ function serviceFun($http, $window) {
             email: data.email ? [data.email] : [],
             phone: data.phone ? [data.phone] : [],
             roles: data.roles,
+            emailNotifications: data.emailNotifications,
+            smsNotifications: data.smsNotifications,
             customFields: {}
         }
     }
@@ -101,8 +105,9 @@ function serviceFun($http, $window) {
             return $http.patch(url, data);
 
         },
-        deleteUser: function (userIds) {
-            return $http.post(usersDeleteUrlPattern, {userIds: userIds});
+        deleteUser: function (userId) {
+            var url = getFormedUrl(userDeleteUrlPattern, {userId: userId});
+            return $http.delete(url);
         },
         patchUserPassword: function (userId, password) {
             var url = getFormedUrl(userPasswordUrlPattern, {userId: userId});

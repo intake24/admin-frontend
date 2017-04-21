@@ -5,7 +5,7 @@
                 {{survey.id}}
             </h1>
 
-            <button type="button" class="btn btn-link pull-right" ng-click="delete()">
+            <button type="button" class="btn btn-link pull-right" ng-click="delete()" ng-if="currentUser.canCreateSurveys()">
                 Delete survey
             </button>
 

@@ -1,13 +1,13 @@
 <form class="form-horizontal">
     <div class="form-group" ng-class="{'has-error': !formValidation.name}">
-        <label class="control-label col-sm-2">Survey name</label>
+        <label class="control-label col-sm-2">Survey ID</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control input-lg" placeholder="Survey name"
-                   ng-model="name">
+            <input type="text" class="form-control input-lg" placeholder="Survey name" ng-attr-title="{{ currentUser.canCreateSurveys()? '' : 'Please contact the system administrator to change your survey\'s ID' }}"
+                   ng-model="name" ng-disabled="!currentUser.canCreateSurveys()">
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !formValidation.supportEmail}">
-        <label class="control-label col-sm-2">Contact email</label>
+        <label class="control-label col-sm-2">Survey support e-mail</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" placeholder="admin@example.com"
                    ng-model="supportEmail">
@@ -41,7 +41,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Locale</label>
         <div class="col-sm-10">
-            <select class="form-control" ng-model="selectedLocale">
+            <select class="form-control" ng-model="selectedLocale" ng-disabled="!currentUser.canCreateSurveys()" ng-attr-title="{{ currentUser.canCreateSurveys()? '':'Please contact the system administrator to change your survey\'s language' }}">
                 <option ng-repeat="item in locales"
                         value="{{item.id}}">{{item.englishName}}
                 </option>
@@ -49,17 +49,17 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">Follow up survey URL</label>
+        <label class="control-label col-sm-2">Follow-up survey URL</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" placeholder="https://externalsurvey.com/mySurvey"
                    ng-model="externalFollowUpUrl">
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="currentUser.canCreateSurveys()">
         <div class="col-sm-10 col-sm-offset-2">
             <label class="checkbox-inline">
                 <input type="checkbox" ng-model="allowGeneratedUsers">
-                Allow generate users
+                Allow automatic user generation
             </label>
         </div>
     </div>

@@ -26,10 +26,9 @@ function controllerFun($scope, UserStateService, ModalService, appRoutes) {
     });
 
     $scope.$watch(function () {
-        return UserStateService.getAuthenticated();
-    }, function () {
-        $scope.authUsername = UserStateService.getUsername();
-        $scope.authenticated = UserStateService.getAuthenticated();
+        return UserStateService.getUserInfo();
+    }, function (newValue) {
+        $scope.currentUser = newValue;
     });
 
 }

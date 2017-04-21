@@ -16,7 +16,7 @@ html(lang=lang dir=lang_dir)
         script(type="text/javascript" src='/intake24-admin.js')
 
     body(ng-app='intake24.admin' ng-controller='AdminController'
-    ng-class="{authenticated: authenticated, 'modal-open': bodyIsUnscrollable}")
+    ng-class="{authenticated: currentUser != null, 'modal-open': bodyIsUnscrollable}")
         header
             #sidebar-button(ng-click="sidebarToggle()")
                 i.fa.fa-bars
@@ -24,7 +24,7 @@ html(lang=lang dir=lang_dir)
                 h4 <strong>Intake24</strong> Admin
             a(href='' class='intake-btn-modal' id='btn-authenticate' ng-click="goToLogout()").auth-menu
                 i.fa.fa-user
-                p {{authUsername || 'Login / Register'}}
+                p {{ currentUser ? currentUser.userName : 'Login / Register' }}
 
         .intake-container
             .main-content

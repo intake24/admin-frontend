@@ -90,6 +90,9 @@ function serviceFun($rootScope, $timeout, $cookies) {
             $cookies.remove(REFRESH_TOKEN);
             $cookies.remove(ACCESS_TOKEN);
             $cookies.put(USER_NAME, '', OPTIONS);
+
+            currentUser = null;
+
             userWasNotAuthenticated = true;
         },
         getUsername: function () {

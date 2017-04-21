@@ -5,11 +5,11 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyEditForm", ["LocalesService", "SurveyService",
+    app.directive("surveyEditForm", ["LocalesService", "SurveyService", "UserStateService",
         "uiDatetimePickerConfig", directiveFun]);
 };
 
-function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
+function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetimePickerConfig) {
 
     function controller(scope, element, attribute) {
 
@@ -76,6 +76,10 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
         });
+
+        scope.$watch(function() { return UserStateService.getUserInfo(); }, function(newValue) {
+            scope.currentUser = newValue;
+        })
 
     }
 

@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
     app.constant('uiDatetimePickerConfig', {
-        dateFormat: 'dd/MM/yy HH:mm',
+        dateFormat: 'dd/MM/yyyy HH:mm',
         defaultTime: '00:00:00',
         html5Types: {
             date: 'yyyy-MM-dd',

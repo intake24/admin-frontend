@@ -22,6 +22,7 @@ require("./image-gallery")(app);
 require("./user-managers")(app);
 require("./survey-manager")(app);
 require("./survey-feedback")(app);
+require("./welcome/welcome.controller")(app);
 require("./set-routes")(app);
 require("./textangular-config")(app);
 require("./bootstrap-ui-datetime-picker-config")(app);

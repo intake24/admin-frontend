@@ -3,7 +3,8 @@
 module.exports = function (app) {
 
     var routes = {
-        foodExplorer: "/",
+        welcome: "/",
+        foodExplorer: "/fe",
         imageGalleryRoute: '/galleries',
         imageGalleryMain: "/galleries/main",
         imageGalleryAsServed: "/galleries/as-served",
@@ -24,6 +25,10 @@ module.exports = function (app) {
     app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $locationProvider.hashPrefix('');
         $routeProvider
+            .when(routes.welcome, {
+                template: require("./welcome/welcome.controller.html"),
+                controller: 'WelcomeController'
+            })
             .when(routes.foodExplorer, {
                 template: require("./explorer/templates/index.pug"),
                 controller: 'MainController'
@@ -79,7 +84,7 @@ module.exports = function (app) {
                 redirectTo: routes.userManagerRespondents
             })
             .otherwise({
-                redirectTo: routes.foodExplorer
+                redirectTo: routes.welcome
             });
     }]);
 };

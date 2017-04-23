@@ -10,7 +10,7 @@ function controllerFun($scope, UserStateService, ModalService, appRoutes) {
     $scope.authUsername = '';
     $scope.authenticated = false;
     $scope.sidebaropen = false;
-    $scope.brandHref = appRoutes.foodExplorer;
+    $scope.brandHref = appRoutes.welcome;
     $scope.sidebarToggle = function () {
         $scope.sidebaropen = !$scope.sidebaropen;
     };

@@ -21,6 +21,7 @@ function serviceFun($http, $window) {
     function unpackServerData(data) {
         return {
             id: data.id,
+            state: data.state,
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
@@ -34,6 +35,7 @@ function serviceFun($http, $window) {
     function packClientData(data) {
         return {
             id: data.id,
+            state: data.state,
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,

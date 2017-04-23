@@ -13,8 +13,12 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
     function controller(scope, element, attribute) {
 
-
         scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
+        scope.surveyStateOptions = [
+            {value: "0", text: "Has not started"},
+            {value: "2", text: "Active"},
+            {value: "1", text: "Suspended"}
+        ];
 
         scope.loading = false;
 
@@ -98,6 +102,7 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 function getRequest(scope) {
     return {
         id: scope.name,
+        state: scope.state,
         startDate: scope.startDate.toISOString(),
         endDate: scope.endDate.toISOString(),
         schemeId: "default",
@@ -127,6 +132,7 @@ function validateForm(scope) {
 function updateScope(scope, data) {
     if (!data) {
         scope.name = "";
+        scope.state = "0";
         scope.selectedLocale = "en_GB";
         scope.allowGeneratedUsers = false;
         scope.externalFollowUpUrl = "";
@@ -135,6 +141,7 @@ function updateScope(scope, data) {
         scope.endDate = null;
     } else {
         scope.name = data.id;
+        scope.state = String(data.state);
         scope.selectedLocale = data.localeId;
         scope.allowGeneratedUsers = data.allowGeneratedUsers;
         scope.externalFollowUpUrl = data.externalFollowUpURL;
@@ -146,6 +153,7 @@ function updateScope(scope, data) {
 
 function updateSurvey(scope, data) {
     scope.survey.id = data.id;
+    scope.survey.state = data.state;
     scope.survey.localeId = data.localeId;
     scope.survey.llowGeneratedUsers = data.llowGeneratedUsers;
     scope.survey.externalFollowUpURL = data.externalFollowUpURL;

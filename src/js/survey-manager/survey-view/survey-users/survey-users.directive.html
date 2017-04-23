@@ -28,9 +28,10 @@
                 </button>
 
                 <button type="button" class="btn btn-default"
-                   file-button
-                   on-change="onFilesChange(fileList)"
-                   ng-disabled="fileLoading">
+                        ng-if="views.respondents.active"
+                        file-button
+                        on-change="onFilesChange(fileList)"
+                        ng-disabled="fileLoading">
                     <i class="fa" ng-class="{'fa-spinner fa-spin': fileLoading, hide: !fileLoading}"></i>
                     <span class="hidden-xs">
                         Upload CSV

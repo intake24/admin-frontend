@@ -13,7 +13,6 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     var surveyStaffUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff",
-        surveyStaffCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff/upload-csv",
         surveyRespondentsUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents",
         surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
         usersUrlPattern = $window.api_base_url + "users",
@@ -113,15 +112,6 @@ function serviceFun($http, $window) {
             var url = getFormedUrl(userPasswordUrlPattern, {userId: userId});
             return $http.patch(url, {password: password});
 
-        },
-        uploadSurveyStaffCsv: function (surveyId, file) {
-            var url = getFormedUrl(surveyStaffCsvUrlPattern, {surveyId: surveyId});
-            var fd = new FormData();
-            fd.append("file", file);
-            return $http.post(url, fd, {
-                transformRequest: angular.identity,
-                headers: {"Content-Type": undefined}
-            });
         },
         uploadSurveyRespondentsCsv: function (surveyId, file) {
             var url = getFormedUrl(surveyRespondentsCsvUrlPattern, {surveyId: surveyId});

@@ -84,8 +84,6 @@ function directiveFun(AdminUsersService, MessageService) {
             scope.fileLoading = true;
             if (scope.surveyId == null) {
                 return;
-            } else if (scope.views.staff.active) {
-                def = AdminUsersService.uploadSurveyStaffCsv(scope.surveyId, file);
             } else if (scope.views.respondents.active) {
                 def = AdminUsersService.uploadSurveyRespondentsCsv(scope.surveyId, file);
             }

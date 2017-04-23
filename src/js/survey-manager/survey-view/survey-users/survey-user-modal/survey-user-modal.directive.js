@@ -168,7 +168,6 @@ function getRequest(scope, AdminUsersService) {
             roles: [scope.surveyId + "/staff"],
         };
         serviceReq = AdminUsersService.createUser(reqData).then(function (data) {
-            console.log(data);
             scope.isOpen = false;
             scope.onCreated(reqData);
         });

@@ -105,14 +105,15 @@ header
 	color white
 	height 50px
 	line-height 50px
-	opacity 1
 	padding 0 50px
 	position fixed
 	text-align center
-	top -50px
+	opacity 1
+	top 0
 	z-index 2000
 	left 0
 	right 0
+	overflow hidden
 	transition(all 0.5s ease-in-out)
 	#flash-dismiss-btn
 		background-color rgba(0, 0, 0, 0.1)
@@ -123,9 +124,9 @@ header
 		text-align center
 		top 0
 		width 50px
-	&.active
-		opacity 1
-		top 0
+	&.ng-hide
+		opacity 0
+		top -50px
 	&.success
 		background-color flash-success-color
 	&.warning

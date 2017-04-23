@@ -1,30 +1,38 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 pt-2">
-            <h1 ng-if="survey">
-                {{survey.id}}
-            </h1>
-
-            <button type="button" class="btn btn-link pull-right" ng-click="delete()" ng-if="currentUser.canCreateSurveys()">
-                Delete survey
-            </button>
-
-            <ul class="nav nav-tabs">
-                <li ng-repeat="view in getViewList()"
-                    ng-class="{active: view.active}">
-                    <a ng-href="#{{view.getUrl(surveyId)}}">{{view.name}}</a>
-                </li>
-            </ul>
-
-            <div class="pt-2">
-                <survey-description ng-if="directiveViews.general.active"
-                                    survey="survey"></survey-description>
-                <survey-results ng-if="directiveViews.results.active"
-                                survey="survey"></survey-results>
-                <survey-users ng-if="directiveViews.users.active"
-                              survey-id="survey.id"></survey-users>
+            <div ng-if="!survey">
+                <h1>
+                    <i class="fa fa-spinner fa-spin"></i>
+                    Loading
+                </h1>
             </div>
+            <div ng-if="survey">
+                <h1 ng-if="survey">
+                    {{survey.id}}
+                </h1>
 
+                <button type="button" class="btn btn-link pull-right" ng-click="delete()"
+                        ng-if="currentUser.canCreateSurveys()">
+                    Delete survey
+                </button>
+
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="view in getViewList()"
+                        ng-class="{active: view.active}">
+                        <a ng-href="#{{view.getUrl(surveyId)}}">{{view.name}}</a>
+                    </li>
+                </ul>
+
+                <div class="pt-2">
+                    <survey-description ng-if="directiveViews.general.active"
+                                        survey="survey"></survey-description>
+                    <survey-results ng-if="directiveViews.results.active"
+                                    survey="survey"></survey-results>
+                    <survey-users ng-if="directiveViews.users.active"
+                                  survey-id="survey.id"></survey-users>
+                </div>
+            </div>
         </div>
     </div>
 </div>

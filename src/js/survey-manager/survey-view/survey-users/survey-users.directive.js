@@ -28,7 +28,7 @@ function directiveFun(AdminUsersService, MessageService) {
 
         scope.editedUser = null;
 
-        scope.loading = false;
+        scope.loading = true;
         scope.fileLoading = false;
 
         scope.newUser = function () {

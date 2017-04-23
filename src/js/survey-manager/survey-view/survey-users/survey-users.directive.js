@@ -67,9 +67,7 @@ function directiveFun(AdminUsersService, MessageService) {
         };
 
         scope.onUserCreated = function (user) {
-            scope.users.push(user);
-            getUsers(scope, AdminUsersService);
-            successMessage(MessageService);
+            onUsersUpdated(scope, AdminUsersService, MessageService);
         };
 
         scope.onUserDeleted = function () {
@@ -92,7 +90,7 @@ function directiveFun(AdminUsersService, MessageService) {
                 def = AdminUsersService.uploadSurveyRespondentsCsv(scope.surveyId, file);
             }
             def.then(function () {
-                successMessage(MessageService);
+                onUsersUpdated(scope, AdminUsersService, MessageService);
             }).finally(function () {
                 scope.fileLoading = false;
             });
@@ -120,6 +118,11 @@ function directiveFun(AdminUsersService, MessageService) {
 function View(name) {
     this.name = name;
     this.active = false;
+}
+
+function onUsersUpdated(scope, AdminUsersService, MessageService) {
+    getUsers(scope, AdminUsersService);
+    successMessage(MessageService);
 }
 
 function getUsers(scope, service) {

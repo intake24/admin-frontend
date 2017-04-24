@@ -16,15 +16,14 @@ global-reset()
 /* Override bootstrap's settings */
 
 body
-	font-family 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif
-	overflow hidden
-	-ms-overflow-style none
+  font-family 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
 
 .intake-container
-	-ms-overflow-style auto
+  -ms-overflow-style auto
 
-body.modal-open
-	overflow hidden
+.no-scroll
+  overflow hidden
+  -ms-overflow-style none
 
 /* This snippet prevents bouncing but fails on small screen sizes
 html, body
@@ -41,340 +40,341 @@ html, body
 */
 
 .hidden
-	display none
+  display none
 
 header
-	background-color rgba(255, 255, 255, 0.1)
-	background-color main-color
-	height header-height
-	line-height 50px
-	overflow hidden
-	padding 0
-	position fixed
-	top 0
-	left 0
-	right 0
-	z-index 1001
+  background-color rgba(255, 255, 255, 0.1)
+  background-color main-color
+  height header-height
+  line-height 50px
+  overflow hidden
+  padding 0
+  position fixed
+  top 0
+  left 0
+  right 0
+  z-index 1001
 
-	a
-		text-decoration none
-		h4
-			color white
-			font-size 18px
-			font-weight 300
-			padding 0 15px
-			line-height 50px
-			@media (max-width: 800px)
-				font-size 15px
-			strong
-				font-weight 400
+  a
+    text-decoration none
+    h4
+      color white
+      font-size 18px
+      font-weight 300
+      padding 0 15px
+      line-height 50px
+      @media (max-width: 800px)
+        font-size 15px
+      strong
+        font-weight 400
 
-	a.auth-menu
-		background-color main-color
-		color white
-		line-height 50px
-		padding 0 20px
-		position absolute
-		right 0
-		top 0
-		transition(background .3s ease-out)
+  a.auth-menu
+    background-color main-color
+    color white
+    line-height 50px
+    padding 0 20px
+    position absolute
+    right 0
+    top 0
+    transition(background .3s ease-out)
 
-		i
-			display none
-			float left
-			line-height inherit
-			margin-right 8px
+    i
+      display none
+      float left
+      line-height inherit
+      margin-right 8px
 
-		p
-			float left
-			line-height inherit
-			font-size 13px
+    p
+      float left
+      line-height inherit
+      font-size 13px
 
-	a.auth-menu.authenticated
-		i
-			display block
+  a.auth-menu.authenticated
+    i
+      display block
 
-	a.auth-menu:hover
-		background-color darken(main-color, 10%)
-		cursor pointer
-	a.auth-menu:active
-		background-color darken(main-color, 25%)
+  a.auth-menu:hover
+    background-color darken(main-color, 10%)
+    cursor pointer
+  a.auth-menu:active
+    background-color darken(main-color, 25%)
 
 .flash-message
-	background #3AF
-	color white
-	height 50px
-	line-height 50px
-	padding 0 50px
-	position fixed
-	text-align center
-	opacity 1
-	top 0
-	z-index 2000
-	left 0
-	right 0
-	overflow hidden
-	transition(all 0.5s ease-in-out)
-	#flash-dismiss-btn
-		background-color rgba(0, 0, 0, 0.1)
-		height 50px
-		line-height 50px
-		position absolute
-		right 0
-		text-align center
-		top 0
-		width 50px
-	&.ng-hide
-		opacity 0
-		top -50px
-	&.success
-		background-color flash-success-color
-	&.warning
-		background-color flash-warning-color
-	&.danger
-		background-color flash-danger-color
+  background #3AF
+  color white
+  height 50px
+  line-height 50px
+  padding 0 50px
+  position fixed
+  text-align center
+  opacity 1
+  top 0
+  z-index 2000
+  left 0
+  right 0
+  overflow hidden
+  transition(all 0.5s ease-in-out)
+  #flash-dismiss-btn
+    background-color rgba(0, 0, 0, 0.1)
+    height 50px
+    line-height 50px
+    position absolute
+    right 0
+    text-align center
+    top 0
+    width 50px
+  &.ng-hide
+    opacity 0
+    top -50px
+  &.success
+    background-color flash-success-color
+  &.warning
+    background-color flash-warning-color
+  &.danger
+    background-color flash-danger-color
 
-@media(max-width:568px)
-	.flash-message
-		padding 0 50px 0 0
+@media (max-width: 568px)
+  .flash-message
+    padding 0 50px 0 0
 
 .page-header
-	padding 0 0 30px 0
-	h2
-		color main-color
-		font-size 26px
-		font-weight 100
+  padding 0 0 30px 0
+  h2
+    color main-color
+    font-size 26px
+    font-weight 100
 
 .authenticated
-	a.auth-menu
-		i
-			display block
+  a.auth-menu
+    i
+      display block
 
 #authenticate-overlay
-	background-color main-color
-	background-image url('images/web.png')
-	background-repeat no-repeat
-	background-position bottom right
-	background-size 40%
-	display block
-	opacity 1
-	position fixed
-	top 0
-	bottom 0
-	left 0
-	right 0
-	z-index 12
-	@media(max-width:800px)
-		background-size 70%
-	transition(opacity .3s ease-out)
-	#authenticate-logo
-		padding 0 20px
-		text-align center
-		h4
-			color white
-			font-size 28px
-			font-weight 300
-			line-height 200px
-			padding 0 15px
-			strong
-				font-weight 400
+  background-color main-color
+  background-image url('images/web.png')
+  background-repeat no-repeat
+  background-position bottom right
+  background-size 40%
+  display block
+  opacity 1
+  position fixed
+  top 0
+  bottom 0
+  left 0
+  right 0
+  z-index 12
+  @media (max-width: 800px)
+    background-size 70%
+  transition(opacity .3s ease-out)
+  #authenticate-logo
+    padding 0 20px
+    text-align center
+    h4
+      color white
+      font-size 28px
+      font-weight 300
+      line-height 200px
+      padding 0 15px
+      strong
+        font-weight 400
 
 .authenticated
-	#authenticate-overlay
-		display none
-		opacity 0
+  #authenticate-overlay
+    display none
+    opacity 0
 
 .main-content
-	padding-left sidebar-width
-	padding-top header-height
+  padding-left sidebar-width
+  padding-top header-height
 
 .col
-	overflow auto
-	padding-top header-height
-	position absolute
-	top 0
-	bottom 0
+  overflow auto
+  padding-top header-height
+  position absolute
+  top 0
+  bottom 0
 
 #food-list-col
-	background-color white
-	width food-list-width
+  background-color white
+  width food-list-width
 
 #properties-col
-	background-color white
-	border-left #e1e1e1 1px solid
-	left (food-list-width + sidebar-width)
-	right 0
+  background-color white
+  border-left #e1e1e1 1px solid
+  left (food-list-width + sidebar-width)
+  right 0
 
-	form
-		height 100%
-	@media (max-width: 1080px)
-		left food-list-width
+  form
+    height 100%
+  @media (max-width: 1080px)
+    left food-list-width
+
 #properties-col.fullwidth
-	left sidebar-width
+  left sidebar-width
 
 @media (max-width: 800px)
-	.col
-		position relative
-		bottom auto
-		top auto
-		left auto
-		right auto
-		width 100%
-		padding-top 0
+  .col
+    position relative
+    bottom auto
+    top auto
+    left auto
+    right auto
+    width 100%
+    padding-top 0
 
-	#food-list-col
-		width 100%
+  #food-list-col
+    width 100%
 
-	#properties-col
-		left 0
-		padding-top 0
-	#properties-col.fullwidth
-		left 0
-		padding-top 50px
+  #properties-col
+    left 0
+    padding-top 0
+
+  #properties-col.fullwidth
+    left 0
+    padding-top 50px
 
 @media (max-width: 1080px)
-	.main-content
-		padding-left 0px
+  .main-content
+    padding-left 0px
 
-	header
+  header
 
-		h4
-			margin 0 50px
-			text-align center
+    h4
+      margin 0 50px
+      text-align center
 
-		a.auth-menu
-			p
-				display none
-			i
-				display block
-				margin-right 0
-
-
+    a.auth-menu
+      p
+        display none
+      i
+        display block
+        margin-right 0
 
 /* Sortable */
 
 .categories-container
-	input
-		background #f9f9f9
-		border #e1e1e1 !important
-		font-size 15px
-		font-weight 300
-		outline 0
-		padding 15px 20px
-		width 100%
+  input
+    background #f9f9f9
+    border #e1e1e1 !important
+    font-size 15px
+    font-weight 300
+    outline 0
+    padding 15px 20px
+    width 100%
 
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	ul
-		list-style-type none
-		margin 0
-		padding 0
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  ul
+    list-style-type none
+    margin 0
+    padding 0
 
-		li
-			border-left #e1e1e1 3px solid
-			height 50px
-			line-height 50px
-			margin 0
-			padding 0 15px
-			white-space nowrap
-			&:hover
-				background #f9f9f9
-				cursor pointer
-			&.selected
-				background #f9f9f9
-				border-left warning-color 3px solid
-			span
-				position absolute
+    li
+      border-left #e1e1e1 3px solid
+      height 50px
+      line-height 50px
+      margin 0
+      padding 0 15px
+      white-space nowrap
+      &:hover
+        background #f9f9f9
+        cursor pointer
+      &.selected
+        background #f9f9f9
+        border-left warning-color 3px solid
+      span
+        position absolute
 
 .modal
-	.categories-container
-		li
-			margin 0
+  .categories-container
+    li
+      margin 0
 
 .drawer
-	.list-container
-		overflow-x hidden
-		overflow-y auto
-		input
-			background #f9f9f9
-			border #e1e1e1 !important
-			font-size 15px
-			font-weight 300
-			outline 0
-			padding 15px 20px
-			width 100%
-			-webkit-box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
-		ul
-			list-style-type none
-			margin 0
-			padding 0
-			li
-				height auto
-				line-height 1.4em;
-				margin 0
-				padding 10px 20px
-				&:hover
-					background #f9f9f9
-					cursor pointer
-				&.selected
-					background #f9f9f9
-				span
-					position absolute
+  .list-container
+    overflow-x hidden
+    overflow-y auto
+    input
+      background #f9f9f9
+      border #e1e1e1 !important
+      font-size 15px
+      font-weight 300
+      outline 0
+      padding 15px 20px
+      width 100%
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    ul
+      list-style-type none
+      margin 0
+      padding 0
+      li
+        height auto
+        line-height 1.4em;
+        margin 0
+        padding 10px 20px
+        &:hover
+          background #f9f9f9
+          cursor pointer
+        &.selected
+          background #f9f9f9
+        span
+          position absolute
 
 /* RTL Styles */
 
 html[dir="rtl"]
-	header
-		a.auth-menu
-			left 0
-			right auto
-			i
-				float right
-				margin-left 8px
-				margin-right auto
-			p
-				float right
-	.flash-message
-		#flash-dismiss-btn
-			left 0
-			right auto
-	@media(max-width:568px)
-		.flash-message
-			padding 0 0 0 50px
-	.main-content
-		padding-left 0
-		padding-right sidebar-width
-	#properties-col
-		border-left none
-		border-right #e1e1e1 1px solid
-		left 0
-		right (sidebar-width + food-list-width)px
-		@media (max-width: 1080px)
-			right food-list-width
-		@media (max-width: 800px)
-			right auto
-	#properties-col.fullwidth
-		left 0
-		right sidebar-width
-	@media (max-width: 1080px)
-		.main-content
-			padding-left 0px
-			padding-right 0px
-		header
-			a.auth-menu
-				i
-					margin-left 0
-					margin-right auto
-	.categories-container
-		ul
-			li
-				border-left none
-				border-right none
-				&.selected
-					border-right warning-color 3px solid
+  header
+    a.auth-menu
+      left 0
+      right auto
+      i
+        float right
+        margin-left 8px
+        margin-right auto
+      p
+        float right
+  .flash-message
+    #flash-dismiss-btn
+      left 0
+      right auto
+  @media (max-width: 568px)
+    .flash-message
+      padding 0 0 0 50px
+  .main-content
+    padding-left 0
+    padding-right sidebar-width
+  #properties-col
+    border-left none
+    border-right #e1e1e1 1px solid
+    left 0
+    right (sidebar-width + food-list-width) px
+    @media (max-width: 1080px)
+      right food-list-width
+    @media (max-width: 800px)
+      right auto
+  #properties-col.fullwidth
+    left 0
+    right sidebar-width
+  @media (max-width: 1080px)
+    .main-content
+      padding-left 0px
+      padding-right 0px
+
+    header
+      a.auth-menu
+        i
+          margin-left 0
+          margin-right auto
+  .categories-container
+    ul
+      li
+        border-left none
+        border-right none
+        &.selected
+          border-right warning-color 3px solid
 
 .margin-bottom-sm
-	margin-bottom 10px
+  margin-bottom 10px

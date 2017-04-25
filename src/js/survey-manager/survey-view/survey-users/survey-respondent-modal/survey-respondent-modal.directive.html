@@ -10,7 +10,8 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group" ng-show="user">
-                        <button type="button" class="btn btn-link pull-right" ng-click="deleteUser()">
+                        <button type="button" class="btn btn-link pull-right"
+                                ng-click="deleteUser()">
                             Delete user
                         </button>
                         <ul class="nav nav-pills">
@@ -26,7 +27,22 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="form-group" ng-class="{'has-error': !formValidation.userName}" ng-hide="loginIsEmail">
+                    <div class="form-group" ng-show="getUserSelectIsVisible()">
+                        <ul class="nav nav-pills">
+                            <li ng-class="{active: selectExistingUser}">
+                                <a href="" ng-click="switchSelectUser(true)">
+                                    Select user
+                                </a>
+                            </li>
+                            <li ng-class="{active: !selectExistingUser}">
+                                <a href="" ng-click="switchSelectUser(false)">
+                                    New user
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{'has-error': !formValidation.userName}">
                         <label class="control-label">
                             User login
                         </label>
@@ -34,18 +50,14 @@
                                ng-model="userName"
                                ng-disabled="user">
                     </div>
-                    <div class="form-group" ng-class="{'has-error': !formValidation.email}" ng-show="loginIsEmail">
-                        <label class="control-label">
-                            Email
-                        </label>
-                        <input type="email" class="form-control" placeholder="user@example.com"
-                               ng-model="email">
-                    </div>
-                    <div class="form-group" ng-show="!user">
+                    <div class="form-group"
+                         ng-class="{'has-error': !formValidation.password}"
+                         ng-hide="user">
                         <label class="control-label">
                             Password
                         </label>
                         <input type="text" class="form-control" placeholder="$ecRet"
+                               ng-class="{'has-error': !formValidation.password}"
                                ng-model="password">
                     </div>
                     <div ng-hide="passwordEdit && user">
@@ -56,9 +68,7 @@
                             <input type="text" class="form-control" placeholder="User Name"
                                    ng-model="name">
                         </div>
-                        <div class="form-group"
-                             ng-class="{'has-error': !formValidation.email}"
-                             ng-hide="loginIsEmail">
+                        <div class="form-group">
                             <label class="control-label">
                                 Email
                             </label>
@@ -73,7 +83,9 @@
                                    ng-model="phone">
                         </div>
                     </div>
-                    <div class="form-group" ng-show="user && passwordEdit">
+                    <div class="form-group"
+                         ng-class="{'has-error': !formValidation.password}"
+                         ng-show="user && passwordEdit">
                         <label class="control-label">
                             Password
                         </label>

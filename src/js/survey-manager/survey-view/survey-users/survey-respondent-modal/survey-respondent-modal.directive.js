@@ -4,15 +4,11 @@
 
 "use strict";
 
-var userTypes = require("../survey-users-types")(),
-    USER_TYPE_STAFF = userTypes.USER_TYPE_STAFF,
-    USER_TYPE_RESPONDENT = userTypes.USER_TYPE_RESPONDENT;
-
 module.exports = function (app) {
-    app.directive("surveyUserModal", ["AdminUsersService", "ModalService", directiveFun]);
+    app.directive("surveyRespondentModal", ["AdminUsersService", "ModalService", "UserStateService", directiveFun]);
 };
 
-function directiveFun(AdminUsersService, ModalService) {
+function directiveFun(AdminUsersService, ModalService, UserStateService) {
 
     function controller(scope, element, attribute) {
 
@@ -29,8 +25,8 @@ function directiveFun(AdminUsersService, ModalService) {
         scope.loading = false;
 
         scope.formValidation = {
-            userName: true,
-            email: true
+            password: true,
+            userName: true
         };
 
         scope.switchPasswordView = function (bool) {
@@ -65,17 +61,13 @@ function directiveFun(AdminUsersService, ModalService) {
         };
 
         scope.$watch("isOpen", function (newVal) {
-            var modalId = "surveyUserModal";
+            var modalId = "surveyRespondentModal";
             if (newVal) {
                 ModalService.showArbitraryModal(modalId);
             } else {
                 ModalService.hideArbitraryModal(modalId);
             }
             updateScope(scope, scope.user);
-        });
-
-        scope.$watch("userType", function () {
-            scope.loginIsEmail = scope.userType == USER_TYPE_STAFF;
         });
 
     }
@@ -86,13 +78,12 @@ function directiveFun(AdminUsersService, ModalService) {
             surveyId: "=?",
             isOpen: "=?",
             user: "=?",
-            userType: "=?",
             onSaved: "&",
             onCreated: "=?",
             onDeleted: "=?"
         },
         link: controller,
-        template: require("./survey-user-modal.directive.html")
+        template: require("./survey-respondent-modal.directive.html")
     }
 
 }
@@ -125,12 +116,11 @@ function updateUser(scope) {
 }
 
 function formIsValid(scope) {
-    if (scope.userType != USER_TYPE_STAFF) {
-        scope.formValidation.userName = scope.userName.trim() != "";
-    } else {
-        scope.formValidation.email = scope.email.trim() != "";
+    scope.formValidation.userName = scope.userName && scope.userName.trim() != "";
+    if (scope.user && scope.passwordEdit || !scope.user) {
+        scope.formValidation.password = scope.password && scope.password.trim() != "";
     }
-    return scope.formValidation.userName && scope.formValidation.email;
+    return scope.formValidation.userName && scope.formValidation.password;
 }
 
 function getRequest(scope, AdminUsersService) {
@@ -159,19 +149,7 @@ function getRequest(scope, AdminUsersService) {
             updateUser(scope);
             scope.onSaved(reqData);
         });
-    } else if (scope.userType == USER_TYPE_STAFF) {
-        reqData = {
-            password: scope.password,
-            name: scope.name,
-            email: scope.email,
-            phone: scope.phone,
-            roles: [scope.surveyId + "/staff"],
-        };
-        serviceReq = AdminUsersService.createUser(reqData).then(function (data) {
-            scope.isOpen = false;
-            scope.onCreated(reqData);
-        });
-    } else if (scope.userType == USER_TYPE_RESPONDENT) {
+    } else {
         reqData = {
             userName: scope.userName,
             password: scope.password,

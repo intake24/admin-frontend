@@ -15,6 +15,7 @@ function serviceFun($http, $window) {
     var surveyStaffUrlPattern = $window.api_base_url + "surveys/:surveyId/users/staff",
         surveyRespondentsUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents",
         surveyRespondentsCsvUrlPattern = $window.api_base_url + "surveys/:surveyId/users/respondents/upload-csv",
+        surveyAclUrlPattern = $window.api_base_url + "surveys/:surveyId/acl",
         usersUrlPattern = $window.api_base_url + "users",
         userUrlPattern = $window.api_base_url + "users/:userId",
         userDeleteUrlPattern = $window.api_base_url + "users/:userId",
@@ -85,7 +86,7 @@ function serviceFun($http, $window) {
             var url = getFormedUrl(surveyStaffUrlPattern, {surveyId: surveyId}) +
                 "?offset=" + offset +
                 "&limit=" + limit;
-            return $http.get(getFormedUrl(url)).then(unpackPublicUserDataWithAliasList);
+            return $http.get(url).then(unpackPublicUserDataWithAliasList);
         },
         createOrUpdateRespondent: function (userReq) {
             var url = getFormedUrl(surveyRespondentsUrlPattern, {surveyId: userReq.surveyId});
@@ -121,6 +122,23 @@ function serviceFun($http, $window) {
                 transformRequest: angular.identity,
                 headers: {"Content-Type": undefined}
             });
+        },
+        giveUsersAccessToSurvey: function (surveyId, userAccessSeq) {
+            var url = getFormedUrl(surveyAclUrlPattern, {surveyId: surveyId});
+            return $http.post(url, userAccessSeq);
+        },
+        withdrawUsersAccessToSurvey: function (surveyId, userAccessSeq) {
+            return $http({
+                method: 'DELETE',
+                url: getFormedUrl(surveyAclUrlPattern, {surveyId: surveyId}),
+                data: userAccessSeq,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            });
+        },
+        find: function (query) {
+            return $http.get(usersUrlPattern + "?q=" + query + "&limit=20");
         }
     };
 

@@ -19,6 +19,10 @@ function directiveFun(AdminUsersService, ModalService, UserStateService) {
         scope.phone = "";
         scope.emailNotifications = true;
         scope.smsNotifications = true;
+        scope.uiSelect = {
+            availableUsers: [],
+            selectedUsers: []
+        };
 
         scope.passwordEdit = false;
         scope.selectExistingUser = true;
@@ -28,6 +32,29 @@ function directiveFun(AdminUsersService, ModalService, UserStateService) {
         scope.formValidation = {
             password: true,
             email: true
+        };
+
+        scope.findUsers = function (query) {
+            AdminUsersService.find(query).then(function (data) {
+                scope.uiSelect.availableUsers = data.map(function (user) {
+                    return {
+                        id: user.id,
+                        name: user.name[0],
+                        email: user.email[0],
+                        phone: user.phone[0],
+                        getTitle: function () {
+                            var parts = [];
+                            if (this.name) {
+                                parts.push(this.name);
+                            }
+                            if (this.email) {
+                                parts.push(this.email);
+                            }
+                            return parts.join(", ");
+                        }
+                    }
+                });
+            });
         };
 
         scope.switchPasswordView = function (bool) {
@@ -48,6 +75,22 @@ function directiveFun(AdminUsersService, ModalService, UserStateService) {
             }
             scope.loading = true;
             getRequest(scope, AdminUsersService).finally(function () {
+                scope.loading = false;
+            });
+        };
+
+        scope.withdrawAccess = function () {
+            var reqData = {
+                users: [{
+                    userId: scope.user.id,
+                    role: scope.surveyId + "/staff"
+                }]
+            };
+            scope.loading = true;
+            AdminUsersService.withdrawUsersAccessToSurvey(scope.surveyId, reqData).then(function () {
+                scope.onCreated();
+                scope.isOpen = false;
+            }).finally(function () {
                 scope.loading = false;
             });
         };
@@ -126,6 +169,9 @@ function updateUser(scope) {
 }
 
 function formIsValid(scope) {
+    if (scope.selectExistingUser) {
+        return true;
+    }
     scope.formValidation.email = scope.email && scope.email.trim() != "";
     if (scope.user && scope.passwordEdit || !scope.user) {
         scope.formValidation.password = scope.password && scope.password.trim() != "";
@@ -135,7 +181,20 @@ function formIsValid(scope) {
 
 function getRequest(scope, AdminUsersService) {
     var serviceReq, reqData;
-    if (scope.user && scope.passwordEdit) {
+    if (scope.selectExistingUser) {
+        reqData = {
+            users: scope.uiSelect.selectedUsers.map(function (user) {
+                return {
+                    userId: user.id,
+                    role: scope.surveyId + "/staff"
+                };
+            })
+        };
+        serviceReq = AdminUsersService.giveUsersAccessToSurvey(scope.surveyId, reqData).then(function () {
+            scope.onCreated();
+            scope.isOpen = false;
+        });
+    } else if (scope.user && scope.passwordEdit) {
         reqData = {
             userName: scope.user.userName,
             password: scope.password

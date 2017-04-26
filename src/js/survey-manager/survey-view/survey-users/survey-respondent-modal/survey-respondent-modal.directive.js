@@ -5,10 +5,10 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyRespondentModal", ["AdminUsersService", "ModalService", "UserStateService", directiveFun]);
+    app.directive("surveyRespondentModal", ["AdminUsersService", "ModalService", directiveFun]);
 };
 
-function directiveFun(AdminUsersService, ModalService, UserStateService) {
+function directiveFun(AdminUsersService, ModalService) {
 
     function controller(scope, element, attribute) {
 

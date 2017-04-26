@@ -11,8 +11,7 @@ module.exports = function (app) {
 function serviceFun($http, $q) {
 
     var signInUrl = window.api_base_url + "signin",
-        refreshUrl = window.api_base_url + "refresh",
-        usersUrl = window.api_base_url + "users";
+        refreshUrl = window.api_base_url + "refresh";
 
     return {
         login: function (username, password) {
@@ -30,9 +29,6 @@ function serviceFun($http, $q) {
         },
         refresh: function () {
             return $http.post(refreshUrl);
-        },
-        find: function (query) {
-            return $http.get(usersUrl + "?q=" + query + "&limit=20");
         }
     }
 }

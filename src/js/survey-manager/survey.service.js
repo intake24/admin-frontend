@@ -74,8 +74,13 @@ function serviceFun($http, $window) {
         getCsvResults: function (surveyId, downloadReq) {
             var url = getFormedUrl(surveyCsvResults, {surveyId: surveyId}) +
                 "?dateFrom=" + downloadReq.dateFrom +
-                "&dateTo=" + downloadReq.dateTo;
-            return $http.get(getFormedUrl(url));
+                "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
+
+            // Set responseType to arraybuffer to prevent UTF-8 decoding by the browser that removes
+            // the BOM (see http://stackoverflow.com/questions/42715966/preserve-utf-8-bom-in-browser-downloads)
+            //
+            // MS Excel requires BOM to open UTF-8 CSV files correctly.
+            return $http.get(getFormedUrl(url), {responseType: "arraybuffer"});
         }
     };
 

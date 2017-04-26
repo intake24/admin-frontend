@@ -80,7 +80,7 @@ function directiveFun(SurveyService, uiDatetimePickerConfig) {
             scope.loading = true;
 
             var fileName = "intake24-" + scope.survey.id + "-data-" +
-                formatDate(scope.dateFrom) + "-to-" + formatDate(scope.dateTo);
+                formatDate(scope.dateFrom) + "-to-" + formatDate(scope.dateTo) + ".csv";
 
             SurveyService.getCsvResults(scope.survey.id, getRequest(scope))
                 .then(function (data) {

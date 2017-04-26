@@ -109,7 +109,8 @@ function directiveFun(AdminUsersService, ModalService, UserStateService) {
         };
 
         scope.getIsEditable = function () {
-            return UserStateService.getUserInfo().isSuperUser();
+            var ui = UserStateService.getUserInfo();
+            return ui ? ui.isSuperUser() : false;
         };
 
         scope.$watch("isOpen", function (newVal) {

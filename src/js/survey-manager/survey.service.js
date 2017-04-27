@@ -29,6 +29,7 @@ function serviceFun($http, $window) {
             supportEmail: data.supportEmail,
             startDate: data.startDate,
             endDate: data.endDate,
+            description: data.description[0]
         }
     }
 
@@ -42,7 +43,8 @@ function serviceFun($http, $window) {
             externalFollowUpURL: data.externalFollowUpURL ? [data.externalFollowUpURL] : [],
             supportEmail: data.supportEmail,
             startDate: data.startDate,
-            endDate: data.endDate
+            endDate: data.endDate,
+            description: data.description ? [data.description] : [],
         }
     }
 

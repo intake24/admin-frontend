@@ -5,14 +5,15 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyView", ["LocalesService", "SurveyService", "UserStateService",
+    app.directive("surveyView", ["SurveyService", "UserStateService",
         "appRoutes", "$route", "$routeParams", "$location", directiveFun]);
+    require("./survey-general/survey-general.directive")(app);
     require("./survey-description/survey-description.directive")(app);
     require("./survey-results/survey-results.directive")(app);
     require("./survey-users/survey-users.directive")(app);
 };
 
-function directiveFun(LocalesService, SurveyService, UserStateService, appRoutes, $route, $routeParams, $location) {
+function directiveFun(SurveyService, UserStateService, appRoutes, $route, $routeParams, $location) {
 
     function controller(scope, element, attribute) {
 
@@ -22,6 +23,7 @@ function directiveFun(LocalesService, SurveyService, UserStateService, appRoutes
 
         scope.directiveViews = {
             general: new SurveyView("General", appRoutes.surveyManagerSurvey),
+            description: new SurveyView("Description", appRoutes.surveyManagerSurveyDescription),
             users: new SurveyView("Users", appRoutes.surveyManagerSurveyUsers),
             results: new SurveyView("Results", appRoutes.surveyManagerSurveyResults)
         };
@@ -31,7 +33,7 @@ function directiveFun(LocalesService, SurveyService, UserStateService, appRoutes
                 return;
             }
             SurveyService.delete(scope.surveyId).then(function () {
-                $location.path(appRoutes.surveyManagerList);
+                $location.path(appRoutes.surveyManager);
             });
         };
 

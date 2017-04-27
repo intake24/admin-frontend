@@ -51,7 +51,7 @@ function directiveFun($location, LocalesService, appRoutes, UserStateService) {
                 parent: "userManager"
             },
             surveyManager: {
-                href: appRoutes.surveyManagerList,
+                href: appRoutes.surveyManager,
                 active: false
             },
             surveyManagerNew: {

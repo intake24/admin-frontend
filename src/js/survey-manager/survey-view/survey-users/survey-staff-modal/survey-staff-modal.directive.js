@@ -4,15 +4,11 @@
 
 "use strict";
 
-var userTypes = require("../survey-users-types")(),
-    USER_TYPE_STAFF = userTypes.USER_TYPE_STAFF,
-    USER_TYPE_RESPONDENT = userTypes.USER_TYPE_RESPONDENT;
-
 module.exports = function (app) {
-    app.directive("surveyUserModal", ["AdminUsersService", "ModalService", directiveFun]);
+    app.directive("surveyStaffModal", ["AdminUsersService", "ModalService", "UserStateService", directiveFun]);
 };
 
-function directiveFun(AdminUsersService, ModalService) {
+function directiveFun(AdminUsersService, ModalService, UserStateService) {
 
     function controller(scope, element, attribute) {
 
@@ -23,18 +19,50 @@ function directiveFun(AdminUsersService, ModalService) {
         scope.phone = "";
         scope.emailNotifications = true;
         scope.smsNotifications = true;
+        scope.uiSelect = {
+            availableUsers: [],
+            selectedUsers: []
+        };
 
         scope.passwordEdit = false;
+        scope.selectExistingUser = true;
 
         scope.loading = false;
 
         scope.formValidation = {
-            userName: true,
+            password: true,
             email: true
+        };
+
+        scope.findUsers = function (query) {
+            AdminUsersService.find(query).then(function (data) {
+                scope.uiSelect.availableUsers = data.map(function (user) {
+                    return {
+                        id: user.id,
+                        name: user.name[0],
+                        email: user.email[0],
+                        phone: user.phone[0],
+                        getTitle: function () {
+                            var parts = [];
+                            if (this.name) {
+                                parts.push(this.name);
+                            }
+                            if (this.email) {
+                                parts.push(this.email);
+                            }
+                            return parts.join(", ");
+                        }
+                    }
+                });
+            });
         };
 
         scope.switchPasswordView = function (bool) {
             scope.passwordEdit = bool;
+        };
+
+        scope.switchSelectUser = function (bool) {
+            scope.selectExistingUser = bool;
         };
 
         scope.cancel = function () {
@@ -47,6 +75,22 @@ function directiveFun(AdminUsersService, ModalService) {
             }
             scope.loading = true;
             getRequest(scope, AdminUsersService).finally(function () {
+                scope.loading = false;
+            });
+        };
+
+        scope.withdrawAccess = function () {
+            var reqData = {
+                users: [{
+                    userId: scope.user.id,
+                    role: scope.surveyId + "/staff"
+                }]
+            };
+            scope.loading = true;
+            AdminUsersService.withdrawUsersAccessToSurvey(scope.surveyId, reqData).then(function () {
+                scope.onCreated();
+                scope.isOpen = false;
+            }).finally(function () {
                 scope.loading = false;
             });
         };
@@ -64,18 +108,20 @@ function directiveFun(AdminUsersService, ModalService) {
             });
         };
 
+        scope.getIsEditable = function () {
+            var ui = UserStateService.getUserInfo();
+            return ui ? ui.isSuperUser() : false;
+        };
+
         scope.$watch("isOpen", function (newVal) {
-            var modalId = "surveyUserModal";
+            var modalId = "surveyStaffModal";
             if (newVal) {
                 ModalService.showArbitraryModal(modalId);
             } else {
+                scope.selectExistingUser = true;
                 ModalService.hideArbitraryModal(modalId);
             }
             updateScope(scope, scope.user);
-        });
-
-        scope.$watch("userType", function () {
-            scope.loginIsEmail = scope.userType == USER_TYPE_STAFF;
         });
 
     }
@@ -86,13 +132,12 @@ function directiveFun(AdminUsersService, ModalService) {
             surveyId: "=?",
             isOpen: "=?",
             user: "=?",
-            userType: "=?",
             onSaved: "&",
             onCreated: "=?",
             onDeleted: "=?"
         },
         link: controller,
-        template: require("./survey-user-modal.directive.html")
+        template: require("./survey-staff-modal.directive.html")
     }
 
 }
@@ -125,17 +170,32 @@ function updateUser(scope) {
 }
 
 function formIsValid(scope) {
-    if (scope.userType != USER_TYPE_STAFF) {
-        scope.formValidation.userName = scope.userName.trim() != "";
-    } else {
-        scope.formValidation.email = scope.email.trim() != "";
+    if (scope.selectExistingUser) {
+        return true;
     }
-    return scope.formValidation.userName && scope.formValidation.email;
+    scope.formValidation.email = scope.email && scope.email.trim() != "";
+    if (scope.user && scope.passwordEdit || !scope.user) {
+        scope.formValidation.password = scope.password && scope.password.trim() != "";
+    }
+    return scope.formValidation.email && scope.formValidation.password;
 }
 
 function getRequest(scope, AdminUsersService) {
     var serviceReq, reqData;
-    if (scope.user && scope.passwordEdit) {
+    if (scope.selectExistingUser) {
+        reqData = {
+            users: scope.uiSelect.selectedUsers.map(function (user) {
+                return {
+                    userId: user.id,
+                    role: scope.surveyId + "/staff"
+                };
+            })
+        };
+        serviceReq = AdminUsersService.giveUsersAccessToSurvey(scope.surveyId, reqData).then(function () {
+            scope.onCreated();
+            scope.isOpen = false;
+        });
+    } else if (scope.user && scope.passwordEdit) {
         reqData = {
             userName: scope.user.userName,
             password: scope.password
@@ -159,7 +219,7 @@ function getRequest(scope, AdminUsersService) {
             updateUser(scope);
             scope.onSaved(reqData);
         });
-    } else if (scope.userType == USER_TYPE_STAFF) {
+    } else {
         reqData = {
             password: scope.password,
             name: scope.name,
@@ -169,20 +229,6 @@ function getRequest(scope, AdminUsersService) {
         };
         serviceReq = AdminUsersService.createUser(reqData).then(function (data) {
             scope.isOpen = false;
-            scope.onCreated(reqData);
-        });
-    } else if (scope.userType == USER_TYPE_RESPONDENT) {
-        reqData = {
-            userName: scope.userName,
-            password: scope.password,
-            name: scope.name,
-            surveyId: scope.surveyId,
-            email: scope.email,
-            phone: scope.phone
-        };
-        serviceReq = AdminUsersService.createOrUpdateRespondent(reqData).then(function (id) {
-            scope.isOpen = false;
-            reqData.id = id;
             scope.onCreated(reqData);
         });
     }

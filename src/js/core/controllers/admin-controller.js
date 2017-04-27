@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AdminController', ["$scope", "UserStateService", "ModalService", "appRoutes",
+    app.controller('AdminController', ["$scope", "$location", "UserStateService", "ModalService", "appRoutes",
         controllerFun]);
 };
 
-function controllerFun($scope, UserStateService, ModalService, appRoutes) {
+function controllerFun($scope, $location, UserStateService, ModalService, appRoutes) {
     $scope.bodyIsUnscrollable = false;
     $scope.authUsername = '';
     $scope.authenticated = false;
@@ -18,11 +18,11 @@ function controllerFun($scope, UserStateService, ModalService, appRoutes) {
         ModalService.showLogoutModal();
     };
 
-    $scope.$watch(function () {
-        return ModalService.getModalIsVisible();
-    }, function () {
+    $scope.$watchCollection(function () {
+        return [ModalService.getModalIsVisible(), $location.path()];
+    }, function (newVal) {
         $scope.bodyIsUnscrollable = ModalService.getModalAuthenticateVisible() ||
-            ModalService.getModalLogOutVisible();
+            ModalService.getModalLogOutVisible() || $location.path() == appRoutes.foodExplorer;
     });
 
     $scope.$watch(function () {

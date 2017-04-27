@@ -1,0 +1,139 @@
+<div class="modal" ng-show="isOpen">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title">User details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" ng-hide="user">
+                    <ul class="nav nav-pills">
+                        <li ng-class="{active: selectExistingUser}">
+                            <a href="" ng-click="switchSelectUser(true)">
+                                Select users
+                            </a>
+                        </li>
+                        <li ng-class="{active: !selectExistingUser}">
+                            <a href="" ng-click="switchSelectUser(false)">
+                                New user
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <form ng-hide="!user && selectExistingUser">
+                    <div class="form-group" ng-show="getIsEditable()">
+                        <button type="button" class="btn btn-link pull-right"
+                                ng-click="deleteUser()">
+                            Delete user
+                        </button>
+                        <ul class="nav nav-pills">
+                            <li ng-class="{active: !passwordEdit}">
+                                <a href="" ng-click="switchPasswordView(false)">
+                                    User profile
+                                </a>
+                            </li>
+                            <li ng-class="{active: passwordEdit}">
+                                <a href="" ng-click="switchPasswordView(true)">
+                                    User password
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div ng-show="!user || getIsEditable()">
+                        <div class="form-group"
+                             ng-class="{'has-error': !formValidation.email}">
+                            <label class="control-label">
+                                Email
+                            </label>
+                            <input type="email" class="form-control" placeholder="user@example.com"
+                                   ng-model="email">
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': !formValidation.password}"
+                             ng-hide="user">
+                            <label class="control-label">
+                                Password
+                            </label>
+                            <input type="text" class="form-control" placeholder="$ecRet"
+                                   ng-model="password">
+                        </div>
+                        <div ng-hide="passwordEdit && user">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Name
+                                </label>
+                                <input type="text" class="form-control" placeholder="User Name"
+                                       ng-model="name">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Phone
+                                </label>
+                                <input type="tel" class="form-control" placeholder="07*** ******"
+                                       ng-model="phone">
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': !formValidation.password}"
+                             ng-show="user && passwordEdit">
+                            <label class="control-label">
+                                Password
+                            </label>
+                            <input type="text" class="form-control" placeholder="$ecRet"
+                                   ng-model="password">
+                        </div>
+                    </div>
+                    <div ng-hide="!user || getIsEditable()">
+                        <p ng-show="email">
+                            <b>Email:</b> {{email}}
+                        </p>
+                        <p ng-show="name">
+                            <b>Name:</b> {{name}}
+                        </p>
+                        <p ng-show="phone">
+                            <b>Phone:</b> {{phone}}
+                        </p>
+                    </div>
+                    <div class="form-group" ng-show="user">
+                        <a href="" type="button"
+                           ng-click="withdrawAccess()">
+                            Withdraw access
+                        </a>
+                    </div>
+                </form>
+                <form ng-show="!user && selectExistingUser">
+                    <div class="form-group">
+                        <label class="control-label">
+                            Users
+                        </label>
+                        <ui-select multiple ng-model="uiSelect.selectedUsers">
+                            <ui-select-match placeholder="Select users...">
+                                {{$item.getTitle()}}
+                            </ui-select-match>
+                            <ui-select-choices refresh="findUsers($select.search)" refresh-delay="500"
+                                               repeat="user in uiSelect.availableUsers | filter:$select.search | orderBy:'getTitle()'">
+                                {{user.getTitle()}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" ng-show="!user || getIsEditable()">
+                <button type="button" class="btn btn-default"
+                        ng-disabled="loading"
+                        ng-click="cancel()">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-success"
+                        ng-disabled="loading"
+                        ng-click="save()">
+                    <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop" ng-show="isOpen"></div>

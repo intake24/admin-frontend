@@ -44,7 +44,8 @@
 </div>
 
 <div>
-    <div class="bordered-list-item" ng-repeat="user in filteredUsers = (users | filter:searchQuery)">
+    <div class="bordered-list-item"
+         ng-repeat="user in filteredUsers = (users | filter:searchQuery)">
         <h4>
             {{getUserTitle(user)}}
             <div class="pull-right">
@@ -58,11 +59,19 @@
     <h4 ng-show="loading">Loading</h4>
 </div>
 
-<survey-user-modal is-open="userModalIsOpen"
-                   user="editedUser"
-                   user-type="getUserType()"
-                   survey-id="surveyId"
-                   on-saved="onUserSaved()"
-                   on-created="onUserCreated"
-                   on-deleted="onUserDeleted"
-></survey-user-modal>
+<survey-respondent-modal ng-show="views.respondents.active"
+                         is-open="userModalIsOpen"
+                         user="editedUser"
+                         survey-id="surveyId"
+                         on-saved="onUserSaved()"
+                         on-created="onUserCreated"
+                         on-deleted="onUserDeleted"
+></survey-respondent-modal>
+<survey-staff-modal ng-show="views.staff.active"
+                    is-open="userModalIsOpen"
+                    user="editedUser"
+                    survey-id="surveyId"
+                    on-saved="onUserSaved()"
+                    on-created="onUserCreated"
+                    on-deleted="onUserDeleted"
+></survey-staff-modal>

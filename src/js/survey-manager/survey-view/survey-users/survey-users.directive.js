@@ -8,7 +8,8 @@ var userTypes = require("./survey-users-types")();
 
 module.exports = function (app) {
     app.directive("surveyUsers", ["AdminUsersService", "MessageService", directiveFun]);
-    require("./survey-user-modal/survey-user-modal.directive")(app);
+    require("./survey-respondent-modal/survey-respondent-modal.directive")(app);
+    require("./survey-staff-modal/survey-staff-modal.directive")(app);
 };
 
 function directiveFun(AdminUsersService, MessageService) {

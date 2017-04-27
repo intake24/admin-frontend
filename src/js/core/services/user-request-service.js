@@ -9,24 +9,26 @@ module.exports = function (app) {
 };
 
 function serviceFun($http, $q) {
+
+    var signInUrl = window.api_base_url + "signin",
+        refreshUrl = window.api_base_url + "refresh";
+
     return {
         login: function (username, password) {
             var defer = $q.defer(),
-                url = window.api_base_url + "signin",
                 data = {
                     email: username,
                     password: password
                 };
 
-            $http.post(url, data).then(function successCallback(data) {
+            $http.post(signInUrl, data).then(function successCallback(data) {
                 defer.resolve(data);
             });
 
             return defer.promise;
         },
         refresh: function () {
-            var url = window.api_base_url + "refresh";
-            return $http.post(url);
+            return $http.post(refreshUrl);
         }
     }
 }

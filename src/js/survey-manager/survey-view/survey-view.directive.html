@@ -25,7 +25,9 @@
                 </ul>
 
                 <div class="pt-2">
-                    <survey-description ng-if="directiveViews.general.active"
+                    <survey-general ng-if="directiveViews.general.active"
+                                    survey="survey"></survey-general>
+                    <survey-description ng-if="directiveViews.description.active"
                                         survey="survey"></survey-description>
                     <survey-results ng-if="directiveViews.results.active"
                                     survey="survey"></survey-results>

@@ -5,66 +5,43 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyDescription", ["LocalesService", "SurveyService",
+    app.directive("surveyDescription", ["SurveyService",
         "uiDatetimePickerConfig", directiveFun]);
 };
 
-function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
+function directiveFun(SurveyService, uiDatetimePickerConfig) {
 
     function controller(scope, element, attribute) {
 
-        scope.name = "";
-        scope.selectedLocale = null;
-        scope.allowGeneratedUsers = false;
-        scope.externalFollowUpUrl = "";
-        scope.supportEmail = "";
-        scope.startDate = null;
-        scope.endDate = null;
+        scope.description = "";
 
-        scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
+        scope.previewMode = false;
 
         scope.loading = false;
-
-        scope.formValidation = {
-            name: true,
-            supportEmail: true,
-            surveyPeriod: true
-        };
-
-        scope.datePickerState = {
-            startIsOpen: false,
-            endIsOpen: false
-        };
-
-        scope.locales = [];
-
-        scope.openStartDatePicker = function () {
-            scope.datePickerState.startIsOpen = true;
-        };
-
-        scope.openEndDatePicker = function () {
-            scope.datePickerState.endIsOpen = true;
-        };
 
         scope.cancel = function () {
             updateScope(scope, scope.survey);
         };
 
+        scope.showPreview = function () {
+            scope.previewMode = true;
+        };
+
+        scope.hidePreview = function () {
+            scope.previewMode = false;
+        };
+
         scope.save = function () {
-            if (!validateForm(scope)) {
-                return;
-            }
             scope.loading = true;
-            SurveyService.patch(scope.name, getRequest(scope)).finally(function () {
+            SurveyService.patch(scope.survey.id, getRequest(scope))
+                .then(function (data) {
+                    updateScope(scope, data);
+                    updateSurvey(scope, data);
+                })
+                .finally(function () {
                 scope.loading = false;
             });
         };
-
-        scope.$watch(function () {
-            return LocalesService.list();
-        }, function () {
-            scope.locales = LocalesService.list();
-        });
 
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
@@ -85,40 +62,26 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
 
 function getRequest(scope) {
     return {
-        id: scope.name,
-        schemeId: "default",
-        localeId: scope.selectedLocale,
-        allowGeneratedUsers: scope.allowGeneratedUsers,
-        externalFollowUpURL: scope.externalFollowUpURL,
-        supportEmail: scope.supportEmail
+        id: scope.survey.id,
+        state: scope.survey.state,
+        startDate: scope.survey.startDate,
+        endDate: scope.survey.endDate,
+        schemeId: scope.survey.schemeId,
+        localeId: scope.survey.localeId,
+        allowGeneratedUsers: scope.survey.allowGeneratedUsers,
+        externalFollowUpURL: scope.survey.externalFollowUpURL,
+        supportEmail: scope.survey.supportEmail,
+        description: scope.description
     };
-}
-
-function validateForm(scope) {
-
-    scope.formValidation.name = scope.newName.trim() != "";
-
-    scope.formValidation.supportEmail = scope.newSupportEmail.trim() != "";
-
-    scope.formValidation.surveyPeriod = scope.newStartDate != null &&
-        scope.newEndDate != null &&
-        scope.newEndDate >= scope.newStartDate;
-
-    return scope.formValidation.name &&
-        scope.formValidation.supportEmail &&
-        scope.formValidation.surveyPeriod;
-
 }
 
 function updateScope(scope, data) {
     if (!data) {
         return;
     }
-    scope.name = data.id;
-    scope.selectedLocale = data.localeId;
-    scope.allowGeneratedUsers = data.allowGeneratedUsers;
-    scope.externalFollowUpUrl = data.externalFollowUpURL;
-    scope.supportEmail = data.supportEmail;
-    scope.startDate = new Date(data.startDate);
-    scope.endDate = new Date(data.endDate);
+    scope.description = data.description;
+}
+
+function updateSurvey(scope, survey) {
+    survey.description = scope.description;
 }

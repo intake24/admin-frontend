@@ -1,1 +1,25 @@
-<survey-edit-form survey="survey"></survey-edit-form>
+<div class="form-group" ng-hide="previewMode">
+    <text-angular ng-model="description"></text-angular>
+</div>
+<div class="form-group" ng-show="previewMode" ng-bind-html="description"></div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" class="btn btn-default" ng-hide="previewMode" ng-click="showPreview()">
+                Preview
+            </button>
+            <button type="button" class="btn btn-default" ng-show="previewMode" ng-click="hidePreview()">
+                Back to editor
+            </button>
+        </div>
+        <div class="col-xs-6 text-right">
+            <button type="button" class="btn btn-default" ng-click="cancel()" ng-disabled="loading">
+                Cancel
+            </button>
+            <button type="button" class="btn btn-success" ng-click="save()" ng-disabled="loading">
+                <i class="fa fa-spinner fa-spin" ng-class="{'hide': !loading}"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</div>

@@ -12,11 +12,11 @@ module.exports = function (app) {
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
         surveyManager: '/survey-manager',
-        surveyManagerList: '/survey-manager/list',
         surveyManagerNew: '/survey-manager/new',
-        surveyManagerSurvey: '/survey-manager/list/:surveyId',
-        surveyManagerSurveyUsers: '/survey-manager/list/:surveyId/users',
-        surveyManagerSurveyResults: '/survey-manager/list/:surveyId/results',
+        surveyManagerSurvey: '/survey-manager/:surveyId',
+        surveyManagerSurveyDescription: '/survey-manager/:surveyId/description',
+        surveyManagerSurveyUsers: '/survey-manager/:surveyId/users',
+        surveyManagerSurveyResults: '/survey-manager/:surveyId/results',
         surveyFeedback: '/survey-feedback'
     };
 
@@ -56,15 +56,15 @@ module.exports = function (app) {
                 template: require("./survey-manager/survey-manager.controller.html"),
                 controller: 'SurveyManagerController'
             })
-            .when(routes.surveyManagerList, {
-                template: require("./survey-manager/survey-manager.controller.html"),
-                controller: 'SurveyManagerController'
-            })
             .when(routes.surveyManagerNew, {
                 template: require("./survey-manager/survey-manager.controller.html"),
                 controller: 'SurveyManagerController'
             })
             .when(routes.surveyManagerSurvey, {
+                template: require("./survey-manager/survey-manager.controller.html"),
+                controller: 'SurveyManagerController'
+            })
+            .when(routes.surveyManagerSurveyDescription, {
                 template: require("./survey-manager/survey-manager.controller.html"),
                 controller: 'SurveyManagerController'
             })

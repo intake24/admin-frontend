@@ -111,7 +111,8 @@ function getRequest(scope) {
         localeId: scope.form.selectedLocale,
         allowGeneratedUsers: scope.form.allowGeneratedUsers,
         externalFollowUpURL: scope.form.externalFollowUpURL,
-        supportEmail: scope.form.supportEmail
+        supportEmail: scope.form.supportEmail,
+        description: scope.survey.description
     };
 }
 

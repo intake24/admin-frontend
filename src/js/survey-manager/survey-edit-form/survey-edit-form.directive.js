@@ -13,6 +13,8 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
     function controller(scope, element, attribute) {
 
+        scope.form = {};
+
         scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
         scope.surveyStateOptions = [
             {value: "0", text: "Has not started"},
@@ -83,7 +85,7 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
         scope.$watch(function() { return UserStateService.getUserInfo(); }, function(newValue) {
             scope.currentUser = newValue;
-        })
+        });
 
     }
 
@@ -101,27 +103,28 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
 function getRequest(scope) {
     return {
-        id: scope.name,
-        state: scope.state,
-        startDate: scope.startDate.toISOString(),
-        endDate: scope.endDate.toISOString(),
+        id: scope.form.name,
+        state: scope.form.state,
+        startDate: scope.form.startDate.toISOString(),
+        endDate: scope.form.endDate.toISOString(),
         schemeId: "default",
-        localeId: scope.selectedLocale,
-        allowGeneratedUsers: scope.allowGeneratedUsers,
-        externalFollowUpURL: scope.externalFollowUpURL,
-        supportEmail: scope.supportEmail
+        localeId: scope.form.selectedLocale,
+        allowGeneratedUsers: scope.form.allowGeneratedUsers,
+        externalFollowUpURL: scope.form.externalFollowUpURL,
+        supportEmail: scope.form.supportEmail,
+        description: scope.survey.description
     };
 }
 
 function validateForm(scope) {
 
-    scope.formValidation.name = scope.name.trim() != "";
+    scope.formValidation.name = scope.form.name.trim() != "";
 
-    scope.formValidation.supportEmail = scope.supportEmail.trim() != "";
+    scope.formValidation.supportEmail = scope.form.supportEmail.trim() != "";
 
-    scope.formValidation.surveyPeriod = scope.startDate != null &&
-        scope.endDate != null &&
-        scope.endDate >= scope.startDate;
+    scope.formValidation.surveyPeriod = scope.form.startDate != null &&
+        scope.form.endDate != null &&
+        scope.form.endDate >= scope.form.startDate;
 
     return scope.formValidation.name &&
         scope.formValidation.supportEmail &&
@@ -131,23 +134,23 @@ function validateForm(scope) {
 
 function updateScope(scope, data) {
     if (!data) {
-        scope.name = "";
-        scope.state = "0";
-        scope.selectedLocale = "en_GB";
-        scope.allowGeneratedUsers = false;
-        scope.externalFollowUpUrl = "";
-        scope.supportEmail = "";
-        scope.startDate = null;
-        scope.endDate = null;
+        scope.form.name = "";
+        scope.form.state = "0";
+        scope.form.selectedLocale = "en_GB";
+        scope.form.allowGeneratedUsers = false;
+        scope.form.externalFollowUpUrl = "";
+        scope.form.supportEmail = "";
+        scope.form.startDate = null;
+        scope.form.endDate = null;
     } else {
-        scope.name = data.id;
-        scope.state = String(data.state);
-        scope.selectedLocale = data.localeId;
-        scope.allowGeneratedUsers = data.allowGeneratedUsers;
-        scope.externalFollowUpUrl = data.externalFollowUpURL;
-        scope.supportEmail = data.supportEmail;
-        scope.startDate = new Date(data.startDate);
-        scope.endDate = new Date(data.endDate);
+        scope.form.name = data.id;
+        scope.form.state = String(data.state);
+        scope.form.selectedLocale = data.localeId;
+        scope.form.allowGeneratedUsers = data.allowGeneratedUsers;
+        scope.form.externalFollowUpUrl = data.externalFollowUpURL;
+        scope.form.supportEmail = data.supportEmail;
+        scope.form.startDate = new Date(data.startDate);
+        scope.form.endDate = new Date(data.endDate);
     }
 }
 
@@ -155,7 +158,7 @@ function updateSurvey(scope, data) {
     scope.survey.id = data.id;
     scope.survey.state = data.state;
     scope.survey.localeId = data.localeId;
-    scope.survey.llowGeneratedUsers = data.llowGeneratedUsers;
+    scope.survey.allowGeneratedUsers = data.allowGeneratedUsers;
     scope.survey.externalFollowUpURL = data.externalFollowUpURL;
     scope.survey.supportEmail = data.supportEmail;
     scope.survey.startDate = data.startDate;

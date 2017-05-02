@@ -23,7 +23,7 @@ function directiveFun(SurveyService, UserStateService, appRoutes, $route, $route
 
         scope.directiveViews = {
             general: new SurveyView("General", appRoutes.surveyManagerSurvey),
-            description: new SurveyView("Description", appRoutes.surveyManagerSurveyDescription),
+            description: new SurveyView("Welcome page", appRoutes.surveyManagerSurveyDescription),
             users: new SurveyView("Users", appRoutes.surveyManagerSurveyUsers),
             results: new SurveyView("Results", appRoutes.surveyManagerSurveyResults)
         };

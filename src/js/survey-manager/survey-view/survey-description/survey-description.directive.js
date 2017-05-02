@@ -5,17 +5,22 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyDescription", ["SurveyService",
+    app.directive("surveyDescription", ["$sce", "SurveyService", "UserStateService",
         "uiDatetimePickerConfig", directiveFun]);
 };
 
-function directiveFun(SurveyService, uiDatetimePickerConfig) {
+function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerConfig) {
 
     function controller(scope, element, attribute) {
 
         scope.description = "";
+        scope.preview = "";
 
         scope.previewMode = false;
+
+        scope.textAreaMode = getUserAccessTextareaMode(UserStateService);
+
+        scope.textAreaModeIsAllowed = getUserAccessTextareaMode(UserStateService);
 
         scope.loading = false;
 
@@ -24,11 +29,16 @@ function directiveFun(SurveyService, uiDatetimePickerConfig) {
         };
 
         scope.showPreview = function () {
+            scope.preview = $sce.trustAsHtml(scope.description);
             scope.previewMode = true;
         };
 
         scope.hidePreview = function () {
             scope.previewMode = false;
+        };
+
+        scope.setTextareaMode = function (val) {
+            scope.textAreaMode = val;
         };
 
         scope.save = function () {
@@ -84,4 +94,13 @@ function updateScope(scope, data) {
 
 function updateSurvey(scope, survey) {
     survey.description = scope.description;
+}
+
+function getUserAccessTextareaMode(userService) {
+    var ui = userService.getUserInfo();
+    if (!ui) {
+        return false;
+    } else {
+        return ui.isSuperUser() || ui.isGlobalSurveyAdmin();
+    }
 }

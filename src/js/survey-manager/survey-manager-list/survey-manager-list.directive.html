@@ -2,7 +2,7 @@
     <div class="search-input-group">
         <search-input ng-model="searchQuery"></search-input>
         <div class="search-input-addon">
-            <a href="#{{newSurveyUrl}}">
+            <a href="#{{newSurveyUrl}}" ng-if="currentUser.canCreateSurveys()">
                 <i class="fa fa-plus"></i>
             </a>
         </div>

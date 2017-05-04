@@ -112,7 +112,7 @@ function getRequest(scope) {
         allowGeneratedUsers: scope.form.allowGeneratedUsers,
         externalFollowUpURL: scope.form.externalFollowUpURL,
         supportEmail: scope.form.supportEmail,
-        description: scope.survey.description
+        description: scope.survey ? scope.survey.description : null
     };
 }
 

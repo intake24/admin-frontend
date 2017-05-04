@@ -15,6 +15,6 @@ span.food-list-container-node(ng-class="{active: value.selected}")
         span(ng-class="{'text-muted': value.doNotUseInThisLocale}") {{ getNodeDisplayName(value) }}
 
 ul(ng-if='value.children')
-    li(ng-repeat='(index, value) in value.children | orderBy:["type", "displayName"]'
+    li(ng-repeat='(index, value) in getSortedList(value.children)'
     ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"'
     ng-hide="getNodeIsHidden(value)")

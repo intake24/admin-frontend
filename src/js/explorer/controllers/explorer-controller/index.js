@@ -34,7 +34,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         $scope.searchTools.showFoodNotUsedInLocale = !$scope.searchTools.showFoodNotUsedInLocale;
     };
 
-    $scope.getNodeDisplayName = function(node) {
+    $scope.getNodeDisplayName = function (node) {
         if (!$scope.searchTools.showLocalDescription) {
             return node.englishDescription;
         } else {
@@ -43,8 +43,20 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         }
     };
 
-    $scope.getNodeIsHidden = function(node) {
+    $scope.getNodeIsHidden = function (node) {
         return node.doNotUseInThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
+    };
+
+    $scope.getSortedList = function (foodList) {
+        return foodList.slice().sort(function (a, b) {
+            if (a.type + $scope.getNodeDisplayName(a) > b.type + $scope.getNodeDisplayName(b)) {
+                return 1;
+            } else if (a.type + $scope.getNodeDisplayName(a) < b.type + $scope.getNodeDisplayName(b)) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
     };
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {

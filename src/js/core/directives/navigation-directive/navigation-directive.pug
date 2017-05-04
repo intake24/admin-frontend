@@ -2,13 +2,13 @@
     ul
         li(ng-class="{'active': !menuItems.foodExplorer.collapsed}" ng-if="currentUser.canAccessFoodDatabaseList()")
             a(ng-click='toggleItem("foodExplorer")' ng-class="{'active': menuItems.foodExplorer.active}")
-                | #{ gettext("sidebar_food_explorer") }
+                | #{ gettext("Food database") }
                 i.fa(ng-class="!menuItems.foodExplorer.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
                 li(ng-repeat='(index, value) in locales | orderBy:["localName"] | filter: canAccessFoodLocale')
                     a(ng-href="/{{value.id}}/{{value.adminLanguage}}\#{{menuItems.foodExplorer.href}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
-                        | &nbsp;{{ value.localName }}
+                        | &nbsp;{{ value.englishName }}
 
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessImageDatabase()")
             a(ng-click='toggleItem("imageGalleries")')

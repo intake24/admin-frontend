@@ -7,12 +7,12 @@ module.exports = function (app) {
 function serviceFun($http, LocalesService) {
 
     return {
-        getFoodData: function (code) {
-            return $http.get(api_base_url + 'user/foods/' + LocalesService.current() + '/' + code);
+        getFoodData: function (locale, code) {
+            return $http.get(api_base_url + 'user/foods/' + locale + '/' + code);
         },
 
-        getFoodDataWithSources: function (code) {
-            return $http.get(api_base_url + 'user/foods/' + LocalesService.current() + '/' + code + '/with-sources');
+        getFoodDataWithSources: function (locale, code) {
+            return $http.get(api_base_url + 'user/foods/' + locale + '/' + code + '/with-sources');
         }
     };
 

@@ -6,7 +6,7 @@
                 i.fa(ng-class="!menuItems.foodExplorer.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
                 li(ng-repeat='(index, value) in locales | orderBy:["localName"] | filter: canAccessFoodLocale')
-                    a(ng-href="/{{value.id}}/{{value.adminLanguage}}\#{{menuItems.foodExplorer.href}}" ng-class='{"active": currentLocale == value.id}')
+                    a(ng-href="/\#{{getFoodExplorerHref(value.id)}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
                         | &nbsp;{{ value.localName }}
 

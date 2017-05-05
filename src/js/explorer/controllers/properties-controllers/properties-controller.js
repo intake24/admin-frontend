@@ -8,12 +8,12 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('PropertiesController',
-        ['$scope', '$rootScope', 'CurrentItem', 'SharedData', 'FoodService',
+        ['$scope', '$rootScope', '$routeParams', 'CurrentItem', 'SharedData', 'FoodService',
             'UserFoodData', 'PackerService', '$q', 'MessageService',
             'LocalesService', controllerFun]);
 };
 
-function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
+function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData, FoodService,
                        userFoodData, PackerService, $q, MessageService, LocalesService) {
 
     $scope.sharedData = sharedData;
@@ -146,13 +146,13 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     $scope.useExclusivelyInThisLocale = function (use) {
         if (arguments.length == 1) {
-            var newList = _.without($scope.itemDefinition.main.localeRestrictions, LocalesService.current());
+            var newList = _.without($scope.itemDefinition.main.localeRestrictions, $routeParams.locale);
             if (use)
-                newList.push(LocalesService.current());
+                newList.push($routeParams.locale);
             $scope.itemDefinition.main.localeRestrictions = newList;
         } else {
             if ($scope.itemDefinition)
-                return _.contains($scope.itemDefinition.main.localeRestrictions, LocalesService.current())
+                return _.contains($scope.itemDefinition.main.localeRestrictions, $routeParams.locale);
             else
                 return false;
         }
@@ -176,13 +176,13 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     function loadMainRecord() {
 
         if ($scope.currentItem.type == 'category') {
-            return FoodService.getCategoryDefinition(LocalesService.current(), $scope.currentItem.code)
+            return FoodService.getCategoryDefinition($routeParams.locale, $scope.currentItem.code)
                 .then(function (definition) {
                     $scope.itemDefinition = definition;
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
                 });
         } else if ($scope.currentItem.type == 'food') {
-            return FoodService.getFoodDefinition(LocalesService.current(), $scope.currentItem.code)
+            return FoodService.getFoodDefinition($routeParams.locale, $scope.currentItem.code)
                 .then(function (definition) {
                     $scope.itemDefinition = definition;
                     $scope.originalItemDefinition = angular.copy($scope.itemDefinition);
@@ -192,7 +192,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function loadLocalRecord() {
         if ($scope.currentItem.type == 'food') {
-            return userFoodData.getFoodDataWithSources($scope.currentItem.code).then(
+            return userFoodData.getFoodDataWithSources($routeParams.locale, $scope.currentItem.code).then(
                 function (data) {
                     $scope.localFoodData = data[0];
                     $scope.localFoodDataSources = data[1];
@@ -208,7 +208,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
     }
 
     function reloadFoodGroups() {
-        FoodService.getFoodGroups(LocalesService.current()).then(function (groups) {
+        FoodService.getFoodGroups($routeParams.locale).then(function (groups) {
             $scope.foodGroups = groups;
         });
     }
@@ -396,7 +396,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateFoodLocalRecord() {
         if ($scope.loadLocalRecordChanged()) {
-            return FoodService.updateFoodLocalRecord(LocalesService.current(),
+            return FoodService.updateFoodLocalRecord($routeParams.locale,
                 $scope.itemDefinition.main.code, $scope.itemDefinition.local);
         } else {
             return $q.when(true);
@@ -413,7 +413,7 @@ function controllerFun($scope, $rootScope, currentItem, sharedData, FoodService,
 
     function updateCategoryLocalRecord() {
         if ($scope.categoryLocalRecordChanged()) {
-            return FoodService.updateCategoryLocalRecord(LocalesService.current(),
+            return FoodService.updateCategoryLocalRecord($routeParams.locale,
                 $scope.itemDefinition.main.code, $scope.itemDefinition.local);
         } else {
             return $q.when(true);

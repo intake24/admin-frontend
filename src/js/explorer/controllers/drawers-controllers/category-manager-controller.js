@@ -19,10 +19,10 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('CategoryManagerController',
-        ['$scope', 'FoodService', 'DrawersService', 'LocalesService', controllerFun]);
+        ['$scope', '$routeParams', 'FoodService', 'DrawersService', 'LocalesService', controllerFun]);
 };
 
-function controllerFun($scope, FoodService, DrawersService, LocalesService) {
+function controllerFun($scope, $routeParams, FoodService, DrawersService, LocalesService) {
 
     $scope.searchQuery = '';
 
@@ -82,7 +82,7 @@ function controllerFun($scope, FoodService, DrawersService, LocalesService) {
         if ($scope.searchQuery == '') {
             return;
         }
-        FoodService.searchCategories(LocalesService.current(), $scope.searchQuery).then(function (categories) {
+        FoodService.searchCategories($routeParams.locale, $scope.searchQuery).then(function (categories) {
                 $scope.searchResults = categories;
             },
             $scope.handleError

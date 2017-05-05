@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AdminController', ["$scope", "$location", "UserStateService", "ModalService", "appRoutes",
+    app.controller('AdminController', ["$scope", "$route", "UserStateService", "ModalService", "appRoutes",
         controllerFun]);
 };
 
-function controllerFun($scope, $location, UserStateService, ModalService, appRoutes) {
+function controllerFun($scope, $route, UserStateService, ModalService, appRoutes) {
     $scope.bodyIsUnscrollable = false;
     $scope.authUsername = '';
     $scope.authenticated = false;
@@ -19,10 +19,10 @@ function controllerFun($scope, $location, UserStateService, ModalService, appRou
     };
 
     $scope.$watchCollection(function () {
-        return [ModalService.getModalIsVisible(), $location.path()];
+        return [ModalService.getModalIsVisible(), getRouteOriginalPath($route)];
     }, function (newVal) {
         $scope.bodyIsUnscrollable = ModalService.getModalAuthenticateVisible() ||
-            ModalService.getModalLogOutVisible() || $location.path() == appRoutes.foodExplorer;
+            ModalService.getModalLogOutVisible() || getRouteOriginalPath($route) == appRoutes.foodExplorer;
     });
 
     $scope.$watch(function () {
@@ -30,5 +30,9 @@ function controllerFun($scope, $location, UserStateService, ModalService, appRou
     }, function (newValue) {
         $scope.currentUser = newValue;
     });
+
+    function getRouteOriginalPath($route) {
+        return $route.current ? $route.current.$$route.originalPath : "";
+    }
 
 }

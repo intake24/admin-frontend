@@ -17,7 +17,7 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, loadChildrenDe
         if (targetNode) {
             deferred.resolve(targetNode);
         } else {
-            getParentBranch(code, type).then(function (allCategories) {
+            getParentBranch(locale, code, type).then(function (allCategories) {
                 lookInTree(locale, deferred, allCategories, match);
             });
         }
@@ -25,7 +25,7 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, loadChildrenDe
         return deferred.promise;
     }
 
-    function getParentBranch(code, type) {
+    function getParentBranch(locale, code, type) {
         var allParentCategoriesDeferred = null;
 
         if (type == "food") {

@@ -413,7 +413,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
 
     function makeVisibleAndSelect(code, type) {
         //Fixme. This should be a directive
-        findNodeInTree(code, type).then(function (n) {
+        findNodeInTree(LocalesService.current(), code, type).then(function (n) {
             clearSelection();
             showNodeProperties(n);
             // Timeout is set to wait for the children to be loaded and then scroll to the selected element.

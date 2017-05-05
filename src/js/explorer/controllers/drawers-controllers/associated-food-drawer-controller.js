@@ -4,10 +4,10 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('AssociatedFoodDrawerController',
-        ['$scope', '$timeout', 'FoodService', 'DrawersService', controllerFun]);
+        ['$scope', '$timeout', 'FoodService', 'DrawersService', 'LocalesService', controllerFun]);
 };
 
-function controllerFun($scope, $timeout, FoodService, DrawersService) {
+function controllerFun($scope, $timeout, FoodService, DrawersService, LocalesService) {
 
     $scope.query = "";
     $scope.items = [];
@@ -27,11 +27,11 @@ function controllerFun($scope, $timeout, FoodService, DrawersService) {
         searchTimeout = $timeout(function() {
           $scope.items = [];
 
-          FoodService.searchFoods($scope.query).then(function (data) {
+          FoodService.searchFoods(LocalesService.current(), $scope.query).then(function (data) {
               $scope.items = $scope.items.concat(data);
           });
 
-          FoodService.searchCategories($scope.query).then(function (data) {
+          FoodService.searchCategories(LocalesService.current(), $scope.query).then(function (data) {
               $scope.items = $scope.items.concat(data);
           });
 

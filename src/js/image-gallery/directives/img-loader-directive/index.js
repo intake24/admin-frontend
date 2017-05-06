@@ -12,9 +12,11 @@ module.exports = function (app) {
         function controller(scope, element, attributes) {
 
             scope.loaded = false;
-            if (scope.src) {
-                loadImageSrc();
-            }
+            scope.$watch("src", function (newVal) {
+                if (newVal) {
+                    loadImageSrc();
+                }
+            });
 
             function loadImageSrc() {
                 var img = new Image(),

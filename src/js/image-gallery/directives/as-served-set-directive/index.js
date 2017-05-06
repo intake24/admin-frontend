@@ -197,7 +197,7 @@ module.exports = function (app) {
                     image.imageUrl = data.src;
                     image.loading = false;
                 }, function () {
-                    scope.removeItemscope(image);
+                    scope.removeItem(image);
                 });
             }
 

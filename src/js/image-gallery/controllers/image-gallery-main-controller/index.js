@@ -34,6 +34,7 @@ function controllerFun($scope, $window, $timeout, ImageService) {
             image.loading = true;
             $scope.images.unshift(image);
             ImageService.add(file).then(function (data) {
+                image.id = data.id;
                 image.src = data.src;
                 image.loading = false;
                 pageOffset++;

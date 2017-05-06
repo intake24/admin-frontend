@@ -75,13 +75,6 @@ module.exports = function (app) {
                         }
                     }
                     return $q.reject(rejection);
-                },
-                xmlHttpRequestConfig: function (xmlHttpReq) {
-                    var self = this;
-                    xmlHttpReq.setRequestHeader("X-Auth-Token", UserStateService.getAccessToken());
-                    xmlHttpReq.addEventListener("load", function () {
-                        self.responseError(xmlHttpReq);
-                    });
                 }
             };
         }]);

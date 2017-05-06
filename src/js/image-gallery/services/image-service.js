@@ -4,8 +4,6 @@
 
 'use strict';
 
-var sendImageFile = require("./send-image-file");
-
 module.exports = function (app) {
     app.service("ImageService", ["$http", "$httpParamSerializerJQLike", "$q", "$window",
         "HttpRequestInterceptor",
@@ -13,6 +11,26 @@ module.exports = function (app) {
 };
 
 function serviceFun($http, $httpParamSerializerJQLike, $q, $window, HttpRequestInterceptor) {
+
+    function uploadFile(url, file) {
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append("file", file);
+        $http.post(url, fd, {
+            transformRequest: angular.identity,
+            headers: {"Content-Type": undefined}
+        }).then(function (data) {
+            var reader = new FileReader(),
+                id = data[0];
+            reader.onload = function (e) {
+                deferred.resolve({id: id, src: e.target.result});
+            };
+            reader.readAsDataURL(file);
+        }, function () {
+            deferred.reject();
+        });
+        return deferred.promise;
+    }
 
     return {
         query: function (offset, limit, search) {
@@ -25,11 +43,11 @@ function serviceFun($http, $httpParamSerializerJQLike, $q, $window, HttpRequestI
         },
         add: function (file) {
             var url = $window.api_base_url + "admin/images/source/new";
-            return sendImageFile(url, file, HttpRequestInterceptor, $q);
+            return uploadFile(url, file);
         },
         addForAsServed: function (asServedSetId, file) {
             var url = $window.api_base_url + "admin/images/source/new-as-served?setId=" + asServedSetId;
-            return sendImageFile(url, file, HttpRequestInterceptor, $q);
+            return uploadFile(url, file);
         },
         patch: function (id, tags) {
             var url = $window.api_base_url + "admin/images/source/" + id;

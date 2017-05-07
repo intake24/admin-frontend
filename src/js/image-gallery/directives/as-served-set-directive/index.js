@@ -87,7 +87,7 @@ module.exports = function (app) {
                     return;
                 }
                 scope.loading = true;
-                AsServedSetService.remove(scope.name).then(function () {
+                AsServedSetService.delete(scope.name).then(function () {
                     if (scope.onRemoved) {
                         scope.onRemoved(scope.referenceObj);
                     }

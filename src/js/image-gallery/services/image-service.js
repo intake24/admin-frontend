@@ -13,23 +13,12 @@ module.exports = function (app) {
 function serviceFun($http, $httpParamSerializerJQLike, $q, $window, HttpRequestInterceptor) {
 
     function uploadFile(url, file) {
-        var deferred = $q.defer();
         var fd = new FormData();
         fd.append("file", file);
-        $http.post(url, fd, {
+        return $http.post(url, fd, {
             transformRequest: angular.identity,
             headers: {"Content-Type": undefined}
-        }).then(function (data) {
-            var reader = new FileReader(),
-                id = data[0];
-            reader.onload = function (e) {
-                deferred.resolve({id: id, src: e.target.result});
-            };
-            reader.readAsDataURL(file);
-        }, function () {
-            deferred.reject();
         });
-        return deferred.promise;
     }
 
     return {

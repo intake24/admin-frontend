@@ -3,7 +3,8 @@
 	.properties-body
 		
 		.page-header
-			h2 #{ gettext("Food") }: {{ currentItem.displayName }}
+			h2 #{ gettext("Food") }:&nbsp;
+				span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
 
 		div(class="fa fa-bug food-local-view-icon" uib-popover-template="'food-local-view-popover-template'"
 		popover-trigger="mouseenter"

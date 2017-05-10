@@ -1,12 +1,13 @@
 .property(ng-controller="CategoriesController")
-	h3 #{ gettext("Categories") }
-	.form-group
-		.col-xs-12
-			.categories-container
-				ul(ng-repeat='category in $parent.itemDefinition.main.parentCategories | orderBy:"displayName"')
-					li {{category.displayName}}
+    h3 #{ gettext("Categories") }
+    .form-group
+        .col-xs-12
+            .categories-container
+                ul
+                    li(ng-repeat='category in $parent.itemDefinition.main.parentCategories | orderBy:"displayName"'
+                        ng-attr-dir="{{getCategoryTextDirection(category)}}") {{category.displayName}}
 
-	.form-group
-		.col-xs-12
-			button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer($parent.itemDefinition.main.parentCategories)')
-				span #{ gettext("Manage categories") }
+    .form-group
+        .col-xs-12
+            button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer($parent.itemDefinition.main.parentCategories)')
+                span #{ gettext("Manage categories") }

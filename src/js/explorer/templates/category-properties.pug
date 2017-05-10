@@ -3,7 +3,8 @@
 	.properties-body
 		
 		.page-header
-			h2 #{ gettext("Category") }: {{ currentItem.displayName }}
+			h2 #{ gettext("Category") }:&nbsp;
+				span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
 
 		include forms/category-properties
 

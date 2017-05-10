@@ -12,23 +12,26 @@
             label.col-xs-3.control-label #{ gettext("Food or category code") }
             .col-xs-9
                 .form-control-static
-                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)' ng-class="{'has-error': !assFood.foodOrCategory}")
+                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)'
+                                 ng-class="{'has-error': !assFood.foodOrCategory}")
                         span(ng-if='!assFood.foodOrCategory')
                             p #{ gettext("properties_select_associated_food") }
                         span(ng-if='assFood.foodOrCategory')
                             i.fa.fa-folder-o(ng-if='assFood.foodOrCategory.type == "category"' style='margin-right: 8px')
-                            | {{ assFood.foodOrCategory.displayName }}
+                            span(ng-attr-dir="{{getFoodTextDirection(assFood.foodOrCategory)}}") {{ assFood.foodOrCategory.displayName }}
         .form-group
             label.col-xs-3.control-label(for="associated-food-prompt-text-{{$index}}")
                 | #{ gettext("associated_food_question") }
             .col-xs-9
                 input.form-control(type="text" id="associated-food-prompt-text-{{$index}}"
+                                    ng-attr-dir="{{formTextDirection}}"
                                     ng-model="assFood.promptText")
         .form-group
             label.col-xs-3.control-label(for="associated-food-generic-name-{{$index}}")
                 | #{ gettext("Generic name for this food") }
             .col-xs-9
                 input.form-control(type="text" id="associated-food-generic-name-{{$index}}"
+                                ng-attr-dir="{{formTextDirection}}"
                                 ng-model="assFood.genericName")
         .form-group
             label.col-xs-3.control-label(for="associated-food-link-as-main-{{$index}}")

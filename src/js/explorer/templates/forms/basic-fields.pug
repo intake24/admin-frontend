@@ -11,7 +11,7 @@
 	.col-xs-9
 		input(class='form-control' type='text'
 			id="basic-fields-local-description"
-		    ng-attr-dir="{{currentLocale.textDirection}}"
+		    ng-attr-dir="{{formTextDirection}}"
 			ng-model='localDescriptionModel' ng-model-options='{ getterSetter : true }')
 .form-group(ng-class="{'has-error': codeIsInvalid, 'has-success': codeIsValid}")
 	label.col-xs-3.control-label(for="basic-fields-main-code")

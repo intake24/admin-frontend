@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 function serviceFun($window, $rootScope, $http, PackerService, $q) {
 
-	var locales = [];
+	var locales = null;
 
 	var localesDeferred = $q.defer();
 
@@ -34,23 +34,31 @@ function serviceFun($window, $rootScope, $http, PackerService, $q) {
 	}
 
 	function reloadLocales() {
+		locales = null;
 		$http.get(api_base_url + 'admin/locales').then(function(data) {
 			locales = _.map(data, unpackLocale);
-			localesDeferred.resolve(locales);
+			localesDeferred.resolve(locales.slice());
 		}, function(response) {
 			console.error("Failed to load locale information");
 		});
 	}
 
 	return {
-
-		listFuture: function() {
-			return localesDeferred.promise;
-		},
-
 		list : function() {
-			return locales;
+			if (locales) {
+				return $q.resolve(locales.slice());
+			} else {
+				return localesDeferred.promise;
+			}
 		},
+
+		getLocale: function (localeId) {
+			return this.list().then(function (locales) {
+				return locales.filter(function (locale) {
+					return locale.id == localeId;
+                })[0];
+            });
+        },
 
 		current: function() {
 			return currentLocale;

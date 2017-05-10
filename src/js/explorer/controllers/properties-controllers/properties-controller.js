@@ -18,15 +18,6 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     $scope.sharedData = sharedData;
 
-    /* FIXME: Wrong because it watches the app locale, not the current food explorer locale */
-
-    $scope.$watch(function () {
-        return LocalesService.currentInfo();
-    }, function (newValue) {
-        $scope.currentLocale = newValue;
-        console.log(newValue);
-    });
-
     function clearData() {
         // A snapshot of the initial item definition.
         // Loaded from the server when the currentItem changes.
@@ -167,6 +158,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         }
     };
 
+
     function reloadData() {
         clearData();
 
@@ -176,8 +168,10 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
             return $q.all([loadMainRecord(), loadLocalRecord()])
                 .finally(function () {
                     enableButtons();
+                    setTextDirection();
                 });
         } else {
+            setTextDirection();
             return $q.when(true);
         }
     }
@@ -365,6 +359,19 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                     notifyItemUpdated();
                 });
     };
+
+    function setTextDirection() {
+        LocalesService.getLocale($routeParams.locale).then(function (locale) {
+            $scope.formTextDirection = locale.textDirection;
+
+            if ($scope.currentItem && $scope.currentItem.localDescription &&
+                $scope.currentItem.localDescription.defined) {
+                $scope.localeTextDirection = locale.textDirection;
+            } else {
+                $scope.localeTextDirection = "";
+            }
+        });
+    }
 
     function createUpdateEvent() {
         return {

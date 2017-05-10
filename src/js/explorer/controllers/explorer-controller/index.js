@@ -15,6 +15,8 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
 
+    var textDirection;
+
     // Load shared data
     $scope.SharedData = sharedData;
     $scope.rootCategories = [];
@@ -41,6 +43,10 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             return node.localDescription && node.localDescription.defined ?
                 node.localDescription.value : node.englishDescription;
         }
+    };
+
+    $scope.getTextDirection = function () {
+        return $scope.searchTools.showLocalDescription ? textDirection : "";
     };
 
     $scope.getNodeIsHidden = function (node) {
@@ -265,11 +271,11 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
 
     $scope.getText = function (s) {
         return gettext(s);
-    }
+    };
 
     $scope.removeFromCategory = function () {
 
-    }
+    };
 
     $scope.nodeMarkerClass = function (node) {
         var cls = ['fa', 'fa-fw'];
@@ -286,7 +292,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             cls.push('editing');
 
         return cls;
-    }
+    };
 
     $scope.hasProblems = function (node) {
         if (node.type == 'food')
@@ -295,7 +301,15 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             return (node.recursiveProblems != null &&
             (node.recursiveProblems.categoryProblems.length > 0 ||
             node.recursiveProblems.foodProblems.length > 0));
-    }
+    };
+
+    $scope.$watch(function () {
+        return $routeParams.locale;
+    }, function () {
+        LocalesService.getLocale($routeParams.locale).then(function (locale) {
+            textDirection = locale.textDirection;
+        });
+    });
 
     function updatePotentiallyAffectedNodes(changedNode) {
         function isDescendant(node, ofNode) {

@@ -74,15 +74,22 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
             return getFormedUrl(appRoutes.foodExplorer, {locale: locale});
         };
 
+        LocalesService.list().then(function (locales) {
+            scope.locales = locales;
+        });
+
         scope.$watchGroup(
             [
-                function() { return LocalesService.list(); },
+                function() { return scope.locales; },
                 function() { return UserStateService.getUserInfo(); }
             ],
             function (newValues, oldValues, scope) {
 
+                if (!scope.locales) {
+                    return;
+                }
+
                 scope.currentUser = UserStateService.getUserInfo();
-                scope.locales = LocalesService.list();
 
                 scope.accessibleFoodLocales = _.filter(_.pluck(scope.locales, "id"), function (locale) {
                     return scope.currentUser && scope.currentUser.canAccessFoodDatabase(locale.id);

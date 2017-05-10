@@ -28,7 +28,7 @@ function directiveFun(LocalesService, UserStateService, SurveyService, appRoutes
 
         scope.newSurveyUrl = appRoutes.surveyManagerNew;
 
-          $q.all([SurveyService.list(), LocalesService.listFuture()]).then(
+          $q.all([SurveyService.list(), LocalesService.list()]).then(
             function(data) {
                 scope.allSurveys = data[0];
                 scope.allLocales = data[1];

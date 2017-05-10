@@ -1,3 +1,5 @@
+require("./polyfills");
+
 // Fixme: gettext
 require("./gettext")();
 

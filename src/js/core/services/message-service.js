@@ -25,6 +25,18 @@ function serviceFun($timeout) {
                 }, 2500);
             }
         },
+        showSuccess: function (text) {
+            this.showMessage(text, "success");
+        },
+        showWarning: function (text) {
+            this.showMessage(text, "warning");
+        },
+        showDanger: function (text) {
+            this.showMessage(text, "danger");
+        },
+        showInfo: function (text) {
+            this.showMessage(text, "info");
+        },
         hideMessage: function() {
             active = false;
         },

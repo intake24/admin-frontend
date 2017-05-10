@@ -4,13 +4,13 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('ExplorerController',
-        ['$scope', '$timeout', 'SharedData', 'FoodService', 'CurrentItem',
-            '$q', '$rootScope', 'MessageService',
+        ['$scope', '$timeout', '$routeParams', 'SharedData', 'FoodService', 'CurrentItem',
+            '$q', '$rootScope', 'MessageService', 'LocalesService',
             controllerFun]);
 };
 
-function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
-                       $q, $rootScope, MessageService) {
+function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, currentItem,
+                       $q, $rootScope, MessageService, LocalesService) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
@@ -34,7 +34,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         $scope.searchTools.showFoodNotUsedInLocale = !$scope.searchTools.showFoodNotUsedInLocale;
     };
 
-    $scope.getNodeDisplayName = function(node) {
+    $scope.getNodeDisplayName = function (node) {
         if (!$scope.searchTools.showLocalDescription) {
             return node.englishDescription;
         } else {
@@ -43,8 +43,20 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         }
     };
 
-    $scope.getNodeIsHidden = function(node) {
+    $scope.getNodeIsHidden = function (node) {
         return node.doNotUseInThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
+    };
+
+    $scope.getSortedList = function (foodList) {
+        return foodList.slice().sort(function (a, b) {
+            if (a.type + $scope.getNodeDisplayName(a) > b.type + $scope.getNodeDisplayName(b)) {
+                return 1;
+            } else if (a.type + $scope.getNodeDisplayName(a) < b.type + $scope.getNodeDisplayName(b)) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
     };
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
@@ -201,7 +213,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
-            FoodService.cloneFood(item.code)
+            FoodService.cloneFood($routeParams.locale, item.code)
                 .then(function (newCode) {
                     MessageService.showMessage("Food cloned", "success");
                     makeVisibleAndSelect(newCode, "food");
@@ -318,12 +330,13 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
 
     function loadProblemsForNodeDeferred(node) {
         if ((node.type == 'category') && ( node.code != '$UNCAT')) {
-            return FoodService.getCategoryProblemsRecursive(node.code).then(function (problems) {
-                node.recursiveProblems = problems;
-            });
+            return FoodService.getCategoryProblemsRecursive($routeParams.locale, node.code)
+                .then(function (problems) {
+                    node.recursiveProblems = problems;
+                });
         }
         else if ((node.type == 'category') && (node.code == '$UNCAT')) {
-            return FoodService.getUncategorisedFoods().then(function (uncategorisedFoods) {
+            return FoodService.getUncategorisedFoods($routeParams.locale).then(function (uncategorisedFoods) {
                 node.recursiveProblems = {
                     foodProblems: _.map(_.take(uncategorisedFoods, 10), function (food) {
                         return {
@@ -336,7 +349,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
                 }
             });
         } else if (node.type == 'food')
-            return FoodService.getFoodProblems(node.code).then(function (problems) {
+            return FoodService.getFoodProblems($routeParams.locale, node.code).then(function (problems) {
                 node.problems = problems;
             });
         else {
@@ -345,7 +358,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
     }
 
     function reloadRootCategoriesDeferred() {
-        return FoodService.getRootCategories().then(function (categories) {
+        return FoodService.getRootCategories($routeParams.locale).then(function (categories) {
             $scope.rootCategories = categories;
 
             return $q.all(_.map($scope.rootCategories, function (node) {
@@ -361,11 +374,12 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
         var childrenDeferred;
 
         if (node.code == "$UNCAT")
-            childrenDeferred = FoodService.getUncategorisedFoods();
+            childrenDeferred = FoodService.getUncategorisedFoods($routeParams.locale);
         else
-            childrenDeferred = FoodService.getCategoryContents(node.code).then(function (contents) {
-                return contents.subcategories.slice().concat(contents.foods);
-            });
+            childrenDeferred = FoodService.getCategoryContents($routeParams.locale, node.code)
+                .then(function (contents) {
+                    return contents.subcategories.slice().concat(contents.foods);
+                });
 
         return childrenDeferred.then(function (children) {
             node.children = children;
@@ -399,7 +413,7 @@ function controllerFun($scope, $timeout, sharedData, FoodService, currentItem,
 
     function makeVisibleAndSelect(code, type) {
         //Fixme. This should be a directive
-        findNodeInTree(code, type).then(function (n) {
+        findNodeInTree($routeParams.locale, code, type).then(function (n) {
             clearSelection();
             showNodeProperties(n);
             // Timeout is set to wait for the children to be loaded and then scroll to the selected element.

@@ -7,10 +7,10 @@
 	.food-list-container(ng-class="{visible: explorerIsVisible}")
 		.food-list
 			ul
-				li(ng-repeat='(index, value) in rootCategories.slice(0, 1) | orderBy:["type", "displayName"]'
+				li(ng-repeat='(index, value) in rootCategories.slice(0, 1)'
 				ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"'
 				ng-hide="getNodeIsHidden(value)")
-				li(ng-repeat='(index, value) in rootCategories.slice(1) | orderBy:["type", "displayName"]'
+				li(ng-repeat='(index, value) in getSortedList(rootCategories.slice(1))'
 				ng-include='"node"' ng-class='(value.open) ? "node-open" : "node-closed"'
 				ng-hide="getNodeIsHidden(value)")
 

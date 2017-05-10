@@ -4,116 +4,120 @@
 /* Import color variables */
 @import '_variables'
 
+$intake-modal-width = 450px;
+$intake-modal-sm-width = 320px;
+
 .intake-modal
-	background white
-	border-radius 4px
-	left 50%
-	margin-left -300px
-	overflow hidden
-	position absolute
-	top 200px
-	width 600px
-	z-index 50
-	opacity 1
-	transition(all 0.1s linear)
+  background white
+  border-radius 4px
+  left 50%
+  margin-left -($intake-modal-width / 2)
+  overflow hidden
+  position absolute
+  top 200px
+  width $intake-modal-width
+  z-index $header-z-index + 2
+  opacity 1
+  transition(all 0.1s linear)
 
-	&.ng-hide
-		opacity: 0;
-		transform: translate3d(0, 100%, 0);
+  &.ng-hide
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
 
-	@media(max-width: 600px)
-		width 300px
-		margin-left -150px
+  @media (max-width: 600px) {
+    width: $intake-modal-sm-width;
+    margin-left: -($intake-modal-sm-width / 2);
+  }
 
-	#button-close-modal
-		line-height 50px
-		position absolute
-		top 0
-		right 0
-		height 50px
-		text-align center
-		width 50px
+  #button-close-modal
+    line-height 50px
+    position absolute
+    top 0
+    right 0
+    height 50px
+    text-align center
+    width 50px
 
-		i
-			color #ccc
-			font-size 1.4em
-			line-height inherit
-			transition(color .3s ease-out)
+    i
+      color #ccc
+      font-size 1.4em
+      line-height inherit
+      transition(color .3s ease-out)
 
-	#button-close-modal:hover
-		cursor pointer
-		i
-			color red
+  #button-close-modal:hover
+    cursor pointer
+    i
+      color red
 
-	.intake-modal-title
-		font-size 28px
-		font-weight 100
-		height 100px
-		line-height 100px
-		padding 0 50px
-		text-align center
+  .intake-modal-title
+    font-size 28px
+    font-weight 100
+    height 100px
+    line-height 100px
+    padding 0 50px
+    text-align center
 
-	.intake-modal-content
-		padding 0 30px 30px 30px
+  .intake-modal-content
+    padding 0 30px 30px 30px
 
-	.modal-footer
-		border-top #e1e1e1 1px solid
-		padding 20px 30px
-		button
-			margin-bottom 0 !important
-			margin-top 0 !important
+  .modal-footer
+    border-top #e1e1e1 1px solid
+    padding 20px 30px
+    button
+      margin-bottom 0 !important
+      margin-top 0 !important
 
 .intake-modal.modal-narrow
-	margin-left -200px
-	width 400px
-	@media(max-width: 600px)
-		width 300px
-		margin-left -150px
+  margin-left -200px
+  width 400px
+  @media (max-width: 600px)
+    width 300px
+  margin-left -150px
 
 .intake-modal.active
-	display block
+  display block
 
 #modal-authenticate, #modal-logout
-	text-align center
-	input
-		border-radius 4px
-		border 1px solid #e1e1e1
-		display block
-		font-size 15px
-		margin 0 auto 15px auto
-		min-width 240px
-		outline 0
-		padding 15px 25px
-		text-align center
-		@media(max-width: 800px)
-			min-width 200px
-	button
-		background-color main-color
-		border none
-		border-radius 4px
-		color #FFF
-		font-size 16px
-		margin-top 10px
-		padding 12px 30px
+  text-align center
+  input
+    border-radius 4px
+    border 1px solid #e1e1e1
+    display block
+    font-size 15px
+    margin 0 auto 15px auto
+    width 100%
+    outline 0
+    padding 15px 25px
+    text-align center
+    @media (max-width: 800px)
+      min-width 200px
+  button
+    background-color main-color
+    border none
+    border-radius 4px
+    color #FFF
+    font-size 16px
+    margin-top 10px
+    padding 12px 30px
 
 #modal-backdrop
-	background-color rgba(0, 0, 0, 0.5)
-	position fixed
-	top 0
-	bottom 0
-	left 0
-	right 0
-	z-index 11
-	opacity 1
-	transition(opacity .25s linear)
+  background-color rgba(0, 0, 0, 0.5)
+  position fixed
+  top 0
+  bottom 0
+  left 0
+  right 0
+  z-index $header-z-index + 1
+  opacity 1
+  transition(opacity .25s linear)
 
-	&.ng-hide
-		opacity 0
+  &.ng-hide
+    opacity 0
 
 /* RTL Styles */
 
 html[dir="rtl"]
-	.intake-modal
-		#button-close-modal
-			left 0
-			right auto
+  .intake-modal
+    #button-close-modal
+      left 0
+      right auto

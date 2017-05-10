@@ -59,6 +59,7 @@ $search-border-bottom = $subgroup-border-color 1px solid;
   &.visible
     display flex
   ul
+    list-style none
     margin 0
     padding 0
     width 100%
@@ -92,8 +93,8 @@ search-input
     border-bottom $search-border-bottom
     vertical-align bottom
 
-    a
-    button
+    &>a
+    &>button
       height 45px
       width 50px
       background light-grey

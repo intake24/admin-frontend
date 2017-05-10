@@ -5,10 +5,10 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyRespondentModal", ["AdminUsersService", "ModalService", directiveFun]);
+    app.directive("surveyRespondentModal", ["AdminUsersService", "ModalService", "MessageService", directiveFun]);
 };
 
-function directiveFun(AdminUsersService, ModalService) {
+function directiveFun(AdminUsersService, ModalService, MessageService) {
 
     function controller(scope, element, attribute) {
 
@@ -42,7 +42,7 @@ function directiveFun(AdminUsersService, ModalService) {
                 return;
             }
             scope.loading = true;
-            getRequest(scope, AdminUsersService).finally(function () {
+            getRequest(scope, AdminUsersService, MessageService).finally(function () {
                 scope.loading = false;
             });
         };
@@ -123,7 +123,7 @@ function formIsValid(scope) {
     return scope.formValidation.userName && scope.formValidation.password;
 }
 
-function getRequest(scope, AdminUsersService) {
+function getRequest(scope, AdminUsersService, MessageService) {
     var serviceReq, reqData;
     if (scope.user && scope.passwordEdit) {
         reqData = {
@@ -131,6 +131,7 @@ function getRequest(scope, AdminUsersService) {
             password: scope.password
         };
         serviceReq = AdminUsersService.patchUserPassword(scope.user.id, scope.password).then(function () {
+            MessageService.showSuccess("Password for " + scope.user.userName + " was successfully updated");
             scope.isOpen = false;
         });
     } else if (scope.user && !scope.passwordEdit) {

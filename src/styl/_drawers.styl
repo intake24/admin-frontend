@@ -13,7 +13,7 @@
   position fixed
   top 0
   width 600px
-  z-index 1001
+  z-index $header-z-index + 2
   opacity 1
   transition opacity linear .15s, transform linear, .15s
 
@@ -82,6 +82,7 @@
 
     .categories-container
       ul
+        list-style none
         min-height 200px
         li
           border-left none
@@ -118,7 +119,7 @@
   bottom 0
   left 0
   right 0
-  z-index 11
+  z-index $header-z-index + 1
 
 #drawer-backdrop.active
   display block
@@ -131,7 +132,7 @@
   bottom 0
   left 0
   right 0
-  z-index 1001
+  z-index $header-z-index + 1
   transition opacity linear .15s
 
   &.ng-hide

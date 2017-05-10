@@ -7,12 +7,12 @@
 var _ = require("underscore");
 
 module.exports = function (app) {
-    app.service("AsServedSetService", ["$q", "$http", "$timeout", serviceFun]);
+    app.service("AsServedSetService", ["$http", "$window", serviceFun]);
 };
 
-function serviceFun($q, $http, $timeout) {
+function serviceFun($http, $window) {
 
-    var BASE_URL = "http://api-test.intake24.co.uk/admin/portion-size/as-served";
+    var BASE_URL = $window.api_base_url + "admin/portion-size/as-served";
 
     return {
         all: function () {
@@ -53,12 +53,8 @@ function serviceFun($q, $http, $timeout) {
         getImageObj: function(id, src) {
             return {sourceId: id, imageUrl: src, weight: 0};
         },
-        remove: function (setId) {
-            var deferred = $q.defer();
-            $timeout(function () {
-                deferred.resolve();
-            }, Math.random() * 500);
-            return deferred.promise;
+        delete: function (setId) {
+            return $http.delete(BASE_URL + "/" + setId);
         }
     }
 }

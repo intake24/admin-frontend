@@ -26,30 +26,64 @@ function serviceFun($rootScope, $timeout, $cookies) {
             roles: parsedToken.roles,
             userName: credentials.providerKey,
 
-            isSuperUser: function() { return _.contains(this.roles, "superuser"); },
-            isGlobalFoodsAdmin: function() { return _.contains(this.roles, "foodsadmin"); },
-            isGlobalSurveyAdmin: function() { return _.contains(this.roles, "surveyadmin"); },
-            isSurveyFeedbackAdmin: function() { return _.contains(this.roles, "feedbackadmin")},
-            isSurveyStaff: function(surveyId) { return _.contains(this.roles, surveyId + "/staff"); },
-            isFoodDatabaseMaintainer: function(localeId) { return _.contains(this.roles, "fdbm/" + localeId); },
+            isSuperUser: function () {
+                return _.contains(this.roles, "superuser");
+            },
+            isGlobalFoodsAdmin: function () {
+                return _.contains(this.roles, "foodsadmin");
+            },
+            isGlobalSurveyAdmin: function () {
+                return _.contains(this.roles, "surveyadmin");
+            },
+            isSurveyFeedbackAdmin: function () {
+                return _.contains(this.roles, "feedbackadmin")
+            },
+            isSurveyStaff: function (surveyId) {
+                return _.contains(this.roles, surveyId + "/staff");
+            },
+            isFoodDatabaseMaintainer: function (localeId) {
+                return _.contains(this.roles, "fdbm/" + localeId);
+            },
 
-            canAccessFoodDatabaseList: function() { return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function(r) { return r.startsWith("fdbm/"); })},
-            canAccessFoodDatabase: function(localeId) { return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId); },
+            canAccessFoodDatabaseList: function () {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function (r) {
+                        return r.startsWith("fdbm/");
+                    })
+            },
+            canAccessFoodDatabase: function (localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
 
-            canAccessSurvey: function(surveyId) { return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId); },
-            canAccessSurveyList: function() { return this.isSuperUser() || this.isGlobalSurveyAdmin() || _.some(this.roles, function(r) { return r.endsWith("/staff"); })},
-            canCreateSurveys: function() { return this.isSuperUser() || this.isGlobalSurveyAdmin(); },
+            canAccessSurvey: function (surveyId) {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
+            },
+            canAccessSurveyList: function () {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin() || _.some(this.roles, function (r) {
+                        return r.endsWith("/staff");
+                    })
+            },
+            canCreateSurveys: function () {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin();
+            },
 
-            canAccessImageDatabase: function() { return this.isSuperUser(); },
+            canAccessImageDatabase: function () {
+                return this.isSuperUser();
+            },
 
-            canAccessSurveyFeedback: function() { return this.isSuperUser(); },
+            canAccessSurveyFeedback: function () {
+                return this.isSuperUser();
+            },
 
-            canAccessUserList: function() { return this.isSuperUser(); },
+            canAccessUserList: function () {
+                return this.isSuperUser();
+            },
 
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account
-               signs in (i.e. a respondent). */
-            canAccessApp: function() { return this.canAccessFoodDatabaseList() || this.canAccessSurveyList() ||
-                                              this.canAccessImageDatabase() || this.canAccessSurveyFeedback() || this.canAccessUserList(); }
+             signs in (i.e. a respondent). */
+            canAccessApp: function () {
+                return this.canAccessFoodDatabaseList() || this.canAccessSurveyList() ||
+                    this.canAccessImageDatabase() || this.canAccessSurveyFeedback() || this.canAccessUserList();
+            }
         };
     }
 
@@ -85,15 +119,17 @@ function serviceFun($rootScope, $timeout, $cookies) {
         },
         logout: function () {
             // To make it work in IE
-            $cookies.put(REFRESH_TOKEN, "expired", { expires: new Date("1970-01-01"), path: "/"});
-            $cookies.put(ACCESS_TOKEN, "expired", { expires: new Date("1970-01-01"), path: "/"});
+            $cookies.put(REFRESH_TOKEN, "expired", {expires: new Date("1970-01-01"), path: "/"});
+            $cookies.put(ACCESS_TOKEN, "expired", {expires: new Date("1970-01-01"), path: "/"});
             $cookies.remove(REFRESH_TOKEN);
             $cookies.remove(ACCESS_TOKEN);
             $cookies.put(USER_NAME, '', OPTIONS);
 
-            currentUser = null;
-
-            userWasNotAuthenticated = true;
+            if (currentUser != null) {
+                window.location.href = "/";
+                currentUser = null;
+                userWasNotAuthenticated = true;
+            }
         },
         getUsername: function () {
             if (currentUser == null)

@@ -6,7 +6,7 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, loadChildrenDe
 
     // FIXME: Can there be two nodes with the same code but different types (food, category)?
 
-    function findNodeInTree(code, type) {
+    function findNodeInTree(locale, code, type) {
 
         var match = {type: type, code: code},
             deferred = $q.defer();
@@ -17,41 +17,41 @@ var findNodeInTreeFactory = function ($scope, $q, foodDataReader, loadChildrenDe
         if (targetNode) {
             deferred.resolve(targetNode);
         } else {
-            getParentBranch(code, type).then(function (allCategories) {
-                lookInTree(deferred, allCategories, match);
+            getParentBranch(locale, code, type).then(function (allCategories) {
+                lookInTree(locale, deferred, allCategories, match);
             });
         }
 
         return deferred.promise;
     }
 
-    function getParentBranch(code, type) {
+    function getParentBranch(locale, code, type) {
         var allParentCategoriesDeferred = null;
 
         if (type == "food") {
-            allParentCategoriesDeferred = foodDataReader.getFoodAllCategories(code);
+            allParentCategoriesDeferred = foodDataReader.getFoodAllCategories(locale, code);
         } else if (type == "category") {
-            allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(code);
+            allParentCategoriesDeferred = foodDataReader.getCategoryAllCategories(locale, code);
         }
 
         return allParentCategoriesDeferred;
     }
 
-    function lookInTree(deferred, parentCategories, match) {
+    function lookInTree(locale, deferred, parentCategories, match) {
         var parentCategoryCodes = _.map(parentCategories, function (c) {
             return c.code;
         });
 
         if (parentCategoryCodes.length == 0) {
             // Check the uncategorised foods
-            lookInUncategorised(match, deferred);
+            lookInUncategorised(locale, match, deferred);
         } else {
             lookInBranch(deferred, $scope.rootCategories, parentCategoryCodes, match);
         }
     }
 
-    function lookInUncategorised(match, deferred) {
-        foodDataReader.getUncategorisedFoods().then(function (foods) {
+    function lookInUncategorised(locale, match, deferred) {
+        foodDataReader.getUncategorisedFoods(locale).then(function (foods) {
             $scope.rootCategories[0].open = true;
             $scope.rootCategories[0].children = foods;
             var targetNode = _.findWhere($scope.rootCategories[0].children, match);

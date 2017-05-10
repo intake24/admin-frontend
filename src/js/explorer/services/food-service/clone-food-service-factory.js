@@ -10,12 +10,12 @@ module.exports = cloneFoodServiceFactory;
 
 function cloneFoodServiceFactory($q, PackerService) {
 
-    function cloneFoodService(code) {
+    function cloneFoodService(locale, code) {
         var self = this,
             deffered = $q.defer(),
             _targetFoodData, _newCode;
 
-        self.getFoodDefinition(code).then(function (targetFoodData) {
+        self.getFoodDefinition(locale, code).then(function (targetFoodData) {
             _targetFoodData = targetFoodData;
             var unpacked = PackerService.unpackFoodRecord(targetFoodData);
             unpacked.main.englishDescription = gettext("Copy of") + " " + unpacked.main.englishDescription;
@@ -31,7 +31,7 @@ function cloneFoodServiceFactory($q, PackerService) {
                 [gettext("Copy of") + " " + newLocalData.localDescription[0]] : [];
             _newCode = newCode;
 
-            return self.updateFoodLocalRecord(newCode, newLocalData);
+            return self.updateFoodLocalRecord(locale, newCode, newLocalData);
         }).then(function () {
             deffered.resolve(_newCode);
         });

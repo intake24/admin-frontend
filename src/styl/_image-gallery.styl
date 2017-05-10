@@ -23,9 +23,23 @@ $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
   }
 
   &-add-item {
-    height: ($intk-img-gallery-item-width * 9 / 16);
+    $height = $intk-img-gallery-item-width * 9 / 16;
+    height: $height;
     text-align: center;
     line-height: 10em;
+
+    a {
+      $mb = 10px;
+      display block;
+      height: ($height / 2) - $mb;
+      line-height: 3.5rem;
+
+      &:not(:last-child) {
+        margin-bottom: $mb;
+      }
+
+    }
+
   }
 
   &-item,
@@ -36,13 +50,14 @@ $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
     max-width: 100%;
     margin-right: 15px;
     margin-bottom: 20px;
-    border-radius: $intk-img-gallery-item-border-radius;
     overflow: hidden;
-    border: 1px solid $intk-img-gallery-item-border-color;
-    background #fff
   }
 
   &-item {
+
+    border: 1px solid $intk-img-gallery-item-border-color;
+    border-radius: $intk-img-gallery-item-border-radius;
+    background #fff
 
     &-img {
       width: 100%;

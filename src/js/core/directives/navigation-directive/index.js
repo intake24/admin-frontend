@@ -4,19 +4,20 @@
 
 "use strict";
 
-var _ = require('underscore');
+var _ = require('underscore'),
+    getFormedUrl = require('../../utils/get-formed-url');
 
 module.exports = function (app) {
-    app.directive("navigationDirective", ["$location", "LocalesService", "appRoutes", "UserStateService", directiveFun]);
+    app.directive("navigationDirective", ["$location", "$routeParams", "LocalesService", "appRoutes",
+        "UserStateService", "$routeParams", directiveFun]);
 };
 
-function directiveFun($location, LocalesService, appRoutes, UserStateService) {
+function directiveFun($location, $routeParams, LocalesService, appRoutes, UserStateService) {
 
     function controller(scope, element, attributes) {
 
         scope.menuItems = {
             foodExplorer: {
-                href: appRoutes.foodExplorer,
                 collapsed: true,
                 active: false
             },
@@ -69,6 +70,10 @@ function directiveFun($location, LocalesService, appRoutes, UserStateService) {
             scope.menuItems[itemName].collapsed = !scope.menuItems[itemName].collapsed;
         };
 
+        scope.getFoodExplorerHref = function (locale) {
+            return getFormedUrl(appRoutes.foodExplorer, {locale: locale});
+        };
+
         scope.$watchGroup(
             [
                 function() { return LocalesService.list(); },
@@ -85,8 +90,6 @@ function directiveFun($location, LocalesService, appRoutes, UserStateService) {
             }
         );
 
-        scope.currentLocale = LocalesService.current();
-
         scope.$on("$routeChangeSuccess", setActiveRoute);
 
         scope.canAccessFoodLocale = function (locale) {
@@ -94,6 +97,7 @@ function directiveFun($location, LocalesService, appRoutes, UserStateService) {
         };
 
         function setActiveRoute() {
+            scope.currentLocale = $routeParams.locale;
             for (var i in scope.menuItems) {
                 scope.menuItems[i].active = false;
                 if ($location.$$path == scope.menuItems[i].href) {

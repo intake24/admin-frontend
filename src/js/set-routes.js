@@ -4,7 +4,7 @@ module.exports = function (app) {
 
     var routes = {
         welcome: "/",
-        foodExplorer: "/fe",
+        foodExplorer: "/fe/:locale",
         imageGalleryRoute: '/galleries',
         imageGalleryMain: "/galleries/main",
         imageGalleryAsServed: "/galleries/as-served",

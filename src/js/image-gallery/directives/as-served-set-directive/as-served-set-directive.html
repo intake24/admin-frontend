@@ -1,52 +1,66 @@
-<div class="pull-right">
-    <button class="btn btn-default"
-            ng-click="toggle()"
-            ng-disabled="loading || getNotValid()">
-        <i class="fa" ng-class="{'fa-pencil': collapsed && !loading,
+<div ng-class="{'row': !collapsed}">
+    <div class="col-sm-8 col-xs-7" ng-hide="collapsed">
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="set_title"
+                       ng-model="newName" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Set description"
+                       ng-model="newDescription" required>
+            </div>
+        </form>
+    </div>
+    <div ng-class="{'col-sm-4 col-xs-5 text-right': !collapsed, 'pull-right': collapsed}">
+        <div class="pull-right">
+            <button class="btn btn-default"
+                    ng-click="toggle()"
+                    ng-disabled="loading || getNotValid()">
+                <i class="fa" ng-class="{'fa-pencil': collapsed && !loading,
                                  'fa-check': !collapsed && !loading,
                                  'fa-spinner fa-spin': loading}"></i>
-    </button>
-    <button class="btn btn-default"
-            ng-click="cancel()"
-            ng-disabled="loading"
-            ng-hide="collapsed">
-        <i class="fa" ng-class="{'fa-angle-left': !loading,
+            </button>
+            <button class="btn btn-default"
+                    ng-click="cancel()"
+                    ng-disabled="loading"
+                    ng-hide="collapsed">
+                <i class="fa" ng-class="{'fa-angle-left': !loading,
                                  'fa-spinner fa-spin': loading}"></i>
-    </button>
-    <span uib-dropdown>
-        <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
-            <i class="fa" ng-class="{'fa-ellipsis-v': !loading,
-                                 'fa-spinner fa-spin': loading}"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
-            <li>
-                <a href="" ng-click="addItem()">
-                    Add image from gallery
-                </a>
-            </li>
-            <li>
-                <a href="" file-button on-change="onFilesChange(fileList)">
-                    Add image from file
-                </a>
-            </li>
-            <li class="divider" ng-hide="collapsed"></li>
-            <li>
-                <a href="" ng-click="removeSet()">
-                    Remove set
-                </a>
-            </li>
-        </ul>
-    </span>
+            </button>
+            <span uib-dropdown>
+                <button class="btn btn-default" uib-dropdown-toggle ng-disabled="loading">
+                    <i class="fa" ng-class="{'fa-ellipsis-v': !loading,
+                                         'fa-spinner fa-spin': loading}"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                    <li>
+                        <a href="" ng-click="addItem()">
+                            Add image from gallery
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" file-button on-change="onFilesChange(fileList)">
+                            Add image from file
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="" ng-click="removeSet()">
+                            Remove set
+                        </a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+    </div>
 </div>
 
 <div class="as-served-set-info">
-    <h1 class="as-served-set-title">
-        <editable ng-model="newName" placeholder="Type something" ng-hide="collapsed" required></editable>
-        <span ng-show="collapsed">{{name}}</span>
+    <h1 class="as-served-set-title" ng-show="collapsed">
+        {{name}}
     </h1>
-    <p class="as-served-set-description">
-        <editable ng-model="newDescription" placeholder="Type something" ng-hide="collapsed" required></editable>
-        <span ng-show="collapsed">{{description}}</span>
+    <p class="as-served-set-description" ng-show="collapsed">
+        {{description}}
     </p>
 </div>
 <file-drop-zone on-dropped="onFilesChange(fileList)">
@@ -87,6 +101,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="intk-gallery-add-item">
+            <a href="" class="btn btn-default" ng-click="addItem()">
+                Add image from gallery
+            </a>
+            <a href="" class="btn btn-default" file-button on-change="onFilesChange(fileList)">
+                Add image from file
+            </a>
         </div>
     </div>
 </file-drop-zone>

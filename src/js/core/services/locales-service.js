@@ -28,7 +28,8 @@ function serviceFun($window, $rootScope, $http, PackerService, $q) {
 			respondentLanguage: packed.respondentLanguage,
 			adminLanguage: packed.adminLanguage,
 			flagCode: packed.flagCode,
-			prototypeLocale: PackerService.unpackOption(packed.prototypeLocale)
+			prototypeLocale: PackerService.unpackOption(packed.prototypeLocale),
+			textDirection: packed.textDirection
 		}
 	}
 
@@ -53,6 +54,10 @@ function serviceFun($window, $rootScope, $http, PackerService, $q) {
 
 		current: function() {
 			return currentLocale;
+		},
+
+		currentInfo: function() {
+			return _.find(locales, function(l) { return l.id == currentLocale;})
 		}
 	};
 

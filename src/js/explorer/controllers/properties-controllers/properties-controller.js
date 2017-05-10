@@ -18,6 +18,15 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     $scope.sharedData = sharedData;
 
+    /* FIXME: Wrong because it watches the app locale, not the current food explorer locale */
+
+    $scope.$watch(function () {
+        return LocalesService.currentInfo();
+    }, function (newValue) {
+        $scope.currentLocale = newValue;
+        console.log(newValue);
+    });
+
     function clearData() {
         // A snapshot of the initial item definition.
         // Loaded from the server when the currentItem changes.

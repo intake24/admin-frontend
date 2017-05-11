@@ -36,17 +36,12 @@ function serviceFun($window, $rootScope, $http, $q, PackerService, UserStateServ
 
     function reloadLocales() {
         locales = null;
-        if (UserStateService.getUserInfo().canAccessLocalesList()) {
-            $http.get(api_base_url + 'admin/locales').then(function (data) {
-                locales = _.map(data, unpackLocale);
-                localesDeferred.resolve(locales.slice());
-            }, function (response) {
-                console.error("Failed to load locale information");
-            });
-        } else {
-            locales = [];
+        $http.get(api_base_url + 'admin/locales').then(function (data) {
+            locales = _.map(data, unpackLocale);
             localesDeferred.resolve(locales.slice());
-        }
+        }, function (response) {
+            console.error("Failed to load locale information");
+        });
     }
 
     return {

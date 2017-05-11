@@ -95,10 +95,6 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser();
             },
 
-            canAccessLocalesList: function () {
-                return this.isSuperUser() || this.isGlobalSurveyAdmin();
-            },
-
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account
              signs in (i.e. a respondent). */
             canAccessApp: function () {

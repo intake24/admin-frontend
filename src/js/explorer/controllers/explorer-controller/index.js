@@ -50,7 +50,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     };
 
     $scope.getNodeIsHidden = function (node) {
-        return node.doNotUseInThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
+        return node.excludedFromThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
     };
 
     $scope.getSortedList = function (foodList) {

@@ -45,12 +45,25 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return _.contains(this.roles, "fdbm/" + localeId);
             },
 
-            canAccessFoodDatabaseList: function () {
+            canReadFoodDatabaseList: function () {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function (r) {
                         return r.startsWith("fdbm/");
                     })
             },
-            canAccessFoodDatabase: function (localeId) {
+
+            canReadFoodDatabase: function (localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canCreateCategories: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            canCreateGlobalFoods: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            canCreateLocalFoods: function(localeId) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
             },
 
@@ -62,6 +75,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
                         return r.endsWith("/staff");
                     })
             },
+
             canCreateSurveys: function () {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
@@ -81,7 +95,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account
              signs in (i.e. a respondent). */
             canAccessApp: function () {
-                return this.canAccessFoodDatabaseList() || this.canAccessSurveyList() ||
+                return this.canReadFoodDatabaseList() || this.canAccessSurveyList() ||
                     this.canAccessImageDatabase() || this.canAccessSurveyFeedback() || this.canAccessUserList();
             }
         };

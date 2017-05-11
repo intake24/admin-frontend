@@ -1,11 +1,11 @@
 .sidebar(ng-class='{"active": $parent.sidebaropen}')
     ul
-        li(ng-class="{'active': !menuItems.foodExplorer.collapsed}" ng-if="currentUser.canAccessFoodDatabaseList()")
+        li(ng-class="{'active': !menuItems.foodExplorer.collapsed}" ng-if="currentUser.canReadFoodDatabaseList()")
             a(ng-click='toggleItem("foodExplorer")' ng-class="{'active': menuItems.foodExplorer.active}")
                 | #{ gettext("Food database") }
                 i.fa(ng-class="!menuItems.foodExplorer.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
-                li(ng-repeat='(index, value) in locales | orderBy:["localName"] | filter: canAccessFoodLocale')
+                li(ng-repeat='(index, value) in locales | orderBy:["localName"] | filter: canReadFoodDatabase')
                     a(ng-href="/\#{{getFoodExplorerHref(value.id)}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
                         | &nbsp;{{ value.englishName }}

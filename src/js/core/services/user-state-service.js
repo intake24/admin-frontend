@@ -38,6 +38,11 @@ function serviceFun($rootScope, $timeout, $cookies) {
             isSurveyFeedbackAdmin: function () {
                 return _.contains(this.roles, "feedbackadmin")
             },
+            isStaff: function () {
+                return _.some(this.roles, function (r) {
+                    return r.endsWith("/staff");
+                });
+            },
             isSurveyStaff: function (surveyId) {
                 return _.contains(this.roles, surveyId + "/staff");
             },
@@ -58,9 +63,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
             },
             canAccessSurveyList: function () {
-                return this.isSuperUser() || this.isGlobalSurveyAdmin() || _.some(this.roles, function (r) {
-                        return r.endsWith("/staff");
-                    })
+                return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isStaff();
             },
             canCreateSurveys: function () {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin();
@@ -76,6 +79,10 @@ function serviceFun($rootScope, $timeout, $cookies) {
 
             canAccessUserList: function () {
                 return this.isSuperUser();
+            },
+
+            canAccessLocalesList: function () {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account

@@ -9,7 +9,7 @@ var _ = require('underscore'),
 
 module.exports = function (app) {
     app.directive("navigationDirective", ["$location", "$routeParams", "LocalesService", "appRoutes",
-        "UserStateService", "$routeParams", directiveFun]);
+        "UserStateService", directiveFun]);
 };
 
 function directiveFun($location, $routeParams, LocalesService, appRoutes, UserStateService) {
@@ -74,14 +74,14 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
             return getFormedUrl(appRoutes.foodExplorer, {locale: locale});
         };
 
-        LocalesService.list().then(function (locales) {
-            scope.locales = locales;
-        });
-
         scope.$watchGroup(
             [
-                function() { return scope.locales; },
-                function() { return UserStateService.getUserInfo(); }
+                function () {
+                    return scope.locales;
+                },
+                function () {
+                    return UserStateService.getUserInfo();
+                }
             ],
             function (newValues, oldValues, scope) {
 
@@ -102,6 +102,10 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
         scope.canAccessFoodLocale = function (locale) {
             return _.contains(scope.accessibleFoodLocales, locale.id);
         };
+
+        LocalesService.list().then(function (locales) {
+            scope.locales = locales;
+        });
 
         function setActiveRoute() {
             scope.currentLocale = $routeParams.locale;

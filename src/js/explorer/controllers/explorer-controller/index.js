@@ -5,12 +5,12 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', '$routeParams', 'SharedData', 'FoodService', 'CurrentItem',
-            '$q', '$rootScope', 'MessageService', 'LocalesService',
+            '$q', '$rootScope', 'MessageService', 'LocalesService', 'ExplorerToProperties',
             controllerFun]);
 };
 
 function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, currentItem,
-                       $q, $rootScope, MessageService, LocalesService) {
+                       $q, $rootScope, MessageService, LocalesService, ExplorerToProperties) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
@@ -24,12 +24,13 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     $scope.explorerIsVisible = true;
 
     $scope.searchTools = {
-        showLocalDescription: true,
+        showLocalDescription: ExplorerToProperties.getShowLocalDescription(),
         showFoodNotUsedInLocale: false
     };
 
     $scope.toggleShowLocalDescription = function () {
         $scope.searchTools.showLocalDescription = !$scope.searchTools.showLocalDescription;
+        ExplorerToProperties.setShowLocalDescription($scope.searchTools.showLocalDescription);
     };
 
     $scope.toggleShowFoodNotUsedInLocale = function () {

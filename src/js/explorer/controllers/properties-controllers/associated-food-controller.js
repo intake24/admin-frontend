@@ -33,7 +33,7 @@ function controllerFun($scope, $routeParams, LocalesService, DrawersService) {
         DrawersService.drawerAssociatedFood.open();
         DrawersService.drawerAssociatedFood.onValueSet(callback);
     };
-    
+
     $scope.getFoodTextDirection = function (food) {
         if (food.localDescription && food.localDescription.defined) {
             return $scope.localeTextDirection;

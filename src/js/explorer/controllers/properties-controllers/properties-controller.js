@@ -380,7 +380,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                 code: $scope.itemDefinition.main.code,
                 englishDescription: $scope.itemDefinition.main.englishDescription,
                 localDescription: $scope.itemDefinition.local.localDescription,
-                doNotUseInThisLocale: $scope.itemDefinition.local.doNotUseInThisLocale,
+                excludedFromThisLocale: $scope.itemDefinition.local.excludedFromThisLocale,
                 displayName: $scope.itemDefinition.local.localDescription.defined ? $scope.itemDefinition.local.localDescription.value : $scope.itemDefinition.main.englishDescription
             },
             originalCode: $scope.originalItemDefinition.main.code,

@@ -12,25 +12,6 @@ function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesServic
     var queryTimeout = 500,
         timeoutPromise;
 
-    scope.$watchGroup(
-        [
-            function() { return scope.locales; },
-            function() { return UserStateService.getUserInfo(); }
-        ],
-        function (newValues, oldValues, scope) {
-
-            if (!scope.locales) {
-                return;
-            }
-
-            scope.currentUser = UserStateService.getUserInfo();
-
-            scope.accessibleFoodDatabases = _.filter(_.pluck(scope.locales, "id"), function (localeId) {
-                return scope.currentUser && scope.currentUser.canReadFoodDatabase(localeId);
-            });
-        }
-    );
-
     $scope.searchResults = null;
     $scope.searchResultsAreVisible = false;
     $scope.query = "";
@@ -66,6 +47,14 @@ function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesServic
         return $scope.$parent.getTextDirection();
     }, function (newVal) {
         $scope.queryTextDirection = newVal;
+    });
+
+    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+        $scope.currentLocale = newValue;
+    });
+
+    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+        $scope.currentUser = newValue;
     });
 
     function performFoodSearch() {

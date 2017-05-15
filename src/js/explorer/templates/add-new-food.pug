@@ -10,7 +10,7 @@
 
 	.properties-footer
 		.input-wrapper
-			button.intake-btn.success(type="button" ng-click='saveNewFood()'
+			button.intake-btn.success(type="button" ng-click='currentUser.canCreateGlobalFoods() ? saveNewFood() : saveNewLocalFood()'
 										ng-disabled="forceDisabledButtons || notValid()")
 				span #{ gettext("Add food") }
 			button.intake-btn.danger(type="button" ng-click='cancelNewFood()')

@@ -353,6 +353,20 @@ function serviceFun() {
         };
     };
 
+
+    // Same as new food, but enforces locale restrictions on the server
+    instance.packNewLocalFoodRecord = function (unpacked) {
+        return {
+            code: unpacked.main.code,
+            groupCode: unpacked.main.groupCode,
+            englishDescription: unpacked.main.englishDescription,
+            attributes: instance.packInheritableAttributes(unpacked.main.attributes),
+            parentCategories: _.map(unpacked.main.parentCategories, function (header) {
+                return header.code;
+            })
+        };
+    };
+
     instance.packNewCategoryRecord = function (unpacked) {
         return {
             code: unpacked.main.code,

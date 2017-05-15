@@ -1,12 +1,12 @@
 .property
     h3 #{ gettext("Definition") }
-    include basic-fields
+    include food-basic-fields
     .form-group
         label.col-xs-3.control-label(for="food-group-dropdown")
             | #{ gettext("Food group") }
         .col-xs-9
             ui-select(id="food-group-dropdown"
-            ng-model="itemDefinition.main.groupCode" title=gettext('properties_food_group_select'))
+            ng-model="itemDefinition.main.groupCode" title=gettext('properties_food_group_select') ng-disabled='!currentUserCanEditMainFood')
                 ui-select-match(placeholder=gettext('properties_food_group_select'))
                     span(ng-bind="($select.selected.displayName)")
                 ui-select-choices(repeat="item.id as item in (foodGroups | filter: {displayName: $select.search})")
@@ -16,7 +16,7 @@
 
 include food-properties-nutrient-codes
 
-include inheritable-properties
+include food-inheritable-properties
 
 include parent-categories
 

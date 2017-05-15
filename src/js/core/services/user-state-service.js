@@ -63,15 +63,40 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
             },
 
+            /* All categories are currently global, so only global admins can create them */
             canCreateCategories: function() {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
-            canCreateGlobalFoods: function() {
+            /* If the user can create global foods, then 'Use exclusively in this locale' flag is unrestricted,
+             otherwise it should be locked to the selected locale */
+            canCreateGlobalFoods: function () {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
-            canCreateLocalFoods: function(localeId) {
+            canCreateFoods: function (localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canUpdateFoodMain: function(restrictions) {
+                var outer = this;
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || ( restrictions && restrictions.length > 0 && _.all(restrictions, function(l) { return outer.isFoodDatabaseMaintainer(l); }));
+            },
+
+            canUpdateFoodLocal: function(localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canDeleteFood: function(restrictions) {
+                var outer = this;
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || ( restrictions && restrictions.length > 0 && _.all(restrictions, function(l) { return outer.isFoodDatabaseMaintainer(l); }));
+            },
+
+            canUpdateCategoryMain: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            canUpdateCategoryLocal: function(localeId) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
             },
 

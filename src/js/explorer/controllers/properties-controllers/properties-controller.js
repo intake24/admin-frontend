@@ -10,13 +10,30 @@ module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$rootScope', '$routeParams', 'CurrentItem', 'SharedData', 'FoodService',
             'UserFoodData', 'PackerService', '$q', 'MessageService',
-            'LocalesService', controllerFun]);
+            'LocalesService', 'UserStateService', controllerFun]);
 };
 
 function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData, FoodService,
-                       userFoodData, PackerService, $q, MessageService, LocalesService) {
+                       userFoodData, PackerService, $q, MessageService, LocalesService, UserStateService) {
 
     $scope.sharedData = sharedData;
+
+    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+        $scope.currentLocale = newValue;
+    });
+
+    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+        $scope.currentUser = newValue;
+    });
+
+    $scope.getLocaleInfo = function(localeId) {
+        return LocalesService.getLocaleUnsafe(localeId);
+    };
+
+    $scope.$watchGroup(['itemDefinition.main.localeRestrictions', 'currentUser'], function() {
+        $scope.currentUserCanEditMainFood = $scope.itemDefinition && $scope.currentItem.type == 'food' && $scope.currentUser.canUpdateFoodMain($scope.itemDefinition.main.localeRestrictions);
+    });
+
 
     function clearData() {
         // A snapshot of the initial item definition.
@@ -49,6 +66,8 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     }
 
     clearData();
+
+
 
     // Currently selected item's header.
     // Used for reference and should not be changed in this controller.
@@ -199,6 +218,9 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                 function (data) {
                     $scope.localFoodData = data[0];
                     $scope.localFoodDataSources = data[1];
+                    console.log($scope.localFoodData);
+                    console.log($scope.localFoodDataSources);
+
                 },
                 function (response) {
                     if (response.code == 404) {
@@ -453,7 +475,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                     // Check if this was caused by a 409, and show a better message
                     console.error(response);
 
-                    notifyItemUpdated();
+                    reloadData();
                 });
     };
 
@@ -464,6 +486,18 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     $scope.saveNewFood = function () {
         FoodService.createNewFood($scope.itemDefinition)
+            .then(function () {
+                MessageService.showMessage(gettext('New food added'), 'success');
+                notifyItemUpdated();
+            }, function (response) {
+                MessageService.showMessage(gettext('Failed to add new food'), 'danger');
+                // Check if this was caused by a 409, and show a better message
+                console.error(response);
+            });
+    };
+
+    $scope.saveNewLocalFood = function() {
+        FoodService.createNewLocalFood($scope.currentLocale, $scope.itemDefinition)
             .then(function () {
                 MessageService.showMessage(gettext('New food added'), 'success');
                 notifyItemUpdated();

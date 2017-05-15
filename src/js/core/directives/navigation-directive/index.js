@@ -91,7 +91,7 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
 
                 scope.currentUser = UserStateService.getUserInfo();
 
-                scope.accessibleFoodLocales = _.filter(_.pluck(scope.locales, "id"), function (localeId) {
+                scope.accessibleFoodDatabases = _.filter(_.pluck(scope.locales, "id"), function (localeId) {
                     return scope.currentUser && scope.currentUser.canReadFoodDatabase(localeId);
                 });
             }
@@ -99,8 +99,8 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
 
         scope.$on("$routeChangeSuccess", setActiveRoute);
 
-        scope.canAccessFoodLocale = function (locale) {
-            return _.contains(scope.accessibleFoodLocales, locale.id);
+        scope.canReadFoodDatabase = function (locale) {
+            return _.contains(scope.accessibleFoodDatabases, locale.id);
         };
 
         function setActiveRoute() {

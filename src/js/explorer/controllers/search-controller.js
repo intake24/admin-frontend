@@ -4,13 +4,32 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('SearchController', ['$scope', '$rootScope', '$routeParams', '$timeout', 'LocalesService',
-        'FoodService', controllerFun]);
+        'FoodService', 'UserStateService', controllerFun]);
 };
 
-function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesService, FoodService) {
+function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesService, FoodService, UserStateService) {
 
     var queryTimeout = 500,
         timeoutPromise;
+
+    scope.$watchGroup(
+        [
+            function() { return scope.locales; },
+            function() { return UserStateService.getUserInfo(); }
+        ],
+        function (newValues, oldValues, scope) {
+
+            if (!scope.locales) {
+                return;
+            }
+
+            scope.currentUser = UserStateService.getUserInfo();
+
+            scope.accessibleFoodDatabases = _.filter(_.pluck(scope.locales, "id"), function (localeId) {
+                return scope.currentUser && scope.currentUser.canReadFoodDatabase(localeId);
+            });
+        }
+    );
 
     $scope.searchResults = null;
     $scope.searchResultsAreVisible = false;

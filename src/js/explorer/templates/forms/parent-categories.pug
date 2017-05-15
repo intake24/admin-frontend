@@ -4,8 +4,8 @@
         .col-xs-12
             .categories-container
                 ul
-                    li(ng-repeat='category in $parent.itemDefinition.main.parentCategories | orderBy:"displayName"'
-                        ng-attr-dir="{{getCategoryTextDirection(category)}}") {{category.displayName}}
+                    li(ng-repeat='category in getParentCategories()'
+                        ng-attr-dir="{{getCategoryTextDirection(category)}}") {{getNodeDisplayName(category)}}
 
     .form-group
         .col-xs-12

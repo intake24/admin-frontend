@@ -35,6 +35,7 @@ function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesServic
     $scope.searchResultsAreVisible = false;
     $scope.query = "";
     $scope.focused = false;
+    $scope.queryTextDirection = "";
 
     $scope.getActive = function () {
         return this.query != '' || this.focused;
@@ -48,11 +49,23 @@ function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesServic
         $rootScope.$broadcast('intake24.admin.food_db.AddNewCategory');
     };
 
+    $scope.getFoodTextDirection = function (food) {
+        if (food.localDescription && food.localDescription.defined) {
+            return $scope.queryTextDirection;
+        }
+    };
+
     $scope.$watch('query', function (oldValue, newValue) {
         if (newValue) {
             $timeout.cancel(timeoutPromise);
             timeoutPromise = $timeout(performFoodSearch, queryTimeout);
         }
+    });
+
+    $scope.$watch(function () {
+        return $scope.$parent.getTextDirection();
+    }, function (newVal) {
+        $scope.queryTextDirection = newVal;
     });
 
     function performFoodSearch() {

@@ -41,6 +41,11 @@ function serviceFun($rootScope, $timeout, $cookies) {
             isSurveyFeedbackAdmin: function () {
                 return _.contains(this.roles, "feedbackadmin")
             },
+            isStaff: function () {
+                return _.some(this.roles, function (r) {
+                    return r.endsWith("/staff");
+                });
+            },
             isSurveyStaff: function (surveyId) {
                 return _.contains(this.roles, surveyId + "/staff");
             },
@@ -74,9 +79,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
             },
             canAccessSurveyList: function () {
-                return this.isSuperUser() || this.isGlobalSurveyAdmin() || _.some(this.roles, function (r) {
-                        return r.endsWith("/staff");
-                    })
+                return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isStaff();
             },
 
             canCreateSurveys: function () {

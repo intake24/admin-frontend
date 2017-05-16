@@ -10,5 +10,5 @@
 .form-group
     .col-xs-9.col-xs-offset-3
         label.checkbox-inline
-            input(type='checkbox' ng-model='itemDefinition.local.excludedFromThisLocale')
+            input(type='checkbox' ng-model='itemDefinition.local.excludedFromThisLocale' ng-disabled='!currentUserCanUpdateLocalFields')
             span #{ gettext("properties_do_not_use_in_this_locale") }

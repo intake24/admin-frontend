@@ -1,12 +1,12 @@
 .property
 	h3 #{ gettext("Definition") }
 
-	include food-basic-fields
+	include basic-fields
 
 	.form-group
 		.col-xs-9.col-xs-offset-3
 			label.checkbox-inline
-				input(type='checkbox' ng-model='itemDefinition.main.isHidden')
+				input(type='checkbox' ng-model='itemDefinition.main.isHidden' ng-disabled='!currentUserCanUpdateMainFields')
 				span #{ gettext("Hidden") }
 
 	include properties-locale

@@ -100,6 +100,10 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
             },
 
+            canDeleteCategories: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
             canAccessSurvey: function (surveyId) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
             },

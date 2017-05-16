@@ -9,5 +9,5 @@
 
     .form-group
         .col-xs-12
-            button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer($parent.itemDefinition.main.parentCategories)')
+            button.intake-btn.success(type="button" ng-click='showParentCategoriesDrawer($parent.itemDefinition.main.parentCategories)' ng-disabled='!currentUserCanUpdateMainFields')
                 span #{ gettext("Manage categories") }

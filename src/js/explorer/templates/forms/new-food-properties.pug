@@ -1,6 +1,6 @@
 form
     .property
-        include food-basic-fields
+        include basic-fields
         .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
             label.col-xs-3.control-label(for='input-{{ id }}-code')
                 | {{ id }}

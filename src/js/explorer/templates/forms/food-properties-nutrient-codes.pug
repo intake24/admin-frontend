@@ -2,16 +2,7 @@
 
     h3 #{ gettext("Food composition table codes") }
 
-    div(ng-if="localFoodDataSources.nutrientTablesSource.Prototype")
-      p Using food composition table codes provided by
-        span(ng-if='localFoodDataSources.nutrientTablesSource.Prototype')  the prototype locale
-        =" "
-        i(class="flag {{getLocaleInfo(localFoodDataSources.nutrientTablesSource.Prototype.locale).flagCode}}")
-        | &nbsp;
-        strong {{ getLocaleInfo(localFoodDataSources.nutrientTablesSource.Prototype.locale).englishName }}
-        |:
-        p(ng-repeat='(id, code) in localFoodData.nutrientTableCodes') {{ id }}: {{ code }}
-      p Add a code using the button below to override.
+    source-locale(src="localFoodDataSources.nutrientTablesSource")
 
     .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
         label.col-xs-3.control-label(for="input-{{ id }}-code") {{ id }}

@@ -30,8 +30,18 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         return LocalesService.getLocaleUnsafe(localeId);
     };
 
-    $scope.$watchGroup(['itemDefinition.main.localeRestrictions', 'currentUser'], function() {
-        $scope.currentUserCanEditMainFood = $scope.itemDefinition && $scope.currentItem.type == 'food' && $scope.currentUser.canUpdateFoodMain($scope.itemDefinition.main.localeRestrictions);
+    $scope.$watchGroup(['currentItem', 'itemDefinition.main.localeRestrictions', 'currentUser', 'currentLocale'], function () {
+
+        $scope.currentUserCanUpdateMainFields = false;
+        $scope.currentUserCanUpdateLocalFields = false;
+
+        if ($scope.itemDefinition && $scope.currentItem && $scope.currentItem.type == 'food') {
+            $scope.currentUserCanUpdateMainFields = $scope.currentUser.canUpdateFoodMain($scope.itemDefinition.main.localeRestrictions);
+            $scope.currentUserCanUpdateLocalFields = $scope.currentUser.canUpdateFoodLocal($scope.currentLocale);
+        } else if ($scope.currentItem && $scope.currentItem.type == 'category') {
+            $scope.currentUserCanUpdateMainFields = $scope.currentUser.canUpdateCategoryMain();
+            $scope.currentUserCanUpdateLocalFields = $scope.currentUser.canUpdateCategoryLocal($scope.currentLocale);
+        }
     });
 
 

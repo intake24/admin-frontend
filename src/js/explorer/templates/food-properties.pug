@@ -10,7 +10,6 @@
 		popover-trigger="mouseenter"
 		popover-placement="bottom-right")
 		
-		include food-local-view
 		include forms/food-properties
 
 	.properties-footer
@@ -19,13 +18,13 @@
 					id="btn-update-food"
 					ng-click="updateFood()"
 					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()"
-					ng-if="currentUserCanEditMainFood || currentUser.canUpdateFoodLocal(currentLocale)")
+					ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
 				span #{ gettext("Accept changes") }
 			button(class="intake-btn warning"
 					id="btn-discard-food"
 					ng-click="discardChanges()"
 					ng-disabled="!itemChanged() || forceDisabledButtons"
-					ng-if="currentUserCanEditMainFood || currentUser.canUpdateFoodLocal(currentLocale)")
+					ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
 				span #{ gettext("Discard changes") }
 			button(class="intake-btn warning"
 					ng-click="cloneFood()"

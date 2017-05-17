@@ -21,8 +21,6 @@ function serviceFun($rootScope, $timeout, $cookies) {
             parsedToken = JSON.parse(atob(tokenPart)),
             credentials = JSON.parse(atob(parsedToken.sub));
 
-        console.log(parsedToken);
-
         return {
             userId: parsedToken.userId,
             roles: parsedToken.roles,

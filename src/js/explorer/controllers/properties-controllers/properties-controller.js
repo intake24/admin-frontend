@@ -228,9 +228,6 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                 function (data) {
                     $scope.localFoodData = data[0];
                     $scope.localFoodDataSources = data[1];
-                    console.log($scope.localFoodData);
-                    console.log($scope.localFoodDataSources);
-
                 },
                 function (response) {
                     if (response.code == 404) {

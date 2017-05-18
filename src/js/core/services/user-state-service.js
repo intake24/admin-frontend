@@ -36,9 +36,6 @@ function serviceFun($rootScope, $timeout, $cookies) {
             isGlobalSurveyAdmin: function () {
                 return _.contains(this.roles, "surveyadmin");
             },
-            isSurveyFeedbackAdmin: function () {
-                return _.contains(this.roles, "feedbackadmin")
-            },
             isStaff: function () {
                 return _.some(this.roles, function (r) {
                     return r.endsWith("/staff");
@@ -51,7 +48,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return _.contains(this.roles, "fdbm/" + localeId);
             },
 
-            canSeeFoodDatabaseButton: function () {
+            canAccessFoodDatabase: function () {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function (r) {
                         return r.startsWith("fdbm/");
                     })
@@ -105,7 +102,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
             canAccessSurvey: function (surveyId) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
             },
-            canAccessSurveyList: function () {
+            canAccessSurveyManager: function () {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isStaff();
             },
 
@@ -113,23 +110,23 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 
-            canAccessImageDatabase: function () {
-                return this.isSuperUser();
+            canAccessPortionSizeImages: function () {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
             canAccessSurveyFeedback: function () {
-                return this.isSuperUser();
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
             canAccessUserList: function () {
-                return this.isSuperUser();
+                return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account
              signs in (i.e. a respondent). */
             canAccessApp: function () {
-                return this.canSeeFoodDatabaseButton() || this.canAccessSurveyList() ||
-                    this.canAccessImageDatabase() || this.canAccessSurveyFeedback() || this.canAccessUserList();
+                return this.canAccessFoodDatabase() || this.canAccessSurveyManager() ||
+                    this.canAccessPortionSizeImages() || this.canAccessSurveyFeedback() || this.canAccessUserList();
             }
         };
     }

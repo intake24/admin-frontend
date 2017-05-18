@@ -32,7 +32,7 @@
             a(ng-href="\#{{menuItems.surveyFeedback.href}}" ng-class="{'active': menuItems.surveyFeedback.active}")
                 | #{ gettext("sidebar_survey_feedback") }
 
-        li(ng-class="{'active': !menuItems.userManager.collapsed}" ng-if="currentUser.canAccessUserManager()")
+        li(ng-class="{'active': !menuItems.userManager.collapsed}" ng-if="false") # seems obsolete?
             a(ng-click='toggleItem("userManager")')
                 | #{ gettext("sidebar_users") }
                 i.fa(ng-class="!menuItems.userManager.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")

@@ -118,7 +118,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
-            canAccessUserList: function () {
+            canAccessUserManager: function () {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 

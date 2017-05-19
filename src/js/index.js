@@ -1,4 +1,4 @@
-require("./polyfills");
+require("./polyfills")();
 
 // Fixme: gettext
 require("./gettext")();

@@ -61,6 +61,12 @@ function serviceFun($window, $rootScope, $http, $q, PackerService, UserStateServ
             });
         },
 
+        getLocaleUnsafe: function (localeId) {
+            return locales.filter(function (locale) {
+                return locale.id == localeId;
+            })[0];
+        },
+
         current: function () {
             return currentLocale;
         },

@@ -144,6 +144,10 @@ function serviceFun($http, $q, LocalesService, PackerService) {
             return $http.post(api_base_url + 'admin/foods/new', PackerService.packNewFoodRecord(definition));
         },
 
+        createNewLocalFood: function (locale, definition) {
+            return $http.post(api_base_url + 'admin/foods/new/' + locale, PackerService.packNewLocalFoodRecord(definition));
+        },
+
         createNewFoodWithTempCode: function (definition) {
             return $http.post(api_base_url + 'admin/foods/new-with-temp-code', definition);
         },

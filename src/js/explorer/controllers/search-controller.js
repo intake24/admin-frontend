@@ -4,10 +4,10 @@ var _ = require('underscore');
 
 module.exports = function (app) {
     app.controller('SearchController', ['$scope', '$rootScope', '$routeParams', '$timeout', 'LocalesService',
-        'FoodService', controllerFun]);
+        'FoodService', 'UserStateService', controllerFun]);
 };
 
-function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesService, FoodService) {
+function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesService, FoodService, UserStateService) {
 
     var queryTimeout = 500,
         timeoutPromise;
@@ -47,6 +47,14 @@ function controllerFun($scope, $rootScope, $routeParams, $timeout, LocalesServic
         return $scope.$parent.getTextDirection();
     }, function (newVal) {
         $scope.queryTextDirection = newVal;
+    });
+
+    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+        $scope.currentLocale = newValue;
+    });
+
+    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+        $scope.currentUser = newValue;
     });
 
     function performFoodSearch() {

@@ -1,10 +1,11 @@
 //- Cereal
 
 .form-group
-	label.col-xs-3.control-label(for="cereal-type-dropdown-{{$index}}")
-		| #{ gettext("Type") }
-	.col-xs-9
-		select.form-control(id='cereal-type-dropdown-{{$index}}'
-				ng-model="portionSize.parameters.cereal_type")
-			option(ng-repeat="cerealType in sharedData.cerealTypes" value="{{cerealType.slug}}")
-				| {{cerealType.name}}
+    label.col-xs-3.control-label(for="cereal-type-dropdown-{{$index}}")
+        | #{ gettext("Type") }
+    .col-xs-9
+        select.form-control(id='cereal-type-dropdown-{{$index}}'
+        ng-disabled="!currentUserCanUpdateLocalFields"
+        ng-model="portionSize.parameters.cereal_type")
+            option(ng-repeat="cerealType in sharedData.cerealTypes" value="{{cerealType.slug}}")
+                | {{cerealType.name}}

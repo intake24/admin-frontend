@@ -6,13 +6,13 @@
         .form-group
             .col-xs-12
                 button.close(type="button" title=gettext("Delete this method")
-                ng-click='deletePortionSize($index)') &times;
+                ng-click='deletePortionSize($index)' ng-disabled="!currentUserCanUpdateLocalFields") &times;
 
         .form-group(ng-class="{'has-error': !portionSize.description}")
             label.col-xs-3.control-label(for="portion-size-description-{{$index}}")
                 | #{ gettext("properties_portion_size_description") }
             .col-xs-9
-                ui-select(id="portion-size-description-{{$index}}"
+                ui-select(id="portion-size-description-{{$index}}" ng-disabled="!currentUserCanUpdateLocalFields"
                 ng-model="portionSize.description" title=gettext('properties_portion_size_description_select'))
                     ui-select-match(placeholder=gettext('properties_portion_size_description_select'))
                         span(ng-bind="($select.selected.name || portionSize.description)")
@@ -30,6 +30,7 @@
                         i.fa.fa-pencil.visible-on-hover
                 div(ng-show="imageUrlEditable")
                     input.form-control(id="portion-size-imgurl-{{$index}}"
+                    ng-disabled="!currentUserCanUpdateLocalFields"
                     placeholder=gettext("e.g. path/filename.jpg")
                     ng-model='portionSize.imageUrl'
                     ng-class="{'invalid': !portionSize.imageUrl}")
@@ -38,12 +39,14 @@
                 | #{ gettext("Use for recipes") }
             .col-xs-9
                 input(type='checkbox' id="portion-size-use-for-recipes-{{$index}}"
+                ng-disabled="!currentUserCanUpdateLocalFields"
                 ng-model='portionSize.useForRecipes')
         .form-group
             label.col-xs-3.control-label(for="portion-size-method-{{$index}}")
                 | #{ gettext("Estimation method") }
             .col-xs-9
                 select.form-control(id="portion-size-method-{{$index}}"
+                ng-disabled="!currentUserCanUpdateLocalFields"
                 ng-model="portionSizeMethodModel(portionSize)"
                 ng-model-options="{getterSetter : true}")
                     option(ng-repeat="estimationMethod in sharedData.estimationMethods"
@@ -68,5 +71,5 @@
 
     .form-group
         .col-xs-12
-            button.intake-btn.success(type="button" ng-click='addPortionSize()')
+            button.intake-btn.success(type="button" ng-click='addPortionSize()' ng-disabled="!currentUserCanUpdateLocalFields")
                 | #{ gettext("Add a portion size method") }

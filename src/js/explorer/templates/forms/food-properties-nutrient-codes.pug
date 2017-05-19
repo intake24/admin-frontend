@@ -1,5 +1,8 @@
 .property
-    h3 #{ gettext("Nutrient codes") }
+
+    h3 #{ gettext("Food composition table codes") }
+
+    source-locale(src="localFoodDataSources.nutrientTablesSource")
 
     .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
         label.col-xs-3.control-label(for="input-{{ id }}-code") {{ id }}

@@ -6,11 +6,6 @@
 			h2 #{ gettext("Food") }:&nbsp;
 				span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
 
-		div(class="fa fa-bug food-local-view-icon" uib-popover-template="'food-local-view-popover-template'"
-		popover-trigger="mouseenter"
-		popover-placement="bottom-right")
-		
-		include food-local-view
 		include forms/food-properties
 
 	.properties-footer
@@ -18,20 +13,24 @@
 			button(class="intake-btn success"
 					id="btn-update-food"
 					ng-click="updateFood()"
-					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
+					ng-disabled="!itemChanged() || forceDisabledButtons || notValid()"
+					ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
 				span #{ gettext("Accept changes") }
 			button(class="intake-btn warning"
 					id="btn-discard-food"
 					ng-click="discardChanges()"
-					ng-disabled="!itemChanged() || forceDisabledButtons" )
+					ng-disabled="!itemChanged() || forceDisabledButtons"
+					ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
 				span #{ gettext("Discard changes") }
 			button(class="intake-btn warning"
 					ng-click="cloneFood()"
-					ng-disabled="forceDisabledButtons" )
+					ng-disabled="forceDisabledButtons"
+					ng-if="currentUser.canCreateFoods(currentLocale)")
 						span #{ gettext("Clone food") }
 			button(class="intake-btn danger pull-right"
 					id="btn-delete-food"
 					ng-click="deleteItem()"
-					ng-disabled="forceDisabledButtons")
+					ng-disabled="forceDisabledButtons"
+					ng-if="currentUser.canDeleteFood(itemDefinition.main.localeRestrictions)")
 				span #{ gettext("Delete") }
 			.clearfloat

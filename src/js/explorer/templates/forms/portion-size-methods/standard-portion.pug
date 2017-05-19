@@ -24,14 +24,15 @@ table.table.table-hover.units-list
             td
                 input(type='checkbox' ng-model='unit.omitFoodDescription')
             td
-                button.close(ng-click='removeStandardUnit($index)')
+                button.close(ng-click='removeStandardUnit($index)' ng-disabled="!currentUserCanUpdateLocalFields")
                     | &times;
 
-button.intake-btn.hidden(type="button")
+button.intake-btn.hidden(type="button" ng-disabled="!currentUserCanUpdateLocalFields")
     span #{ gettext("Move up") }
-button.intake-btn.hidden(type="button")
+button.intake-btn.hidden(type="button" ng-disabled="!currentUserCanUpdateLocalFields")
     span #{ gettext("Move down") }
 button.intake-btn(type="button"
+ng-disabled="!currentUserCanUpdateLocalFields"
 ng-click='addStandardUnit()')
     span #{ gettext("Add unit") }
 .clearfloat

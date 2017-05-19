@@ -1,10 +1,14 @@
 .form-group
     .col-xs-9.col-xs-offset-3
         label.checkbox-inline
-            input(type='checkbox' ng-model='useExclusivelyInThisLocale' ng-model-options='{getterSetter: true}')
+            input(type='checkbox' ng-model='useExclusivelyInThisLocale' ng-model-options='{getterSetter: true}' ng-disabled='!currentUser.canCreateGlobalFoods()'
+            ng-attr-title="{{ currentUser.canCreateGlobalFoods() ? '' : ('You are only allowed to edit foods for the current locale (' + currentLocale + '). Please contact the system administrator to change this setting') }}" )
             span #{ gettext("properties_use_exclusively_in_this_locale") }
+
+
+
 .form-group
     .col-xs-9.col-xs-offset-3
         label.checkbox-inline
-            input(type='checkbox' ng-model='itemDefinition.local.excludedFromThisLocale')
+            input(type='checkbox' ng-model='itemDefinition.local.excludedFromThisLocale' ng-disabled='!currentUserCanUpdateLocalFields')
             span #{ gettext("properties_do_not_use_in_this_locale") }

@@ -1,25 +1,28 @@
 .properties-container#category-properties-container(ng-if="currentItem != null && currentItem.type == 'category' && !newItem")
 
-	.properties-body
-		
-		.page-header
-			h2 #{ gettext("Category") }:&nbsp;
-				span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
+    .properties-body
 
-		include forms/category-properties
+        .page-header
+            h2 #{ gettext("Category") }:&nbsp;
+                span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
 
-	.properties-footer
-		.input-wrapper
-			button.intake-btn.success(type="button"
-									ng-click='updateCategory()'
-									ng-disabled="!itemChanged() || forceDisabledButtons || notValid()")
-				span #{ gettext("Accept changes") }
-			button.intake-btn.warning(type="button"
-									ng-click='discardChanges()'
-									ng-disabled="!itemChanged() || forceDisabledButtons")
-				span #{ gettext("Discard changes") }
-			button.intake-btn.danger.pull-right(type="button"
-												ng-click='deleteItem()'
-												ng-disabled="forceDisabledButtons")
-				span #{ gettext("Delete") }
-			.clearfloat
+        include forms/category-properties
+
+    .properties-footer
+        .input-wrapper
+            button.intake-btn.success(type="button"
+            ng-click='updateCategory()'
+            ng-disabled="!itemChanged() || forceDisabledButtons || notValid()"
+            ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
+                span #{ gettext("Accept changes") }
+            button.intake-btn.warning(type="button"
+            ng-click='discardChanges()'
+            ng-disabled="!itemChanged() || forceDisabledButtons"
+            ng-if="currentUserCanUpdateMainFields || currentUserCanUpdateLocalFields")
+                span #{ gettext("Discard changes") }
+            button.intake-btn.danger.pull-right(type="button"
+            ng-click='deleteItem()'
+            ng-if="currentUser.canDeleteCategories()"
+            ng-disabled="forceDisabledButtons")
+                span #{ gettext("Delete") }
+            .clearfloat

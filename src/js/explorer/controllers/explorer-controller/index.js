@@ -6,11 +6,13 @@ module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', '$routeParams', 'SharedData', 'FoodService', 'CurrentItem',
             '$q', '$rootScope', 'MessageService', 'LocalesService', 'ExplorerToProperties',
+            'UserStateService',
             controllerFun]);
 };
 
 function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, currentItem,
-                       $q, $rootScope, MessageService, LocalesService, ExplorerToProperties) {
+                       $q, $rootScope, MessageService, LocalesService, ExplorerToProperties,
+                       UserStateService) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
@@ -65,6 +67,14 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             }
         });
     };
+
+    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+        $scope.currentLocale = newValue;
+    });
+
+    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+        $scope.currentUser = newValue;
+    });
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadRootCategoriesDeferred();
@@ -155,7 +165,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
                     reasonableAmount: {defined: false, value: null},
                 },
                 parentCategories: [],
-                localeRestrictions: []
+                localeRestrictions: $scope.currentUser.canCreateGlobalFoods() ? [] : [$scope.currentLocale]
             },
             local: {
                 version: {defined: false, value: null},

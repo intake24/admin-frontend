@@ -2,29 +2,32 @@
 	h3 #{ gettext("Attributes") }
 	.form-group
 		.col-xs-3
-			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.readyMealOption.defined = !itemDefinition.main.attributes.readyMealOption.defined")
+			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.readyMealOption.defined = !itemDefinition.main.attributes.readyMealOption.defined"
+			ng-disabled="!currentUserCanUpdateMainFields")
 				span(ng-if="!(itemDefinition.main.attributes.readyMealOption.defined)") Override
 				span(ng-if="(itemDefinition.main.attributes.readyMealOption.defined)") Use inherited
 		.col-xs-9
 			label.checkbox-inline
 				input(type="checkbox"
-					ng-disabled="!itemDefinition.main.attributes.readyMealOption.defined"
+					ng-disabled="!itemDefinition.main.attributes.readyMealOption.defined || !currentUserCanUpdateMainFields"
 					ng-model="itemDefinition.main.attributes.readyMealOption.value")
 				span #{ gettext("Ready meal option") }
 	.form-group
 		.col-xs-3
-			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.sameAsBeforeOption.defined = !itemDefinition.main.attributes.sameAsBeforeOption.defined")
+			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.sameAsBeforeOption.defined = !itemDefinition.main.attributes.sameAsBeforeOption.defined"
+			ng-disabled="!currentUserCanUpdateMainFields")
 				span(ng-if="!(itemDefinition.main.attributes.sameAsBeforeOption.defined)") Override
 				span(ng-if="(itemDefinition.main.attributes.sameAsBeforeOption.defined)") Use inherited
 		.col-xs-9
 			label.checkbox-inline
 				input(type="checkbox"
-					ng-disabled="!itemDefinition.main.attributes.sameAsBeforeOption.defined"
+					ng-disabled="!itemDefinition.main.attributes.sameAsBeforeOption.defined || !currentUserCanUpdateMainFields"
 					ng-model="itemDefinition.main.attributes.sameAsBeforeOption.value")
 				span #{ gettext("Same as before option") }
 	.form-group
 		.col-xs-3
-			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.reasonableAmount.defined = !itemDefinition.main.attributes.reasonableAmount.defined")
+			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.reasonableAmount.defined = !itemDefinition.main.attributes.reasonableAmount.defined"
+			ng-disabled="!currentUserCanUpdateMainFields")
 				span(ng-if="!(itemDefinition.main.attributes.reasonableAmount.defined)") Override
 				span(ng-if="(itemDefinition.main.attributes.reasonableAmount.defined)") Use inherited
 		.col-xs-9
@@ -33,7 +36,7 @@
 					input.form-control(type="text"
 									placeholder=gettext('e.g. 600')
 									id="inheritable-reasonable-amount"
-									ng-disabled="!itemDefinition.main.attributes.reasonableAmount.defined"
+									ng-disabled="!itemDefinition.main.attributes.reasonableAmount.defined || currentUserCanUpdateMainFields"
 									ng-model="itemDefinition.main.attributes.reasonableAmount.value")
 				.col-xs-8
 					p.form-control-static

@@ -10,11 +10,12 @@ module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$rootScope', '$routeParams', 'CurrentItem', 'SharedData', 'FoodService',
             'UserFoodData', 'PackerService', '$q', 'MessageService',
-            'LocalesService', 'UserStateService', controllerFun]);
+            'LocalesService', 'UserStateService', 'NutrientTables', controllerFun]);
 };
 
 function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData, FoodService,
-                       userFoodData, PackerService, $q, MessageService, LocalesService, UserStateService) {
+                       userFoodData, PackerService, $q, MessageService, LocalesService, UserStateService,
+                       NutrientTables) {
 
     $scope.sharedData = sharedData;
 
@@ -90,6 +91,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     $scope.nutrientCodeSection = {
         tables: null,
         dropDownOpened: false,
+        nutrientTableRecords: [],
         filteredTables: function () {
             if (!$scope.itemDefinition) {
                 return this.tables;
@@ -110,6 +112,12 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         },
         buttonDisabled: function () {
             return this.filteredTables().length == 0;
+        },
+        findNutrientTableRecords: function (nutrientTableId, query) {
+            NutrientTables.searchNutrientTableRecords(nutrientTableId, query).then(function (data) {
+                $scope.nutrientCodeSection.nutrientTableRecords.length = 0;
+                $scope.nutrientCodeSection.nutrientTableRecords.push.apply($scope.nutrientCodeSection.nutrientTableRecords, data);
+            });
         }
     };
 

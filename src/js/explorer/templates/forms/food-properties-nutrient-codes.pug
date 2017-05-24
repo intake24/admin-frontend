@@ -6,11 +6,15 @@
 
     .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
         label.col-xs-3.control-label(for="input-{{ id }}-code") {{ id }}
-        .col-xs-6
+        .col-xs-9
             .input-group
-                input.form-control(id='input-{{ id }}-code' type='text'
-                                    placeholder=gettext("e.g. 10968")
-                                    ng-model='itemDefinition.local.nutrientTableCodes[id]')
+                ui-select(id='input-{{ id }}-code'
+                ng-model="itemDefinition.local.nutrientTableCodes[id]" title='Select nutrient record code')
+                    ui-select-match(placeholder='e.g. 10968')
+                        span(ng-bind="($select.selected.description)")
+                    ui-select-choices(refresh="nutrientCodeSection.findNutrientTableRecords(id, $select.search)" refresh-delay="500"
+                    repeat="item.id as item in (nutrientCodeSection.nutrientTableRecords | filter: {description: $select.search})")
+                        span(ng-bind="item.description")
                 .input-group-btn
                     button.btn.btn-default(type="button" ng-click="nutrientCodeSection.removeTable(id)")
                         i(class="fa fa-remove")

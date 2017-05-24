@@ -15,4 +15,5 @@ module.exports = function(app) {
     require("./user-state-service")(app);
     require("./nutrient-types")(app);
     require("./admin-users-service")(app);
+    require("./nutrient-tables")(app);
 };

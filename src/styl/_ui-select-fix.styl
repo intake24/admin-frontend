@@ -1,17 +1,45 @@
-.ui-select-match-text {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
+.ui-select {
+  &-match-text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
 
-.ui-select-toggle > .btn.btn-link {
-  margin-right: 10px;
-  top: 6px;
-  position: absolute;
-  right: 10px;
-}
+    & > span {
+      padding-right: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+    }
+  }
 
-.ui-select-multiple input.ui-select-search:not(.ng-touched) {
-  width: 100% !important;
+  &-toggle > .btn.btn-link {
+    margin-right: 10px;
+    top: 6px;
+    position: absolute;
+    right: 10px;
+  }
+
+  &-choices-row {
+    & > span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-subtitle {
+      color: #777;
+    }
+
+    &.active {
+      .ui-select-choices-row-subtitle {
+        color: #fff;
+      }
+    }
+
+  }
+
+  &-multiple input.ui-select-search:not(.ng-touched) {
+    width: 100% !important;
+  }
+
 }

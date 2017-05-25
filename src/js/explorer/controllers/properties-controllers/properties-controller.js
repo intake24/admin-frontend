@@ -10,24 +10,27 @@ module.exports = function (app) {
     app.controller('PropertiesController',
         ['$scope', '$rootScope', '$routeParams', 'CurrentItem', 'SharedData', 'FoodService',
             'UserFoodData', 'PackerService', '$q', 'MessageService',
-            'LocalesService', 'UserStateService', 'NutrientTables', controllerFun]);
+            'LocalesService', 'UserStateService', controllerFun]);
 };
 
 function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData, FoodService,
-                       userFoodData, PackerService, $q, MessageService, LocalesService, UserStateService,
-                       NutrientTables) {
+                       userFoodData, PackerService, $q, MessageService, LocalesService, UserStateService) {
 
     $scope.sharedData = sharedData;
 
-    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+    $scope.$watch(function () {
+        return $routeParams.locale;
+    }, function (newValue) {
         $scope.currentLocale = newValue;
     });
 
-    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+    $scope.$watch(function () {
+        return UserStateService.getUserInfo();
+    }, function (newValue) {
         $scope.currentUser = newValue;
     });
 
-    $scope.getLocaleInfo = function(localeId) {
+    $scope.getLocaleInfo = function (localeId) {
         return LocalesService.getLocaleUnsafe(localeId);
     };
 
@@ -79,7 +82,6 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     clearData();
 
 
-
     // Currently selected item's header.
     // Used for reference and should not be changed in this controller.
     $scope.currentItem = null;
@@ -91,7 +93,6 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     $scope.nutrientCodeSection = {
         tables: null,
         dropDownOpened: false,
-        nutrientTableRecords: [],
         filteredTables: function () {
             if (!$scope.itemDefinition) {
                 return this.tables;
@@ -112,18 +113,12 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         },
         buttonDisabled: function () {
             return this.filteredTables().length == 0;
-        },
-        findNutrientTableRecords: function (nutrientTableId, query) {
-            NutrientTables.searchNutrientTableRecords(nutrientTableId, query).then(function (data) {
-                $scope.nutrientCodeSection.nutrientTableRecords.length = 0;
-                $scope.nutrientCodeSection.nutrientTableRecords.push.apply($scope.nutrientCodeSection.nutrientTableRecords, data);
-            });
         }
     };
 
     $scope.notValid = function () {
         return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
-            $scope.itemDefinition.main.englishDescription == '' ||
+            $scope.itemDefinition.main.englishDescription == '' || !checkNutrientCodes() ||
             $scope.currentItem.type == "food" &&
             $scope.itemDefinition.local.associatedFoods.filter(function (item) {
                 return !item.foodOrCategory;
@@ -297,6 +292,16 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     function enableButtons() {
         $scope.forceDisabledButtons = false;
+    }
+
+    function checkNutrientCodes() {
+        for (var i in $scope.itemDefinition.local.nutrientTableCodes) {
+            var item = $scope.itemDefinition.local.nutrientTableCodes[i];
+            if (item == null || item.trim() == "") {
+                return false;
+            }
+        }
+        return true;
     }
 
     $scope.categoryMainRecordChanged = function () {
@@ -511,7 +516,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
             });
     };
 
-    $scope.saveNewLocalFood = function() {
+    $scope.saveNewLocalFood = function () {
         FoodService.createNewLocalFood($scope.currentLocale, $scope.itemDefinition)
             .then(function () {
                 MessageService.showMessage(gettext('New food added'), 'success');

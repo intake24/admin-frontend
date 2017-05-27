@@ -7,10 +7,10 @@
 var _ = require('underscore');
 
 module.exports = function (app) {
-    app.directive("surveyManagerList", ["LocalesService", "SurveyService", "appRoutes", "$q", directiveFun]);
+    app.directive("surveyManagerList", ["LocalesService", "UserStateService", "SurveyService", "appRoutes", "$q", directiveFun]);
 };
 
-function directiveFun(LocalesService, SurveyService, appRoutes, $q) {
+function directiveFun(LocalesService, UserStateService, SurveyService, appRoutes, $q) {
 
     function controller(scope, element, attribute) {
 
@@ -28,7 +28,7 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $q) {
 
         scope.newSurveyUrl = appRoutes.surveyManagerNew;
 
-          $q.all([SurveyService.list(), LocalesService.listFuture()]).then(
+          $q.all([SurveyService.list(), LocalesService.list()]).then(
             function(data) {
                 scope.allSurveys = data[0];
                 scope.allLocales = data[1];
@@ -40,6 +40,10 @@ function directiveFun(LocalesService, SurveyService, appRoutes, $q) {
 
         scope.$watch("searchQuery", function() {
             applyFilter();
+        });
+
+        scope.$watch( function() { return UserStateService.getUserInfo(); }, function(newValue, oldValue) {
+            scope.currentUser = newValue;
         });
 
     }

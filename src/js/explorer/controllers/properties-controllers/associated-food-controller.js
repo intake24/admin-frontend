@@ -1,18 +1,16 @@
 'use strict';
 
 module.exports = function (app) {
-    app.controller('AssociatedFoodController', ['$scope', 'DrawersService', function ($scope, DrawersService) {
-        controllerFun.call($scope, DrawersService);
-    }]);
+    app.controller('AssociatedFoodController', ['$scope', '$routeParams', 'LocalesService', 'DrawersService',
+        controllerFun]);
 };
 
-function controllerFun(DrawersService) {
+function controllerFun($scope, $routeParams, LocalesService, DrawersService) {
 
     var selectedItem = null;
-    var self = this;
 
-    this.addAssociatedFood = function () {
-        this.$parent.itemDefinition.local.associatedFoods.push({
+    $scope.addAssociatedFood = function () {
+        $scope.$parent.itemDefinition.local.associatedFoods.push({
             foodOrCategory: null,
             mainFood: false,
             linkAsMain: false,
@@ -21,12 +19,12 @@ function controllerFun(DrawersService) {
         })
     };
 
-    this.removeAssociatedFood = function (item) {
-        var i = this.$parent.itemDefinition.local.associatedFoods.indexOf(item);
-        this.$parent.itemDefinition.local.associatedFoods.splice(i, 1);
+    $scope.removeAssociatedFood = function (item) {
+        var i = $scope.$parent.itemDefinition.local.associatedFoods.indexOf(item);
+        $scope.$parent.itemDefinition.local.associatedFoods.splice(i, 1);
     };
 
-    this.showAssociatedFoodDrawer = function (obj) {
+    $scope.showAssociatedFoodDrawer = function (obj) {
         var callback = function (value) {
             selectedItem.foodOrCategory = value;
             DrawersService.drawerAssociatedFood.offValueSet(callback);
@@ -35,4 +33,14 @@ function controllerFun(DrawersService) {
         DrawersService.drawerAssociatedFood.open();
         DrawersService.drawerAssociatedFood.onValueSet(callback);
     };
+
+    $scope.getFoodTextDirection = function (food) {
+        if (food.localDescription && food.localDescription.defined) {
+            return $scope.localeTextDirection;
+        }
+    };
+
+    LocalesService.getLocale($routeParams.locale).then(function (locale) {
+        $scope.localeTextDirection = locale.textDirection;
+    });
 }

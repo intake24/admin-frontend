@@ -26,6 +26,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
             roles: parsedToken.roles,
             userName: credentials.providerKey,
 
+
             isSuperUser: function () {
                 return _.contains(this.roles, "superuser");
             },
@@ -35,8 +36,10 @@ function serviceFun($rootScope, $timeout, $cookies) {
             isGlobalSurveyAdmin: function () {
                 return _.contains(this.roles, "surveyadmin");
             },
-            isSurveyFeedbackAdmin: function () {
-                return _.contains(this.roles, "feedbackadmin")
+            isStaff: function () {
+                return _.some(this.roles, function (r) {
+                    return r.endsWith("/staff");
+                });
             },
             isSurveyStaff: function (surveyId) {
                 return _.contains(this.roles, surveyId + "/staff");
@@ -45,44 +48,85 @@ function serviceFun($rootScope, $timeout, $cookies) {
                 return _.contains(this.roles, "fdbm/" + localeId);
             },
 
-            canAccessFoodDatabaseList: function () {
+            canAccessFoodDatabase: function () {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function (r) {
                         return r.startsWith("fdbm/");
                     })
             },
-            canAccessFoodDatabase: function (localeId) {
+
+            canReadFoodDatabase: function (localeId) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            /* All categories are currently global, so only global admins can create them */
+            canCreateCategories: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            /* If the user can create global foods, then 'Use exclusively in this locale' flag is unrestricted,
+             otherwise it should be locked to the selected locale */
+            canCreateGlobalFoods: function () {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            canCreateFoods: function (localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canUpdateFoodMain: function(restrictions) {
+                var outer = this;
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || ( restrictions && restrictions.length > 0 && _.all(restrictions, function(l) { return outer.isFoodDatabaseMaintainer(l); }));
+            },
+
+            canUpdateFoodLocal: function(localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canDeleteFood: function(restrictions) {
+                var outer = this;
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || ( restrictions && restrictions.length > 0 && _.all(restrictions, function(l) { return outer.isFoodDatabaseMaintainer(l); }));
+            },
+
+            canUpdateCategoryMain: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
+            canUpdateCategoryLocal: function(localeId) {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
+            },
+
+            canDeleteCategories: function() {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
             canAccessSurvey: function (surveyId) {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isSurveyStaff(surveyId);
             },
-            canAccessSurveyList: function () {
-                return this.isSuperUser() || this.isGlobalSurveyAdmin() || _.some(this.roles, function (r) {
-                        return r.endsWith("/staff");
-                    })
+            canAccessSurveyManager: function () {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin() || this.isStaff();
             },
+
             canCreateSurveys: function () {
                 return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 
-            canAccessImageDatabase: function () {
-                return this.isSuperUser();
+            canAccessPortionSizeImages: function () {
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
             canAccessSurveyFeedback: function () {
-                return this.isSuperUser();
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
             },
 
-            canAccessUserList: function () {
-                return this.isSuperUser();
+            canAccessUserManager: function () {
+                return this.isSuperUser() || this.isGlobalSurveyAdmin();
             },
 
             /* This needs to display a server-side 403 Forbidden instead? To avoid showing empty admin page if someone with a non-staff/admin account
              signs in (i.e. a respondent). */
             canAccessApp: function () {
-                return this.canAccessFoodDatabaseList() || this.canAccessSurveyList() ||
-                    this.canAccessImageDatabase() || this.canAccessSurveyFeedback() || this.canAccessUserList();
+                return this.canAccessFoodDatabase() || this.canAccessSurveyManager() ||
+                    this.canAccessPortionSizeImages() || this.canAccessSurveyFeedback() || this.canAccessUserList();
             }
         };
     }

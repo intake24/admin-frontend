@@ -73,18 +73,16 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             });
         };
 
-        scope.$watch(function () {
-            return LocalesService.list();
-        }, function () {
-            scope.locales = LocalesService.list();
-        });
-
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
         });
 
         scope.$watch(function() { return UserStateService.getUserInfo(); }, function(newValue) {
             scope.currentUser = newValue;
+        });
+
+        LocalesService.list().then(function (locales) {
+            scope.locales = locales;
         });
 
     }

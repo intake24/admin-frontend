@@ -412,7 +412,7 @@ msgid "properties_food_group_select"
 msgstr "Select food group..."
 
 msgid "image_gallery_main_gallery"
-msgstr "Main gallery"
+msgstr "Source images"
 
 msgid "image_gallery_as_served"
 msgstr "As served"
@@ -427,7 +427,7 @@ msgid "sidebar_food_explorer"
 msgstr "Food explorer"
 
 msgid "sidebar_galleries"
-msgstr "Galleries"
+msgstr "Portion size images"
 
 msgid "sidebar_users"
 msgstr "Users"

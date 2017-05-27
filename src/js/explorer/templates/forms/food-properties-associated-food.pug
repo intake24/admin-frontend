@@ -5,39 +5,46 @@
         .form-group
             .col-xs-12
                 button.close(type="button"
-                            title=gettext('associated_food_delete')
-                            ng-click="removeAssociatedFood(assFood)")
+                title=gettext('associated_food_delete')
+                ng-click="removeAssociatedFood(assFood)"
+                ng-disabled="!currentUserCanUpdateLocalFields")
                     | &times;
         .form-group
             label.col-xs-3.control-label #{ gettext("Food or category code") }
             .col-xs-9
                 .form-control-static
-                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)' ng-class="{'has-error': !assFood.foodOrCategory}")
+                    .inline-link(ng-click='showAssociatedFoodDrawer(assFood)' ng-disabled="!currentUserCanUpdateLocalFields"
+                    ng-class="{'has-error': !assFood.foodOrCategory}")
                         span(ng-if='!assFood.foodOrCategory')
                             p #{ gettext("properties_select_associated_food") }
                         span(ng-if='assFood.foodOrCategory')
                             i.fa.fa-folder-o(ng-if='assFood.foodOrCategory.type == "category"' style='margin-right: 8px')
-                            | {{ assFood.foodOrCategory.displayName }}
+                            span(ng-attr-dir="{{getFoodTextDirection(assFood.foodOrCategory)}}") {{ assFood.foodOrCategory.displayName }}
         .form-group
             label.col-xs-3.control-label(for="associated-food-prompt-text-{{$index}}")
                 | #{ gettext("associated_food_question") }
             .col-xs-9
                 input.form-control(type="text" id="associated-food-prompt-text-{{$index}}"
-                                    ng-model="assFood.promptText")
+                ng-disabled="!currentUserCanUpdateLocalFields"
+                ng-attr-dir="{{formTextDirection}}"
+                ng-model="assFood.promptText")
         .form-group
             label.col-xs-3.control-label(for="associated-food-generic-name-{{$index}}")
                 | #{ gettext("Generic name for this food") }
             .col-xs-9
                 input.form-control(type="text" id="associated-food-generic-name-{{$index}}"
-                                ng-model="assFood.genericName")
+                ng-disabled="!currentUserCanUpdateLocalFields"
+                ng-attr-dir="{{formTextDirection}}"
+                ng-model="assFood.genericName")
         .form-group
             label.col-xs-3.control-label(for="associated-food-link-as-main-{{$index}}")
                 | #{ gettext("associated_food_main_food") }
             .col-xs-9
                 input(type="checkbox" id="associated-food-link-as-main-{{$index}}"
-                    ng-model="assFood.linkAsMain")
+                ng-disabled="!currentUserCanUpdateLocalFields"
+                ng-model="assFood.linkAsMain")
 
     .form-group
         .col-xs-12
-            button.intake-btn(type="button" ng-click="addAssociatedFood()")
+            button.intake-btn(type="button" ng-click="addAssociatedFood()" ng-disabled="!currentUserCanUpdateLocalFields")
                 span #{ gettext("associated_food_add") }

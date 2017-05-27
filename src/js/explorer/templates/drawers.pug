@@ -7,13 +7,16 @@ div(ng-controller='CategoryManagerController')
 		.drawer-content
 			.categories-container
 				input(type='text' placeholder=gettext("Search categories")
+						ng-attr-dir="{{localeTextDirection}}"
 						ng-model='searchQuery')
 				ul(ng-if="searchQuery != ''")
 					li(ng-repeat='category in searchResults | orderBy:"displayName"'
+						ng-attr-dir="{{getCategoryTextDirection(category)}}"
 						ng-click='toggleParentCategory(category)'
 						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 				ul(ng-if="searchQuery == ''")
 					li(ng-repeat='category in stickyCategories | orderBy:"displayName"'
+						ng-attr-dir="{{getCategoryTextDirection(category)}}"
 						ng-click='toggleParentCategory(category)'
 						ng-class='isInParentCategories(category) ? "selected" : "unselected"') {{category.displayName}}
 
@@ -73,10 +76,11 @@ div(ng-controller='AssociatedFoodDrawerController')
 		.drawer-title #{ gettext("modals_associated_food_title") }
 		input(type='text'
 				placeholder=gettext("modals_associated_food_query_placeholder")
+				ng-attr-dir="{{localeTextDirection}}"
 				ng-model='query')
 		.drawer-content
 			.list-container
 				ul
 					li(ng-repeat='item in items | orderBy:["type", "displayName"]' ng-click='select(item)')
 						i.fa.fa-folder-o(ng-if='item.type == "category"' style='margin-right: 8px')
-						| {{ item.displayName }}
+						span(ng-attr-dir="{{getFoodTextDirection(item)}}") {{ item.displayName }}

@@ -6,7 +6,7 @@
             | #{ gettext("Food group") }
         .col-xs-9
             ui-select(id="food-group-dropdown"
-            ng-model="itemDefinition.main.groupCode" title=gettext('properties_food_group_select'))
+            ng-model="itemDefinition.main.groupCode" title=gettext('properties_food_group_select') ng-disabled='!currentUserCanUpdateMainFields')
                 ui-select-match(placeholder=gettext('properties_food_group_select'))
                     span(ng-bind="($select.selected.displayName)")
                 ui-select-choices(repeat="item.id as item in (foodGroups | filter: {displayName: $select.search})")

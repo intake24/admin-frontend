@@ -1,0 +1,11 @@
+ui-select(ng-attr-id="input-{{nutrientTableId}}-code"
+           ng-model="uiSelect.selected"
+           title="Search foods")
+    ui-select-match(placeholder="Search foods" title="Search foods")
+        span(ng-bind="getFoodTitle($select.selected)")
+    ui-select-choices(refresh="findNutrientTableRecords($select.search)"
+                       refresh-delay="500"
+                       repeat="item in (nutrientTableRecords | filter: {description: $select.search})")
+        span(ng-bind="getFoodTitle(item)")
+        br(ng-show="item.localDescription")
+        span.ui-select-choices-row-subtitle {{item.localDescription}}

@@ -1,12 +1,12 @@
 .search-input-group(ng-controller='SearchController')
-	search-input(ng-model="query")
-	.search-input-addon(uib-dropdown)
+	search-input(ng-model="query" ng-attr-dir="{{queryTextDirection}}")
+	.search-input-addon(uib-dropdown ng-if='currentUser.canCreateCategories() || currentUser.canCreateFoods(currentLocale)')
 		button(type="button" uib-dropdown-toggle id="add-item-dropdown")
 			i.fa.fa-plus
 		ul.dropdown-menu.dropdown-menu-right(uib-dropdown-menu aria-labelledby="add-item-dropdown")
-			li
+			li(ng-if='currentUser.canCreateCategories()')
 				a(href="" ng-click="addNewCategory()") #{ gettext("Add new category") }
-			li
+			li(ng-if='currentUser.canCreateFoods(currentLocale)')
 				a(href="" ng-click="addNewFood()") #{ gettext("Add new food") }
 	.search-input-addon(uib-dropdown)
 		button(type="button" uib-dropdown-toggle id="tools-dropdown")
@@ -24,4 +24,4 @@
 		ul(ng-model='search')
 			li(ng-repeat='value in searchResults | orderBy:["type", "displayName"]' ng-class='' ng-click='resultClicked($event, value)')
 				i.fa.fa-folder-o(ng-if='value.type == "category"' style='margin-right: 8px')
-				| {{ $parent.getNodeDisplayName(value) }}
+				span(ng-attr-dir="{{getFoodTextDirection(value)}}") {{ $parent.getNodeDisplayName(value) }}

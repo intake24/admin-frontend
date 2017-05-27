@@ -1,13 +1,14 @@
 .property
-    h3 #{ gettext("Nutrient codes") }
+
+    h3 #{ gettext("Food composition table codes") }
+
+    source-locale(src="localFoodDataSources.nutrientTablesSource")
 
     .form-group(ng-repeat='(id, code) in itemDefinition.local.nutrientTableCodes')
-        label.col-xs-3.control-label(for="input-{{ id }}-code") {{ id }}
-        .col-xs-6
+        label.col-xs-3.control-label(ng-attr-for="input-{{ id }}-code") {{ id }}
+        .col-xs-9
             .input-group
-                input.form-control(id='input-{{ id }}-code' type='text'
-                                    placeholder=gettext("e.g. 10968")
-                                    ng-model='itemDefinition.local.nutrientTableCodes[id]')
+                nutrient-table-record-code-select(nutrient-table-id="id", food-code="itemDefinition.local.nutrientTableCodes[id]")
                 .input-group-btn
                     button.btn.btn-default(type="button" ng-click="nutrientCodeSection.removeTable(id)")
                         i(class="fa fa-remove")

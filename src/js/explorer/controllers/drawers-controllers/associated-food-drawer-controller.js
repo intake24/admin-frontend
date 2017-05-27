@@ -54,4 +54,14 @@ function controllerFun($scope, $timeout, $routeParams, FoodService, DrawersServi
         $scope.isOpen = DrawersService.drawerAssociatedFood.getOpen();
     });
 
+    $scope.getFoodTextDirection = function (food) {
+        if (food.localDescription && food.localDescription.defined) {
+            return $scope.localeTextDirection;
+        }
+    };
+
+    LocalesService.getLocale($routeParams.locale).then(function (locale) {
+        $scope.localeTextDirection = locale.textDirection;
+    });
+
 }

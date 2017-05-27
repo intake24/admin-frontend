@@ -4,7 +4,8 @@
     .col-xs-9
         .form-control-static
             .inline-link(ng-click='showDrinkwareDrawer(portionSize.parameters)'
-                        ng-class="{'has-error': !portionSize.parameters.drinkware_id}")
+            ng-disabled="!currentUserCanUpdateLocalFields"
+            ng-class="{'has-error': !portionSize.parameters.drinkware_id}")
                 span(ng-if='!portionSize.parameters.drinkware_id')
                     p #{ gettext("Select drinkware set") }
                 span(ng-if='portionSize.parameters.drinkware_id')
@@ -16,6 +17,7 @@
     .col-xs-9
         .form-control-static
             input(type='range' min='0' max='1' step='0.05'
+            ng-disabled="!currentUserCanUpdateLocalFields"
             id="drink-scale-initial-fill-level-{{$index}}"
             ng-model='portionSize.parameters.initial_fill_level')
 
@@ -24,5 +26,6 @@
         | #{ gettext("Skip fill level prompt") }
     .col-xs-9
         input(type='checkbox'
+        ng-disabled="!currentUserCanUpdateLocalFields"
         id="drink-scale-skip-fill-level-{{$index}}"
         ng-model='portionSize.parameters.skip_fill_level')

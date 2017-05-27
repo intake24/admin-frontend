@@ -5,15 +5,19 @@ var _ = require('underscore');
 module.exports = function (app) {
     app.controller('ExplorerController',
         ['$scope', '$timeout', '$routeParams', 'SharedData', 'FoodService', 'CurrentItem',
-            '$q', '$rootScope', 'MessageService', 'LocalesService',
+            '$q', '$rootScope', 'MessageService', 'LocalesService', 'ExplorerToProperties',
+            'UserStateService',
             controllerFun]);
 };
 
 function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, currentItem,
-                       $q, $rootScope, MessageService, LocalesService) {
+                       $q, $rootScope, MessageService, LocalesService, ExplorerToProperties,
+                       UserStateService) {
 
     var findNodeInTree = require('./find-node-in-tree-factory')($scope, $q, FoodService,
         loadChildrenDeferred);
+
+    var textDirection;
 
     // Load shared data
     $scope.SharedData = sharedData;
@@ -22,12 +26,13 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     $scope.explorerIsVisible = true;
 
     $scope.searchTools = {
-        showLocalDescription: true,
+        showLocalDescription: ExplorerToProperties.getShowLocalDescription(),
         showFoodNotUsedInLocale: false
     };
 
     $scope.toggleShowLocalDescription = function () {
         $scope.searchTools.showLocalDescription = !$scope.searchTools.showLocalDescription;
+        ExplorerToProperties.setShowLocalDescription($scope.searchTools.showLocalDescription);
     };
 
     $scope.toggleShowFoodNotUsedInLocale = function () {
@@ -43,8 +48,12 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
         }
     };
 
+    $scope.getTextDirection = function () {
+        return $scope.searchTools.showLocalDescription ? textDirection : "";
+    };
+
     $scope.getNodeIsHidden = function (node) {
-        return node.doNotUseInThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
+        return node.excludedFromThisLocale && !$scope.searchTools.showFoodNotUsedInLocale;
     };
 
     $scope.getSortedList = function (foodList) {
@@ -58,6 +67,14 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             }
         });
     };
+
+    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+        $scope.currentLocale = newValue;
+    });
+
+    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+        $scope.currentUser = newValue;
+    });
 
     $scope.$on("intake24.admin.LoggedIn", function (event) {
         reloadRootCategoriesDeferred();
@@ -148,7 +165,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
                     reasonableAmount: {defined: false, value: null},
                 },
                 parentCategories: [],
-                localeRestrictions: []
+                localeRestrictions: $scope.currentUser.canCreateGlobalFoods() ? [] : [$scope.currentLocale]
             },
             local: {
                 version: {defined: false, value: null},
@@ -265,11 +282,11 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
 
     $scope.getText = function (s) {
         return gettext(s);
-    }
+    };
 
     $scope.removeFromCategory = function () {
 
-    }
+    };
 
     $scope.nodeMarkerClass = function (node) {
         var cls = ['fa', 'fa-fw'];
@@ -286,7 +303,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             cls.push('editing');
 
         return cls;
-    }
+    };
 
     $scope.hasProblems = function (node) {
         if (node.type == 'food')
@@ -295,7 +312,15 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             return (node.recursiveProblems != null &&
             (node.recursiveProblems.categoryProblems.length > 0 ||
             node.recursiveProblems.foodProblems.length > 0));
-    }
+    };
+
+    $scope.$watch(function () {
+        return $routeParams.locale;
+    }, function () {
+        LocalesService.getLocale($routeParams.locale).then(function (locale) {
+            textDirection = locale.textDirection;
+        });
+    });
 
     function updatePotentiallyAffectedNodes(changedNode) {
         function isDescendant(node, ofNode) {

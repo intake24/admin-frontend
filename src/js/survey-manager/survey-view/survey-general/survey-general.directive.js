@@ -60,14 +60,12 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
             });
         };
 
-        scope.$watch(function () {
-            return LocalesService.list();
-        }, function () {
-            scope.locales = LocalesService.list();
-        });
-
         scope.$watch("survey", function (newVal) {
             updateScope(scope, newVal);
+        });
+
+        LocalesService.list().then(function (locales) {
+            scope.locales = locales;
         });
 
     }

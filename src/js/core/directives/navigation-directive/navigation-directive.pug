@@ -1,16 +1,16 @@
 .sidebar(ng-class='{"active": $parent.sidebaropen}')
     ul
-        li(ng-class="{'active': !menuItems.foodExplorer.collapsed}" ng-if="currentUser.canAccessFoodDatabaseList()")
+        li(ng-class="{'active': !menuItems.foodExplorer.collapsed}" ng-if="currentUser.canAccessFoodDatabase()")
             a(ng-click='toggleItem("foodExplorer")' ng-class="{'active': menuItems.foodExplorer.active}")
-                | #{ gettext("sidebar_food_explorer") }
+                | #{ gettext("Food database") }
                 i.fa(ng-class="!menuItems.foodExplorer.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
             ul.nested-li
-                li(ng-repeat='(index, value) in locales | orderBy:["localName"] | filter: canAccessFoodLocale')
+                li(ng-repeat='(index, value) in locales | orderBy:["englishName"] | filter: canReadFoodDatabase')
                     a(ng-href="/\#{{getFoodExplorerHref(value.id)}}" ng-class='{"active": currentLocale == value.id}')
                         i.flag(ng-class='value.flagCode')
-                        | &nbsp;{{ value.localName }}
+                        | &nbsp;{{ value.englishName }}
 
-        li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessImageDatabase()")
+        li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')
                 | #{ gettext("sidebar_galleries") }
                 i.fa(ng-class="!menuItems.imageGalleries.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
@@ -22,7 +22,7 @@
                     a(ng-href="\#{{menuItems.imageGalleryAsServed.href}}" ng-class="{'active': menuItems.imageGalleryAsServed.active}")
                         | #{ gettext("image_gallery_as_served") }
 
-        li.group(ng-if="currentUser.canAccessSurveyList()")
+        li.group(ng-if="currentUser.canAccessSurveyManager()")
             a(ng-href="\#{{menuItems.surveyManager.href}}" ng-class="{'active': menuItems.surveyManager.active}")
                 | #{ gettext("sidebar_survey_manager") }
             a.addon-btn(ng-href="\#{{menuItems.surveyManagerNew.href}}" ng-if="currentUser.canCreateSurveys()")
@@ -32,7 +32,7 @@
             a(ng-href="\#{{menuItems.surveyFeedback.href}}" ng-class="{'active': menuItems.surveyFeedback.active}")
                 | #{ gettext("sidebar_survey_feedback") }
 
-        li(ng-class="{'active': !menuItems.userManager.collapsed}" ng-if="currentUser.canAccessUsers()")
+        li(ng-class="{'active': !menuItems.userManager.collapsed}" ng-if="false") # seems obsolete?
             a(ng-click='toggleItem("userManager")')
                 | #{ gettext("sidebar_users") }
                 i.fa(ng-class="!menuItems.userManager.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")

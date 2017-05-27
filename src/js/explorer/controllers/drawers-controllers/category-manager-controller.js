@@ -78,6 +78,16 @@ function controllerFun($scope, $routeParams, FoodService, DrawersService, Locale
         }
     });
 
+    $scope.getCategoryTextDirection = function (category) {
+        if (category.localDescription && category.localDescription.defined) {
+            return $scope.localeTextDirection;
+        }
+    };
+
+    LocalesService.getLocale($routeParams.locale).then(function (locale) {
+        $scope.localeTextDirection = locale.textDirection;
+    });
+
     function loadSearchResults() {
         if ($scope.searchQuery == '') {
             return;

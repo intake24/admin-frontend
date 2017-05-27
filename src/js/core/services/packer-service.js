@@ -96,7 +96,7 @@ function serviceFun() {
                 version: instance.unpackOption(packed.local.version),
                 localDescription: instance.unpackOption(packed.local.localDescription),
                 portionSize: instance.unpackPortionSizes(packed.local.portionSize),
-                doNotUseInThisLocale: packed.local.doNotUse
+                excludedFromThisLocale: packed.local.doNotUse
             }
         };
     };
@@ -150,7 +150,7 @@ function serviceFun() {
 
     instance.unpackFoodHeader = function (packed) {
         var unpacked = instance.unpackCommonHeaderFields(packed);
-        unpacked.doNotUseInThisLocale = packed.doNotUse;
+        unpacked.excludedFromThisLocale = packed.excluded;
         unpacked.type = 'food';
         return unpacked;
     };
@@ -353,6 +353,20 @@ function serviceFun() {
         };
     };
 
+
+    // Same as new food, but enforces locale restrictions on the server
+    instance.packNewLocalFoodRecord = function (unpacked) {
+        return {
+            code: unpacked.main.code,
+            groupCode: unpacked.main.groupCode,
+            englishDescription: unpacked.main.englishDescription,
+            attributes: instance.packInheritableAttributes(unpacked.main.attributes),
+            parentCategories: _.map(unpacked.main.parentCategories, function (header) {
+                return header.code;
+            })
+        };
+    };
+
     instance.packNewCategoryRecord = function (unpacked) {
         return {
             code: unpacked.main.code,
@@ -389,7 +403,7 @@ function serviceFun() {
             portionSize: instance.packPortionSizes(unpacked.portionSize),
             associatedFoods: _.map(unpacked.associatedFoods, instance.stripAssociatedFoodHeader),
             brandNames: [],
-            doNotUse: unpacked.doNotUseInThisLocale
+            doNotUse: unpacked.excludedFromThisLocale
         };
     };
 
@@ -398,7 +412,7 @@ function serviceFun() {
             baseVersion: instance.packOption(unpacked.version),
             localDescription: instance.packOption(unpacked.localDescription),
             portionSize: instance.packPortionSizes(unpacked.portionSize),
-            doNotUse: unpacked.doNotUseInThisLocale
+            doNotUse: unpacked.excludedFromThisLocale
         };
     };
 

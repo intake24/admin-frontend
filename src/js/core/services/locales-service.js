@@ -2,58 +2,80 @@
 
 var _ = require('underscore');
 
-module.exports = function(app) {
-    app.service('LocalesService', ['$window', '$rootScope', '$http', 'PackerService', '$q', serviceFun]);
+module.exports = function (app) {
+    app.service('LocalesService', ['$window', '$rootScope', '$http', '$q', 'PackerService', 'UserStateService',
+        serviceFun]);
 };
 
-function serviceFun($window, $rootScope, $http, PackerService, $q) {
+function serviceFun($window, $rootScope, $http, $q, PackerService, UserStateService) {
 
-	var locales = [];
+    var locales = null;
 
-	var localesDeferred = $q.defer();
+    var localesDeferred = $q.defer();
 
-	var currentLocale = $window.intake24_locale;
+    var currentLocale = $window.intake24_locale;
 
-	$rootScope.$on("intake24.admin.LoggedIn", function(event) {
-		reloadLocales();
-	});
+    $rootScope.$on("intake24.admin.LoggedIn", function (event) {
+        reloadLocales();
+    });
 
-	reloadLocales();
+    reloadLocales();
 
-	function unpackLocale(packed) {
-		return {
-			id : packed.id,
-			englishName : packed.englishName,
-			localName: packed.localName,
-			respondentLanguage: packed.respondentLanguage,
-			adminLanguage: packed.adminLanguage,
-			flagCode: packed.flagCode,
-			prototypeLocale: PackerService.unpackOption(packed.prototypeLocale)
-		}
-	}
+    function unpackLocale(packed) {
+        return {
+            id: packed.id,
+            englishName: packed.englishName,
+            localName: packed.localName,
+            respondentLanguage: packed.respondentLanguage,
+            adminLanguage: packed.adminLanguage,
+            flagCode: packed.flagCode,
+            prototypeLocale: PackerService.unpackOption(packed.prototypeLocale),
+            textDirection: packed.textDirection
+        }
+    }
 
-	function reloadLocales() {
-		$http.get(api_base_url + 'admin/locales').then(function(data) {
-			locales = _.map(data, unpackLocale);
-			localesDeferred.resolve(locales);
-		}, function(response) {
-			console.error("Failed to load locale information");
-		});
-	}
+    function reloadLocales() {
+        locales = null;
+        $http.get(api_base_url + 'admin/locales').then(function (data) {
+            locales = _.map(data, unpackLocale);
+            localesDeferred.resolve(locales.slice());
+        }, function (response) {
+            console.error("Failed to load locale information");
+        });
+    }
 
-	return {
+    return {
+        list: function () {
+            if (locales) {
+                return $q.resolve(locales.slice());
+            } else {
+                return localesDeferred.promise;
+            }
+        },
 
-		listFuture: function() {
-			return localesDeferred.promise;
-		},
+        getLocale: function (localeId) {
+            return this.list().then(function (locales) {
+                return locales.filter(function (locale) {
+                    return locale.id == localeId;
+                })[0];
+            });
+        },
 
-		list : function() {
-			return locales;
-		},
+        getLocaleUnsafe: function (localeId) {
+            return locales.filter(function (locale) {
+                return locale.id == localeId;
+            })[0];
+        },
 
-		current: function() {
-			return currentLocale;
-		}
-	};
+        current: function () {
+            return currentLocale;
+        },
+
+        currentInfo: function () {
+            return _.find(locales, function (l) {
+                return l.id == currentLocale;
+            })
+        }
+    };
 
 }

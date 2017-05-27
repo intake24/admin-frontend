@@ -22,7 +22,8 @@ form
         .form-group
             .col-xs-9.col-xs-offset-3
                 label.checkbox-inline
-                    input(type='checkbox' ng-model='useExclusivelyInThisLocale' ng-model-options='{getterSetter: true}')
+                    input(type='checkbox' ng-model='useExclusivelyInThisLocale' ng-model-options='{getterSetter: true}' ng-disabled='!currentUser.canCreateGlobalFoods()'
+                    ng-attr-title="{{ currentUser.canCreateGlobalFoods() ? '' : ('You can only create foods for the current locale (' + currentLocale + ')') }}" )
                     span #{ gettext("properties_use_exclusively_in_this_locale") }
 
     include parent-categories

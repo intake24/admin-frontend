@@ -9,7 +9,7 @@ var _ = require('underscore'),
 
 module.exports = function (app) {
     app.directive("navigationDirective", ["$location", "$routeParams", "LocalesService", "appRoutes",
-        "UserStateService", "$routeParams", directiveFun]);
+        "UserStateService", directiveFun]);
 };
 
 function directiveFun($location, $routeParams, LocalesService, appRoutes, UserStateService) {
@@ -76,25 +76,36 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
 
         scope.$watchGroup(
             [
-                function() { return LocalesService.list(); },
-                function() { return UserStateService.getUserInfo(); }
+                function () {
+                    return scope.locales;
+                },
+                function () {
+                    return UserStateService.getUserInfo();
+                }
             ],
             function (newValues, oldValues, scope) {
 
-                scope.currentUser = UserStateService.getUserInfo();
-                scope.locales = LocalesService.list();
+                if (!scope.locales) {
+                    return;
+                }
 
-                scope.accessibleFoodLocales = _.filter(_.pluck(scope.locales, "id"), function (locale) {
-                    return scope.currentUser && scope.currentUser.canAccessFoodDatabase(locale.id);
+                scope.currentUser = UserStateService.getUserInfo();
+
+                scope.accessibleFoodDatabases = _.filter(_.pluck(scope.locales, "id"), function (localeId) {
+                    return scope.currentUser && scope.currentUser.canReadFoodDatabase(localeId);
                 });
             }
         );
 
         scope.$on("$routeChangeSuccess", setActiveRoute);
 
-        scope.canAccessFoodLocale = function (locale) {
-            return _.contains(scope.accessibleFoodLocales, locale.id);
+        scope.canReadFoodDatabase = function (locale) {
+            return _.contains(scope.accessibleFoodDatabases, locale.id);
         };
+
+        LocalesService.list().then(function (locales) {
+            scope.locales = locales;
+        });
 
         function setActiveRoute() {
             scope.currentLocale = $routeParams.locale;

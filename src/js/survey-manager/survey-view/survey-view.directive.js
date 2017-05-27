@@ -25,7 +25,7 @@ function directiveFun(SurveyService, UserStateService, appRoutes, $route, $route
             general: new SurveyView("General", appRoutes.surveyManagerSurvey),
             description: new SurveyView("Welcome page", appRoutes.surveyManagerSurveyDescription),
             users: new SurveyView("Users", appRoutes.surveyManagerSurveyUsers),
-            results: new SurveyView("Results", appRoutes.surveyManagerSurveyResults)
+            results: new SurveyView("Data export", appRoutes.surveyManagerSurveyResults)
         };
 
         scope.delete = function () {

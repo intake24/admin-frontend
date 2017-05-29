@@ -21,6 +21,9 @@
                 li
                     a(ng-href="\#{{menuItems.imageGalleryAsServed.href}}" ng-class="{'active': menuItems.imageGalleryAsServed.active}")
                         | #{ gettext("image_gallery_as_served") }
+                li
+                    a(ng-href="\#{{menuItems.imageGalleryGuided.href}}" ng-class="{'active': menuItems.imageGalleryGuided.active}")
+                        | #{ gettext("image_gallery_guided") }
 
         li.group(ng-if="currentUser.canAccessSurveyManager()")
             a(ng-href="\#{{menuItems.surveyManager.href}}" ng-class="{'active': menuItems.surveyManager.active}")

@@ -4,8 +4,15 @@
 
 "use strict";
 
+var angular = require("angular");
+
 module.exports = function (app) {
     app.directive("nutrientTableRecordCodeSelect", ["$q", "NutrientTables", directiveFun]);
+
+    app.filter("nutrientTableRecordFilter", function () {
+        return nutrientTableRecordFilter;
+    });
+
 };
 
 function directiveFun($q, NutrientTables) {
@@ -23,12 +30,9 @@ function directiveFun($q, NutrientTables) {
                 return $q.resolve();
             }
             return NutrientTables.searchNutrientTableRecords(scope.nutrientTableId, query).then(function (data) {
-                var d = data.filter(function (item) {
-                    return item.id != "";
-                });
                 scope.nutrientTableRecords.length = 0;
-                scope.nutrientTableRecords.push.apply(scope.nutrientTableRecords, d);
-                return d;
+                scope.nutrientTableRecords.push.apply(scope.nutrientTableRecords, data);
+                return data;
             });
         };
 
@@ -63,5 +67,35 @@ function directiveFun($q, NutrientTables) {
         },
         template: require("./nutrient-table-record-code-select.directive.pug")
     };
+}
+
+function nutrientTableRecordFilter(items, props) {
+    var out = [];
+
+    if (angular.isArray(items)) {
+        var keys = Object.keys(props);
+
+        items.forEach(function (item) {
+            var itemMatches = false;
+
+            for (var i = 0; i < keys.length; i++) {
+                var prop = keys[i];
+                var text = props[prop].toLowerCase();
+                if (item[prop] != null && item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                    itemMatches = true;
+                    break;
+                }
+            }
+
+            if (itemMatches) {
+                out.push(item);
+            }
+        });
+    } else {
+        // Let the output be the input untouched
+        out = items;
+    }
+
+    return out;
 }
 

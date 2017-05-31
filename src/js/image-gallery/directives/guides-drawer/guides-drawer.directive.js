@@ -82,7 +82,7 @@ function outlineObjects(scope, imageData) {
     for (var i = 0; i < clusters.length; i++) {
         scope.pathDrawer.addPath(clusters[i]);
         // var pointCloud = clusters[i];
-
+        //
         // context.beginPath();
         // context.moveTo(pointCloud[0][0], pointCloud[0][1]);
         // for (var j = 0; j < pointCloud.length; j++) {
@@ -112,9 +112,9 @@ var MainSelector = "guides-drawer",
     MainContainerSelector = MainSelector + "-svg",
     PathGroupSelector = MainSelector + "-path-group",
     PathSelector = MainSelector + "-path",
-    PointGroupSelector = MainSelector + "-point-group",
-    PointSelector = MainSelector + "-point",
-    InvisiblePointSelector = MainSelector + "-invisible-point";
+    NodeGroupSelector = MainSelector + "-node-group",
+    NodeSelector = MainSelector + "-node",
+    InvisibleNodeSelector = MainSelector + "-invisible-node";
 
 function PathDrawer(element, width, height) {
 
@@ -134,53 +134,53 @@ function PathDrawer(element, width, height) {
             .enter()
             .append("g")
             .attr("class", "g." + PathGroupSelector)
-            .each(_redrawPoints);
+            .each(_redrawNodes);
     }
 
-    function _redrawPoints(path, pathI) {
-        var pointGroups = d3.select(this).selectAll("g." + PointGroupSelector)
+    function _redrawNodes(path, pathI) {
+        var nodeGroups = d3.select(this).selectAll("g." + NodeGroupSelector)
             .data(function (d) {
-                return d.getPoints();
+                return d.getNodes();
             })
             .enter()
             .append("g")
-            .attr("class", PointGroupSelector)
-            .each(function (pathPoint, pathPointI) {
-                _drawPoint.call(this, pathPoint, pathPointI, path.getColor());
+            .attr("class", NodeGroupSelector)
+            .each(function (pathNode, pathNodeI) {
+                _drawNode.call(this, pathNode, pathNodeI, path.getColor());
             });
     }
 
-    function _drawPoint(pathPoint, pathPointI, color) {
+    function _drawNode(pathNode, pathNodeI, color) {
         d3.select(this)
             .append("circle")
-            .attr("class", PointSelector)
+            .attr("class", NodeSelector)
             .style("fill", color)
             .attr("r", 2)
-            .attr("cx", pathPoint.x())
-            .attr("cy", pathPoint.y())
+            .attr("cx", pathNode.x())
+            .attr("cy", pathNode.y())
     }
 
     this.addPath = function (coordsArr) {
-        var points = coordsArr.map(function (arr) {
-            return new PathPoint(arr[0], arr[1]);
+        var nodes = coordsArr.map(function (arr) {
+            return new PathNode(arr[0], arr[1]);
         });
-        var path = new Path(FillColors[_paths.length % FillColors.length], points);
+        var path = new Path(FillColors[_paths.length % FillColors.length], nodes);
         _paths.push(path);
         _redraw();
     }
 
 }
 
-function Path(color, pathPoints, parentSvgContainer) {
-    var _points = pathPoints;
+function Path(color, pathNodes, parentSvgContainer) {
+    var _nodes = pathNodes;
     var _color = color;
 
-    this.addPoint = function (pathPoint) {
-        this.points.push(pathPoint);
+    this.addNode = function (pathNode) {
+        _nodes.push(pathNode);
     };
 
-    this.getPoints = function () {
-        return _points;
+    this.getNodes = function () {
+        return _nodes;
     };
 
     this.getColor = function () {
@@ -188,7 +188,7 @@ function Path(color, pathPoints, parentSvgContainer) {
     };
 }
 
-function PathPoint(x, y) {
+function PathNode(x, y) {
     var _x = x;
     var _y = y;
 
@@ -206,7 +206,7 @@ function PathPoint(x, y) {
     };
 
     this.clone = function () {
-        return new PathPoint(_x, _y);
+        return new PathNode(_x, _y);
     }
 }
 

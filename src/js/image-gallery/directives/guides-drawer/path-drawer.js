@@ -6,8 +6,20 @@
 
 var d3 = require("d3");
 
+var FillColors = [
+    "#f44336",
+    "#3f51b5",
+    "#00bcd4",
+    "#4caf50",
+    "#ff9800",
+    "#ffe500",
+    "#673ab7",
+    "#795548",
+    "#009688",
+    "#e91e63"
+];
+
 var MainSelector = "guides-drawer",
-    MainContainerSelector = MainSelector + "-svg",
     PathGroupSelector = MainSelector + "-path-group",
     LineGroupSelector = MainSelector + "-line-group",
     LineSelector = MainSelector + "-line",
@@ -15,17 +27,14 @@ var MainSelector = "guides-drawer",
     NodeSelector = MainSelector + "-node",
     InvisibleNodeSelector = MainSelector + "-invisible-node";
 
-function PathDrawer(element, width, height) {
+function PathDrawer(svgElement, onUpdate) {
 
-    var _svg = d3.select(element)
-        .append("svg")
-        .attr("class", MainContainerSelector)
-        .attr("width", width)
-        .attr("height", height);
+    var _svg = d3.select(svgElement);
 
     var _mainContainer = _svg.append("g");
     var _paths = [];
     var _selectedPath = null;
+    var _onUpdate = onUpdate;
 
     function _redraw() {
         _mainContainer.selectAll("g." + PathGroupSelector)
@@ -34,31 +43,21 @@ function PathDrawer(element, width, height) {
             .append("g")
             .attr("class", PathGroupSelector)
             .each(_redrawPaths);
+        _notifyPathUpdates();
     }
 
     function _redrawPaths(path, pathI) {
-        var lines = _drawLines.call(this, path, pathI);
         var onDrag = function () {
-            lines.attr("x1", function (v) {
-                return v[0].x();
-            }).attr("y1", function (v) {
-                return v[0].y();
-            }).attr("x2", function (v) {
-                return v[1].x();
-            }).attr("y2", function (v) {
-                return v[1].y();
-            });
-            nodes.attr("cx", function (d) {
-                return d.x();
-            }).attr("cy", function (d) {
-                return d.y();
-            });
-
+            _setLinesCoords(lines);
+            _setNodesCoords(nodes);
         };
-        var nodes = _drawNodes.call(this, path, pathI, onDrag);
+        var lines = _drawLines.call(this, path, pathI);
+        var nodes = _drawNodes.call(this, path, pathI, onDrag, _notifyPathUpdates);
+        _setLinesCoords(lines);
+        _setNodesCoords(nodes);
     }
 
-    function _drawNodes(path, pathI, onDrag) {
+    function _drawNodes(path, pathI, onDrag, onDragEnded) {
         var container = d3.select(this);
 
         container.selectAll("g." + NodeGroupSelector).remove();
@@ -73,30 +72,22 @@ function PathDrawer(element, width, height) {
         var nodes = group.append("circle")
             .attr("class", NodeSelector)
             .style("fill", path.getColor())
-            .attr("r", 2)
-            .attr("cx", function (d) {
-                return d.x();
-            })
-            .attr("cy", function (d) {
-                return d.y();
-            });
+            .attr("r", 2);
 
-        group.append("circle")
+        var invisibleNodes = group.append("circle")
             .attr("class", InvisibleNodeSelector)
             .style("fill", "transparent")
             .attr("r", 6)
-            .attr("cx", function (d) {
-                return d.x();
-            })
-            .attr("cy", function (d) {
-                return d.y();
-            })
             .call(d3.drag()
                 .on("start", _dragstarted)
                 .on("drag", function (d) {
                     _dragged.call(this, d, onDrag);
                 })
-                .on("end", _dragended));
+                .on("end", function (d) {
+                    _dragended.call(this, d, onDragEnded);
+                }));
+
+        _setNodesCoords(invisibleNodes);
 
         return nodes;
     }
@@ -126,19 +117,27 @@ function PathDrawer(element, width, height) {
             .append("line")
             .attr("class", LineSelector)
             .style("stroke", path.getColor())
-            .attr("stroke-width", 1)
-            .attr("x1", function (v) {
-                return v[0].x();
-            })
-            .attr("y1", function (v) {
-                return v[0].y();
-            })
-            .attr("x2", function (v) {
-                return v[1].x();
-            })
-            .attr("y2", function (v) {
-                return v[1].y();
-            });
+            .attr("stroke-width", 1);
+    }
+
+    function _setLinesCoords(lines) {
+        lines.attr("x1", function (v) {
+            return v[0].x();
+        }).attr("y1", function (v) {
+            return v[0].y();
+        }).attr("x2", function (v) {
+            return v[1].x();
+        }).attr("y2", function (v) {
+            return v[1].y();
+        });
+    }
+
+    function _setNodesCoords(nodes) {
+        nodes.attr("cx", function (d) {
+            return d.x();
+        }).attr("cy", function (d) {
+            return d.y();
+        });
     }
 
     function _dragstarted(d) {
@@ -152,21 +151,35 @@ function PathDrawer(element, width, height) {
             .attr("cy", y);
         d.set(x, y);
         onDrag();
-        // _redraw();
     }
 
-    function _dragended(d) {
-        console.log("_dragended", d);
+    function _dragended(d, onDragEnded) {
+        onDragEnded();
     }
 
-    this.addPath = function (coordsArr, color) {
-        var nodes = coordsArr.map(function (arr) {
-            return new PathNode(arr[0], arr[1]);
+    function _notifyPathUpdates() {
+        _onUpdate(_paths.map(function (path) {
+            return path.getNodes().map(function (node) {
+                return [node.x(), node.y()];
+            })
+        }));
+    }
+
+    this.setPaths = function (coordsArr) {
+        var pathArr = [].concat(coordsArr);
+        _paths.length = 0;
+        _paths = pathArr.map(function (p, i) {
+            var nodes = p.map(function (arr) {
+                return new PathNode(arr[0], arr[1]);
+            });
+            return new Path(FillColors[i % FillColors.length], nodes);
         });
-        var path = new Path(color, nodes);
-        _paths.push(path);
         _redraw();
     };
+
+    this.refresh = function () {
+        _redraw();
+    }
 
 }
 

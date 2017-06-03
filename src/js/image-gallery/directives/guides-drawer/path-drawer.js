@@ -37,6 +37,8 @@ function PathDrawer(svgElement, onUpdate) {
     var _onUpdate = onUpdate;
 
     function _redraw() {
+        _mainContainer.selectAll("g." + PathGroupSelector).remove();
+
         _mainContainer.selectAll("g." + PathGroupSelector)
             .data(_paths)
             .enter()

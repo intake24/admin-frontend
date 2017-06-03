@@ -1,4 +1,22 @@
-<div class="guides-drawer-picture">
-    <canvas></canvas>
-    <svg></svg>
+<div class="guides-drawer row">
+    <div class="col-xs-9">
+        <div class="guides-drawer-picture">
+            <canvas></canvas>
+            <svg></svg>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="guides-drawer-panel">
+            <div class="guides-drawer-path-info" ng-repeat="item in paths">
+                <label class="radio-inline">
+                    <input type="radio"
+                           name="guides-drawer-path-selected"
+                           ng-checked="$index == selectedPathIndex"
+                           ng-click="selectPath($index)">
+                    Path #{{$index}}
+                </label>
+                <a href="" class="close" ng-click="removePath($index)">&times;</a>
+            </div>
+        </div>
+    </div>
 </div>

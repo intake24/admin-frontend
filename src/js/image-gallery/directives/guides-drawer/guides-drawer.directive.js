@@ -4,15 +4,21 @@
 
 "use strict";
 
+var angular = require("angular");
+
 var ObjectRecognition = require("./object-recognition");
 var PathDrawer = require("./path-drawer");
 
 module.exports = function (app) {
-    app.directive("guidesDrawer", [directiveFun]);
+    app.directive("guidesDrawer", ["$window", "$timeout", directiveFun]);
 
-    function directiveFun() {
+    function directiveFun($window, $timeout) {
 
         function controller(scope, element, attributes) {
+
+            var timeout;
+
+            scope.selectedPathIndex = null;
 
             scope.imageScale = 0;
 
@@ -25,7 +31,24 @@ module.exports = function (app) {
                 outlineObjects.call(scope);
             };
 
+            scope.selectPath = function (index) {
+                scope.selectedPathIndex = index;
+            };
+
+            scope.removePath = function (index) {
+                scope.paths.splice(index, 1);
+                refreshPaths.call(this);
+            };
+
             setImage.call(scope);
+
+            angular.element($window).bind("resize", function () {
+                $timeout.cancel(timeout);
+                timeout = $timeout(function () {
+                    setCanvasSize.call(scope);
+                    refreshPaths.call(scope);
+                }, 500);
+            });
 
         }
 
@@ -59,22 +82,26 @@ function setCanvas() {
     this.canvas.width = this.img.width;
     this.canvas.height = this.img.height;
 
+    setCanvasSize.call(this);
+
+    context.drawImage(this.img, 0, 0, this.img.width, this.img.height);
+
+    this.pathDrawer = new PathDrawer(this.svg, function (coords) {
+        console.log(coords);
+    });
+
+    this.getCanvasContext = function () {
+        return scope.canvas.getContext('2d');
+    }
+}
+
+function setCanvasSize() {
     var canvasRect = this.canvas.getBoundingClientRect();
 
     this.imageScale = canvasRect.width / this.img.width;
 
     this.svg.setAttribute("width", canvasRect.width);
     this.svg.setAttribute("height", canvasRect.height);
-
-    context.drawImage(this.img, 0, 0, this.img.width, this.img.height);
-
-    this.pathDrawer = new PathDrawer(this.svg, function (coords) {
-            console.log(coords);
-        });
-
-    this.getCanvasContext = function () {
-        return scope.canvas.getContext('2d');
-    }
 }
 
 function outlineObjects() {

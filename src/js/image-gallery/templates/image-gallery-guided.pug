@@ -6,10 +6,10 @@
 
 .intk-gallery
 
-    div.row.container-fluid
-        div.col-xs-8
-            div(ng-repeat="src in sampleImageSrcs")
-                guides-drawer(src="src")
+    div.container-fluid
+        div(ng-repeat="src in sampleImageSrcs")
+            guides-drawer(src="src")
+
 
     p(class="as-served-set-blank-text") No items found
     p(class="as-served-set-blank-text") Loading...

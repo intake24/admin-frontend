@@ -22,7 +22,9 @@ var MainSelector = "guides-drawer",
     NodeSelector = MainSelector + "-node",
     InvisibleNodeSelector = MainSelector + "-invisible-node";
 
-function PathDrawer(svgElement, onUpdate) {
+function PathDrawer(svgElement, onUpdate, onSelected) {
+
+    var self = this;
 
     var _svg = d3.select(svgElement);
 
@@ -61,7 +63,17 @@ function PathDrawer(svgElement, onUpdate) {
 
     function _redrawPath(path, pathI) {
         var container = d3.select(this);
-        var svgPath = new PathSvg(container, path, {color: Color, opacity: UnselectedOpacity}, _notifyPathUpdates);
+        var svgPath =
+            new PathSvg(container, path,
+                {color: Color, opacity: UnselectedOpacity},
+                _notifyPathUpdates, function () {
+                    self.highlightPath(pathI);
+                }, function () {
+                    self.highlightPath();
+                }, function () {
+                    self.selectPath(pathI);
+                    onSelected(pathI);
+                });
         _svgPaths.push(svgPath);
     }
 
@@ -184,7 +196,9 @@ function PathNode(x, y) {
     };
 }
 
-function PathSvg(svgSelection, path, style, onUpdateFn) {
+function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveFn, clickFn) {
+
+    var self = this;
 
     var _container = svgSelection;
     var _onUpdate = onUpdateFn;
@@ -197,6 +211,9 @@ function PathSvg(svgSelection, path, style, onUpdateFn) {
     var _lines;
     var _nodes;
     var _invisibleNodes;
+    var _onMouseOver = mouseOverFn;
+    var _onMouseLeave = mouseLeaveFn;
+    var _onClick = clickFn;
 
     _constructor();
 
@@ -220,6 +237,7 @@ function PathSvg(svgSelection, path, style, onUpdateFn) {
         _refreshPositions();
         _setNodesCoords(_invisibleNodes);
         _applyStyle();
+        _setPathAreaMouseEventListeners();
     }
 
     function _drawNodes() {
@@ -355,6 +373,13 @@ function PathSvg(svgSelection, path, style, onUpdateFn) {
 
     function _dragended(d) {
 
+    }
+
+    function _setPathAreaMouseEventListeners() {
+        _container
+            .on("mouseover", _onMouseOver)
+            .on("mouseout", _onMouseLeave)
+            .on("click", _onClick);
     }
 
 }

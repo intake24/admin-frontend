@@ -32,6 +32,7 @@ module.exports = function (app) {
             };
 
             scope.selectPath = function (index) {
+                this.selectedPathIndex = index;
                 this.pathDrawer.selectPath(index);
             };
 
@@ -92,6 +93,9 @@ function setCanvas() {
 
     this.pathDrawer = new PathDrawer(this.svg, function (coords) {
         console.log(coords);
+    }, function (index) {
+        scope.selectedPathIndex = index;
+        scope.$apply();
     });
 
     this.getCanvasContext = function () {

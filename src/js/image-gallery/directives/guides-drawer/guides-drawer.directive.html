@@ -8,7 +8,9 @@
     <div class="col-xs-3">
         <div class="guides-drawer-panel">
             <div class="guides-drawer-path-info" ng-repeat="item in paths">
-                <label class="radio-inline">
+                <label class="radio-inline"
+                       ng-mouseover="highlightsPath($index)"
+                       ng-mouseleave="highlightsPath()">
                     <input type="radio"
                            name="guides-drawer-path-selected"
                            ng-checked="$index == selectedPathIndex"

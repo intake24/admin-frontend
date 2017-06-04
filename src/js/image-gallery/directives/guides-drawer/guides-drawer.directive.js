@@ -32,7 +32,11 @@ module.exports = function (app) {
             };
 
             scope.selectPath = function (index) {
-                scope.selectedPathIndex = index;
+                this.pathDrawer.selectPath(index);
+            };
+
+            scope.highlightsPath = function (index) {
+                this.pathDrawer.highlightPath(index);
             };
 
             scope.removePath = function (index) {

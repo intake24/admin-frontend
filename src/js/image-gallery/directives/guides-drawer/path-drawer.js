@@ -33,6 +33,18 @@ function PathDrawer(svgElement, onUpdate) {
     var _highlightedPathIndex = null;
     var _onUpdate = onUpdate;
 
+    _svg.on("dblclick", function (d) {
+        console.log("add node");
+        var selectedPath = _paths[_selectedPathIndex];
+        var selectedSvg = _svgPaths[_selectedPathIndex];
+        if (selectedPath != null) {
+            var cor = d3.mouse(this);
+            selectedPath.addNode(new PathNode(cor[0], cor[1]));
+            selectedSvg.redraw();
+            _notifyPathUpdates();
+        }
+    });
+
     function _redraw() {
         _svgPaths.length = 0;
         _mainContainer.selectAll("g." + PathGroupSelector).remove();
@@ -43,12 +55,13 @@ function PathDrawer(svgElement, onUpdate) {
             .append("g")
             .attr("class", PathGroupSelector)
             .each(_redrawPath);
+        _refreshStyles();
         _notifyPathUpdates();
     }
 
     function _redrawPath(path, pathI) {
         var container = d3.select(this);
-        var svgPath = new PathSvg(container, {color: Color, opacity: UnselectedOpacity}, _notifyPathUpdates);
+        var svgPath = new PathSvg(container, path, {color: Color, opacity: UnselectedOpacity}, _notifyPathUpdates);
         _svgPaths.push(svgPath);
     }
 
@@ -66,10 +79,10 @@ function PathDrawer(svgElement, onUpdate) {
         _svgPaths.forEach(function (s) {
             s.setStyle({opacity: UnselectedOpacity});
         });
-        if (highlightedSvg!=null) {
+        if (highlightedSvg != null) {
             highlightedSvg.setStyle({opacity: HoveredOpacity});
         }
-        if (selectedPathSvg!=null) {
+        if (selectedPathSvg != null) {
             selectedPathSvg.setStyle({opacity: SelectedOpacity});
         }
     }
@@ -105,8 +118,47 @@ function PathDrawer(svgElement, onUpdate) {
 function Path(pathNodes) {
     var _nodes = pathNodes;
 
+    function _distance(n1, n2) {
+        return Math.sqrt(Math.pow((n1.x() - n2.x()), 2) + Math.pow((n1.y() - n2.y()), 2));
+    }
+
+    function _triangleHeight(n1, n2, n3) {
+        var side1 = _distance(n1, n2),
+            side2 = _distance(n2, n3),
+            side3 = _distance(n3, n1),
+            s = (side1 + side2 + side3) / 2, // Semiperimeter
+            area = Math.sqrt(s * (s - side1) * (s - side2) * (s - side3)); // Triangle area
+        return 2 * area / side1;
+    }
+
+    function _distanceToLine(n1, n2, n3) {
+        var d;
+        if (n2 == null) {
+            d = _distance(n1, n3);
+        } else {
+            d = _triangleHeight(n1, n2, n3);
+        }
+        return d;
+    }
+
     this.addNode = function (pathNode) {
-        _nodes.push(pathNode);
+        var shortestDistance = null;
+        var index = 0;
+
+        for (var i = 0; i < _nodes.length; i++) {
+            var d = _distanceToLine(_nodes[i], _nodes[i + 1], pathNode);
+            if (shortestDistance == null || d < shortestDistance) {
+                shortestDistance = d;
+                index = i + 1;
+            }
+        }
+
+        _nodes.splice(index, 0, pathNode);
+    };
+
+    this.removeNode = function (node) {
+        var i = _nodes.indexOf(node);
+        _nodes.splice(i, 1);
     };
 
     this.getNodes = function () {
@@ -132,10 +184,11 @@ function PathNode(x, y) {
     };
 }
 
-function PathSvg(svgSelection, style, onUpdateFn) {
+function PathSvg(svgSelection, path, style, onUpdateFn) {
 
     var _container = svgSelection;
     var _onUpdate = onUpdateFn;
+    var _path = path;
     var _style = {
         color: null,
         opacity: null
@@ -145,16 +198,28 @@ function PathSvg(svgSelection, style, onUpdateFn) {
     var _nodes;
     var _invisibleNodes;
 
-    constructor();
+    _constructor();
 
-    this.setStyle = _setStyle;
+    this.setStyle = function (style) {
+        _setStyle(style);
+        _applyStyle();
+    };
 
-    function constructor() {
+    this.redraw = function () {
+        _refresh();
+    };
+
+    function _constructor() {
+        _setStyle(style);
+        _refresh();
+    }
+
+    function _refresh() {
         _drawLines();
         _drawNodes();
         _refreshPositions();
         _setNodesCoords(_invisibleNodes);
-        _setStyle(style);
+        _applyStyle();
     }
 
     function _drawNodes() {
@@ -176,16 +241,27 @@ function PathSvg(svgSelection, style, onUpdateFn) {
             .attr("class", InvisibleNodeSelector)
             .style("fill", "transparent")
             .attr("r", ActiveNodeRadius)
-            .call(d3.drag()
-                .on("start", _dragstarted)
-                .on("drag", function (d) {
-                    _dragged.call(this, d);
-                    _refreshPositions();
-                })
-                .on("end", function (d) {
-                    _dragended.call(this, d);
-                    _onUpdate();
-                }));
+            .on("dblclick", _removeNode)
+            .call(_dragHandlerFactory());
+    }
+
+    function _dragHandlerFactory() {
+        return d3.drag()
+            .on("start", _dragstarted)
+            .on("drag", function (d) {
+                _dragged.call(this, d);
+                _refreshPositions();
+            })
+            .on("end", function (d) {
+                _dragended.call(this, d);
+                _onUpdate();
+            });
+    }
+
+    function _removeNode(node) {
+        d3.event.stopPropagation();
+        _path.removeNode(node);
+        _refresh();
     }
 
     function _drawLines() {
@@ -236,10 +312,9 @@ function PathSvg(svgSelection, style, onUpdateFn) {
                 _style[i] = style[i];
             }
         }
-        _refreshStyle();
     }
 
-    function _refreshStyle() {
+    function _applyStyle() {
         _styleNodes(_nodes);
         _styleLines(_lines);
     }

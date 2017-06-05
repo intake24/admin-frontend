@@ -143,12 +143,27 @@ function Path(pathNodes) {
         return 2 * area / side1;
     }
 
+    function _getCosFromSides(a, b, c) {
+        return (Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / 2 * a * b;
+    }
+
     function _distanceToLine(n1, n2, n3) {
         var d;
         if (n2 == null) {
             d = _distance(n1, n3);
         } else {
-            d = _triangleHeight(n1, n2, n3);
+            var a = _distance(n1, n2),
+                b = _distance(n2, n3),
+                c = _distance(n3, n1),
+                cosB = _getCosFromSides(a, c, b),
+                cosC = _getCosFromSides(a, b, c);
+            if (cosB<=0) {
+                d = c;
+            } else if (cosC<=0) {
+                d = b;
+            } else {
+                d = _triangleHeight(n1, n2, n3);
+            }
         }
         return d;
     }

@@ -75,7 +75,8 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
         var svgPath =
             new PathSvg(container, path,
                 {color: Color, opacity: UnselectedOpacity},
-                _notifyPathUpdates, function () {
+                _validateBorders, _notifyPathUpdates,
+                function () {
                     self.highlightPath(pathI);
                 }, function () {
                     self.highlightPath();
@@ -84,6 +85,11 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
                     onSelected(pathI);
                 });
         _svgPaths.push(svgPath);
+    }
+
+    function _validateBorders(x, y) {
+        return x > 0 && x < parseFloat(_svg.attr("width")) &&
+            y > 0 && y < parseFloat(_svg.attr("height"));
     }
 
     function _notifyPathUpdates() {
@@ -222,7 +228,8 @@ function PathNode(x, y) {
     };
 }
 
-function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveFn, clickFn) {
+function PathSvg(svgSelection, path, style, bordersValidatorFn,
+                 onUpdateFn, mouseOverFn, mouseLeaveFn, clickFn) {
 
     var _container = svgSelection;
     var _onUpdate = onUpdateFn;
@@ -236,6 +243,7 @@ function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveF
     var _lines;
     var _nodes;
     var _invisibleNodes;
+    var _validateBordersFn = bordersValidatorFn;
     var _onMouseOver = mouseOverFn;
     var _onMouseLeave = mouseLeaveFn;
     var _onClick = clickFn;
@@ -387,8 +395,8 @@ function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveF
     }
 
     function _dragged(d) {
-        if (!_disabled) {
-            var x = d3.event.x, y = d3.event.y;
+        var x = d3.event.x, y = d3.event.y;
+        if (!_disabled && _validateBordersFn(x, y)) {
             d3.select(this)
                 .attr("cx", x)
                 .attr("cy", y);

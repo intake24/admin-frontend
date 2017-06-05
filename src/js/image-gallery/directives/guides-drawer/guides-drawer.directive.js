@@ -40,6 +40,11 @@ module.exports = function (app) {
                 this.pathDrawer.highlightPath(index);
             };
 
+            scope.addPath = function () {
+                scope.paths.push([]);
+                refreshPaths.call(this);
+            };
+
             scope.removePath = function (index) {
                 scope.paths.splice(index, 1);
                 refreshPaths.call(this);

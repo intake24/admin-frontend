@@ -35,8 +35,17 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
     var _highlightedPathIndex = null;
     var _onUpdate = onUpdate;
 
-    _svg.on("dblclick", function (d) {
-        console.log("add node");
+    _constructor();
+
+    function _constructor() {
+        _setAddNewNodeListener();
+    }
+
+    function _setAddNewNodeListener() {
+        _svg.on("dblclick", _addNewNode);
+    }
+
+    function _addNewNode() {
         var selectedPath = _paths[_selectedPathIndex];
         var selectedSvg = _svgPaths[_selectedPathIndex];
         if (selectedPath != null) {
@@ -45,7 +54,7 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
             selectedSvg.redraw();
             _notifyPathUpdates();
         }
-    });
+    }
 
     function _redraw() {
         _svgPaths.length = 0;
@@ -57,7 +66,7 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
             .append("g")
             .attr("class", PathGroupSelector)
             .each(_redrawPath);
-        _refreshStyles();
+        _refreshPaths();
         _notifyPathUpdates();
     }
 
@@ -85,17 +94,19 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
         }));
     }
 
-    function _refreshStyles() {
+    function _refreshPaths() {
         var selectedPathSvg = _svgPaths[_selectedPathIndex];
         var highlightedSvg = _svgPaths[_highlightedPathIndex];
         _svgPaths.forEach(function (s) {
             s.setStyle({opacity: UnselectedOpacity});
+            s.disable();
         });
         if (highlightedSvg != null) {
             highlightedSvg.setStyle({opacity: HoveredOpacity});
         }
         if (selectedPathSvg != null) {
             selectedPathSvg.setStyle({opacity: SelectedOpacity});
+            selectedPathSvg.disable(false);
         }
     }
 
@@ -113,12 +124,12 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
 
     this.selectPath = function (pathIndex) {
         _selectedPathIndex = pathIndex;
-        _refreshStyles();
+        _refreshPaths();
     };
 
     this.highlightPath = function (pathIndex) {
         _highlightedPathIndex = pathIndex;
-        _refreshStyles();
+        _refreshPaths();
     };
 
     this.refresh = function () {
@@ -157,9 +168,9 @@ function Path(pathNodes) {
                 c = _distance(n3, n1),
                 cosB = _getCosFromSides(a, c, b),
                 cosC = _getCosFromSides(a, b, c);
-            if (cosB<=0) {
+            if (cosB <= 0) {
                 d = c;
-            } else if (cosC<=0) {
+            } else if (cosC <= 0) {
                 d = b;
             } else {
                 d = _triangleHeight(n1, n2, n3);
@@ -213,11 +224,10 @@ function PathNode(x, y) {
 
 function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveFn, clickFn) {
 
-    var self = this;
-
     var _container = svgSelection;
     var _onUpdate = onUpdateFn;
     var _path = path;
+    var _disabled = false;
     var _style = {
         color: null,
         opacity: null
@@ -239,6 +249,10 @@ function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveF
 
     this.redraw = function () {
         _refresh();
+    };
+
+    this.disable = function (bool) {
+        _disabled = bool != null ? bool : true;
     };
 
     function _constructor() {
@@ -281,14 +295,8 @@ function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveF
     function _dragHandlerFactory() {
         return d3.drag()
             .on("start", _dragstarted)
-            .on("drag", function (d) {
-                _dragged.call(this, d);
-                _refreshPositions();
-            })
-            .on("end", function (d) {
-                _dragended.call(this, d);
-                _onUpdate();
-            });
+            .on("drag", _dragged)
+            .on("end", _dragended);
     }
 
     function _removeNode(node) {
@@ -379,15 +387,20 @@ function PathSvg(svgSelection, path, style, onUpdateFn, mouseOverFn, mouseLeaveF
     }
 
     function _dragged(d) {
-        var x = d3.event.x, y = d3.event.y;
-        d3.select(this)
-            .attr("cx", x)
-            .attr("cy", y);
-        d.set(x, y);
+        if (!_disabled) {
+            var x = d3.event.x, y = d3.event.y;
+            d3.select(this)
+                .attr("cx", x)
+                .attr("cy", y);
+            d.set(x, y);
+            _refreshPositions();
+        }
     }
 
     function _dragended(d) {
-
+        if (!_disabled) {
+            _onUpdate();
+        }
     }
 
     function _setPathAreaMouseEventListeners() {

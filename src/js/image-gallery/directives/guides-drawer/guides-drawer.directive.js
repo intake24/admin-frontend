@@ -50,6 +50,11 @@ module.exports = function (app) {
                 refreshPaths.call(this);
             };
 
+            scope.removeAll = function () {
+                scope.paths.length = 0;
+                refreshPaths.call(this);
+            };
+
             setImage.call(scope);
 
             angular.element($window).bind("resize", function () {
@@ -80,7 +85,6 @@ function setImage() {
     this.img.crossOrigin = "Anonymous";
     this.img.onload = function () {
         setCanvas.call(scope);
-        scope.recognisePaths();
     };
     this.img.src = this.src;
 }

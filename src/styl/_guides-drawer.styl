@@ -14,16 +14,20 @@
     }
   }
 
+  $bordered-item() {
+    border-bottom: 1px solid #ccc
+  }
+
   &-path {
       &-info {
         padding: 10px 0;
-        border-bottom: 1px solid #ccc;
+        $bordered-item()
       }
   }
 
   &-panel {
-    &-footer {
-      padding-top: 10px;
+    &-header {
+      $bordered-item()
     }
   }
 

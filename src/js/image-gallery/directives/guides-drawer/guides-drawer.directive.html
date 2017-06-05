@@ -7,6 +7,25 @@
     </div>
     <div class="col-xs-3">
         <div class="guides-drawer-panel">
+            <div class="guides-drawer-panel-header">
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <a href="" class="btn btn-link" ng-click="addPath()">Add path</a>
+                    <div class="btn-group" uib-dropdown>
+                        <a href="" class="btn btn-link"
+                           uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                            <li>
+                                <a href="" ng-click="recognisePaths()">Recognise foods</a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="removeAll()">Remove all</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="guides-drawer-path-info" ng-repeat="item in paths">
                 <label class="radio-inline"
                        ng-mouseover="highlightsPath($index)"
@@ -18,9 +37,6 @@
                     Path #{{$index}}
                 </label>
                 <a href="" class="close" ng-click="removePath($index)">&times;</a>
-            </div>
-            <div class="guides-drawer-panel-footer">
-                <a href="" ng-click="addPath()">Add path</a>
             </div>
         </div>
     </div>

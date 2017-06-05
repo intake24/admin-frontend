@@ -11,7 +11,8 @@ var UnselectedOpacity = 0.4;
 var HoveredOpacity = 0.7;
 var SelectedOpacity = 1;
 var NodeRadius = 2;
-var ActiveNodeRadius = 6;
+var ActiveNodeRadius = 3;
+var InvisibleNodeRadius = 6;
 var transitionDuration = 100;
 
 var MainSelector = "guides-drawer",
@@ -295,8 +296,10 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
         _invisibleNodes = group.append("circle")
             .attr("class", InvisibleNodeSelector)
             .style("fill", "transparent")
-            .attr("r", ActiveNodeRadius)
+            .attr("r", InvisibleNodeRadius)
             .on("dblclick", _removeNode)
+            .on("mouseover", _hoverNode)
+            .on("mouseout", _hoverNode)
             .call(_dragHandlerFactory());
     }
 
@@ -373,6 +376,23 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
             .transition().duration(transitionDuration)
             .style("fill", _style.color)
             .style("opacity", _style.opacity);
+    }
+
+    function _hoverNode(d, index) {
+        d3.event.stopPropagation();
+        var r;
+        if (d3.event.type == "mouseover") {
+            r = ActiveNodeRadius;
+            _onMouseOver();
+        } else {
+            r = NodeRadius;
+            _onMouseLeave();
+        }
+        _nodes
+            .transition().duration(transitionDuration)
+            .attr("r", function (d, i) {
+                return index == i ? r : NodeRadius;
+            });
     }
 
     function _styleLines(lines) {

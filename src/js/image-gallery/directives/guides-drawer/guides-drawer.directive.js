@@ -28,7 +28,11 @@ module.exports = function (app) {
             scope.svg = element[0].querySelector("svg");
 
             scope.recognisePaths = function () {
-                outlineObjects.call(scope);
+                var conf = scope.paths.length == 0 ||
+                    confirm("There are paths already created. Do you want to add more?");
+                if (conf) {
+                    outlineObjects.call(scope);
+                }
             };
 
             scope.selectPath = function (index) {

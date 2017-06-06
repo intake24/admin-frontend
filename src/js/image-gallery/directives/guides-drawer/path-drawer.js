@@ -152,38 +152,25 @@ function Path(pathNodes) {
         return Math.sqrt(Math.pow((n1.x() - n2.x()), 2) + Math.pow((n1.y() - n2.y()), 2));
     }
 
-    function _triangleHeight(n1, n2, n3) {
-        var side1 = _distance(n1, n2),
-            side2 = _distance(n2, n3),
-            side3 = _distance(n3, n1),
-            s = (side1 + side2 + side3) / 2, // Semiperimeter
-            area = Math.sqrt(s * (s - side1) * (s - side2) * (s - side3)); // Triangle area
-        return 2 * area / side1;
+    function dot(v1, v2) {
+        return v1.x() * v2.x() + v1.y() * v2.y();
     }
 
-    function _getCosFromSides(a, b, c) {
-        return (Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / 2 * a * b;
-    }
+    function closestPoint(start, end, pt) {
+        var lv = new PathNode(start.x() - end.x(), start.y() - end.y());
+        var ptv = new PathNode(pt.x() - end.x(), pt.y() - end.y());
 
-    function _distanceToLine(n1, n2, n3) {
-        var d;
-        if (n2 == null) {
-            d = _distance(n1, n3);
-        } else {
-            var a = _distance(n1, n2),
-                b = _distance(n2, n3),
-                c = _distance(n3, n1),
-                cosB = _getCosFromSides(a, c, b),
-                cosC = _getCosFromSides(a, b, c);
-            if (cosB <= 0) {
-                d = c;
-            } else if (cosC <= 0) {
-                d = b;
-            } else {
-                d = _triangleHeight(n1, n2, n3);
-            }
-        }
-        return d;
+        var len = Math.sqrt(dot(lv, lv));
+        var uv = new PathNode(lv.x() / len, lv.y() / len);
+
+        var projlen = dot(ptv, uv);
+
+        if (projlen < 0)
+            return end;
+        else if (projlen > len)
+            return start;
+        else
+            return new PathNode(uv.x() * projlen + end.x(), uv.y() * projlen + end.y());
     }
 
     this.addNode = function (pathNode) {
@@ -191,7 +178,13 @@ function Path(pathNodes) {
         var index = 0;
 
         for (var i = 0; i < _nodes.length; i++) {
-            var d = _distanceToLine(_nodes[i], _nodes[i + 1], pathNode);
+            var cp;
+            if (_nodes[i + 1] == null) {
+                cp = _nodes[i];
+            } else {
+                cp = closestPoint(_nodes[i], _nodes[i + 1], pathNode);
+            }
+            var d = _distance(cp, pathNode);
             if (shortestDistance == null || d < shortestDistance) {
                 shortestDistance = d;
                 index = i + 1;

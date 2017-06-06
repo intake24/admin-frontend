@@ -36,8 +36,8 @@ module.exports = function (app) {
             };
 
             scope.selectPath = function (index) {
-                this.selectedPathIndex = index;
-                this.pathDrawer.selectPath(index);
+                scope.selectedPathIndex = index;
+                scope.pathDrawer.selectPath(index);
             };
 
             scope.highlightsPath = function (index) {
@@ -59,6 +59,10 @@ module.exports = function (app) {
                 scope.paths.length = 0;
                 refreshPaths.call(this);
             };
+
+            scope.$watch('selectedPathIndex', function (newVal) {
+                console.log(newVal);
+            });
 
             setImage.call(scope);
 
@@ -106,7 +110,8 @@ function setCanvas() {
     context.drawImage(this.img, 0, 0, this.img.width, this.img.height);
 
     this.pathDrawer = new PathDrawer(this.svg, function (paths) {
-        scope.paths = getScaledPats(scope, paths);
+        scope.paths.length = 0;
+        scope.paths.push.apply(scope.paths, getScaledPaths(scope, paths));
     }, function (index) {
         scope.selectedPathIndex = index;
         scope.$apply();
@@ -117,7 +122,7 @@ function setCanvas() {
     }
 }
 
-function getScaledPats(scope, paths) {
+function getScaledPaths(scope, paths) {
     return paths.map(function (p) {
         return p.map(function (c) {
             return [c[0] / scope.imageScale, c[1] / scope.imageScale]

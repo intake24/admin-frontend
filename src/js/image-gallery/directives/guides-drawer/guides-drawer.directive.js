@@ -104,8 +104,8 @@ function setCanvas() {
 
     context.drawImage(this.img, 0, 0, this.img.width, this.img.height);
 
-    this.pathDrawer = new PathDrawer(this.svg, function (coords) {
-        console.log(coords);
+    this.pathDrawer = new PathDrawer(this.svg, function (paths) {
+        scope.paths = getScaledPats(scope, paths);
     }, function (index) {
         scope.selectedPathIndex = index;
         scope.$apply();
@@ -114,6 +114,14 @@ function setCanvas() {
     this.getCanvasContext = function () {
         return scope.canvas.getContext('2d');
     }
+}
+
+function getScaledPats(scope, paths) {
+    return paths.map(function (p) {
+        return p.map(function (c) {
+            return [c[0] / scope.imageScale, c[1] / scope.imageScale]
+        })
+    })
 }
 
 function setCanvasSize() {

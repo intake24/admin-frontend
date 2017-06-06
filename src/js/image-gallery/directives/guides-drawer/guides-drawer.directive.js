@@ -47,6 +47,7 @@ module.exports = function (app) {
             scope.addPath = function () {
                 scope.paths.push([]);
                 refreshPaths.call(this);
+                scope.selectPath(scope.paths.length - 1);
             };
 
             scope.removePath = function (index) {

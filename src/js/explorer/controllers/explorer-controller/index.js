@@ -251,8 +251,6 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     $scope.$on("intake24.admin.food_db.CloneFoodAsLocal", function (event) {
         var item = currentItem.getCurrentItem();
 
-        console.log("Kotak")
-
         if (item && item.type == 'food') {
 
             var parentNode = angular.copy(parentCategoryNodeForNewItem());

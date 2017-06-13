@@ -1,7 +1,7 @@
 .properties-container#food-properties-container(ng-if="currentItem != null && currentItem.type == 'food' && !newItem")
 
 	.properties-body
-		
+
 		.page-header
 			h2 #{ gettext("Food") }:&nbsp;
 				span(ng-attr-dir="{{localeTextDirection}}") {{ currentItem.displayName }}
@@ -27,6 +27,11 @@
 					ng-disabled="forceDisabledButtons"
 					ng-if="currentUser.canCreateFoods(currentLocale)")
 						span #{ gettext("Clone food") }
+			button(class="intake-btn warning"
+					ng-click="cloneFoodAsLocal()"
+					ng-disabled="forceDisabledButtons"
+					ng-if="currentUser.canCreateFoods(currentLocale)")
+						span #{ gettext("Clone food as local") }
 			button(class="intake-btn danger pull-right"
 					id="btn-delete-food"
 					ng-click="deleteItem()"

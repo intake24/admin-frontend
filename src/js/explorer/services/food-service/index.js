@@ -183,6 +183,11 @@ function serviceFun($http, $q, LocalesService, PackerService) {
 
         cloneFood: function(locale, code, onSuccess, onFailure) {
             return $http.post(api_base_url + 'admin/foods/' + locale + '/' + code + '/clone');
+        },
+
+        cloneFoodAsLocal: function(locale, code, onSuccess, onFailure) {
+            return $http.post(api_base_url + 'admin/foods/' + locale + '/' + code + '/clone-as-local');
         }
+
     };
 }

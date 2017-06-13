@@ -248,6 +248,27 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             MessageService.showMessage("Select a food to clone", "warning");
     });
 
+    $scope.$on("intake24.admin.food_db.CloneFoodAsLocal", function (event) {
+        var item = currentItem.getCurrentItem();
+
+        console.log("Kotak")
+
+        if (item && item.type == 'food') {
+
+            var parentNode = angular.copy(parentCategoryNodeForNewItem());
+
+            FoodService.cloneFoodAsLocal($routeParams.locale, item.code)
+                .then(function (result) {
+                    loadChildrenDeferred(parentNode).then(
+                        function () {
+                            MessageService.showMessage("Food cloned", "success");
+                            makeVisibleAndSelect(result.clonedFoodCode, "food");
+                        });
+                });
+        } else
+            MessageService.showMessage("Select a food to clone", "warning");
+    });
+
     $scope.$on("intake24.admin.food_db.DeleteItem", function () {
         var item = currentItem.getCurrentItem();
 

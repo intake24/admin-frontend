@@ -16,7 +16,7 @@ function directiveFun(LocalesService, SurveyService, uiDatetimePickerConfig) {
         scope.name = "";
         scope.selectedLocale = null;
         scope.allowGeneratedUsers = false;
-        scope.externalFollowUpUrl = "";
+        scope.externalFollowUpURL = "";
         scope.supportEmail = "";
         scope.startDate = null;
         scope.endDate = null;
@@ -115,7 +115,7 @@ function updateScope(scope, data) {
     scope.name = data.id;
     scope.selectedLocale = data.localeId;
     scope.allowGeneratedUsers = data.allowGeneratedUsers;
-    scope.externalFollowUpUrl = data.externalFollowUpURL;
+    scope.externalFollowUpURL = data.externalFollowUpURL;
     scope.supportEmail = data.supportEmail;
     scope.startDate = new Date(data.startDate);
     scope.endDate = new Date(data.endDate);

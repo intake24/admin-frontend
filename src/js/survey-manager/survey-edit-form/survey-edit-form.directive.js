@@ -136,7 +136,7 @@ function updateScope(scope, data) {
         scope.form.state = "0";
         scope.form.selectedLocale = "en_GB";
         scope.form.allowGeneratedUsers = false;
-        scope.form.externalFollowUpUrl = "";
+        scope.form.externalFollowUpURL = "";
         scope.form.supportEmail = "";
         scope.form.startDate = null;
         scope.form.endDate = null;
@@ -145,7 +145,7 @@ function updateScope(scope, data) {
         scope.form.state = String(data.state);
         scope.form.selectedLocale = data.localeId;
         scope.form.allowGeneratedUsers = data.allowGeneratedUsers;
-        scope.form.externalFollowUpUrl = data.externalFollowUpURL;
+        scope.form.externalFollowUpURL = data.externalFollowUpURL;
         scope.form.supportEmail = data.supportEmail;
         scope.form.startDate = new Date(data.startDate);
         scope.form.endDate = new Date(data.endDate);

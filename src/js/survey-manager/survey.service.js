@@ -82,7 +82,7 @@ function serviceFun($http, $window) {
             // the BOM (see http://stackoverflow.com/questions/42715966/preserve-utf-8-bom-in-browser-downloads)
             //
             // MS Excel requires BOM to open UTF-8 CSV files correctly.
-            return $http.get(getFormedUrl(url), {responseType: "arraybuffer"});
+            return $http.get(getFormedUrl(url), {responseType: "arraybuffer", timeout: 10 * 60 * 1000});
         }
     };
 

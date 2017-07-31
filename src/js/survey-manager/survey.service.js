@@ -14,7 +14,7 @@ function serviceFun($http, $window) {
 
     var surveysUrl = $window.api_base_url + "surveys",
         surveyUrl = $window.api_base_url + "surveys/:surveyId",
-        surveyCsvResults = $window.api_base_url + "surveys/:surveyId/submissions/csv",
+        createExportTaskUrl = $window.api_base_url + "surveys/:surveyId/submissions/async/csv",
         surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
         surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
 
@@ -73,16 +73,12 @@ function serviceFun($http, $window) {
         delete: function (surveyId) {
             return $http.delete(getFormedUrl(surveyUrl, {surveyId: surveyId}));
         },
-        getCsvResults: function (surveyId, downloadReq) {
-            var url = getFormedUrl(surveyCsvResults, {surveyId: surveyId}) +
+        createExportTask: function (surveyId, downloadReq) {
+            var url = getFormedUrl(createExportTaskUrl, {surveyId: surveyId}) +
                 "?dateFrom=" + downloadReq.dateFrom +
                 "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
 
-            // Set responseType to arraybuffer to prevent UTF-8 decoding by the browser that removes
-            // the BOM (see http://stackoverflow.com/questions/42715966/preserve-utf-8-bom-in-browser-downloads)
-            //
-            // MS Excel requires BOM to open UTF-8 CSV files correctly.
-            return $http.get(getFormedUrl(url), {responseType: "arraybuffer", timeout: 10 * 60 * 1000});
+            return $http.get(url);
         }
     };
 

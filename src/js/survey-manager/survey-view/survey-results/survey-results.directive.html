@@ -1,36 +1,40 @@
-<form class="form-horizontal">
-    <div class="form-group" ng-class="{'has-error': !formValidation.queryPeriod}">
-        <label class="control-label col-sm-2 col-xs-3">Survey period</label>
-        <div class="col-sm-10 col-xs-9">
-            <div class="row">
-                <div class="col-xs-6">
-                    <input type="text" class="form-control"
-                           placeholder="{{uiDatetimePickerConfig.dateFormat}}"
-                           datetime-picker
-                           is-open="datePickerState.fromIsOpen"
-                           ng-focus="openDateFromPicker()"
-                           timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="dateFrom">
-                </div>
-                <div class="col-xs-6">
-                    <input type="text" class="form-control"
-                           placeholder="{{uiDatetimePickerConfig.dateFormat}}"
-                           datetime-picker
-                           is-open="datePickerState.toIsOpen"
-                           ng-focus="openDateToPicker()"
-                           timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="dateTo">
+
+<h3>Export survey data</h3>
+<div>
+    <form class="form-horizontal">
+        <div class="form-group" ng-class="{'has-error': !formValidation.queryPeriod}">
+            <label class="control-label col-sm-2 col-xs-3">Survey period</label>
+            <div class="col-sm-10 col-xs-9">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control"
+                               placeholder="{{uiDatetimePickerConfig.dateFormat}}"
+                               datetime-picker
+                               is-open="datePickerState.fromIsOpen"
+                               ng-focus="openDateFromPicker()"
+                               timepicker-options="uiDatetimePickerConfig.timepickerOptions"
+                               ng-model="dateFrom">
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control"
+                               placeholder="{{uiDatetimePickerConfig.dateFormat}}"
+                               datetime-picker
+                               is-open="datePickerState.toIsOpen"
+                               ng-focus="openDateToPicker()"
+                               timepicker-options="uiDatetimePickerConfig.timepickerOptions"
+                               ng-model="dateTo">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="form-group text-right">
-        <div class="col-sm-3 col-sm-offset-2 col-xs-9 col-xs-offset-3">
-            <button class="btn btn-success btn-block btn-block"
-                    ng-click="download()" ng-disabled="loading">
-                {{ loading ? 'Loading' : 'Download' }}
-            </button>
+        <div class="form-group text-right">
+            <div class="col-sm-3 col-sm-offset-2 col-xs-9 col-xs-offset-3">
+                <button class="btn btn-success btn-block btn-block"
+                        ng-click="download()" ng-disabled="loading">
+                    {{ loading ? 'Loading' : 'Export' }}
+                </button>
+            </div>
         </div>
-    </div>
-    <a style="display:none;" id="downloadContainer" href="#"></a>
-</form>
+        <a style="display:none;" id="downloadContainer" href="#"></a>
+    </form>
+</div>

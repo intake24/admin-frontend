@@ -21,6 +21,8 @@ function directiveFun(SurveyService, UserStateService, appRoutes, $route, $route
 
         scope.surveyId = $routeParams.surveyId;
 
+        scope.taskId = $routeParams.taskId;
+
         scope.directiveViews = {
             general: new SurveyView("General", appRoutes.surveyManagerSurvey),
             description: new SurveyView("Welcome page", appRoutes.surveyManagerSurveyDescription),

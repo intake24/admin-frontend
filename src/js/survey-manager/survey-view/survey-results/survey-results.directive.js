@@ -5,10 +5,11 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("surveyResults", ["SurveyService", "uiDatetimePickerConfig", directiveFun]);
+    app.directive("surveyResults", ["SurveyService", "uiDatetimePickerConfig", "$interval", directiveFun]);
+    require("./survey-data-export-status/survey-data-export-status.directive")(app);
 };
 
-function directiveFun(SurveyService, uiDatetimePickerConfig) {
+function directiveFun(SurveyService, uiDatetimePickerConfig, $interval) {
 
     function controller(scope, element, attribute) {
 
@@ -79,10 +80,16 @@ function directiveFun(SurveyService, uiDatetimePickerConfig) {
             }
             scope.loading = true;
 
+            $interval(function() { scope.loading = false}, 500, 1);
+
             var fileName = "intake24-" + scope.survey.id + "-data-" +
                 formatDate(scope.dateFrom) + "-to-" + formatDate(scope.dateTo) + ".csv";
 
-            SurveyService.getCsvResults(scope.survey.id, getRequest(scope))
+            SurveyService.createExportTask(scope.survey.id, getRequest(scope));
+
+
+
+            /*SurveyService.getCsvResults(scope.survey.id, getRequest(scope))
                 .then(function (data) {
 
                     if (window.URL && window.URL.createObjectURL) {
@@ -96,7 +103,7 @@ function directiveFun(SurveyService, uiDatetimePickerConfig) {
                 })
                 .finally(function () {
                     scope.loading = false;
-                });
+                });*/
         };
 
         scope.$watch("survey", function (newVal) {

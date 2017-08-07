@@ -15,6 +15,7 @@ function serviceFun($http, $window) {
     var surveysUrl = $window.api_base_url + "surveys",
         surveyUrl = $window.api_base_url + "surveys/:surveyId",
         createExportTaskUrl = $window.api_base_url + "surveys/:surveyId/submissions/async/csv",
+        getActiveExportTasksUrl = $window.api_base_url + "surveys/:surveyId/submissions/async/status",
         surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
         surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
 
@@ -77,6 +78,11 @@ function serviceFun($http, $window) {
             var url = getFormedUrl(createExportTaskUrl, {surveyId: surveyId}) +
                 "?dateFrom=" + downloadReq.dateFrom +
                 "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
+
+            return $http.get(url);
+        },
+        getActiveExportTasks: function(surveyId) {
+            var url = getFormedUrl(getActiveExportTasksUrl, {surveyId : surveyId})
 
             return $http.get(url);
         }

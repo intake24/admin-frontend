@@ -1,27 +1,34 @@
 <h3>Your recent exports</h3>
 
 <div>
-    <p ng-if="!activeTasks">Loading</p>
+    <div ng-if="!activeTasks">
+        <h1>
+            <i class="fa fa-spinner fa-spin"></i>
+            Loading
+        </h1>
+    </div>
 
     <table class="table">
         <thead>
         <tr>
-            <td>Task ID</td>
-            <td>Created at</td>
-<!--            <td>Date from</td>
-            <td>Date to</td> -->
+            <td style="width: 7%;">Task ID</td>
+            <td style="width: 10%;">Created</td>
+            <td style="width: 10%;" class="secondary-column">Date from</td>
+            <td style="width: 10%;" class="secondary-column">Date to</td>
             <td>Status</td>
         </tr>
         </thead>
         <tr ng-repeat="task in activeTasks track by $index"
-            ng-class="{ 'warning': task.status.Expired, 'danger': task.status.Failed }">
+            ng-class="{ 'danger': task.status.Failed, 'focused-task': task.id == focusTaskId }">
             <td>{{task.id}}</td>
-            <td>{{task.createdAt}}</td>
-<!--            <td>{{task.dateFrom}}</td>
-            <td>{{task.dateTo}}</td> -->
-            <td ng-if="task.status.Completed"><a href="{{task.status.Completed.downloadUrl}}">
-                <button type="button" class="btn btn-xs btn-success">Download</button>
-            </a>
+            <td>{{formatCreatedAt(task.createdAt)}}</td>
+            <td class="secondary-column">{{formatDate(task.dateFrom) }}</td>
+            <td class="secondary-column">{{formatDate(task.dateTo) }}</td>
+            <td ng-if="task.status.Completed">
+                Ready&nbsp;
+                <a href="{{task.status.Completed.downloadUrl}}">
+                    <button type="button" class="btn btn-xs btn-success">Download</button>
+                </a>
             </td>
             <td ng-if="task.status.Pending">
                 <div class="progress" style="margin-bottom: 0;">
@@ -34,7 +41,7 @@
                 <div class="progress" style="margin-bottom: 0;">
                     <div class="progress-bar progress-bar-info" role="progressbar"
                          ng-style="{ width: progressToPercentage(task.status.InProgress.progress) }">
-                        {{progressToPercentage(task.status.InProgress.progress)}}
+                        Exporting&nbsp;{{progressToPercentage(task.status.InProgress.progress)}}
                     </div>
                 </div>
             </td>

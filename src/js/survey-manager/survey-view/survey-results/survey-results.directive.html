@@ -30,8 +30,8 @@
         <div class="form-group text-right">
             <div class="col-sm-3 col-sm-offset-2 col-xs-9 col-xs-offset-3">
                 <button class="btn btn-success btn-block btn-block"
-                        ng-click="download()" ng-disabled="loading">
-                    {{ loading ? 'Loading' : 'Export' }}
+                        ng-click="createExportTask()" ng-disabled="loading">
+                    {{ loading ? 'Requesting export...' : 'Export' }}
                 </button>
             </div>
         </div>

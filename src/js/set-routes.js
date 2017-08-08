@@ -74,7 +74,8 @@ module.exports = function (app) {
             })
             .when(routes.surveyManagerSurveyResults, {
                 template: require("./survey-manager/survey-manager.controller.html"),
-                controller: 'SurveyManagerController'
+                controller: 'SurveyManagerController',
+                reloadOnSearch: false
             })
             .when(routes.surveyFeedback, {
                 template: require("./survey-feedback/survey-feedback.pug"),

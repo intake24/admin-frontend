@@ -20,7 +20,8 @@ module.exports = function (grunt) {
                     debug: config.includeJsMaps
                 },
                 transform: [envify({
-                    API_BASE_URL: config.apiBaseUrl
+                    API_BASE_URL: config.apiBaseUrl,
+                    RECAPTCHA_SITE_KEY: config.recaptchaSiteKey
                 }), stringify({
                     appliesTo: {includeExtensions: ['.html']},
                     minify: true

@@ -5,10 +5,24 @@
             input(type="text" ng-model="username" placeholder=gettext('Username'))
             input(type="password" ng-model="password" placeholder=gettext('Password'))
             button #{ gettext("Login") }
-            .clearfloat
+        .forgot-password
+            a(href="#" ng-click="showPasswordReset()") #{ gettext("Forgot my password") }
+        .clearfloat
+
+.intake-modal#modal-reset-password(ng-show="modalResetPasswordVisible")
+    .button-close-modal(ng-click="hidePasswordResetModal()")
+        i.fa.fa-times
+    .intake-modal-title #{ gettext("Reset password") }
+    .intake-modal-content
+        p Please confirm your e-mail address:
+        form(ng-submit="requestPasswordReset()")
+            input(type="text" ng-model="username" placeholder=gettext('E-mail'))
+            .g-recaptcha(data-sitekey=recaptcha_site_key data-callback="recaptchaCallback")
+            button #{ gettext("Send password reset e-mail") }
+        .clearfloat
 
 .intake-modal.modal-narrow#modal-logout(ng-show="modalLogOutVisible")
-    #button-close-modal.button-close-modal(ng-click="hideLogoutModal()")
+    .button-close-modal(ng-click="hideLogoutModal()")
         i.fa.fa-times
     .intake-modal-title #{ gettext("Are you sure?") }
     .intake-modal-content

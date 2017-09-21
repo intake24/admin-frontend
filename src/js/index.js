@@ -28,5 +28,7 @@ require("./welcome/welcome.controller")(app);
 require("./set-routes")(app);
 require("./textangular-config")(app);
 require("./bootstrap-ui-datetime-picker-config")(app);
+require("./password-reset")(app);
 
 window.api_base_url = process.env.API_BASE_URL;
+window.recaptcha_site_key = process.env.RECAPTCHA_SITE_KEY;

@@ -17,8 +17,7 @@ module.exports = function (app) {
         surveyManagerSurveyDescription: '/survey-manager/:surveyId/description',
         surveyManagerSurveyUsers: '/survey-manager/:surveyId/users',
         surveyManagerSurveyResults: '/survey-manager/:surveyId/results',
-        surveyFeedback: '/survey-feedback',
-        passwordReset: '/password-reset'
+        surveyFeedback: '/survey-feedback'
     };
 
     app.constant('appRoutes', routes);
@@ -84,10 +83,6 @@ module.exports = function (app) {
             })
             .when(routes.userManagerRoute, {
                 redirectTo: routes.userManagerRespondents
-            })
-            .when(routes.passwordReset, {
-                template: require("./password-reset/password-reset.pug"),
-                controller: 'PasswordResetController'
             })
             .otherwise({
                 redirectTo: routes.welcome

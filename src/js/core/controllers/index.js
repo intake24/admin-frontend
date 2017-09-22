@@ -6,4 +6,5 @@
 
 module.exports = function(app) {
     require("./admin-controller")(app);
+    require("./password-reset")(app);
 };

@@ -14,6 +14,7 @@ html(lang=lang dir=lang_dir)
         //- Load current translation file
         script(type="text/javascript" src='/i18n/' + lang + '/messages.js')
         script(type="text/javascript" src='/intake24-admin.js')
+        script(src="https://www.google.com/recaptcha/api.js" async defer)
 
     body(ng-app='intake24.admin' ng-controller='AdminController'
     ng-class="{authenticated: currentUser != null, 'no-scroll': bodyIsUnscrollable}")

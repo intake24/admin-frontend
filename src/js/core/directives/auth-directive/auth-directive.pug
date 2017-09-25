@@ -19,7 +19,7 @@
             input(type="text" ng-model="username" placeholder=gettext('E-mail'))
             .g-recaptcha(data-sitekey=recaptcha_site_key data-callback="recaptchaCallback")
             button(ng-hide="passwordRequestDisabled") #{ gettext("Send password reset e-mail") }
-            button(ng-hide="!passwordRequestDisabled" disabled) #{ gettext("Loading") }
+            button(ng-hide="!passwordRequestDisabled" disabled) #{ gettext("Please wait") }
                 |&nbsp;
                 i.fa.fa-spinner.fa-spin(aria-hidden="true")
     .intake-modal-content(ng-hide="!passwordRequestSuccessful")

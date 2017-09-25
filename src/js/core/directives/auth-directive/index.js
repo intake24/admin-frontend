@@ -5,11 +5,11 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("authDirective", ["UserStateService", "UserRequestService", "ModalService", "MessageService",
+    app.directive("authDirective", ["$window", "UserStateService", "UserRequestService", "ModalService", "MessageService",
         "PasswordResetService", directiveFun]);
 };
 
-function directiveFun(UserStateService, UserRequestService, ModalService, MessageService, PasswordResetService) {
+function directiveFun($window, UserStateService, UserRequestService, ModalService, MessageService, PasswordResetService) {
 
     function controller(scope, element, attributes) {
 
@@ -56,11 +56,15 @@ function directiveFun(UserStateService, UserRequestService, ModalService, Messag
         };
 
         scope.hidePasswordResetModal = function () {
+            scope.passwordRequestDisabled = false;
+            scope.passwordRequestSuccessful = false;
+            scope.recaptchaResponse = undefined;
+            $window.grecaptcha.reset();
             ModalService.hidePasswordResetModal();
             ModalService.showAuthenticateModal();
         };
 
-        window.recaptchaCallback = function (r) {
+        $window.recaptchaCallback = function (r) {
             scope.recaptchaResponse = r;
         };
 

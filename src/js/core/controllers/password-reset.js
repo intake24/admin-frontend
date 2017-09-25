@@ -28,7 +28,7 @@ function controllerFun($scope, $location, $window, PasswordResetService, Message
                     $scope.resetSuccessful = true;
                     $window.setTimeout(function () {
                         $window.location.href = "/";
-                    }, 5000);
+                    }, 10000);
                 },
                 function () {
                     $scope.buttonDisabled = false;

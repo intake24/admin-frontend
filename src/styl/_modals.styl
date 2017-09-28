@@ -29,7 +29,7 @@ $intake-modal-sm-width = 320px;
     margin-left: -($intake-modal-sm-width / 2);
   }
 
-  #button-close-modal
+  .button-close-modal
     line-height 50px
     position absolute
     top 0
@@ -44,7 +44,7 @@ $intake-modal-sm-width = 320px;
       line-height inherit
       transition(color .3s ease-out)
 
-  #button-close-modal:hover
+  .button-close-modal:hover
     cursor pointer
     i
       color red
@@ -77,7 +77,7 @@ $intake-modal-sm-width = 320px;
 .intake-modal.active
   display block
 
-#modal-authenticate, #modal-logout
+#modal-authenticate, #modal-logout, #modal-reset-password
   text-align center
   input
     border-radius 4px
@@ -99,6 +99,11 @@ $intake-modal-sm-width = 320px;
     font-size 16px
     margin-top 10px
     padding 12px 30px
+  .forgot-password
+    margin-top 20px
+  .g-recaptcha
+    div
+      width auto !important
 
 #modal-backdrop
   background-color rgba(0, 0, 0, 0.5)
@@ -114,10 +119,11 @@ $intake-modal-sm-width = 320px;
   &.ng-hide
     opacity 0
 
+
 /* RTL Styles */
 
 html[dir="rtl"]
   .intake-modal
-    #button-close-modal
+    .button-close-modal
       left 0
       right auto

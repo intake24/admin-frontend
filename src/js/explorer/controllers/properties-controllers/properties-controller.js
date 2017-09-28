@@ -555,4 +555,8 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     $scope.cloneFood = function () {
         $rootScope.$broadcast('intake24.admin.food_db.CloneFood');
     };
+
+    $scope.cloneFoodAsLocal = function () {
+        $rootScope.$broadcast('intake24.admin.food_db.CloneFoodAsLocal');
+    };
 }

@@ -5,10 +5,11 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("authDirective", ["UserStateService", "UserRequestService", "ModalService", directiveFun]);
+    app.directive("authDirective", ["$window", "UserStateService", "UserRequestService", "ModalService", "MessageService",
+        "PasswordResetService", directiveFun]);
 };
 
-function directiveFun(UserStateService, UserRequestService, ModalService) {
+function directiveFun($window, UserStateService, UserRequestService, ModalService, MessageService, PasswordResetService) {
 
     function controller(scope, element, attributes) {
 
@@ -17,9 +18,12 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
         scope.password = "";
         scope.modalLogOutVisible = false;
         scope.modalAuthenticateVisible = false;
+        scope.modalResetPasswordVisible = false;
+        scope.passwordRequestDisabled = false;
+        scope.passwordRequestSuccessful = false;
 
         scope.getBackdropVisibe = function () {
-            return scope.modalLogOutVisible || scope.modalAuthenticateVisible;
+            return scope.modalLogOutVisible || scope.modalAuthenticateVisible || scope.modalResetPasswordVisible;
         };
 
         scope.login = function () {
@@ -36,6 +40,12 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
             });
         };
 
+        scope.showPasswordReset = function () {
+            scope.recaptchaResponse = undefined;
+            ModalService.hideAll();
+            ModalService.showPasswordResetModal();
+        };
+
         scope.logout = function () {
             UserStateService.logout();
             ModalService.showAuthenticateModal();
@@ -45,13 +55,45 @@ function directiveFun(UserStateService, UserRequestService, ModalService) {
             ModalService.hideLogoutModal();
         };
 
+        scope.hidePasswordResetModal = function () {
+            scope.passwordRequestDisabled = false;
+            scope.passwordRequestSuccessful = false;
+            scope.recaptchaResponse = undefined;
+            $window.grecaptcha.reset();
+            ModalService.hidePasswordResetModal();
+            ModalService.showAuthenticateModal();
+        };
+
+        $window.recaptchaCallback = function (r) {
+            scope.recaptchaResponse = r;
+        };
+
+        scope.requestPasswordReset = function (r) {
+            if (scope.recaptchaResponse) {
+
+                scope.passwordRequestDisabled = true;
+
+                PasswordResetService.requestPasswordReset(scope.username, scope.recaptchaResponse).then(function () {
+                        scope.passwordRequestSuccessful = true;
+                    },
+                    function () {
+                        scope.passwordRequestDisabled = false;
+                    });
+
+            } else
+                MessageService.showWarning("Please tick the \"I'm not a robot\" box!");
+        }
+
         scope.$watchCollection(function () {
             return [ModalService.getModalAuthenticateVisible(),
-                ModalService.getModalLogOutVisible()];
+                ModalService.getModalLogOutVisible(),
+                ModalService.getModalResetPasswordVisible()];
         }, function () {
             scope.modalAuthenticateVisible = ModalService.getModalAuthenticateVisible();
             scope.modalLogOutVisible = ModalService.getModalLogOutVisible();
+            scope.modalResetPasswordVisible = ModalService.getModalResetPasswordVisible();
         });
+
 
         scope.$watch(function () {
             return UserStateService.getAuthenticated();

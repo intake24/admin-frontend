@@ -5,10 +5,34 @@
             input(type="text" ng-model="username" placeholder=gettext('Username'))
             input(type="password" ng-model="password" placeholder=gettext('Password'))
             button #{ gettext("Login") }
-            .clearfloat
+        .forgot-password
+            a(href="#" ng-click="showPasswordReset()") #{ gettext("Forgot my password") }
+        .clearfloat
+
+.intake-modal#modal-reset-password(ng-show="modalResetPasswordVisible")
+    .button-close-modal(ng-click="hidePasswordResetModal()")
+        i.fa.fa-times
+    .intake-modal-title #{ gettext("Reset password") }
+    .intake-modal-content(ng-hide="passwordRequestSuccessful")
+        p Please confirm your e-mail address:
+        form(ng-submit="requestPasswordReset()")
+            input(type="text" ng-model="username" placeholder=gettext('E-mail'))
+            .g-recaptcha(data-sitekey=recaptcha_site_key data-callback="recaptchaCallback")
+            button(ng-hide="passwordRequestDisabled") #{ gettext("Send password reset e-mail") }
+            button(ng-hide="!passwordRequestDisabled" disabled) #{ gettext("Please wait") }
+                |&nbsp;
+                i.fa.fa-spinner.fa-spin(aria-hidden="true")
+    .intake-modal-content(ng-hide="!passwordRequestSuccessful")
+        p We have sent the password reset confirmation link to your e-mail address.
+        p Please check your inbox in a few minutes. If the message isn't there, try checking your spam/junk folder. If you still can't see the message, please check that you have entered your e-mail address correctly and try again.
+        p
+            | If you are still stuck, please contact the support team at&nbsp;
+            a(href="mailto:support@intake24.co.uk?subject=Password reset problem") support@intake24.co.uk
+
+    .clearfloat
 
 .intake-modal.modal-narrow#modal-logout(ng-show="modalLogOutVisible")
-    #button-close-modal.button-close-modal(ng-click="hideLogoutModal()")
+    .button-close-modal(ng-click="hideLogoutModal()")
         i.fa.fa-times
     .intake-modal-title #{ gettext("Are you sure?") }
     .intake-modal-content

@@ -7,6 +7,7 @@ module.exports = function (app) {
 function serviceFun() {
     var modalLogOutVisible = false,
         modalAuthenticateVisible = false,
+        modalPasswordResetVisible = false,
         arbitraryModalStates = {};
 
     return {
@@ -18,6 +19,9 @@ function serviceFun() {
             this.hideAll();
             modalAuthenticateVisible = true;
         },
+        showPasswordResetModal: function () {
+            modalPasswordResetVisible = true;
+        },
         showArbitraryModal: function (id) {
             arbitraryModalStates[id] = true;
         },
@@ -26,6 +30,9 @@ function serviceFun() {
         },
         hideAuthenticateModal: function () {
             modalAuthenticateVisible = false;
+        },
+        hidePasswordResetModal: function() {
+          modalPasswordResetVisible = false;
         },
         hideAll: function () {
             modalLogOutVisible = false;
@@ -40,6 +47,9 @@ function serviceFun() {
         getModalAuthenticateVisible: function() {
             return modalAuthenticateVisible;
         },
+        getModalResetPasswordVisible: function() {
+            return modalPasswordResetVisible;
+        },
         getModalIsVisible: function () {
             var arbitraryModalsOpen = false;
             for (var i in arbitraryModalStates) {
@@ -47,6 +57,7 @@ function serviceFun() {
             }
             return this.getModalLogOutVisible() ||
                 this.getModalAuthenticateVisible() ||
+                this.getModalResetPasswordVisible()
                 arbitraryModalsOpen;
         }
     }

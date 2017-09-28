@@ -20,7 +20,7 @@
                 <ul class="nav nav-tabs">
                     <li ng-repeat="view in getViewList()"
                         ng-class="{active: view.active}">
-                        <a ng-href="#{{view.getUrl(surveyId)}}">{{view.name}}</a>
+                        <a ng-href="#{{view.getUrl(surveyId, taskId)}}">{{view.name}}</a>
                     </li>
                 </ul>
 

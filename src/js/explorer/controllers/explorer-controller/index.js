@@ -68,11 +68,15 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
         });
     };
 
-    $scope.$watch(function() { return $routeParams.locale; }, function (newValue) {
+    $scope.$watch(function () {
+        return $routeParams.locale;
+    }, function (newValue) {
         $scope.currentLocale = newValue;
     });
 
-    $scope.$watch(function() { return UserStateService.getUserInfo(); }, function (newValue) {
+    $scope.$watch(function () {
+        return UserStateService.getUserInfo();
+    }, function (newValue) {
         $scope.currentUser = newValue;
     });
 
@@ -226,14 +230,38 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     });
 
     $scope.$on("intake24.admin.food_db.CloneFood", function (event) {
-        var parentNode = angular.copy(parentCategoryNodeForNewItem());
         var item = currentItem.getCurrentItem();
 
         if (item && item.type == 'food') {
+
+            var parentNode = angular.copy(parentCategoryNodeForNewItem());
+
             FoodService.cloneFood($routeParams.locale, item.code)
-                .then(function (newCode) {
-                    MessageService.showMessage("Food cloned", "success");
-                    makeVisibleAndSelect(newCode, "food");
+                .then(function (result) {
+                    loadChildrenDeferred(parentNode).then(
+                        function () {
+                            MessageService.showMessage("Food cloned", "success");
+                            makeVisibleAndSelect(result.clonedFoodCode, "food");
+                        });
+                });
+        } else
+            MessageService.showMessage("Select a food to clone", "warning");
+    });
+
+    $scope.$on("intake24.admin.food_db.CloneFoodAsLocal", function (event) {
+        var item = currentItem.getCurrentItem();
+
+        if (item && item.type == 'food') {
+
+            var parentNode = angular.copy(parentCategoryNodeForNewItem());
+
+            FoodService.cloneFoodAsLocal($routeParams.locale, item.code)
+                .then(function (result) {
+                    loadChildrenDeferred(parentNode).then(
+                        function () {
+                            MessageService.showMessage("Food cloned", "success");
+                            makeVisibleAndSelect(result.clonedFoodCode, "food");
+                        });
                 });
         } else
             MessageService.showMessage("Select a food to clone", "warning");

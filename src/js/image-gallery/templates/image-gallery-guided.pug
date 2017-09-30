@@ -1,17 +1,1 @@
-.search-input-group.intk-gallery-search
-    search-input(ng-model="searchQuery")
-    .search-input-addon
-        button(type="button" ng-click="addItem()")
-            i.fa.fa-plus
-
-.intk-gallery
-
-    div.container-fluid
-        div(ng-repeat="src in sampleImageSrcs")
-            guides-drawer(src="src")
-
-
-    p(class="as-served-set-blank-text") No items found
-    p(class="as-served-set-blank-text") Loading...
-
-image-select-drawer
+guided-images-explorer()

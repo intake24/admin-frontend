@@ -5,20 +5,29 @@
 'use strict';
 
 module.exports = function (app) {
-    app.directive('imgLoader', [directiveFun]);
+    app.directive('imgLoader', ['$window', directiveFun]);
 
-    function directiveFun() {
+    function directiveFun($window) {
 
         function controller(scope, element, attributes) {
 
+            scope.passedSrc = "";
             scope.loaded = false;
-            scope.$watch("src", function (newVal) {
-                if (newVal) {
-                    loadImageSrc();
+            scope.completedPercentage = 0;
+
+            scope.$watch("src", function (newVal, oldVal) {
+                if (newVal && newVal !== oldVal) {
+                    scope.passedSrc = "";
+                    watchScroll();
                 }
             });
 
+            watchScroll();
+
             function loadImageSrc() {
+                scope.loaded = false;
+                scope.passedSrc = scope.src;
+
                 var img = new Image(),
                     unregisterWatcher;
 
@@ -37,6 +46,22 @@ module.exports = function (app) {
                 });
             }
 
+            function watchScroll() {
+                var off = function () {
+                        angular.element($window).off("scroll", _bindFn);
+                    },
+                    _bindFn = function () {
+                        if (isElementInViewport(element[0], $window)) {
+                            loadImageSrc();
+                            off();
+                        }
+                    };
+
+                scope.$on("$destroy", off);
+                angular.element($window).on("scroll", _bindFn);
+                _bindFn();
+            }
+
         }
 
         return {
@@ -50,3 +75,18 @@ module.exports = function (app) {
     }
 
 };
+
+function isElementInViewport(el, window) {
+
+    var top = el.offsetTop;
+    var height = el.offsetHeight;
+    var parEl = el;
+
+    while (parEl.offsetParent) {
+        parEl = parEl.offsetParent;
+        top += parEl.offsetTop;
+    }
+
+    return window.pageYOffset <= (top + height) &&
+        top <= (window.pageYOffset + window.innerHeight);
+}

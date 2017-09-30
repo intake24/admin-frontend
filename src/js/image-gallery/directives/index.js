@@ -12,4 +12,5 @@ module.exports = function(app) {
     require("./on-scrolled-to-bottom")(app);
     require("./image-gallery-main-item")(app);
     require("./guides-drawer/guides-drawer.directive")(app);
+    require("./guided-images-explorer/guided-images-explorer.directive")(app);
 };

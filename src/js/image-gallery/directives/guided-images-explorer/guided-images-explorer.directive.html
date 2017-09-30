@@ -1,0 +1,21 @@
+ <div class="search-input-group intk-gallery-search">
+    <search-input ng-model="searchQuery"></search-input>
+    <div class="search-input-addon">
+        <button type="button" ng-click="addItem()">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+<file-drop-zone class="intk-gallery" on-dropped="onFilesChange(fileList)">
+    <div class="container-fluid">
+        <guided-images-explorer-item
+                title="item.id"
+                description="item.description"
+                path="item.path"
+                ng-class="{'visible': itemIsFiltered(item)}"
+                ng-repeat="item in getItems() track by $index"></guided-images-explorer-item>
+    </div>
+</file-drop-zone>
+
+<image-select-drawer></image-select-drawer>

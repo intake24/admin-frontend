@@ -174,6 +174,7 @@ function Path(pathNodes) {
     }
 
     this.addNode = function (pathNode) {
+        // Fixme: nodes are added in the wrong places when added in random order. So, they should be probably arranged by x and y.
         var shortestDistance = null;
         var index = 0;
 

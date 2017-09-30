@@ -72,12 +72,13 @@ $intk-gallery-as-served-set-padding = 4px 15px 0px 15px
       width: 100%;
       height: 100%;
       opacity: 0;
-      background: #000;
-      transition: opacity .1s linear;
+      background: rgba(0,0,0,0);
+      transition: background .1s linear, opacity .1s linear;
 
       &.visible,
       &:hover {
-        opacity: 0.6;
+        opacity: 1;
+        background: rgba(0,0,0,0.5);
       }
 
       .btn-select {
@@ -226,5 +227,11 @@ as-served-set {
 
   &-blank-text {
     padding $intk-gallery-as-served-set-padding
+  }
+}
+
+guided-images-explorer-item {
+  .intk-gallery-item {
+    height: 0;
   }
 }

@@ -1,0 +1,26 @@
+<div class="intk-gallery-item">
+    <div class="intk-gallery-item-img">
+        <img-loader src="path"></img-loader>
+        <div class="intk-gallery-item-blank" ng-class="{'visible': item.loading}">
+            <div class="pull-right" uib-dropdown>
+                <button class="btn btn-default btn-tools" uib-dropdown-toggle>
+                    <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                    <li>
+                        <a href="" ng-click="removeItem(item)">
+                            Remove image
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <span class="btn-select">
+                <i class="fa fa-pencil"></i>
+            </span>
+        </div>
+    </div>
+    <div class="intk-gallery-item-tools">
+        <h4>{{title}}</h4>
+        <p>{{description}}</p>
+    </div>
+</div>

@@ -49,14 +49,17 @@ module.exports = function (app) {
             scope.addPath = function () {
                 scope.guideImage.paths.push([]);
                 scope.selectPath(scope.guideImage.paths.length - 1);
+                notifyCanvas();
             };
 
             scope.removePath = function (index) {
                 scope.guideImage.paths.splice(index, 1);
+                notifyCanvas();
             };
 
             scope.removeAll = function () {
                 scope.guideImage.paths.length = 0;
+                notifyCanvas();
             };
 
             scope.switchView = function (generalInfoVisible) {
@@ -83,10 +86,18 @@ module.exports = function (app) {
             };
 
             GuidedImagesService.get($routeParams.guidedId).then(function (data) {
-                console.log(data);
                 setScopeFromData.call(scope, data);
-                console.log(scope.guideImage.paths);
+                notifyCanvas();
             });
+
+            GuidesDrawerCanvasService.registerOutWatchers(function (coordinates) {
+                scope.guideImage.paths.length = 0;
+                scope.guideImage.paths.push.apply(scope.guideImage.paths, coordinates);
+            });
+
+            function notifyCanvas() {
+                GuidesDrawerCanvasService.updatePathsIn(scope.guideImage.paths);
+            }
 
         }
 

@@ -6,8 +6,10 @@
 
 var d3 = require("d3");
 
-var Color = "#08f900";
-var UnselectedOpacity = 0.5;
+var SelectedColor = "#08f900";
+var UnselectedColor = "#79cc6d";
+var HoveredColor = "#6bf969";
+var UnselectedOpacity = 0.8;
 var HoveredOpacity = 0.8;
 var SelectedOpacity = 1;
 var NodeRadius = 4;
@@ -76,7 +78,7 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
         var container = d3.select(this);
         var svgPath =
             new PathSvg(container, path,
-                {color: Color, opacity: UnselectedOpacity},
+                {color: UnselectedColor, opacity: UnselectedOpacity},
                 _validateBorders, _notifyPathUpdates,
                 function () {
                     self.highlightPath(pathI);
@@ -106,14 +108,14 @@ function PathDrawer(svgElement, onUpdate, onSelected) {
         var selectedPathSvg = _svgPaths[_selectedPathIndex];
         var highlightedSvg = _svgPaths[_highlightedPathIndex];
         _svgPaths.forEach(function (s) {
-            s.setStyle({opacity: UnselectedOpacity});
+            s.setStyle({color: UnselectedColor, opacity: UnselectedOpacity});
             s.disable();
         });
         if (highlightedSvg != null) {
-            highlightedSvg.setStyle({opacity: HoveredOpacity});
+            highlightedSvg.setStyle({color: HoveredColor, opacity: HoveredOpacity});
         }
         if (selectedPathSvg != null) {
-            selectedPathSvg.setStyle({opacity: SelectedOpacity});
+            selectedPathSvg.setStyle({color: SelectedColor, opacity: SelectedOpacity});
             selectedPathSvg.disable(false);
         }
     }
@@ -375,19 +377,21 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
 
     function _hoverNode(d, index) {
         d3.event.stopPropagation();
-        var r;
-        if (d3.event.type == "mouseover") {
-            r = ActiveNodeRadius;
-            _onMouseOver();
-        } else {
-            r = NodeRadius;
-            _onMouseLeave();
-        }
+        var mouseOver = d3.event.type == "mouseover",
+            r = mouseOver ? ActiveNodeRadius : NodeRadius;
         _nodes
             .transition().duration(transitionDuration)
             .attr("r", function (d, i) {
                 return index == i ? r : NodeRadius;
             });
+        setTimeout(function () {
+            //Fixme: timeout is to first apply hover effect and then style the path according to _styleNodes.
+            if (mouseOver) {
+                _onMouseOver();
+            } else {
+                _onMouseLeave();
+            }
+        }, 50);
     }
 
     function _styleLines(lines) {

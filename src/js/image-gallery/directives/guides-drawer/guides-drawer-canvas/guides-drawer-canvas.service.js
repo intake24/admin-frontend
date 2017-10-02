@@ -10,7 +10,9 @@ module.exports = function (app) {
 
 function serviceFun() {
 
-    var _recogniseRequestCallback = null;
+    var _recogniseRequestCallback = null,
+        _updatePathsInCallback = null,
+        _updatePathsOutCallback = null;
 
     return {
         recognisePaths: function () {
@@ -18,8 +20,22 @@ function serviceFun() {
                 _recogniseRequestCallback();
             }
         },
-        registerWatcher: function (recogniseRequestCallback) {
+        updatePathsIn: function (paths) {
+            if (_updatePathsInCallback) {
+                _updatePathsInCallback(paths)
+            }
+        },
+        updatePathsOut: function (paths) {
+            if (_updatePathsOutCallback) {
+                _updatePathsOutCallback(paths)
+            }
+        },
+        registerOutWatchers: function (updatePathsOutCallback) {
+            _updatePathsOutCallback = updatePathsOutCallback;
+        },
+        registerCanvasWatchers: function (recogniseRequestCallback, updatePathsInCallback) {
             _recogniseRequestCallback = recogniseRequestCallback;
+            _updatePathsInCallback = updatePathsInCallback;
         }
 
     }

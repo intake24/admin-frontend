@@ -6,72 +6,86 @@
 
 var angular = require("angular");
 
-var ObjectRecognition = require("./object-recognition");
-var PathDrawer = require("./path-drawer");
-
 module.exports = function (app) {
-    app.directive("guidesDrawer", ["$window", "$timeout", directiveFun]);
+    require("./guides-drawer-canvas/guides-drawer-canvas.directive")(app);
 
-    function directiveFun($window, $timeout) {
+    app.directive("guidesDrawer", ["$routeParams",
+        "GuidedImagesService", "DrawersService", "GuidesDrawerCanvasService", directiveFun]);
+
+    function directiveFun($routeParams, GuidedImagesService, DrawersService, GuidesDrawerCanvasService) {
 
         function controller(scope, element, attributes) {
 
-            var timeout;
-
-            scope.selectedPathIndex = null;
+            scope.generalInfoVisible = true;
 
             scope.imageScale = 0;
 
-            scope.paths = [];
-
-            scope.canvas = element[0].querySelector("canvas");
-            scope.svg = element[0].querySelector("svg");
+            scope.guideImage = {
+                src: "",
+                guideImageId: "",
+                baseImageId: "",
+                guideImageDescription: "",
+                paths: [],
+                hoveredPathIndex: null,
+                selectedPathIndex: null
+            };
 
             scope.recognisePaths = function () {
-                var conf = scope.paths.length == 0 ||
+                var conf = scope.guideImage.paths.length == 0 ||
                     confirm("There are paths already created. Do you want to add more?");
                 if (conf) {
-                    outlineObjects.call(scope);
+                    GuidesDrawerCanvasService.recognisePaths();
                 }
             };
 
             scope.selectPath = function (index) {
-                scope.selectedPathIndex = index;
-                scope.pathDrawer.selectPath(index);
+                scope.guideImage.selectedPathIndex = index;
             };
 
             scope.highlightsPath = function (index) {
-                this.pathDrawer.highlightPath(index);
+                scope.guideImage.hoveredPathIndex = index;
             };
 
             scope.addPath = function () {
-                scope.paths.push([]);
-                refreshPaths.call(this);
-                scope.selectPath(scope.paths.length - 1);
+                scope.guideImage.paths.push([]);
+                scope.selectPath(scope.guideImage.paths.length - 1);
             };
 
             scope.removePath = function (index) {
-                scope.paths.splice(index, 1);
-                refreshPaths.call(this);
+                scope.guideImage.paths.splice(index, 1);
             };
 
             scope.removeAll = function () {
-                scope.paths.length = 0;
-                refreshPaths.call(this);
+                scope.guideImage.paths.length = 0;
             };
 
-            scope.$watch('selectedPathIndex', function (newVal) {
-                console.log(newVal);
-            });
+            scope.switchView = function (generalInfoVisible) {
+                scope.generalInfoVisible = generalInfoVisible;
+            };
 
-            setImage.call(scope);
+            scope.selectBaseImage = function () {
+                var callback = function (images) {
+                    var img = images[0];
+                    scope.guideImage.src = img.src;
+                    scope.guideImage.baseImageId = img.id;
+                    setImage.call(scope);
+                };
+                var unregister = scope.$watch(function () {
+                    return DrawersService.imageDrawer.getOpen();
+                }, function () {
+                    if (!DrawersService.imageDrawer.getOpen()) {
+                        DrawersService.imageDrawer.offValueSet(callback);
+                        unregister();
+                    }
+                });
+                DrawersService.imageDrawer.open();
+                DrawersService.imageDrawer.onValueSet(callback);
+            };
 
-            angular.element($window).bind("resize", function () {
-                $timeout.cancel(timeout);
-                timeout = $timeout(function () {
-                    setCanvasSize.call(scope);
-                    refreshPaths.call(scope);
-                }, 500);
+            GuidedImagesService.get($routeParams.guidedId).then(function (data) {
+                console.log(data);
+                setScopeFromData.call(scope, data);
+                console.log(scope.guideImage.paths);
             });
 
         }
@@ -79,81 +93,25 @@ module.exports = function (app) {
         return {
             restrict: 'E',
             link: controller,
-            scope: {
-                src: "=?"
-            },
+            scope: {},
             template: require("./guides-drawer.directive.html")
         };
     }
 
 };
 
-function setImage() {
+function setScopeFromData(data) {
     var scope = this;
-    this.img = new Image();
-    this.img.crossOrigin = "Anonymous";
-    this.img.onload = function () {
-        setCanvas.call(scope);
-    };
-    this.img.src = this.src;
-}
-
-function setCanvas() {
-    var scope = this;
-    var context = this.canvas.getContext('2d');
-
-    this.canvas.width = this.img.width;
-    this.canvas.height = this.img.height;
-
-    setCanvasSize.call(this);
-
-    context.drawImage(this.img, 0, 0, this.img.width, this.img.height);
-
-    this.pathDrawer = new PathDrawer(this.svg, function (paths) {
-        scope.paths.length = 0;
-        scope.paths.push.apply(scope.paths, getScaledPaths(scope, paths));
-    }, function (index) {
-        scope.selectedPathIndex = index;
-        scope.$apply();
+    var paths = data.objects.map(function (t) {
+        var c = [];
+        for (var i = 0; i < t.outlineCoordinates.length; i += 2) {
+            c.push([t.outlineCoordinates[i],
+                t.outlineCoordinates[i + 1]]);
+        }
+        return c;
     });
-
-    this.getCanvasContext = function () {
-        return scope.canvas.getContext('2d');
-    }
-}
-
-function getScaledPaths(scope, paths) {
-    return paths.map(function (p) {
-        return p.map(function (c) {
-            return [c[0] / scope.imageScale, c[1] / scope.imageScale]
-        })
-    })
-}
-
-function setCanvasSize() {
-    var canvasRect = this.canvas.getBoundingClientRect();
-
-    this.imageScale = canvasRect.width / this.img.width;
-
-    this.svg.setAttribute("width", canvasRect.width);
-    this.svg.setAttribute("height", canvasRect.height);
-}
-
-function outlineObjects() {
-    var context = this.getCanvasContext();
-    var imageData = context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-    this.paths.push.apply(this.paths, ObjectRecognition.recognise(imageData));
-    refreshPaths.call(this);
-}
-
-function refreshPaths() {
-    var scale = this.imageScale;
-    var paths = this.paths.map(function (p) {
-        return p.map(function (n) {
-            return [n[0] * scale, n[1] * scale]
-        });
-    });
-    this.pathDrawer.setPaths(paths);
+    scope.guideImage.src = data.path;
+    scope.guideImage.paths.push.apply(scope.guideImage.paths, paths);
 }
 
 

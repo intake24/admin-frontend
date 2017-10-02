@@ -4,14 +4,16 @@
 
 "use strict";
 
+var getFormedUrl = require('../../../../core/utils/get-formed-url');
+
 module.exports = function (app) {
-    app.directive("guidedImagesExplorerItem", [directiveFun]);
+    app.directive("guidedImagesExplorerItem", ["appRoutes", directiveFun]);
 };
 
-function directiveFun() {
+function directiveFun(appRoutes) {
 
     function controller(scope, element, attributes) {
-
+        scope.itemUrl = getFormedUrl(appRoutes.imageGalleryGuidedItem, {guidedId: scope.title});
     }
 
     return {

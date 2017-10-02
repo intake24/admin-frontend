@@ -31,17 +31,23 @@ module.exports = function (app) {
             };
 
             scope.select = function (item) {
-                item.selected = !item.selected;
-                var img = scope.selectedItems.filter(function (el) {
-                    return el.id == item.id;
-                })[0];
-                if (img != undefined) {
-                    var i = scope.selectedItems.indexOf(img);
-                    scope.selectedItems.splice(i, 1);
+                if (scope.multiple) {
+                    item.selected = !item.selected;
+                    var img = scope.selectedItems.filter(function (el) {
+                        return el.id === item.id;
+                    })[0];
+                    if (img !== undefined) {
+                        var i = scope.selectedItems.indexOf(img);
+                        scope.selectedItems.splice(i, 1);
+                    } else {
+                        scope.selectedItems.push(item);
+                    }
+                    DrawersService.imageDrawer.setValue(angular.copy(scope.selectedItems));
                 } else {
                     scope.selectedItems.push(item);
+                    DrawersService.imageDrawer.setValue(angular.copy(scope.selectedItems));
+                    scope.close();
                 }
-                DrawersService.imageDrawer.setValue(angular.copy(scope.selectedItems));
             };
 
             scope.getItemIsSelected = function (item) {
@@ -94,7 +100,9 @@ module.exports = function (app) {
         return {
             restrict: "E",
             link: controller,
-            scope: {},
+            scope: {
+                multiple: "=?"
+            },
             template: require("./image-select-drawer-directive.html")
         };
     }

@@ -25,6 +25,9 @@ function serviceFun($http, $window) {
                     }
                 });
             });
+        },
+        get: function (id) {
+            return $http.get(BASE_URL + "/" + id + "/full");
         }
     }
 }

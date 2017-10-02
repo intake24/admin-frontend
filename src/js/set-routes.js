@@ -8,7 +8,8 @@ module.exports = function (app) {
         imageGalleryRoute: '/galleries',
         imageGalleryMain: "/galleries/main",
         imageGalleryAsServed: "/galleries/as-served",
-        imageGalleryGuided: "/galleries/guided",
+        imageGalleryGuidedList: "/galleries/guided",
+        imageGalleryGuidedItem: "/galleries/guided/:guidedId",
         userManagerRoute: '/users',
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
@@ -42,9 +43,13 @@ module.exports = function (app) {
                 template: require("./image-gallery/templates/image-gallery-as-served.pug"),
                 controller: 'ImageGalleryAsServed'
             })
-            .when(routes.imageGalleryGuided, {
+            .when(routes.imageGalleryGuidedList, {
                 template: require("./image-gallery/templates/image-gallery-guided.pug"),
                 controller: 'ImageGalleryGuided'
+            })
+            .when(routes.imageGalleryGuidedItem, {
+                template: require("./image-gallery/templates/image-gallery-guided-item.pug"),
+                controller: 'ImageGalleryGuidedItem'
             })
             .when(routes.imageGalleryRoute, {
                 redirectTo: routes.imageGalleryMain

@@ -37,7 +37,7 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                 parent: "imageGalleries"
             },
             imageGalleryGuided: {
-                href: appRoutes.imageGalleryGuided,
+                href: appRoutes.imageGalleryGuidedList,
                 active: false,
                 parent: "imageGalleries"
             },

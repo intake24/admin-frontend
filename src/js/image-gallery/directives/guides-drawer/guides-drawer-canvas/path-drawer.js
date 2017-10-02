@@ -6,14 +6,15 @@
 
 var d3 = require("d3");
 
-var Color = "#7fff0f";
-var UnselectedOpacity = 0.4;
-var HoveredOpacity = 0.7;
+var Color = "#08f900";
+var UnselectedOpacity = 0.5;
+var HoveredOpacity = 0.8;
 var SelectedOpacity = 1;
-var NodeRadius = 2;
-var ActiveNodeRadius = 3;
-var InvisibleNodeRadius = 6;
+var NodeRadius = 4;
+var ActiveNodeRadius = 6;
+var InvisibleNodeRadius = 8;
 var transitionDuration = 100;
+var strokeWidth = 2;
 
 var MainSelector = "guides-drawer",
     PathGroupSelector = MainSelector + "-path-group",
@@ -332,7 +333,7 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
             .enter()
             .append("line")
             .attr("class", LineSelector)
-            .attr("stroke-width", 1);
+            .attr("stroke-width", strokeWidth);
     }
 
     function _refreshPositions() {

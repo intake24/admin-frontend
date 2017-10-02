@@ -13,6 +13,7 @@ module.exports = function (app) {
 
             scope.passedSrc = "";
             scope.loaded = false;
+            scope.failed = false;
             scope.completedPercentage = 0;
 
             scope.$watch("src", function (newVal, oldVal) {
@@ -42,7 +43,11 @@ module.exports = function (app) {
                 unregisterWatcher = scope.$watch(function () {
                     return img.completedPercentage;
                 }, function () {
-                    scope.completedPercentage = img.completedPercentage;
+                    if (isNaN(img.completedPercentage)) {
+                        scope.failed = true;
+                    } else {
+                        scope.completedPercentage = img.completedPercentage;
+                    }
                 });
             }
 

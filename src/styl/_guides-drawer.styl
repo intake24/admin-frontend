@@ -1,6 +1,6 @@
 .guides-drawer {
 
-  &-picture {
+  &-canvas {
     position: relative;
 
     canvas {
@@ -19,10 +19,15 @@
   }
 
   &-path {
-      &-info {
-        padding: 10px 0;
-        $bordered-item()
+    &-info {
+      padding: 10px 0;
+      $bordered-item()
+
+      .guides-drawer-path-select {
+        margin-top: 0;
       }
+
+    }
   }
 
   &-panel {

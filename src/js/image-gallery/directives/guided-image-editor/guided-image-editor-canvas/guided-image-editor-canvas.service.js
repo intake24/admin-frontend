@@ -5,7 +5,7 @@
 "use strict";
 
 module.exports = function (app) {
-    app.service("GuidesDrawerCanvasService", [serviceFun]);
+    app.service("GuidedImageEditorCanvasService", [serviceFun]);
 };
 
 function serviceFun() {

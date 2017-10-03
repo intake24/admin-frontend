@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="guides-drawer row mt-1">
         <div class="col-xs-9">
-            <guides-drawer-canvas src="guideImage.src"
-                                  coordinates="guideImage.paths"
-                                  hovered-path-index="guideImage.hoveredPathIndex"
-                                  selected-path-index="guideImage.selectedPathIndex"></guides-drawer-canvas>
+            <guided-image-editor-canvas src="guideImage.src"
+                                        coordinates="guideImage.paths"
+                                        hovered-path-index="guideImage.hoveredPathIndex"
+                                        selected-path-index="guideImage.selectedPathIndex"></guided-image-editor-canvas>
         </div>
         <div class="col-xs-3">
             <div class="guides-drawer-panel">
@@ -18,19 +18,9 @@
                         </li>
                     </ul>
                 </div>
-                <form ng-show="generalInfoVisible">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Guide image ID">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Guide image description">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-default" ng-click="selectBaseImage()">
-                            Select base image
-                        </button>
-                    </div>
-                </form>
+                <guided-image-editor-meta ng-show="generalInfoVisible"
+                                          guide-image-id="guideImage.id"
+                                          guide-image-description="guideImage.description"></guided-image-editor-meta>
                 <div ng-hide="generalInfoVisible">
                     <div class="guides-drawer-panel-header">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -79,5 +69,3 @@
         </div>
     </div>
 </div>
-
-<image-select-drawer></image-select-drawer>

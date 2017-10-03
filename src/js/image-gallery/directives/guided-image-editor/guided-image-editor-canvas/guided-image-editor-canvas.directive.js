@@ -10,9 +10,8 @@ var ObjectRecognition = require("./object-recognition");
 var PathDrawer = require("./path-drawer");
 
 module.exports = function (app) {
-    require("./guides-drawer-canvas.service")(app);
-
-    app.directive("guidesDrawerCanvas", ["$window", "$timeout", "GuidesDrawerCanvasService", directiveFun]);
+    require("./guided-image-editor-canvas.service")(app);
+    app.directive("guidedImageEditorCanvas", ["$window", "$timeout", "GuidedImageEditorCanvasService", directiveFun]);
 
     function directiveFun($window, $timeout, GuidesDrawerCanvasService) {
 
@@ -80,7 +79,7 @@ module.exports = function (app) {
                 hoveredPathIndex: "=?",
                 selectedPathIndex: "=?"
             },
-            template: require("./guides-drawer-canvas.directive.html")
+            template: require("./guided-image-editor-canvas.directive.html")
         };
     }
 

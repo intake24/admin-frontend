@@ -7,12 +7,13 @@
 var angular = require("angular");
 
 module.exports = function (app) {
-    require("./guides-drawer-canvas/guides-drawer-canvas.directive")(app);
+    require("./guided-image-editor-canvas/guided-image-editor-canvas.directive")(app);
+    require("./guides-drawer-meta/guided-image-editor-meta.directive")(app);
 
-    app.directive("guidesDrawer", ["$routeParams",
-        "GuidedImagesService", "DrawersService", "GuidesDrawerCanvasService", directiveFun]);
+    app.directive("guidedImageEditor", ["$routeParams",
+        "GuidedImagesService", "GuidedImageEditorCanvasService", directiveFun]);
 
-    function directiveFun($routeParams, GuidedImagesService, DrawersService, GuidesDrawerCanvasService) {
+    function directiveFun($routeParams, GuidedImagesService, GuidesDrawerCanvasService) {
 
         function controller(scope, element, attributes) {
 
@@ -21,6 +22,8 @@ module.exports = function (app) {
             scope.imageScale = 0;
 
             scope.guideImage = {
+                id: $routeParams.guidedId,
+                description: "",
                 src: "",
                 guideImageId: "",
                 baseImageId: "",
@@ -66,27 +69,16 @@ module.exports = function (app) {
                 scope.generalInfoVisible = generalInfoVisible;
             };
 
-            scope.selectBaseImage = function () {
-                var callback = function (images) {
-                    var img = images[0];
-                    scope.guideImage.src = img.src;
-                    scope.guideImage.baseImageId = img.id;
-                    setImage.call(scope);
-                };
-                var unregister = scope.$watch(function () {
-                    return DrawersService.imageDrawer.getOpen();
-                }, function () {
-                    if (!DrawersService.imageDrawer.getOpen()) {
-                        DrawersService.imageDrawer.offValueSet(callback);
-                        unregister();
-                    }
-                });
-                DrawersService.imageDrawer.open();
-                DrawersService.imageDrawer.onValueSet(callback);
+            scope.saveMeta = function () {
+
+            };
+
+            scope.cancelMeta = function () {
+
             };
 
             GuidedImagesService.get($routeParams.guidedId).then(function (data) {
-                setScopeFromData.call(scope, data);
+                setScopeFromData.call(scope.guideImage, data);
                 notifyCanvas();
             });
 
@@ -105,14 +97,13 @@ module.exports = function (app) {
             restrict: 'E',
             link: controller,
             scope: {},
-            template: require("./guides-drawer.directive.html")
+            template: require("./guided-image-editor.directive.html")
         };
     }
 
 };
 
 function setScopeFromData(data) {
-    var scope = this;
     var paths = data.objects.map(function (t) {
         var c = [];
         for (var i = 0; i < t.outlineCoordinates.length; i += 2) {
@@ -121,8 +112,9 @@ function setScopeFromData(data) {
         }
         return c;
     });
-    scope.guideImage.src = data.path;
-    scope.guideImage.paths.push.apply(scope.guideImage.paths, paths);
+    this.description = data.meta.description;
+    this.src = data.path;
+    this.paths.push.apply(this.paths, paths);
 }
 
 

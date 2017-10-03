@@ -1,0 +1,27 @@
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control"
+               placeholder="Guide image ID"
+               ng-disabled="loading || !editState"
+               ng-model="newId">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control"
+               placeholder="Guide image description"
+               ng-disabled="loading || !editState"
+               ng-model="newDescription">
+    </div>
+    <div class="form-group text-right" ng-show="editState">
+        <button class="btn btn-default" ng-click="cancel()">
+            Cancel
+        </button>
+        <button class="btn btn-link" ng-click="save()" ng-disabled="loading">
+            {{loading ? 'Loading' : 'Save'}}
+        </button>
+    </div>
+    <div class="form-group text-right" ng-hide="editState">
+        <button class="btn btn-link" ng-click="edit()">
+            Edit
+        </button>
+    </div>
+</form>

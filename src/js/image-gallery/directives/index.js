@@ -11,6 +11,6 @@ module.exports = function(app) {
     require('./editable-directive')(app);
     require("./on-scrolled-to-bottom")(app);
     require("./image-gallery-main-item")(app);
-    require("./guides-drawer/guides-drawer.directive")(app);
+    require("./guided-image-editor/guided-image-editor.directive")(app);
     require("./guided-images-explorer/guided-images-explorer.directive")(app);
 };

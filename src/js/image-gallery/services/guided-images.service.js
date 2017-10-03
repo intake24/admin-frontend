@@ -28,6 +28,9 @@ function serviceFun($http, $window) {
         },
         get: function (id) {
             return $http.get(BASE_URL + "/" + id + "/full");
+        },
+        patchMeta: function (id, guideImageMeta) {
+            return $http.patch(BASE_URL + "/" + id + "/meta", guideImageMeta);
         }
     }
 }

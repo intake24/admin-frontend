@@ -20,15 +20,15 @@ module.exports = function (app) {
 
             scope.addPath = function () {
                 scope.imageMapObjects.push(getBlanlImageMapObject([]));
-                scope.selectPath(scope.guideImage.paths.length - 1);
+                scope.selectPath(scope.imageMapObjects.length - 1);
             };
 
             scope.removePath = function (index) {
-                scope.guideImage.paths.splice(index, 1);
+                scope.imageMapObjects.splice(index, 1);
             };
 
             scope.removeAll = function () {
-                scope.guideImage.paths.length = 0;
+                scope.imageMapObjects.length = 0;
             };
 
             scope.recognisePaths = function () {
@@ -43,7 +43,7 @@ module.exports = function (app) {
                 coordinates.forEach(function (c, i) {
                     var ob = scope.imageMapObjects[i];
                     if (ob == null) {
-                        scope.imageMapObjects.push(getBlanlImageMapObject(coordinates));
+                        scope.imageMapObjects.push(getBlanlImageMapObject(c));
                     } else {
                         ob.outlineCoordinates = coordinates;
                     }

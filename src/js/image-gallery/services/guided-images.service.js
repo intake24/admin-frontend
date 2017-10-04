@@ -27,7 +27,20 @@ function serviceFun($http, $window) {
             });
         },
         get: function (id) {
-            return $http.get(BASE_URL + "/" + id + "/full");
+            return $http.get(BASE_URL + "/" + id + "/full").then(function (data) {
+                /**
+                 * Transform flatten coordinates back to [[x,y]]
+                 */
+                data.objects.forEach(function (t) {
+                    var c = [];
+                    for (var i = 0; i < t.outlineCoordinates.length; i += 2) {
+                        c.push([t.outlineCoordinates[i],
+                            t.outlineCoordinates[i + 1]]);
+                    }
+                    t.outlineCoordinates = c;
+                });
+                return data;
+            });
         },
         patchMeta: function (id, guideImageMeta) {
             return $http.patch(BASE_URL + "/" + id + "/meta", guideImageMeta);

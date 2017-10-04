@@ -4,8 +4,6 @@
 
 "use strict";
 
-var angular = require("angular");
-
 module.exports = function (app) {
     app.directive("guidedImageEditorMeta", ["$route",
         "GuidedImagesService", directiveFun]);
@@ -77,7 +75,7 @@ function refresh() {
 function fieldIsValid(fieldValues) {
     var vals = [].concat(fieldValues);
     return vals.filter(function (item) {
-        return item.trim() !== "";
+        return item != null && item.trim() !== "";
     }).length === vals.length;
 }
 

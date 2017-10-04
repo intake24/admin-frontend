@@ -13,12 +13,12 @@ module.exports = function (app) {
     require("./guided-image-editor-canvas.service")(app);
     app.directive("guidedImageEditorCanvas", ["$window", "$timeout", "GuidedImageEditorCanvasService", directiveFun]);
 
-    function directiveFun($window, $timeout, GuidesDrawerCanvasService) {
+    function directiveFun($window, $timeout, GuidedImageEditorCanvasService) {
 
         function controller(scope, element, attributes) {
 
             var _timeout,
-                _inCoordinates,
+                _inCoordinates = [],
                 _imageLoaded;
 
             scope.imageScale = 0;
@@ -58,9 +58,9 @@ module.exports = function (app) {
                 }
             });
 
-            GuidesDrawerCanvasService.registerCanvasWatchers(function () {
+            GuidedImageEditorCanvasService.registerCanvasWatchers(function () {
                 outlineObjects.call(scope);
-                GuidesDrawerCanvasService.updatePathsOut(outputPaths.call(scope));
+                GuidedImageEditorCanvasService.updatePathsOut(outputPaths.call(scope));
             }, function (coordinates) {
                 _inCoordinates = coordinates;
                 if (!_imageLoaded) {

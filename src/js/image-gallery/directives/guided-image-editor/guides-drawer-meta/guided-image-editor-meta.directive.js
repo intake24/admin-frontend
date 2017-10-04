@@ -26,7 +26,20 @@ module.exports = function (app) {
                 refresh.call(scope);
                 scope.editState = false;
             };
+
+            scope.fieldIsValid = function (fieldValue) {
+                return fieldIsValid(fieldValue);
+            };
+
+            scope.formIsValid = function () {
+                return fieldIsValid(scope.newId) &&
+                    fieldIsValid([scope.newId, scope.newDescription]);
+            };
+
             scope.save = function () {
+                if (!scope.formIsValid()) {
+                    return;
+                }
                 scope.loading = true;
                 GuidedImagesService
                     .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription})
@@ -59,7 +72,13 @@ module.exports = function (app) {
 function refresh() {
     this.newId = this.guideImageId;
     this.newDescription = this.guideImageDescription;
-    console.log(this);
+}
+
+function fieldIsValid(fieldValues) {
+    var vals = [].concat(fieldValues);
+    return vals.filter(function (item) {
+        return item.trim() !== "";
+    }).length === vals.length;
 }
 
 

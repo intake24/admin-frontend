@@ -1,11 +1,11 @@
 <form>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': !fieldIsValid(newId)}">
         <input type="text" class="form-control"
                placeholder="Guide image ID"
                ng-disabled="loading || !editState"
                ng-model="newId">
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': !fieldIsValid(newDescription)}">
         <input type="text" class="form-control"
                placeholder="Guide image description"
                ng-disabled="loading || !editState"
@@ -15,7 +15,8 @@
         <button class="btn btn-default" ng-click="cancel()">
             Cancel
         </button>
-        <button class="btn btn-link" ng-click="save()" ng-disabled="loading">
+        <button class="btn btn-link" ng-click="save()"
+                ng-disabled="loading || !formIsValid()">
             {{loading ? 'Loading' : 'Save'}}
         </button>
     </div>

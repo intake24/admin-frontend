@@ -4,6 +4,8 @@
 
 "use strict";
 
+var textFieldIsNotEmpty = require("../../../../core/utils/text-is-not-empty");
+
 module.exports = function (app) {
     app.directive("guidedImageEditorMeta", ["$route",
         "GuidedImagesService", directiveFun]);
@@ -26,12 +28,12 @@ module.exports = function (app) {
             };
 
             scope.fieldIsValid = function (fieldValue) {
-                return fieldIsValid(fieldValue);
+                return textFieldIsNotEmpty(fieldValue);
             };
 
             scope.formIsValid = function () {
-                return fieldIsValid(scope.newId) &&
-                    fieldIsValid([scope.newId, scope.newDescription]);
+                return textFieldIsNotEmpty(scope.newId) &&
+                    textFieldIsNotEmpty(scope.newId, scope.newDescription);
             };
 
             scope.save = function () {
@@ -70,13 +72,6 @@ module.exports = function (app) {
 function refresh() {
     this.newId = this.guideImageId;
     this.newDescription = this.guideImageDescription;
-}
-
-function fieldIsValid(fieldValues) {
-    var vals = [].concat(fieldValues);
-    return vals.filter(function (item) {
-        return item != null && item.trim() !== "";
-    }).length === vals.length;
 }
 
 

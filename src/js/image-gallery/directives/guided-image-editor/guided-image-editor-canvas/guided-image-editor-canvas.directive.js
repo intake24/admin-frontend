@@ -36,6 +36,10 @@ module.exports = function (app) {
                 }, 500);
             });
 
+            scope.notifyServices = function () {
+                GuidedImageEditorCanvasService.updatePathsOut(outputPaths.call(scope));
+            };
+
             scope.$watch("src", function (newVal, oldVal) {
                 _imageLoaded = false;
                 if (newVal && newVal !== oldVal) {
@@ -60,13 +64,12 @@ module.exports = function (app) {
 
             GuidedImageEditorCanvasService.registerCanvasWatchers(function () {
                 outlineObjects.call(scope);
-                GuidedImageEditorCanvasService.updatePathsOut(outputPaths.call(scope));
+                scope.notifyServices();
             }, function (coordinates) {
                 _inCoordinates = coordinates;
-                if (!_imageLoaded) {
-                    return;
+                if (_imageLoaded) {
+                    setPathsFromInput.call(scope, _inCoordinates);
                 }
-                setPathsFromInput.call(scope, _inCoordinates);
             });
 
         }
@@ -112,6 +115,7 @@ function setCanvas() {
     this.pathDrawer = new PathDrawer(this.svg, function (paths) {
         scope.paths.length = 0;
         scope.paths.push.apply(scope.paths, getScaledPaths(scope, paths));
+        scope.notifyServices();
     }, function (index) {
         scope.selectedPathIndex = index;
         scope.$apply();

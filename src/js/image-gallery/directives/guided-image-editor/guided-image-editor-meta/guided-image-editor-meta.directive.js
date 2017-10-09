@@ -72,6 +72,7 @@ module.exports = function (app) {
 function refresh() {
     this.newId = this.guideImageId;
     this.newDescription = this.guideImageDescription;
+    this.editState = this.guideImageId == null;
 }
 
 

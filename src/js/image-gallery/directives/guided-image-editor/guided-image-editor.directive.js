@@ -8,6 +8,7 @@ module.exports = function (app) {
     require("./guided-image-editor-canvas/guided-image-editor-canvas.directive")(app);
     require("./guided-image-editor-meta/guided-image-editor-meta.directive")(app);
     require("./guided-image-editor-path-list/guided-image-editor-path-list.directive")(app);
+    require("./guided-image-editor-image-select/guided-image-editor-image-select.directive")(app);
 
     app.directive("guidedImageEditor", ["$routeParams",
         "GuidedImagesService", directiveFun]);
@@ -36,9 +37,15 @@ module.exports = function (app) {
                 scope.canvasIsActive = !generalInfoVisible;
             };
 
-            GuidedImagesService.get($routeParams.guidedId).then(function (data) {
-                setScopeFromData.call(scope.guideImage, data);
-            });
+            scope.isNewItem = function () {
+                return scope.guideImage.id != null;
+            };
+
+            if (scope.isNewItem()) {
+                GuidedImagesService.get($routeParams.guidedId).then(function (data) {
+                    setScopeFromData.call(scope.guideImage, data);
+                });
+            }
 
         }
 

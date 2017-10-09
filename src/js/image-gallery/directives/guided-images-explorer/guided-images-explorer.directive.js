@@ -6,16 +6,17 @@
 
 module.exports = function (app) {
     require("./guided-images-explorer-item/guided-images-explorer-item.directive")(app);
-    app.directive("guidedImagesExplorer", ["GuidedImagesService", directiveFun]);
+    app.directive("guidedImagesExplorer", ["GuidedImagesService", "appRoutes", directiveFun]);
 };
 
-function directiveFun(GuidedImagesService) {
+function directiveFun(GuidedImagesService, appRoutes) {
 
     function controller(scope, element, attributes) {
 
         var _items = [];
 
         scope.searchQuery = "";
+        scope.addNewUrl = appRoutes.imageGalleryNewGuidedItem;
 
         scope.itemIsFiltered = function (item) {
             return [item.id, item.description].join(" ")

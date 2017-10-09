@@ -10,6 +10,7 @@ module.exports = function (app) {
         imageGalleryAsServed: "/galleries/as-served",
         imageGalleryGuidedList: "/galleries/guided",
         imageGalleryGuidedItem: "/galleries/guided/:guidedId",
+        imageGalleryNewGuidedItem: "/galleries/new-guided",
         userManagerRoute: '/users',
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
@@ -48,6 +49,10 @@ module.exports = function (app) {
                 controller: 'ImageGalleryGuided'
             })
             .when(routes.imageGalleryGuidedItem, {
+                template: require("./image-gallery/templates/image-gallery-guided-item.pug"),
+                controller: 'ImageGalleryGuidedItem'
+            })
+            .when(routes.imageGalleryNewGuidedItem, {
                 template: require("./image-gallery/templates/image-gallery-guided-item.pug"),
                 controller: 'ImageGalleryGuidedItem'
             })

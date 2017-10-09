@@ -1,10 +1,13 @@
 <div class="container-fluid">
     <div class="guides-drawer row mt-1">
         <div class="col-xs-9">
-            <guided-image-editor-canvas src="guideImage.src"
+            <guided-image-editor-canvas ng-show="guideImage.src"
+                                        src="guideImage.src"
                                         active="canvasIsActive"
                                         hovered-path-index="guideImage.hoveredPathIndex"
                                         selected-path-index="guideImage.selectedPathIndex"></guided-image-editor-canvas>
+            <guided-image-editor-image-select ng-hide="guideImage.src"></guided-image-editor-image-select>
+
         </div>
         <div class="col-xs-3">
             <div class="guides-drawer-panel">
@@ -13,7 +16,9 @@
                         <li role="presentation" ng-class="{active: generalInfoVisible}">
                             <a href="" ng-click="switchView(true)">General</a>
                         </li>
-                        <li role="presentation" ng-class="{active: !generalInfoVisible}">
+                        <li role="presentation"
+                            ng-show="isNewItem()"
+                            ng-class="{active: !generalInfoVisible}">
                             <a href="" ng-click="switchView(false)">Weights</a>
                         </li>
                     </ul>

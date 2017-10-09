@@ -76,7 +76,6 @@ module.exports = function (app) {
 
             scope.$watch("selectedIndex", function (newVal) {
                 var selectedItem = scope.imageMapObjects[newVal];
-                console.log(selectedItem);
                 if (selectedItem != null) {
                     scope.selectedItem = selectedItem;
                 }

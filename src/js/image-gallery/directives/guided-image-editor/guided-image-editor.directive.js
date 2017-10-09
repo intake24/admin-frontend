@@ -17,6 +17,7 @@ module.exports = function (app) {
         function controller(scope, element, attributes) {
 
             scope.generalInfoVisible = true;
+            scope.canvasIsActive = !scope.generalInfoVisible;
 
             scope.guideImage = {
                 id: $routeParams.guidedId,
@@ -32,6 +33,7 @@ module.exports = function (app) {
 
             scope.switchView = function (generalInfoVisible) {
                 scope.generalInfoVisible = generalInfoVisible;
+                scope.canvasIsActive = !generalInfoVisible;
             };
 
             GuidedImagesService.get($routeParams.guidedId).then(function (data) {

@@ -80,7 +80,8 @@ module.exports = function (app) {
             scope: {
                 src: "=?",
                 hoveredPathIndex: "=?",
-                selectedPathIndex: "=?"
+                selectedPathIndex: "=?",
+                active: "=?"
             },
             template: require("./guided-image-editor-canvas.directive.html")
         };

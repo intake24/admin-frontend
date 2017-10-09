@@ -19,6 +19,8 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
 
     var textDirection;
 
+    $scope.problemsServiceUnavailable = false;
+
     // Load shared data
     $scope.SharedData = sharedData;
     $scope.rootCategories = [];
@@ -324,7 +326,9 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
         } else
             cls.push('fa-circle');
 
-        if ($scope.hasProblems(node))
+        if ($scope.problemsServiceUnavailable)
+            cls.push('problems-unavailable');
+        else if ($scope.hasProblems(node))
             cls.push('problems');
 
         if (node.changed)
@@ -338,8 +342,8 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             return (node.problems != null && node.problems.length > 0);
         else if (node.type == 'category')
             return (node.recursiveProblems != null &&
-            (node.recursiveProblems.categoryProblems.length > 0 ||
-            node.recursiveProblems.foodProblems.length > 0));
+                (node.recursiveProblems.categoryProblems.length > 0 ||
+                    node.recursiveProblems.foodProblems.length > 0));
     };
 
     $scope.$watch(function () {
@@ -382,11 +386,21 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
     }
 
     function loadProblemsForNodeDeferred(node) {
+
+        if ($scope.problemsServiceUnavailable)
+            return;
+
+        var problemCheckerErrorHandler = function (response) {
+            if (response.status == 503)
+                $scope.problemsServiceUnavailable = true;
+        };
+
         if ((node.type == 'category') && ( node.code != '$UNCAT')) {
             return FoodService.getCategoryProblemsRecursive($routeParams.locale, node.code)
                 .then(function (problems) {
-                    node.recursiveProblems = problems;
-                });
+                        node.recursiveProblems = problems;
+                    },
+                    problemCheckerErrorHandler);
         }
         else if ((node.type == 'category') && (node.code == '$UNCAT')) {
             return FoodService.getUncategorisedFoods($routeParams.locale).then(function (uncategorisedFoods) {
@@ -403,8 +417,9 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
             });
         } else if (node.type == 'food')
             return FoodService.getFoodProblems($routeParams.locale, node.code).then(function (problems) {
-                node.problems = problems;
-            });
+                    node.problems = problems;
+                },
+                problemCheckerErrorHandler);
         else {
             return $q.reject("Node has no type tag -- probably incorrect argument");
         }

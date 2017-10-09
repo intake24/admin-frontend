@@ -10,3 +10,8 @@ script(id='problems-popover-template', type='text/ng-template')
 			li(ng-repeat='problem in value.recursiveProblems.categoryProblems track by $index', ng-if='value.type=="category"')
 				span(class='intake-problems-list-name') {{problem.categoryName}} ({{problem.categoryCode}}): 
 				| {{getText(problem.problemCode)}}
+
+script(id='problems-unavailable-template', type='text/ng-template')
+	p Food database inspection service is unavailable at the moment because the database is still being scanned for problems.
+	p This usually happens when the server is restarted following an update and can take up to an hour.
+	p Please try refreshing the page later. If it still doesn't work please contact the support team.

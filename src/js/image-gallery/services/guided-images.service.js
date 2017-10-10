@@ -61,6 +61,7 @@ function serviceFun($http, $window) {
                         c.push([t.outlineCoordinates[i],
                             t.outlineCoordinates[i + 1]]);
                     }
+                    t.id = t.id[0];
                     t.outlineCoordinates = c;
                 });
                 return data;

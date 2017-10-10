@@ -32,7 +32,7 @@ module.exports = function (app) {
             element.bind('drop', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                scope.onDropped({fileList: e.dataTransfer.files});
+                scope.file = e.dataTransfer.files[0];
                 readFile(e.dataTransfer.files[0]);
             });
 
@@ -45,7 +45,7 @@ module.exports = function (app) {
 
             _input.addEventListener("change", function () {
                 var fileList = this.files;
-                scope.onDropped({fileList: fileList[0]});
+                scope.file = fileList[0];
                 readFile(fileList[0]);
             }, false);
             
@@ -66,7 +66,7 @@ module.exports = function (app) {
             restrict: 'E',
             link: controller,
             scope: {
-                onDropped: "&"
+                file: "=?"
             },
             template: require("./guided-image-editor-image-select.directive.html")
         };

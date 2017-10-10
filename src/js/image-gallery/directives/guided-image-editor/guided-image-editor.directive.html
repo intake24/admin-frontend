@@ -6,7 +6,8 @@
                                         active="canvasIsActive"
                                         hovered-path-index="guideImage.hoveredPathIndex"
                                         selected-path-index="guideImage.selectedPathIndex"></guided-image-editor-canvas>
-            <guided-image-editor-image-select ng-hide="guideImage.src"></guided-image-editor-image-select>
+            <guided-image-editor-image-select file="guideImage.newImageFile"
+                                              ng-hide="guideImage.src"></guided-image-editor-image-select>
 
         </div>
         <div class="col-xs-3">
@@ -24,6 +25,7 @@
                     </ul>
                 </div>
                 <guided-image-editor-meta ng-show="generalInfoVisible"
+                                          image-file="guideImage.newImageFile"
                                           guide-image-id="guideImage.id"
                                           guide-image-description="guideImage.description"></guided-image-editor-meta>
                 <div ng-hide="generalInfoVisible">

@@ -41,19 +41,34 @@ module.exports = function (app) {
                     return;
                 }
                 scope.loading = true;
-                GuidedImagesService
-                    .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription})
-                    .then(function (data) {
-                        $route.updateParams({guidedId: data.id});
-                    })
-                    .finally(function () {
-                        scope.loading = false;
+                var prom;
+                if (scope.guideImageId) {
+                    prom = GuidedImagesService
+                        .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription})
+                        .then(function (data) {
+                            $route.updateParams({guidedId: data.id});
+                        });
+                } else {
+                    prom = GuidedImagesService.post({
+                        id: scope.newId,
+                        description: scope.newDescription,
+                        baseImage: scope.imageFile
+                    }).then(function (data) {
+                        console.log(data);
                     });
+                }
+                prom.finally(function () {
+                    scope.loading = false;
+                });
             };
 
             scope.$watch("[guideImageId,guideImageDescription]", function () {
                 refresh.call(scope);
-            })
+            });
+
+            scope.$watch("imageFile", function () {
+                scope.editState = true;
+            });
         }
 
         return {
@@ -61,7 +76,8 @@ module.exports = function (app) {
             link: controller,
             scope: {
                 guideImageId: "=?",
-                guideImageDescription: "=?"
+                guideImageDescription: "=?",
+                imageFile: "=?"
             },
             template: require("./guided-image-editor-meta.directive.html")
         };

@@ -29,7 +29,8 @@ module.exports = function (app) {
                 guideImageDescription: "",
                 imageMapObjects: [],
                 hoveredPathIndex: null,
-                selectedPathIndex: null
+                selectedPathIndex: null,
+                newImageFile: null
             };
 
             scope.switchView = function (generalInfoVisible) {

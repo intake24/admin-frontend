@@ -4,6 +4,8 @@
 
 "use strict";
 
+var angular = require("angular");
+
 module.exports = function (app) {
     app.service("GuidedImagesService", ["$http", "$window", serviceFun]);
 };
@@ -11,6 +13,20 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     var BASE_URL = $window.api_base_url + "admin/portion-size/guide-image";
+    var IMAGE_MAP_URL = $window.api_base_url + "admin/portion-size/image-map";
+
+    function uploadImageMapFile(imageMapParams) {
+        var fd = new FormData();
+        fd.append("baseImage", imageMapParams.baseImage);
+        fd.append("imageMapParameters", JSON.stringify({
+            id: imageMapParams.id,
+            description: imageMapParams.description
+        }));
+        return $http.post(IMAGE_MAP_URL, fd, {
+            transformRequest: angular.identity,
+            headers: {"Content-Type": undefined}
+        });
+    }
 
     return {
         all: function () {
@@ -24,6 +40,14 @@ function serviceFun($http, $window) {
                         return 0;
                     }
                 });
+            });
+        },
+        post: function (imageMapParams) {
+            return uploadImageMapFile(imageMapParams).then(function (imgMapResponse) {
+                var req = angular.copy(imgMapResponse);
+                req.imageMapId = imgMapResponse.id;
+                req.objectWeights = {};
+                return $http.post(BASE_URL + "/new", req);
             });
         },
         get: function (id) {

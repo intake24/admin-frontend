@@ -46,7 +46,8 @@ module.exports = function (app) {
             })
             .when(routes.imageGalleryGuidedList, {
                 template: require("./image-gallery/templates/image-gallery-guided.pug"),
-                controller: 'ImageGalleryGuided'
+                controller: 'ImageGalleryGuided',
+                reloadOnSearch: false
             })
             .when(routes.imageGalleryGuidedItem, {
                 template: require("./image-gallery/templates/image-gallery-guided-item.pug"),

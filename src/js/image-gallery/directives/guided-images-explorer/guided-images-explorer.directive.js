@@ -6,16 +6,16 @@
 
 module.exports = function (app) {
     require("./guided-images-explorer-item/guided-images-explorer-item.directive")(app);
-    app.directive("guidedImagesExplorer", ["GuidedImagesService", "appRoutes", directiveFun]);
+    app.directive("guidedImagesExplorer", ["GuidedImagesService", "appRoutes", "$location", directiveFun]);
 };
 
-function directiveFun(GuidedImagesService, appRoutes) {
+function directiveFun(GuidedImagesService, appRoutes, $location) {
 
     function controller(scope, element, attributes) {
 
         var _items = [];
 
-        scope.searchQuery = "";
+        scope.searchQuery = getSearchQuery();
         scope.addNewUrl = appRoutes.imageGalleryNewGuidedItem;
 
         scope.itemIsFiltered = function (item) {
@@ -30,13 +30,20 @@ function directiveFun(GuidedImagesService, appRoutes) {
             })
         };
 
-        scope.onFilesChange = function (fileList) {
-            console.log(fileList);
-        };
+        scope.$watch("searchQuery", setSearchQuery);
 
         GuidedImagesService.all().then(function (data) {
             _items.push.apply(_items, data);
         });
+
+        function getSearchQuery() {
+            return $location.search().q || "";
+        }
+
+        function setSearchQuery(val) {
+            $location.search({q: val});
+        }
+
     }
 
     return {

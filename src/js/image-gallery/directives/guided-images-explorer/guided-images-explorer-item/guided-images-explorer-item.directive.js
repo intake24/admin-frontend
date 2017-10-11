@@ -13,7 +13,9 @@ module.exports = function (app) {
 function directiveFun(appRoutes) {
 
     function controller(scope, element, attributes) {
-        scope.itemUrl = getFormedUrl(appRoutes.imageGalleryGuidedItem, {guidedId: scope.title});
+        scope.getItemUrl = function () {
+            return getFormedUrl(appRoutes.imageGalleryGuidedItem, {guidedId: scope.title});
+        };
     }
 
     return {

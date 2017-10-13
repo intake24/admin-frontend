@@ -18,18 +18,22 @@
                             <a href="" ng-click="switchView(true)">General</a>
                         </li>
                         <li role="presentation"
-                            ng-show="isNewItem()"
+                            ng-hide="isNewItem()"
                             ng-class="{active: !generalInfoVisible}">
                             <a href="" ng-click="switchView(false)">Weights</a>
                         </li>
                     </ul>
                 </div>
-                <guided-image-editor-meta ng-show="generalInfoVisible"
+                <div ng-hide="getIsLoaded()">
+                    Loading...
+                </div>
+                <guided-image-editor-meta ng-show="generalInfoVisible && getIsLoaded()"
                                           image-file="guideImage.newImageFile"
                                           guide-image-id="guideImage.id"
                                           guide-image-description="guideImage.description"></guided-image-editor-meta>
-                <div ng-hide="generalInfoVisible">
+                <div ng-hide="generalInfoVisible || !getIsLoaded()">
                     <guided-image-editor-path-list
+                            image-map-id="guideImage.imageMapId"
                             image-map-objects="guideImage.imageMapObjects"
                             selected-index="guideImage.selectedPathIndex"
                             hovered-index="guideImage.hoveredPathIndex"

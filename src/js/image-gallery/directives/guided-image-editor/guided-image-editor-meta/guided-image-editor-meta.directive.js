@@ -54,7 +54,7 @@ module.exports = function (app) {
                         description: scope.newDescription,
                         baseImage: scope.imageFile
                     }).then(function (data) {
-                        console.log(data);
+                        $route.updateParams({guidedId: scope.newId});
                     });
                 }
                 prom.finally(function () {

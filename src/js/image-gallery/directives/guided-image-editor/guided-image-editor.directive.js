@@ -17,6 +17,7 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
 
+
             scope.generalInfoVisible = true;
             scope.canvasIsActive = !scope.generalInfoVisible;
 
@@ -24,13 +25,15 @@ module.exports = function (app) {
                 id: $routeParams.guidedId,
                 description: "",
                 src: "",
-                guideImageId: "",
-                baseImageId: "",
-                guideImageDescription: "",
+                imageMapId: null,
                 imageMapObjects: [],
                 hoveredPathIndex: null,
                 selectedPathIndex: null,
                 newImageFile: null
+            };
+
+            scope.getIsLoaded = function () {
+                return scope.guideImage.imageMapId != null;
             };
 
             scope.switchView = function (generalInfoVisible) {
@@ -39,10 +42,10 @@ module.exports = function (app) {
             };
 
             scope.isNewItem = function () {
-                return scope.guideImage.id != null;
+                return scope.guideImage.id == null;
             };
 
-            if (scope.isNewItem()) {
+            if (!scope.isNewItem()) {
                 GuidedImagesService.get($routeParams.guidedId).then(function (data) {
                     setScopeFromData.call(scope.guideImage, data);
                 });
@@ -63,6 +66,7 @@ module.exports = function (app) {
 function setScopeFromData(data) {
     this.description = data.meta.description;
     this.src = data.path;
+    this.imageMapId = data.imageMapId;
     this.imageMapObjects.push.apply(this.imageMapObjects, data.objects);
 }
 

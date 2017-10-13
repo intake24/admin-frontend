@@ -28,6 +28,22 @@ function serviceFun($http, $window) {
         });
     }
 
+    function unpackObject(obj) {
+        /**
+         * Transform flatten coordinates to [[x,y]]
+         */
+        var c = [];
+        for (var i = 0; i < obj.outlineCoordinates.length; i += 2) {
+            c.push([obj.outlineCoordinates[i],
+                obj.outlineCoordinates[i + 1]]);
+        }
+        obj.outlineCoordinates = c;
+    }
+
+    function unpackObjects(objs) {
+        objs.forEach(unpackObject);
+    }
+
     return {
         all: function () {
             return $http.get(BASE_URL).then(function (data) {
@@ -52,23 +68,28 @@ function serviceFun($http, $window) {
         },
         get: function (id) {
             return $http.get(BASE_URL + "/" + id + "/full").then(function (data) {
-                /**
-                 * Transform flatten coordinates back to [[x,y]]
-                 */
-                data.objects.forEach(function (t) {
-                    var c = [];
-                    for (var i = 0; i < t.outlineCoordinates.length; i += 2) {
-                        c.push([t.outlineCoordinates[i],
-                            t.outlineCoordinates[i + 1]]);
-                    }
-                    t.id = t.id[0];
-                    t.outlineCoordinates = c;
-                });
+                unpackObjects(data.objects);
                 return data;
             });
         },
         patchMeta: function (id, guideImageMeta) {
             return $http.patch(BASE_URL + "/" + id + "/meta", guideImageMeta);
+        },
+        patchObjects: function (imageMapId, objects) {
+            var url = BASE_URL + "/" + imageMapId + "/objects";
+            var data = angular.copy(objects);
+            data.forEach(function (d) {
+                /***
+                 * Flatten coordinates
+                 */
+                d.outlineCoordinates = d.outlineCoordinates.reduce(function (a, b) {
+                    return a.concat(b)
+                }, []);
+            });
+            return $http.patch(url, data).then(function (data) {
+                unpackObjects(data);
+                return data;
+            });
         }
     }
 }

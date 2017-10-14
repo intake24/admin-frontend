@@ -15,6 +15,8 @@ module.exports = function (app) {
         function controller(scope, element, attributes) {
 
             var _changed = false;
+            var _imageWidth = null;
+            var _imageHeight = null;
 
             scope.loading = false;
 
@@ -60,7 +62,7 @@ module.exports = function (app) {
             scope.saveIsActive = function () {
                 return _changed && imageMapObjectsAreValid.call(scope) &&
                     !scope.loading &&
-                    scope.imageMapId != null || true;
+                    scope.imageMapId != null;
             };
 
             scope.viewIsDisabled = function () {
@@ -87,8 +89,13 @@ module.exports = function (app) {
                 if (!scope.saveIsActive()) {
                     return;
                 }
+                var data = {
+                    imageWidth: _imageWidth,
+                    imageHeight: _imageHeight,
+                    objects: scope.imageMapObjects
+                };
                 scope.loading = true;
-                GuidedImagesService.patchObjects(scope.imageMapId, scope.imageMapObjects)
+                GuidedImagesService.patchObjects(scope.imageMapId, data)
                     .then(function (data) {
                         console.log(data);
                     }).finally(function () {
@@ -114,7 +121,10 @@ module.exports = function (app) {
                 }
             }, true);
 
-            GuidedImageEditorCanvasService.registerOutWatchers(function (coordinates) {
+            GuidedImageEditorCanvasService.registerOutWatchers(function (data) {
+                var coordinates = data.coordinates;
+                _imageWidth = data.imageWidth;
+                _imageHeight = data.imageHeight;
                 if (!newCoordinatesEqual(scope, coordinates)) {
                     _changed = true;
                     coordinates.forEach(function (c, i) {

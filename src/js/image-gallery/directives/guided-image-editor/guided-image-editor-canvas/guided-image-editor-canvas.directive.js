@@ -37,7 +37,12 @@ module.exports = function (app) {
             });
 
             scope.notifyServices = function () {
-                GuidedImageEditorCanvasService.updatePathsOut(outputPaths.call(scope));
+                var data = {
+                    imageWidth: scope.canvas.width,
+                    imageHeight: scope.canvas.height,
+                    coordinates: outputPaths.call(scope)
+                };
+                GuidedImageEditorCanvasService.updatePathsOut(data);
             };
 
             scope.$watch("src", function (newVal, oldVal) {

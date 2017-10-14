@@ -177,14 +177,13 @@ function Path(pathNodes) {
     }
 
     this.addNode = function (pathNode) {
-        // Fixme: nodes are added in the wrong places when added in random order. So, they should be probably arranged by x and y.
         var shortestDistance = null;
         var index = 0;
 
         for (var i = 0; i < _nodes.length; i++) {
             var cp;
             if (_nodes[i + 1] == null) {
-                cp = _nodes[i];
+                cp = closestPoint(_nodes[i], _nodes[0], pathNode);
             } else {
                 cp = closestPoint(_nodes[i], _nodes[i + 1], pathNode);
             }

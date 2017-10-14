@@ -75,10 +75,10 @@ function serviceFun($http, $window) {
         patchMeta: function (id, guideImageMeta) {
             return $http.patch(BASE_URL + "/" + id + "/meta", guideImageMeta);
         },
-        patchObjects: function (imageMapId, objects) {
+        patchObjects: function (imageMapId, reqObject) {
             var url = BASE_URL + "/" + imageMapId + "/objects";
-            var data = angular.copy(objects);
-            data.forEach(function (d) {
+            var data = angular.copy(reqObject);
+            data.objects.forEach(function (d) {
                 /***
                  * Flatten coordinates
                  */

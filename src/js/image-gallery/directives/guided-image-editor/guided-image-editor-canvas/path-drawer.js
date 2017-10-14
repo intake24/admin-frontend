@@ -375,7 +375,7 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
     }
 
     function _hoverNode(d, index) {
-        d3.event.stopPropagation();
+        d3.event.preventDefault();
         var mouseOver = d3.event.type == "mouseover",
             r = mouseOver ? ActiveNodeRadius : NodeRadius;
         _nodes

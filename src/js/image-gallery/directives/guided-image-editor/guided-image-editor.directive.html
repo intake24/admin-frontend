@@ -1,13 +1,13 @@
 <div class="guided-image-editor container-fluid">
     <div class="guides-drawer row mt-1">
         <div class="col-xs-9">
-            <guided-image-editor-canvas ng-show="guideImage.src"
+            <guided-image-editor-canvas ng-show="!isNewItem() && guideImage.src"
                                         src="guideImage.src"
                                         active="canvasIsActive"
                                         hovered-path-index="guideImage.hoveredPathIndex"
                                         selected-path-index="guideImage.selectedPathIndex"></guided-image-editor-canvas>
             <guided-image-editor-image-select file="guideImage.newImageFile"
-                                              ng-hide="guideImage.src"></guided-image-editor-image-select>
+                                              ng-hide="!isNewItem()"></guided-image-editor-image-select>
 
         </div>
         <div class="col-xs-3">

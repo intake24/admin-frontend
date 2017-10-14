@@ -96,9 +96,7 @@ module.exports = function (app) {
                 };
                 scope.loading = true;
                 GuidedImagesService.patchObjects(scope.imageMapId, data)
-                    .then(function (data) {
-                        console.log(data);
-                    }).finally(function () {
+                    .finally(function () {
                         scope.loading = false;
                     })
             };

@@ -409,7 +409,7 @@ function PathSvg(svgSelection, path, style, bordersValidatorFn,
     }
 
     function _dragstarted(d) {
-        console.log("_dragstarted", d);
+
     }
 
     function _dragged(d) {

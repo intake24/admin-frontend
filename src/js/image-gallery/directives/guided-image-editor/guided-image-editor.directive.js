@@ -33,7 +33,7 @@ module.exports = function (app) {
             };
 
             scope.getIsLoaded = function () {
-                return scope.guideImage.imageMapId != null;
+                return scope.guideImage.imageMapId != null || scope.isNewItem();
             };
 
             scope.switchView = function (generalInfoVisible) {

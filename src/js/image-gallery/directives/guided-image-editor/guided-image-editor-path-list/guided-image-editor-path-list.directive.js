@@ -62,11 +62,11 @@ module.exports = function (app) {
             scope.saveIsActive = function () {
                 return _changed && imageMapObjectsAreValid.call(scope) &&
                     !scope.loading &&
-                    scope.imageMapId != null;
+                    scope.guideImageId != null;
             };
 
             scope.viewIsDisabled = function () {
-                return scope.imageMapId == null;
+                return scope.guideImageId == null;
             };
 
             scope.getObjects = function () {
@@ -95,7 +95,7 @@ module.exports = function (app) {
                     objects: scope.imageMapObjects
                 };
                 scope.loading = true;
-                GuidedImagesService.patchObjects(scope.imageMapId, data)
+                GuidedImagesService.patchObjects(scope.guideImageId, data)
                     .finally(function () {
                         scope.loading = false;
                     })
@@ -149,7 +149,7 @@ module.exports = function (app) {
             restrict: 'E',
             link: controller,
             scope: {
-                imageMapId: "=?",
+                guideImageId: "=?",
                 selectedIndex: "=?",
                 hoveredIndex: "=?",
                 imageMapObjects: "=?"

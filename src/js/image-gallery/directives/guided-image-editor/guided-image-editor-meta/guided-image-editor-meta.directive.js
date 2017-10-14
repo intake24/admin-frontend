@@ -44,20 +44,17 @@ module.exports = function (app) {
                 var prom;
                 if (scope.guideImageId) {
                     prom = GuidedImagesService
-                        .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription})
-                        .then(function (data) {
-                            $route.updateParams({guidedId: data.id});
-                        });
+                        .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription});
                 } else {
                     prom = GuidedImagesService.post({
                         id: scope.newId,
                         description: scope.newDescription,
                         baseImage: scope.imageFile
-                    }).then(function (data) {
-                        $route.updateParams({guidedId: scope.newId});
                     });
                 }
-                prom.finally(function () {
+                prom.then(function (data) {
+                    $route.updateParams({guidedId: data.id});
+                }).finally(function () {
                     scope.loading = false;
                 });
             };

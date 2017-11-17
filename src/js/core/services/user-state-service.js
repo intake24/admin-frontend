@@ -33,6 +33,9 @@ function serviceFun($rootScope, $timeout, $cookies) {
             isGlobalFoodsAdmin: function () {
                 return _.contains(this.roles, "foodsadmin");
             },
+            isImagesAdmin: function() {
+                return _.contains(this.roles, "imagesadmin");
+            },
             isGlobalSurveyAdmin: function () {
                 return _.contains(this.roles, "surveyadmin");
             },
@@ -111,7 +114,7 @@ function serviceFun($rootScope, $timeout, $cookies) {
             },
 
             canAccessPortionSizeImages: function () {
-                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+                return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isImagesAdmin();
             },
 
             canAccessSurveyFeedback: function () {

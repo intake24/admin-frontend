@@ -499,7 +499,7 @@ function serviceFun() {
                 case "cereal":
 
                     packedPortionSize.parameters = [
-                        {name: "cereal-type", value: portionSize.parameters.cereal_type}
+                        {name: "type", value: portionSize.parameters.cereal_type}
                     ];
 
                     break;

@@ -105,11 +105,13 @@ module.exports = function (app) {
                 }
             };
 
+            scope.$watch ("newName", function(newValue) {
+                scope.newNameIsValid = (scope.newName != undefined) && /^[$_a-zA-Z0-9]+$/.test(scope.newName);
+            });
+
             scope.getNotValid = function () {
-                var nameIsNotValid = scope.newName.replace(/\s+/gi, "") == "",
-                    descriptionIsNotValid = scope.newDescription.replace(/\s+/gi, "") == "";
-                return nameIsNotValid || descriptionIsNotValid ||
-                    (scope.items != undefined && scope.items.length == 0);
+                var descriptionIsNotValid = (scope.newDescription == undefined) || scope.newDescription.replace(/\s+/gi, "") == "";
+                return descriptionIsNotValid || !scope.newNameIsValid;
             };
 
             scope.onFilesChange = function (fileList) {
@@ -147,6 +149,7 @@ module.exports = function (app) {
                 if (scope.getNotValid()) {
                     return;
                 }
+
                 var images = scope.items.map(function (item) {
                     return {
                         sourceImageId: item.sourceId,
@@ -192,9 +195,9 @@ module.exports = function (app) {
                 var image = AsServedSetService.getImageObj();
                 image.loading = true;
                 scope.items.unshift(image);
-                ImageService.addForAsServed(scope.name, file).then(function (data) {
-                    image.sourceId = data.id;
-                    image.imageUrl = data.src;
+                ImageService.addForAsServed(scope.newName, file).then(function (data) {
+                    image.sourceId = data[0].id;
+                    image.imageUrl = data[0].fixedSizeUrl;
                     image.loading = false;
                 }, function () {
                     scope.removeItem(image);

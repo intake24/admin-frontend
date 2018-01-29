@@ -11,6 +11,10 @@ module.exports = function (app) {
 
         function controller(scope, element, attributes) {
             element.bind("click", function (e) {
+
+                if (element && element[0].attributes.disabled)
+                    return false;
+
                 var $input = angular.element("<input type='file' class='hidden'" +
                     (scope.multiple ? ' multiple ' : '') + ">");
                 $input[0].onchange = function () {

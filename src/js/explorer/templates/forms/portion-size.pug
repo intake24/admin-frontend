@@ -44,7 +44,7 @@
         .form-group
             label.col-xs-3.control-label(for="portion-size-conv-factor-{{$index}}")
                 | #{ gettext("Conversion factor") }
-            .col-xs-7
+            .col-xs-6
                 input(type='range' min="0.2" max="10" step="0.01" id="portion-size-conv-factor-{{$index}}"
                 ng-disabled="!currentUserCanUpdateLocalFields"
                 ng-model='portionSize.conversionFactor')

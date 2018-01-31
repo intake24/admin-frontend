@@ -195,7 +195,8 @@ function serviceFun() {
                 method: packed.method,
                 description: packed.description,
                 imageUrl: packed.imageUrl,
-                useForRecipes: packed.useForRecipes
+                useForRecipes: packed.useForRecipes,
+                conversionFactor: packed.conversionFactor
             };
 
             unpacked.parameters = {};
@@ -425,6 +426,7 @@ function serviceFun() {
             packedPortionSize.description = portionSize.description;
             packedPortionSize.imageUrl = portionSize.imageUrl;
             packedPortionSize.useForRecipes = portionSize.useForRecipes;
+            packedPortionSize.conversionFactor = portionSize.conversionFactor;
 
             switch (portionSize.method) {
 

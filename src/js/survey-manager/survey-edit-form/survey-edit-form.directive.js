@@ -110,7 +110,8 @@ function getRequest(scope) {
         allowGeneratedUsers: scope.form.allowGeneratedUsers,
         externalFollowUpURL: scope.form.externalFollowUpURL,
         supportEmail: scope.form.supportEmail,
-        description: scope.survey ? scope.survey.description : null
+        description: scope.survey ? scope.survey.description : null,
+        submissionNotificationUrl: scope.form.submissionNotificationUrl
     };
 }
 
@@ -149,6 +150,7 @@ function updateScope(scope, data) {
         scope.form.supportEmail = data.supportEmail;
         scope.form.startDate = new Date(data.startDate);
         scope.form.endDate = new Date(data.endDate);
+        scope.form.submissionNotificationUrl = data.submissionNotificationUrl;
     }
 }
 
@@ -161,4 +163,5 @@ function updateSurvey(scope, data) {
     scope.survey.supportEmail = data.supportEmail;
     scope.survey.startDate = data.startDate;
     scope.survey.endDate = data.endDate;
+    scope.survey.submissionNotificationUrl = data.submissionNotificationUrl;
 }

@@ -72,6 +72,12 @@ function serviceFun() {
             packed.attributes.reasonableAmount = Array();
         }
 
+        if (unpacked.overrideUseInRecipes) {
+            packed.attributes.useInRecipes = Array(unpacked.useInRecipes);
+        } else {
+            packed.attributes.useInRecipes = Array();
+        }
+
         packed.localData.portionSize = packPortionSizes(unpacked.portionSize);
 
         return packed;
@@ -87,7 +93,8 @@ function serviceFun() {
                 attributes: {
                     readyMealOption: instance.unpackOption(packed.main.attributes.readyMealOption),
                     sameAsBeforeOption: instance.unpackOption(packed.main.attributes.sameAsBeforeOption),
-                    reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount)
+                    reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount),
+                    useInRecipes: instance.unpackOption(packed.main.attributes.useInRecipes)
                 },
                 parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader),
                 localeRestrictions: packed.main.localeRestrictions
@@ -195,7 +202,6 @@ function serviceFun() {
                 method: packed.method,
                 description: packed.description,
                 imageUrl: packed.imageUrl,
-                useForRecipes: packed.useForRecipes,
                 conversionFactor: packed.conversionFactor
             };
 
@@ -309,7 +315,8 @@ function serviceFun() {
         return {
             readyMealOption: instance.packOption(unpacked.readyMealOption),
             sameAsBeforeOption: instance.packOption(unpacked.sameAsBeforeOption),
-            reasonableAmount: instance.packOption(unpacked.reasonableAmount)
+            reasonableAmount: instance.packOption(unpacked.reasonableAmount),
+            useInRecipes: instance.packOption(unpacked.useInRecipes)
         };
     };
 

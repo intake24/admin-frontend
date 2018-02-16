@@ -36,9 +36,25 @@
 					input.form-control(type="text"
 									placeholder=gettext('e.g. 600')
 									id="inheritable-reasonable-amount"
-									ng-disabled="!itemDefinition.main.attributes.reasonableAmount.defined || currentUserCanUpdateMainFields"
+									ng-disabled="!itemDefinition.main.attributes.reasonableAmount.defined || !currentUserCanUpdateMainFields"
 									ng-model="itemDefinition.main.attributes.reasonableAmount.value")
 				.col-xs-8
 					p.form-control-static
 						label(for="inheritable-reasonable-amount")
 							| #{ gettext("Reasonable amount (g/ml)") }
+	.form-group
+		.col-xs-3
+			button.btn.btn-default.btn-sm(ng-click="itemDefinition.main.attributes.useInRecipes.defined = !itemDefinition.main.attributes.useInRecipes.defined; itemDefinition.main.attributes.useInRecipes.value = itemDefinition.main.attributes.useInRecipes.value || 0"
+			ng-disabled="!currentUserCanUpdateMainFields")
+				span(ng-if="!(itemDefinition.main.attributes.useInRecipes.defined)") Override
+				span(ng-if="(itemDefinition.main.attributes.useInRecipes.defined)") Use inherited
+		.col-xs-9
+			.row
+				.col-xs-8
+					select.form-control(id="inheritable-use-in-recipes" ng-disabled="!itemDefinition.main.attributes.useInRecipes.defined || !currentUserCanUpdateMainFields"
+					ng-model="itemDefinition.main.attributes.useInRecipes.value"
+					ng-options="x.value as x.label for x in useInRecipesOptions")
+				.col-xs-4
+					p.form-control-static
+						label(for="inheritable-reasonable-amount")
+							| #{ gettext("Use for recipes") }

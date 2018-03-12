@@ -202,7 +202,8 @@ function serviceFun() {
                 method: packed.method,
                 description: packed.description,
                 imageUrl: packed.imageUrl,
-                conversionFactor: packed.conversionFactor
+                conversionFactor: packed.conversionFactor,
+                useForRecipes: packed.useForRecipes
             };
 
             unpacked.parameters = {};

@@ -169,6 +169,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
                     readyMealOption: {defined: false, value: null},
                     sameAsBeforeOption: {defined: false, value: null},
                     reasonableAmount: {defined: false, value: null},
+                    useInRecipes: {defined: false, value: 0}
                 },
                 parentCategories: [],
                 localeRestrictions: $scope.currentUser.canCreateGlobalFoods() ? [] : [$scope.currentLocale]
@@ -209,6 +210,7 @@ function controllerFun($scope, $timeout, $routeParams, sharedData, FoodService, 
                     readyMealOption: {defined: false, value: null},
                     sameAsBeforeOption: {defined: false, value: null},
                     reasonableAmount: {defined: false, value: null},
+                    useInRecipes: {defined: false, value: 0}
                 },
                 parentCategories: []
             },

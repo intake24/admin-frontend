@@ -28,6 +28,7 @@ module.exports = function () {
         "in_individual_packs": "portion/Gchse.jpg",
         "in_individual_puddings": "portion/Gyor.jpg",
         "in_individual_sweets": "Gswt2.jpg",
+        "in_spoonfuls": "Gspn.jpg",
         "in_slices": "portion/chesl3.jpg",
         "in_straight_cut_chips": "portion/chipst2.jpg",
         "in_thick_cut_chips": "portion/chipth2.jpg",

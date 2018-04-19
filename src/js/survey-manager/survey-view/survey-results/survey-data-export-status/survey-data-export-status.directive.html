@@ -23,8 +23,8 @@
                 <td>{{formatCreatedAt(task.createdAt)}}</td>
                 <td class="secondary-column">{{formatDate(task.dateFrom) }}</td>
                 <td class="secondary-column">{{formatDate(task.dateTo) }}</td>
-                <td ng-if="task.status.Completed">
-                    <a href="{{task.status.Completed.downloadUrl}}">
+                <td ng-if="task.status.DownloadUrlAvailable">
+                    <a href="{{task.status.DownloadUrlAvailable.url}}">
                         <button type="button" class="btn btn-xs btn-success">Download</button>
                     </a>
                 </td>
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </td>
-                <td ng-if="task.status.InProgress && task.status.InProgress.progress == 1">
+                <td ng-if="task.status.DownloadUrlPending">
                     <div class="progress" style="margin-bottom: 0;">
                         <div class="progress-bar progress-bar-striped active progress-bar-info" role="progressbar"
                              style="width: 100%;">

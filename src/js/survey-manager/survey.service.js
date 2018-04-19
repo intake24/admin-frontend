@@ -81,7 +81,7 @@ function serviceFun($http, $window) {
                 "?dateFrom=" + downloadReq.dateFrom +
                 "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
 
-            return $http.get(url);
+            return $http.post(url);
         },
         getActiveExportTasks: function(surveyId) {
             var url = getFormedUrl(getActiveExportTasksUrl, {surveyId : surveyId})

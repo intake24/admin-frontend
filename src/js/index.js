@@ -4,8 +4,8 @@ require("./polyfills")();
 require("./gettext")();
 
 require("angular");
-require("textangular/dist/textAngular-sanitize.min");
 require("textangular");
+require("angular-sanitize");
 require("angular-animate");
 require("angular-touch");
 require("angular-ui-bootstrap");

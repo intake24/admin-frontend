@@ -12,7 +12,6 @@ module.exports = function (app) {
 
                     scope.progressToPercentage = function (progress) {
                         var result = (progress * 100.0 | 0) + "%";
-                        console.log(result);
                         return result;
                     };
 

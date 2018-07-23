@@ -1,11 +1,13 @@
 <form>
     <div class="form-group" ng-class="{'has-error': !fieldIsValid(newId)}">
+        <label class="control-label">Guide image ID</label>
         <input type="text" class="form-control"
                placeholder="Guide image ID"
                ng-disabled="loading || !editState"
                ng-model="newId">
     </div>
     <div class="form-group" ng-class="{'has-error': !fieldIsValid(newDescription)}">
+        <label class="control-label">Guide image description</label>
         <input type="text" class="form-control"
                placeholder="Guide image description"
                ng-disabled="loading || !editState"

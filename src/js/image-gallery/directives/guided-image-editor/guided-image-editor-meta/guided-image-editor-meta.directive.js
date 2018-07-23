@@ -7,10 +7,10 @@
 var textFieldIsNotEmpty = require("../../../../core/utils/text-is-not-empty");
 
 module.exports = function (app) {
-    app.directive("guidedImageEditorMeta", ["$route",
-        "GuidedImagesService", directiveFun]);
+    app.directive("guidedImageEditorMeta", ["$route", "$location",
+        "GuidedImagesService", "appRoutes", directiveFun]);
 
-    function directiveFun($route, GuidedImagesService) {
+    function directiveFun($route, $location, GuidedImagesService, appRoutes) {
 
         function controller(scope, element, attributes) {
 
@@ -42,19 +42,23 @@ module.exports = function (app) {
                 }
                 scope.loading = true;
                 var prom;
+                var nextPath = appRoutes.imageGalleryGuidedItem.replace(":guidedId", scope.newId);
                 if (scope.guideImageId) {
                     prom = GuidedImagesService
-                        .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription});
+                        .patchMeta(scope.guideImageId, {id: scope.newId, description: scope.newDescription})
+                        .then(function (data) {
+                            $location.path(nextPath).replace();
+                        });
                 } else {
                     prom = GuidedImagesService.post({
                         id: scope.newId,
                         description: scope.newDescription,
                         baseImage: scope.imageFile
+                    }).then(function (data) {
+                        $location.path(nextPath);
                     });
                 }
-                prom.then(function (data) {
-                    $route.updateParams({guidedId: data.id});
-                }).finally(function () {
+                prom.finally(function () {
                     scope.loading = false;
                 });
             };

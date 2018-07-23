@@ -72,6 +72,12 @@ function serviceFun() {
             packed.attributes.reasonableAmount = Array();
         }
 
+        if (unpacked.overrideUseInRecipes) {
+            packed.attributes.useInRecipes = Array(unpacked.useInRecipes);
+        } else {
+            packed.attributes.useInRecipes = Array();
+        }
+
         packed.localData.portionSize = packPortionSizes(unpacked.portionSize);
 
         return packed;
@@ -87,7 +93,8 @@ function serviceFun() {
                 attributes: {
                     readyMealOption: instance.unpackOption(packed.main.attributes.readyMealOption),
                     sameAsBeforeOption: instance.unpackOption(packed.main.attributes.sameAsBeforeOption),
-                    reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount)
+                    reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount),
+                    useInRecipes: instance.unpackOption(packed.main.attributes.useInRecipes)
                 },
                 parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader),
                 localeRestrictions: packed.main.localeRestrictions
@@ -195,6 +202,7 @@ function serviceFun() {
                 method: packed.method,
                 description: packed.description,
                 imageUrl: packed.imageUrl,
+                conversionFactor: packed.conversionFactor,
                 useForRecipes: packed.useForRecipes
             };
 
@@ -308,7 +316,8 @@ function serviceFun() {
         return {
             readyMealOption: instance.packOption(unpacked.readyMealOption),
             sameAsBeforeOption: instance.packOption(unpacked.sameAsBeforeOption),
-            reasonableAmount: instance.packOption(unpacked.reasonableAmount)
+            reasonableAmount: instance.packOption(unpacked.reasonableAmount),
+            useInRecipes: instance.packOption(unpacked.useInRecipes)
         };
     };
 
@@ -425,6 +434,7 @@ function serviceFun() {
             packedPortionSize.description = portionSize.description;
             packedPortionSize.imageUrl = portionSize.imageUrl;
             packedPortionSize.useForRecipes = portionSize.useForRecipes;
+            packedPortionSize.conversionFactor = portionSize.conversionFactor;
 
             switch (portionSize.method) {
 
@@ -499,7 +509,7 @@ function serviceFun() {
                 case "cereal":
 
                     packedPortionSize.parameters = [
-                        {name: "cereal-type", value: portionSize.parameters.cereal_type}
+                        {name: "type", value: portionSize.parameters.cereal_type}
                     ];
 
                     break;

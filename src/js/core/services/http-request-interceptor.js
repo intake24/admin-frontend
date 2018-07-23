@@ -56,7 +56,10 @@ module.exports = function (app) {
                     }
                 },
                 responseError: function (rejection) {
-                    if (rejection.status == 200) {
+
+                    var expectedStatusCodes = rejection.config.expectedStatusCodes || [200];
+
+                    if (expectedStatusCodes.indexOf(rejection.status) != -1) {
 
                     } else if (rejection.status == 401) {
                         if (rejection.config.url == window.api_base_url + "signin") {
@@ -66,7 +69,6 @@ module.exports = function (app) {
                         } else {
                             return retryRequest(rejection);
                         }
-
                     } else {
                         if (rejection.data && rejection.data.errorMessage) {
                             MessageService.showMessage(rejection.data.errorMessage, "danger");

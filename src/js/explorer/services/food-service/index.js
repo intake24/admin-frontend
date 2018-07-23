@@ -174,11 +174,19 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         getCategoryProblemsRecursive: function (locale, code, onSuccess, onFailure) {
-            return $http.get(api_base_url + 'admin/categories/' + locale + '/' + code + '/recursive-problems');
+            return $http({
+                method: 'GET',
+                url: api_base_url + 'admin/categories/' + locale + '/' + code + '/recursive-problems',
+                expectedStatusCodes: [200, 503]
+            });
         },
 
         getFoodProblems: function (locale, code, onSuccess, onFailure) {
-            return $http.get(api_base_url + 'admin/foods/' + locale + '/' + code + '/problems');
+            return $http({
+                method: 'GET',
+                url: api_base_url + 'admin/foods/' + locale + '/' + code + '/problems',
+                expectedStatusCodes: [200, 503]
+            });
         },
 
         cloneFood: function(locale, code, onSuccess, onFailure) {

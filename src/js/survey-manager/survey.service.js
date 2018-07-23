@@ -30,7 +30,8 @@ function serviceFun($http, $window) {
             supportEmail: data.supportEmail,
             startDate: data.startDate,
             endDate: data.endDate,
-            description: data.description[0]
+            description: data.description[0],
+            submissionNotificationUrl: data.submissionNotificationUrl[0]
         }
     }
 
@@ -46,6 +47,7 @@ function serviceFun($http, $window) {
             startDate: data.startDate,
             endDate: data.endDate,
             description: data.description ? [data.description] : [],
+            submissionNotificationUrl: data.submissionNotificationUrl? [data.submissionNotificationUrl] : []
         }
     }
 
@@ -79,7 +81,7 @@ function serviceFun($http, $window) {
                 "?dateFrom=" + downloadReq.dateFrom +
                 "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
 
-            return $http.get(url);
+            return $http.post(url);
         },
         getActiveExportTasks: function(surveyId) {
             var url = getFormedUrl(getActiveExportTasksUrl, {surveyId : surveyId})

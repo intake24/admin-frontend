@@ -18,6 +18,17 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     $scope.sharedData = sharedData;
 
+    $scope.useInRecipesOptions = [{
+        label: "Use anywhere",
+        value: 0
+    }, {
+        label: "Use only as regular food",
+        value: 1
+    }, {
+        label: "Use only as recipe ingredient",
+        value: 2
+    }];
+
     $scope.$watch(function () {
         return $routeParams.locale;
     }, function (newValue) {

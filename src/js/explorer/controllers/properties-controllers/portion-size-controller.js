@@ -14,6 +14,7 @@ function controllerFun($scope, SharedData) {
     $scope.addPortionSize = function () {
         $scope.portionSizes.push({
             method: 'as-served',
+            conversionFactor: 1,
             description: '',
             imageUrl: '',
             useForRecipes: false,

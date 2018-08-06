@@ -6,9 +6,9 @@
 
 var d3 = require("d3");
 
-var SelectedColor = "#08f900";
-var UnselectedColor = "#79cc6d";
-var HoveredColor = "#6bf969";
+var SelectedColor = "#07e100";
+var UnselectedColor = "#0085cc";
+var HoveredColor = "#6af568";
 var UnselectedOpacity = 0.8;
 var HoveredOpacity = 0.8;
 var SelectedOpacity = 1;

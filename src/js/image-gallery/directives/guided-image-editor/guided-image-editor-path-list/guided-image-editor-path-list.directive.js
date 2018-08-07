@@ -33,7 +33,7 @@ module.exports = function (app) {
             };
 
             scope.addPath = function () {
-                scope.imageMapObjects.push(getBlankImageMapObject([], scope.imageMapObjects.length));
+                scope.imageMapObjects.push(getBlankImageMapObject([], scope.imageMapObjects.length + 1));
                 var lastItem = scope.imageMapObjects[scope.imageMapObjects.length - 1];
                 scope.selectPath(lastItem);
             };

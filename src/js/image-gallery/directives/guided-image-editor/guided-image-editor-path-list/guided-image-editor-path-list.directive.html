@@ -41,7 +41,7 @@
                        ng-checked="item == selectedItem"
                        ng-click="selectPath(item)">
                 Path #
-                <input type="text" class="guides-drawer-path-info-index-input"
+                <input type="number" min="0" step="1" class="guides-drawer-path-info-index-input"
                        placeholder="Index" ng-model="item.navigationIndex">
             </label>
             <a href="" class="close" ng-click="removePath(item)">&times;</a>

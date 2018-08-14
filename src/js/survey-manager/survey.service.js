@@ -79,7 +79,7 @@ function serviceFun($http, $window) {
         createExportTask: function (surveyId, downloadReq) {
             var url = getFormedUrl(createExportTaskUrl, {surveyId: surveyId}) +
                 "?dateFrom=" + downloadReq.dateFrom +
-                "&dateTo=" + downloadReq.dateTo + "&forceBOM=1";
+                "&dateTo=" + downloadReq.dateTo + "&forceBOM=1" + "&format=" + downloadReq.format;
 
             return $http.post(url);
         },

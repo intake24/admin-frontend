@@ -52,6 +52,9 @@ function serviceFun($rootScope, $timeout, $cookies) {
             },
 
             canAccessFoodDatabase: function () {
+                if (window.hideFoodDatabase)
+                    return false;
+
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || _.some(this.roles, function (r) {
                         return r.startsWith("fdbm/");
                     })
@@ -114,6 +117,9 @@ function serviceFun($rootScope, $timeout, $cookies) {
             },
 
             canAccessPortionSizeImages: function () {
+                if (window.hideFoodDatabase)
+                    return false;
+
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isImagesAdmin();
             },
 

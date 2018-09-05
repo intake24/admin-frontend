@@ -29,5 +29,6 @@ require("./set-routes")(app);
 require("./textangular-config")(app);
 require("./bootstrap-ui-datetime-picker-config")(app);
 
+window.hideFoodDatabase = process.env.HIDE_FOOD_DATABASE;
 window.api_base_url = process.env.API_BASE_URL;
 window.recaptcha_site_key = process.env.RECAPTCHA_SITE_KEY;

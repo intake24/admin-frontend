@@ -20,6 +20,7 @@ module.exports = function (grunt) {
                     debug: config.includeJsMaps
                 },
                 transform: [envify({
+                    HIDE_FOOD_DATABASE: config.hideFoodDatabase,
                     API_BASE_URL: config.apiBaseUrl,
                     RECAPTCHA_SITE_KEY: config.recaptchaSiteKey
                 }), stringify({

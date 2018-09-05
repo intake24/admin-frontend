@@ -14,8 +14,8 @@ function serviceFun($http, $window) {
 
     var surveysUrl = $window.api_base_url + "surveys",
         surveyUrl = $window.api_base_url + "surveys/:surveyId",
-        createExportTaskUrl = $window.api_base_url + "surveys/:surveyId/submissions/async/csv",
-        getActiveExportTasksUrl = $window.api_base_url + "surveys/:surveyId/submissions/async/status",
+        createExportTaskUrl = $window.api_base_url + "data-export/:surveyId/submissions/async/csv",
+        getActiveExportTasksUrl = $window.api_base_url + "data-export/:surveyId/submissions/async/status",
         surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
         surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
 

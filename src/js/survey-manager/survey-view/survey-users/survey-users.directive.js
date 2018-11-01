@@ -7,12 +7,12 @@
 var userTypes = require("./survey-users-types")();
 
 module.exports = function (app) {
-    app.directive("surveyUsers", ["AdminUsersService", "MessageService", directiveFun]);
+    app.directive("surveyUsers", ["AdminUsersService", "MessageService", "$timeout", directiveFun]);
     require("./survey-respondent-modal/survey-respondent-modal.directive")(app);
     require("./survey-staff-modal/survey-staff-modal.directive")(app);
 };
 
-function directiveFun(AdminUsersService, MessageService) {
+function directiveFun(AdminUsersService, MessageService, $timeout) {
 
     function controller(scope, element, attribute) {
 
@@ -31,6 +31,9 @@ function directiveFun(AdminUsersService, MessageService) {
 
         scope.loading = true;
         scope.fileLoading = false;
+
+        scope.authUrlsExporting = false;
+        scope.authUrlsDownloadUrl = null;
 
         scope.newUser = function () {
             scope.editedUser = null;
@@ -77,6 +80,49 @@ function directiveFun(AdminUsersService, MessageService) {
             successMessage(MessageService);
         };
 
+        scope.checkExportStatus = function (requestId) {
+            AdminUsersService.authUrlsExportStatus(scope.surveyId, requestId)
+                .then(function (status) {
+
+                    if (status.Successful) {
+                        scope.authUrlsExporting = false;
+                        scope.authUrlsDownloadUrl = status.Successful.downloadUrl;
+
+                        $timeout(function() {
+                            scope.authUrlsDownloadUrl = null;
+                        }, 300000);
+                    } else if (status.Failed) {
+                        scope.authUrlsExporting = false;
+                        MessageService.showMessage("Authentication URLs export failed: " + status.Failed.errorMessage, "danger");
+                    } else if (status.Pending) {
+
+                        $timeout(function () {
+                            scope.checkExportStatus(requestId);
+                        }, 1000);
+
+                    } else {
+                        MessageService.showMessage("Unexpected response from the server", "danger");
+                    }
+
+                }, function () {
+                    scope.authUrlsExporting = false;
+                });
+
+        };
+
+        scope.exportAuthUrls = function () {
+            scope.authUrlsExporting = true;
+            scope.authUrlsDownloadUrl = null;
+
+            AdminUsersService.exportAuthUrls(scope.surveyId)
+                .then(function (requestId) {
+                        scope.checkExportStatus(requestId);
+                    },
+                    function () {
+                        scope.authUrlsExporting = false;
+                    });
+        };
+
         scope.selectView(scope.views.respondents);
 
         scope.onFilesChange = function (fileList) {
@@ -89,8 +135,11 @@ function directiveFun(AdminUsersService, MessageService) {
                 def = AdminUsersService.uploadSurveyRespondentsCsv(scope.surveyId, file);
             }
             def.then(function () {
-                onUsersUpdated(scope, AdminUsersService, MessageService);
-            }).finally(function () {
+                    onUsersUpdated(scope, AdminUsersService, MessageService);
+                },
+                function () {
+                    errorMessage()
+                }).finally(function () {
                 scope.fileLoading = false;
             });
         };

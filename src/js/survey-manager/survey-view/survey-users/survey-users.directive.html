@@ -18,7 +18,9 @@
                     </li>
                 </ul>
             </li>
-            <li class="vertical-align-top">
+        </ul>
+        <ul class="list-inline">
+            <li>
                 <button type="button" class="btn btn-default" ng-click="newUser()">
                     <span class="hidden-xs">
                         {{views.respondents.active ? "New respondent" : ""}}
@@ -38,6 +40,22 @@
                     </span>
                     <i class="fa fa-upload visible-xs" ng-hide="fileLoading"></i>
                 </button>
+
+                <button type ="button" class="btn btn-default" ng-if="views.respondents.active" ng-click="exportAuthUrls()" ng-disabled="authUrlsExporting">
+                    <span class="hidden-xs">
+                        Export sign-in URLs
+                    </span>
+                    <i class="fa fa-link visible-xs"></i>
+                    <i class="fa fa-spinner fa-spin" ng-if="authUrlsExporting"></i>
+                </button>
+
+                <a class="btn btn-default" ng-if="views.respondents.active && authUrlsDownloadUrl" ng-href="{{authUrlsDownloadUrl}}" target="_blank">
+                        <span class="hidden-xs">
+                            Download sign-in URLs
+                        </span>
+                    <i class="fa fa-download visible-xs"></i>
+                    </span>
+                </a>
             </li>
         </ul>
     </div>

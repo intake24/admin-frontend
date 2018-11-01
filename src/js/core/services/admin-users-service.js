@@ -19,7 +19,9 @@ function serviceFun($http, $window) {
         usersUrlPattern = $window.api_base_url + "users",
         userUrlPattern = $window.api_base_url + "users/:userId",
         userDeleteUrlPattern = $window.api_base_url + "users/:userId",
-        userPasswordUrlPattern = $window.api_base_url + "users/:userId/password";
+        userPasswordUrlPattern = $window.api_base_url + "users/:userId/password",
+        authUrlsExportUrlPattern = $window.api_base_url + "data-export/:surveyId/users/authentication-urls/export",
+        authUrlsStatusUrlPattern = $window.api_base_url + "data-export/:surveyId/users/authentication-urls/:requestId";
 
     function unpackPublicUserDataWithAlias(data) {
         return {
@@ -139,6 +141,12 @@ function serviceFun($http, $window) {
         },
         find: function (query) {
             return $http.get(usersUrlPattern + "?q=" + query + "&limit=20");
+        },
+        exportAuthUrls: function(surveyId) {
+            return $http.post(getFormedUrl(authUrlsExportUrlPattern, { surveyId: surveyId}));
+        },
+        authUrlsExportStatus: function (surveyId, requestId) {
+            return $http.get(getFormedUrl(authUrlsStatusUrlPattern, { surveyId: surveyId, requestId: requestId}));
         }
     };
 

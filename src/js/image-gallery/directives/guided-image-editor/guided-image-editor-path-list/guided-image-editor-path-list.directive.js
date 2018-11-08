@@ -8,9 +8,9 @@ var textFieldIsNotEmpty = require("../../../../core/utils/text-is-not-empty");
 
 module.exports = function (app) {
     app.directive("guidedImageEditorPathList", ["GuidedImageEditorCanvasService",
-        "GuidedImagesService", directiveFun]);
+        "GuideImagesService", directiveFun]);
 
-    function directiveFun(GuidedImageEditorCanvasService, GuidedImagesService) {
+    function directiveFun(GuidedImageEditorCanvasService, GuideImagesService) {
 
         function controller(scope, element, attributes) {
 
@@ -20,35 +20,47 @@ module.exports = function (app) {
 
             scope.loading = false;
 
-            scope.selectedItem = null;
+            scope.addPath = function () {
+                scope.objects.push(getBlankObject([], scope.objects.length));
+                scope.selectPath(scope.objects.length - 1);
+            };
 
-            scope.selectPath = function (item) {
-                var index = scope.getIndex(item);
+            scope.moveUp = function(index) {
+                if (index > 0)
+                {
+                    var tmp = scope.objects[index-1];
+                    scope.objects[index-1] = scope.objects[index];
+                    scope.objects[index] = tmp;
+                }
+            };
+
+            scope.moveDown = function(index) {
+                if (index < (scope.objects.length - 1))
+                {
+                    var tmp = scope.objects[index+1];
+                    scope.objects[index+1] = scope.objects[index];
+                    scope.objects[index] = tmp;
+                }
+            };
+
+            scope.removePath = function (index) {
+                scope.objects.splice(index, 1);
+            };
+
+            scope.selectPath = function (index) {
                 scope.selectedIndex = index;
             };
 
-            scope.highlightsPath = function (item) {
-                var index = scope.getIndex(item);
+            scope.highlightsPath = function (index) {
                 scope.hoveredIndex = index;
             };
 
-            scope.addPath = function () {
-                scope.imageMapObjects.push(getBlankImageMapObject([], scope.imageMapObjects.length));
-                var lastItem = scope.imageMapObjects[scope.imageMapObjects.length - 1];
-                scope.selectPath(lastItem);
-            };
-
-            scope.removePath = function (item) {
-                var index = scope.getIndex(item);
-                scope.imageMapObjects.splice(index, 1);
-            };
-
             scope.removeAll = function () {
-                scope.imageMapObjects.length = 0;
+                scope.objects.length = 0;
             };
 
             scope.recognisePaths = function () {
-                var conf = scope.imageMapObjects.length == 0 ||
+                var conf = scope.objects.length == 0 ||
                     confirm("There are paths already created. Do you want to add more?");
                 if (conf) {
                     GuidedImageEditorCanvasService.recognisePaths();
@@ -60,7 +72,7 @@ module.exports = function (app) {
             scope.weightIsValid = weightIsValid;
 
             scope.saveIsActive = function () {
-                return _changed && imageMapObjectsAreValid.call(scope) &&
+                return _changed && objectsAreValid.call(scope) &&
                     !scope.loading &&
                     scope.guideImageId != null;
             };
@@ -69,20 +81,9 @@ module.exports = function (app) {
                 return scope.guideImageId == null;
             };
 
-            scope.getObjects = function () {
-                return scope.imageMapObjects.slice().sort(function (a, b) {
-                    if (a.navigationIndex > b.navigationIndex) {
-                        return 1;
-                    } else if (a.navigationIndex < b.navigationIndex) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                });
-            };
 
             scope.getIndex = function (item) {
-                return scope.imageMapObjects.indexOf(item);
+                return scope.objects.indexOf(item);
             };
 
             scope.save = function () {
@@ -92,23 +93,23 @@ module.exports = function (app) {
                 var data = {
                     imageWidth: _imageWidth,
                     imageHeight: _imageHeight,
-                    objects: scope.imageMapObjects
+                    objects: scope.objects
                 };
                 scope.loading = true;
-                GuidedImagesService.patchObjects(scope.guideImageId, data)
+                GuideImagesService.patchObjects(scope.guideImageId, data)
                     .finally(function () {
                         scope.loading = false;
                     })
             };
 
             scope.$watch("selectedIndex", function (newVal) {
-                var selectedItem = scope.imageMapObjects[newVal];
+                var selectedItem = scope.objects[newVal];
                 if (selectedItem != null) {
                     scope.selectedItem = selectedItem;
                 }
             });
 
-            scope.$watch("imageMapObjects", function (newVal, oldVal) {
+            scope.$watch("objects", function (newVal, oldVal) {
                 if (newVal != oldVal) {
                     if (oldVal.length > 0) {
                         _changed = true;
@@ -126,9 +127,9 @@ module.exports = function (app) {
                 if (!newCoordinatesEqual(scope, coordinates)) {
                     _changed = true;
                     coordinates.forEach(function (c, i) {
-                        var ob = scope.getObjects()[i];
+                        var ob = scope.objects[i];
                         if (ob == null) {
-                            scope.imageMapObjects.push(getBlankImageMapObject(c, scope.imageMapObjects.length));
+                            scope.objects.push(getBlankObject(c, scope.objects.length));
                         } else {
                             ob.outlineCoordinates = c;
                         }
@@ -138,7 +139,7 @@ module.exports = function (app) {
             });
 
             function notifyCanvas() {
-                var coords = scope.getObjects().map(function (item) {
+                var coords = scope.objects.map(function (item) {
                     return item.outlineCoordinates;
                 });
                 GuidedImageEditorCanvasService.updatePathsIn(coords);
@@ -152,7 +153,7 @@ module.exports = function (app) {
                 guideImageId: "=?",
                 selectedIndex: "=?",
                 hoveredIndex: "=?",
-                imageMapObjects: "=?"
+                objects: "=?"
             },
             template: require("./guided-image-editor-path-list.directive.html")
         };
@@ -160,7 +161,7 @@ module.exports = function (app) {
 
 };
 
-function getBlankImageMapObject(coordinates, navigationIndex) {
+function getBlankObject(coordinates, navigationIndex) {
     return {
         id: [],
         weight: 0,
@@ -171,7 +172,7 @@ function getBlankImageMapObject(coordinates, navigationIndex) {
 }
 
 function newCoordinatesEqual(scope, coordinates) {
-    var oldCoords = scope.imageMapObjects.map(function (i) {
+    var oldCoords = scope.objects.map(function (i) {
         return i.outlineCoordinates.map(function (c) {
             return c.join(" ");
         }).join(" ");
@@ -188,13 +189,13 @@ function weightIsValid(val) {
     return val > 0;
 }
 
-function imageMapObjectsAreValid() {
+function objectsAreValid() {
     var scope = this;
-    return scope.imageMapObjects.filter(function (item) {
+    return scope.objects.filter(function (item) {
         return weightIsValid(item.weight) &&
             textFieldIsNotEmpty(item.description) &&
             item.outlineCoordinates.length > 0;
-    }).length == scope.imageMapObjects.length;
+    }).length == scope.objects.length;
 }
 
 

@@ -1,3 +1,4 @@
+
 /**
  * Created by Tim Osadchiy on 01/06/2017.
  */
@@ -6,9 +7,9 @@
 
 var d3 = require("d3");
 
-var SelectedColor = "#07e100";
-var UnselectedColor = "#0085cc";
-var HoveredColor = "#6af568";
+var SelectedColor = "#337ab7";
+var UnselectedColor = "#000000";
+var HoveredColor = "#d9edf7";
 var UnselectedOpacity = 0.8;
 var HoveredOpacity = 0.8;
 var SelectedOpacity = 1;

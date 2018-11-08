@@ -6,10 +6,10 @@
 
 module.exports = function (app) {
     require("./guided-images-explorer-item/guided-images-explorer-item.directive")(app);
-    app.directive("guidedImagesExplorer", ["GuidedImagesService", "appRoutes", "$location", directiveFun]);
+    app.directive("guidedImagesExplorer", ["GuideImagesService", "appRoutes", "$location", directiveFun]);
 };
 
-function directiveFun(GuidedImagesService, appRoutes, $location) {
+function directiveFun(GuideImagesService, appRoutes, $location) {
 
     function controller(scope, element, attributes) {
 
@@ -32,7 +32,7 @@ function directiveFun(GuidedImagesService, appRoutes, $location) {
 
         scope.$watch("searchQuery", setSearchQuery);
 
-        GuidedImagesService.all().then(function (data) {
+        GuideImagesService.list().then(function (data) {
             _items.push.apply(_items, data);
         });
 

@@ -10,7 +10,7 @@
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <a href="" class="btn btn-default"
                ng-disabled="viewIsDisabled()"
-               ng-click="addPath()">Add path</a>
+               ng-click="addPath()">Add object</a>
             <div class="btn-group" uib-dropdown>
                 <a href="" class="btn btn-default"
                    ng-disabled="viewIsDisabled()"
@@ -30,32 +30,42 @@
     </div>
 </div>
 <div>
-    <div class="guides-drawer-path-info" ng-repeat="item in getObjects()">
+
+    <div ng-repeat="item in objects">
         <div class="form-group">
-            <label class="radio-inline"
-                   ng-mouseover="highlightsPath(item)"
-                   ng-mouseleave="highlightsPath()">
-                <input type="radio"
-                       name="guides-drawer-path-selected"
-                       class="guides-drawer-path-select"
-                       ng-checked="item == selectedItem"
-                       ng-click="selectPath(item)">
-                Path #
-                <input type="number" min="0" step="1" class="guides-drawer-path-info-index-input"
-                       placeholder="Index" ng-model="item.navigationIndex">
-            </label>
-            <a href="" class="close" ng-click="removePath(item)">&times;</a>
-        </div>
-        <div class="form-group" ng-class="{'has-error': !weightIsValid(item.weight)}">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Weight"
-                       ng-model="item.weight">
-                <div class="input-group-addon">g</div>
+            <div class="panel panel-default"
+                 ng-class="{'panel-primary': selectedIndex == $index, 'panel-info': hoveredIndex == $index && selectedIndex != $index}"
+                 ng-mouseover="highlightsPath($index)"
+                 ng-mouseleave="highlightsPath()"
+                 ng-click="selectPath($index)">
+
+                <div class="panel-heading" style="text-align: right; padding: 4px">
+                   <button type="button" class="btn btn-default btn-sm" ng-click="moveUp($index)" ng-disabled="$first"><i class="fa fa-chevron-up"></i> </button>
+                   <button type="button" class="btn btn-default btn-sm" ng-click="moveDown($index)" ng-disabled="$last"><i class="fa fa-chevron-down"></i></button>
+                   <button type="button" class="btn btn-default btn-sm" ng-click="removePath($index)"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="panel-body">
+
+                        <div class="form-group row" style="display: flex; align-items: center;" ng-class="{'has-error': !fieldIsNotEmpty(item.description)}">
+                            <label class="col-sm-4 col-form-label" style="text-align: right;">Description:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Description"
+                                       ng-model="item.description">
+                            </div>
+                        </div>
+                        <div class="form-group row" style="display: flex; align-items: center;" ng-class="{'has-error': !weightIsValid(item.weight)}">
+                            <label class="col-sm-4 col-form-label" style="text-align: right;">Weight:</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Weight"
+                                           ng-model="item.weight">
+                                    <div class="input-group-addon">g</div>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
             </div>
-        </div>
-        <div class="form-group" ng-class="{'has-error': !fieldIsNotEmpty(item.description)}">
-            <input type="text" class="form-control" placeholder="Description"
-                   ng-model="item.description">
         </div>
     </div>
 </div>

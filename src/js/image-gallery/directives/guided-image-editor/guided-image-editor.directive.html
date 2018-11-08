@@ -1,8 +1,8 @@
 <div class="guided-image-editor container-fluid">
     <div class="guides-drawer row mt-1">
         <div class="col-xs-9">
-            <guided-image-editor-canvas ng-show="!isNewItem() && guideImage.src"
-                                        src="guideImage.src"
+            <guided-image-editor-canvas ng-show="!isNewItem() && guideImage.baseImageUrl"
+                                        src="guideImage.baseImageUrl"
                                         active="canvasIsActive"
                                         hovered-path-index="guideImage.hoveredPathIndex"
                                         selected-path-index="guideImage.selectedPathIndex"></guided-image-editor-canvas>
@@ -34,7 +34,7 @@
                 <div ng-hide="generalInfoVisible || !getIsLoaded()">
                     <guided-image-editor-path-list
                             guide-image-id="guideImage.id"
-                            image-map-objects="guideImage.imageMapObjects"
+                            objects="guideImage.objects"
                             selected-index="guideImage.selectedPathIndex"
                             hovered-index="guideImage.hoveredPathIndex"
                     ></guided-image-editor-path-list>

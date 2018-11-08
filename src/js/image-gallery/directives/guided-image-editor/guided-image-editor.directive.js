@@ -11,9 +11,9 @@ module.exports = function (app) {
     require("./guided-image-editor-image-select/guided-image-editor-image-select.directive")(app);
 
     app.directive("guidedImageEditor", ["$routeParams",
-        "GuidedImagesService", directiveFun]);
+        "GuideImagesService", directiveFun]);
 
-    function directiveFun($routeParams, GuidedImagesService) {
+    function directiveFun($routeParams, GuideImagesService) {
 
         function controller(scope, element, attributes) {
 
@@ -24,9 +24,9 @@ module.exports = function (app) {
             scope.guideImage = {
                 id: $routeParams.guidedId,
                 description: "",
-                src: "",
+                baseImageUrl: "",
                 imageMapId: null,
-                imageMapObjects: [],
+                objects: [],
                 hoveredPathIndex: null,
                 selectedPathIndex: null,
                 newImageFile: null
@@ -46,7 +46,7 @@ module.exports = function (app) {
             };
 
             if (!scope.isNewItem()) {
-                GuidedImagesService.get($routeParams.guidedId).then(function (data) {
+                GuideImagesService.get($routeParams.guidedId).then(function (data) {
                     setScopeFromData.call(scope.guideImage, data);
                 });
             }
@@ -64,10 +64,10 @@ module.exports = function (app) {
 };
 
 function setScopeFromData(data) {
-    this.description = data.meta.description;
-    this.src = data.path;
+    this.description = data.description;
+    this.baseImageUrl = data.baseImageUrl;
     this.imageMapId = data.imageMapId;
-    this.imageMapObjects.push.apply(this.imageMapObjects, data.objects);
+    this.objects.push.apply(this.objects, data.objects);
 }
 
 

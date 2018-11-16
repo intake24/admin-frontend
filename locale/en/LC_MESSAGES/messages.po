@@ -418,7 +418,7 @@ msgid "image_gallery_as_served"
 msgstr "As served"
 
 msgid "image_gallery_guided"
-msgstr "Guided"
+msgstr "Guide"
 
 msgid "drawers_images_title"
 msgstr "Select image"

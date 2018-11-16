@@ -81,6 +81,10 @@ function serviceFun($http, $window) {
                 unpackObjects(data);
                 return data;
             });
+        },
+        delete: function (guideImageId) {
+            var url = GUIDE_IMAGE_URL + "/" + guideImageId;
+            return $http.delete(url);
         }
     }
 }

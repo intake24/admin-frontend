@@ -6,10 +6,10 @@
 
 module.exports = function (app) {
     require("./guided-images-explorer-item/guided-images-explorer-item.directive")(app);
-    app.directive("guidedImagesExplorer", ["GuideImagesService", "appRoutes", "$location", directiveFun]);
+    app.directive("guidedImagesExplorer", ["GuideImagesService", "appRoutes", "$location", "MessageService", directiveFun]);
 };
 
-function directiveFun(GuideImagesService, appRoutes, $location) {
+function directiveFun(GuideImagesService, appRoutes, $location, MessageService) {
 
     function controller(scope, element, attributes) {
 
@@ -30,11 +30,24 @@ function directiveFun(GuideImagesService, appRoutes, $location) {
             })
         };
 
+        scope.refreshItems = function() {
+            GuideImagesService.list().then(function (data) {
+                _items = [];
+                _items.push.apply(_items, data);
+            });
+        };
+
+        scope.deleteImage = function (id) {
+            if (confirm("Are you sure you want to delete guide image \"" + id + "\"?"))
+                GuideImagesService.delete(id).then(function () {
+                    MessageService.showSuccess("Guide image \"" + id + "\" deleted");
+                    scope.refreshItems();
+                });
+        };
+
         scope.$watch("searchQuery", setSearchQuery);
 
-        GuideImagesService.list().then(function (data) {
-            _items.push.apply(_items, data);
-        });
+        scope.refreshItems();
 
         function getSearchQuery() {
             return $location.search().q || "";

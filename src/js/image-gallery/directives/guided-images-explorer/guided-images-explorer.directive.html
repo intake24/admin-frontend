@@ -10,9 +10,9 @@
 <file-drop-zone class="intk-gallery" on-dropped="onFilesChange(fileList)">
     <div class="container-fluid">
         <guided-images-explorer-item
-                title="item.id"
+                id="item.id"
                 description="item.description"
-                path="item.baseImageUrl"
+                image-url="item.baseImageUrl"
                 ng-class="{'visible': itemIsFiltered(item)}"
                 ng-repeat="item in getItems() track by $index"></guided-images-explorer-item>
     </div>

@@ -14,17 +14,22 @@ function directiveFun(appRoutes) {
 
     function controller(scope, element, attributes) {
         scope.getItemUrl = function () {
-            return getFormedUrl(appRoutes.imageGalleryGuidedItem, {guidedId: scope.title});
+            return getFormedUrl(appRoutes.imageGalleryGuidedItem, {guidedId: scope.id});
         };
+
+        scope.deleteItem = function() {
+            scope.$parent.deleteImage(scope.id);
+        };
+
     }
 
     return {
         restrict: "E",
         link: controller,
         scope: {
-            title: "=?",
+            id: "=?",
             description: "=?",
-            path: "=?"
+            imageUrl: "=?"
         },
         template: require("./guided-images-explorer-item.directive.html")
     };

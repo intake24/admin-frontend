@@ -1,6 +1,6 @@
 <div class="intk-gallery-item">
     <div class="intk-gallery-item-img">
-        <img-loader src="path"></img-loader>
+        <img-loader src="imageUrl"></img-loader>
         <div class="intk-gallery-item-blank" ng-class="{'visible': item.loading}">
             <div class="pull-right" uib-dropdown>
                 <button class="btn btn-default btn-tools" uib-dropdown-toggle>
@@ -8,19 +8,19 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
                     <li>
-                        <a href="" ng-click="removeItem(item)">
-                            Remove image
+                        <a href="" ng-click="deleteItem(id)">
+                            Delete guide image
                         </a>
                     </li>
                 </ul>
             </div>
-            <a ng-href="#{{getItemUrl()}}" title="{{title}}" class="btn-select">
+            <a ng-href="#{{getItemUrl()}}" title="{{id}}" class="btn-select">
                 <i class="fa fa-pencil"></i>
             </a>
         </div>
     </div>
     <div class="intk-gallery-item-tools">
-        <h4>{{title}}</h4>
+        <h4>{{id}}</h4>
         <p>{{description}}</p>
     </div>
 </div>

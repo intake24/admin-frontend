@@ -15,6 +15,17 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
         scope.form = {};
 
+        scope.schemes = [
+            {
+                id: "default",
+                name: "Default"
+            },
+            {
+                id: "ndns419",
+                name: "NDNS dress rehearsal (April 2019)"
+            }
+        ];
+
         scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
         scope.surveyStateOptions = [
             {value: "0", text: "Has not started"},
@@ -77,7 +88,9 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             updateScope(scope, newVal);
         });
 
-        scope.$watch(function() { return UserStateService.getUserInfo(); }, function(newValue) {
+        scope.$watch(function () {
+            return UserStateService.getUserInfo();
+        }, function (newValue) {
             scope.currentUser = newValue;
         });
 
@@ -105,7 +118,7 @@ function getRequest(scope) {
         state: scope.form.state,
         startDate: scope.form.startDate.toISOString(),
         endDate: scope.form.endDate.toISOString(),
-        schemeId: "default",
+        schemeId: scope.form.schemeId,
         localeId: scope.form.selectedLocale,
         allowGeneratedUsers: scope.form.allowGeneratedUsers,
         externalFollowUpURL: scope.form.externalFollowUpURL,
@@ -136,6 +149,7 @@ function updateScope(scope, data) {
         scope.form.name = "";
         scope.form.state = "0";
         scope.form.selectedLocale = "en_GB";
+        scope.form.schemeId = "default",
         scope.form.allowGeneratedUsers = false;
         scope.form.externalFollowUpURL = "";
         scope.form.supportEmail = "";
@@ -145,6 +159,7 @@ function updateScope(scope, data) {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
         scope.form.selectedLocale = data.localeId;
+        scope.form.schemeId = data.schemeId,
         scope.form.allowGeneratedUsers = data.allowGeneratedUsers;
         scope.form.externalFollowUpURL = data.externalFollowUpURL;
         scope.form.supportEmail = data.supportEmail;
@@ -158,6 +173,7 @@ function updateSurvey(scope, data) {
     scope.survey.id = data.id;
     scope.survey.state = data.state;
     scope.survey.localeId = data.localeId;
+    scope.survey.schemeId = data.schemeId;
     scope.survey.allowGeneratedUsers = data.allowGeneratedUsers;
     scope.survey.externalFollowUpURL = data.externalFollowUpURL;
     scope.survey.supportEmail = data.supportEmail;

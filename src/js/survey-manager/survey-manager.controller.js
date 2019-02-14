@@ -16,6 +16,7 @@ function controllerFun($scope, $route, appRoutes) {
         list: new DirectiveView([appRoutes.surveyManager]),
         survey: new DirectiveView([appRoutes.surveyManagerSurvey,
             appRoutes.surveyManagerSurveyDescription,
+            appRoutes.surveyManagerSurveyFinalPage,
             appRoutes.surveyManagerSurveyUsers,
             appRoutes.surveyManagerSurveyResults])
     };

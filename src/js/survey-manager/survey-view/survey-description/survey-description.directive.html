@@ -22,10 +22,10 @@
     </ul>
 </div>
 <div class="form-group" ng-hide="previewMode || textAreaMode">
-    <text-angular ng-model="description"></text-angular>
+    <text-angular ng-model="html"></text-angular>
 </div>
 <div class="form-group" ng-hide="previewMode || !textAreaMode">
-    <textarea class="form-control no-resize-horizontal" rows="15" ng-model="description"></textarea>
+    <textarea class="form-control no-resize-horizontal" rows="15" ng-model="html"></textarea>
 </div>
 <div class="form-group" ng-show="previewMode" ng-bind-html="preview"></div>
 <div class="form-group text-right">

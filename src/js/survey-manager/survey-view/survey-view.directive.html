@@ -28,7 +28,9 @@
                     <survey-general ng-if="directiveViews.general.active"
                                     survey="survey"></survey-general>
                     <survey-description ng-if="directiveViews.description.active"
-                                        survey="survey"></survey-description>
+                                        survey="survey" field="description"></survey-description>
+                    <survey-description ng-if="directiveViews.finalPage.active"
+                                        survey="survey" field="finalPageHtml"></survey-description>
                     <survey-results ng-if="directiveViews.results.active"
                                     survey="survey"></survey-results>
                     <survey-users ng-if="directiveViews.users.active"

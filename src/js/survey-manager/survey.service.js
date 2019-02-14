@@ -31,6 +31,7 @@ function serviceFun($http, $window) {
             startDate: data.startDate,
             endDate: data.endDate,
             description: data.description[0],
+            finalPageHtml: data.finalPageHtml[0],
             submissionNotificationUrl: data.submissionNotificationUrl[0]
         }
     }
@@ -47,6 +48,7 @@ function serviceFun($http, $window) {
             startDate: data.startDate,
             endDate: data.endDate,
             description: data.description ? [data.description] : [],
+            finalPageHtml: data.finalPageHtml ? [data.finalPageHtml] : [],
             submissionNotificationUrl: data.submissionNotificationUrl? [data.submissionNotificationUrl] : []
         }
     }

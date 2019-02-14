@@ -13,8 +13,10 @@ function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerCon
 
     function controller(scope, element, attribute) {
 
-        scope.description = "";
+        scope.html = "";
         scope.preview = "";
+
+        scope.targetField = attribute.field;
 
         scope.previewMode = false;
 
@@ -29,7 +31,7 @@ function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerCon
         };
 
         scope.showPreview = function () {
-            scope.preview = $sce.trustAsHtml(scope.description);
+            scope.preview = $sce.trustAsHtml(scope.html);
             scope.previewMode = true;
         };
 
@@ -71,7 +73,7 @@ function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerCon
 }
 
 function getRequest(scope) {
-    return {
+    var req = {
         id: scope.survey.id,
         state: scope.survey.state,
         startDate: scope.survey.startDate,
@@ -81,19 +83,25 @@ function getRequest(scope) {
         allowGeneratedUsers: scope.survey.allowGeneratedUsers,
         externalFollowUpURL: scope.survey.externalFollowUpURL,
         supportEmail: scope.survey.supportEmail,
-        description: scope.description
+        description: scope.survey.description,
+        finalPageHtml: scope.survey.finalPageHtml
     };
+
+    req[scope.targetField] = scope.html;
+
+    return req;
 }
 
 function updateScope(scope, data) {
     if (!data) {
         return;
     }
-    scope.description = data.description;
+
+    scope.html = data[scope.targetField];
 }
 
 function updateSurvey(scope, survey) {
-    survey.description = scope.description;
+    survey[scope.targetField] = scope.html;
 }
 
 function getUserAccessTextareaMode(userService) {

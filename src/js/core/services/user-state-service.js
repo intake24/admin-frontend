@@ -60,6 +60,13 @@ function serviceFun($rootScope, $timeout, $cookies) {
                     })
             },
 
+            canAccessDatabaseTools: function () {
+                if (window.hideFoodDatabase)
+                    return false;
+
+                return this.isSuperUser() || this.isGlobalFoodsAdmin();
+            },
+
             canReadFoodDatabase: function (localeId) {
                 return this.isSuperUser() || this.isGlobalFoodsAdmin() || this.isFoodDatabaseMaintainer(localeId);
             },

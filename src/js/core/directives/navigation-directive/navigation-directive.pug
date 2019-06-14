@@ -10,6 +10,15 @@
                         i.flag(ng-class='value.flagCode')
                         | &nbsp;{{ value.englishName }}
 
+        li(ng-class="{'active': !menuItems.databaseTools.collapsed}" ng-if="currentUser.canAccessDatabaseTools()")
+            a(ng-click='toggleItem("databaseTools")' ng-class="{'active': menuItems.databaseTools.active}")
+                | #{ gettext("Food database tools") }
+                i.fa(ng-class="!menuItems.databaseTools.collapsed ? 'fa-chevron-down' : 'fa-chevron-left'")
+            ul.nested-li
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.foodFrequency.href}}" ng-class="{'active': menuItems.databaseTools.foodFrequency.active}")
+                        | #{ gettext("Food frequency") }
+
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')
                 | #{ gettext("sidebar_galleries") }

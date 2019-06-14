@@ -21,6 +21,9 @@ module.exports = function (app) {
         surveyManagerSurveyFinalPage: '/survey-manager/:surveyId/final-page',
         surveyManagerSurveyUsers: '/survey-manager/:surveyId/users',
         surveyManagerSurveyResults: '/survey-manager/:surveyId/results',
+        databaseTools: {
+            foodFrequency: '/database-tools/food-frequency'
+        },
         surveyFeedback: '/survey-feedback'
     };
 
@@ -104,6 +107,10 @@ module.exports = function (app) {
             })
             .when(routes.userManagerRoute, {
                 redirectTo: routes.userManagerRespondents
+            })
+            .when(routes.databaseTools.foodFrequency, {
+                template: require("./database-tools/food-frequency.pug"),
+                controller: 'DatabaseToolsController'
             })
             .otherwise({
                 redirectTo: routes.welcome

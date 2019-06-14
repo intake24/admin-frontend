@@ -18,6 +18,15 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
 
         scope.menuItems = {
             foodExplorer: {
+                href: appRoutes.foodExplorer,
+                collapsed: true,
+                active: false
+            },
+            databaseTools: {
+                foodFrequency: {
+                    href: appRoutes.databaseTools.foodFrequency,
+                    active: false
+                },
                 collapsed: true,
                 active: false
             },

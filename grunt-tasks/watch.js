@@ -14,7 +14,7 @@ module.exports = function (grunt) {
             }
         },
         scripts: {
-            files: [config.browserifyTo],
+            files: config.srcWatch,
             tasks: [jsTask],
             options: {
                 debounceDelay: config.watchDebounceDelay

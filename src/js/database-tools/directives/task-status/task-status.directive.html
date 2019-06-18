@@ -1,0 +1,60 @@
+<div ng-if="!activeTasks">
+    <h1>
+        <i class="fa fa-spinner fa-spin"></i>
+        Loading
+    </h1>
+</div>
+
+<div ng-if="activeTasks && activeTasks.length > 0">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td style="width: 7%;">Task ID</td>
+                <td style="width: 10%;">Created</td>
+                <td style="width: 10%;" class="secondary-column">Date from</td>
+                <td style="width: 10%;" class="secondary-column">Date to</td>
+                <td>Status</td>
+            </tr>
+            </thead>
+            <tr ng-repeat="task in activeTasks track by $index"
+                ng-class="{ 'failed-task': task.status.Failed, 'focused-task': task.id == focusTaskId }">
+                <td>{{task.id}}</td>
+                <td>{{formatCreatedAt(task.createdAt)}}</td>
+                <td class="secondary-column">{{formatDate(task.dateFrom) }}</td>
+                <td class="secondary-column">{{formatDate(task.dateTo) }}</td>
+                <td ng-if="task.status.DownloadUrlAvailable">
+                    <a href="{{task.status.DownloadUrlAvailable.url}}">
+                        <button type="button" class="btn btn-xs btn-success">Download</button>
+                    </a>
+                </td>
+                <td ng-if="task.status.Pending">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar"
+                             style="width: 100%;">Queued
+                        </div>
+                    </div>
+                </td>
+                <td ng-if="task.status.InProgress && task.status.InProgress.progress < 1.0">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar progress-bar-info" role="progressbar"
+                             ng-style="{ width: progressToPercentage(task.status.InProgress.progress) }">
+                            Exporting&nbsp;{{progressToPercentage(task.status.InProgress.progress)}}
+                        </div>
+                    </div>
+                </td>
+                <td ng-if="task.status.DownloadUrlPending">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar progress-bar-striped active progress-bar-info" role="progressbar"
+                             style="width: 100%;">
+                            Preparing for download
+                        </div>
+                    </div>
+                </td>
+
+                <td ng-if="task.status.Expired">Download expired</td>
+                <td ng-if="task.status.Failed">Failed</td>
+            </tr>
+        </table>
+    </div>
+</div>

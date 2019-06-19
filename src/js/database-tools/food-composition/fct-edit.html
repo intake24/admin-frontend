@@ -1,0 +1,53 @@
+<div ng-controller="FoodCompositionEditController">
+  <div class="intake24-database-tool">
+    <div class="mb-2">
+      <a class="btn btn-default" href="#/database-tools/composition-tables"><span class="fa fa-chevron-left"></span>&nbsp;
+        Back to table list</a>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label class="control-label">ID</label>
+        <input class="form-control" type="text"/>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Description</label>
+        <input class="form-control" type="text"/>
+      </div>
+
+      <h4>Nutrient mapping</h4>
+
+      <div class="form-group">
+
+
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Intake24 nutrient</th>
+            <th>CSV column</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="col in mapping.columns">
+            <td>{{nutrientLabel(col.nutrientId)}}</td>
+            <td>{{offsetToExcelColumn(col.columnOffset)}}</td>
+            <td><button class="btn btn-xs btn-danger"><span class="fa fa-remove"></span>&nbsp; Delete</button></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-default"><span class="fa fa-plus"></span>&nbsp; Add nutrient</button>
+
+        <button class="btn btn-default"><span class="fa fa-save"></span>&nbsp;Save changes</button>
+      </div>
+
+      <h4>Nutrient data</h4>
+
+      <div class="form-group">
+        <button class="btn btn-default"><span class="fa fa-upload"></span>&nbsp;Upload nutrient data</button>
+      </div>
+
+    </form>
+  </div>
+</div>

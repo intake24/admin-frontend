@@ -27,6 +27,10 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                     href: appRoutes.databaseTools.foodFrequency,
                     active: false
                 },
+                compositionTables: {
+                    href: appRoutes.databaseTools.compositionTables,
+                    active: false
+                },
                 collapsed: true,
                 active: false
             },

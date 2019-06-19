@@ -3,7 +3,7 @@
 var _ = require("underscore");
 
 module.exports = function (app) {
-    app.controller("DatabaseToolsController", ["$scope", "LocalesService", "SurveyService", "DatabaseToolsService", controllerFun]);
+    app.controller("FoodFrequencyController", ["$scope", "LocalesService", "SurveyService", "DatabaseToolsService", controllerFun]);
 };
 
 function controllerFun($scope, LocalesService, SurveyService, DatabaseToolsService) {

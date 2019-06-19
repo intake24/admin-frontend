@@ -2,4 +2,5 @@
 
 module.exports = function (app) {
     require("./database-tools.service")(app);
+    require("./food-composition-tables.service")(app);
 };

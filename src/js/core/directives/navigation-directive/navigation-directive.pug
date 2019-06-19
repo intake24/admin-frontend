@@ -18,6 +18,9 @@
                 li
                     a(ng-href="/\#{{menuItems.databaseTools.foodFrequency.href}}" ng-class="{'active': menuItems.databaseTools.foodFrequency.active}")
                         | #{ gettext("Food frequency") }
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.compositionTables.href}}" ng-class="{'active': menuItems.databaseTools.compositionTables.active}")
+                        | #{ gettext("Composition tables") }
 
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')

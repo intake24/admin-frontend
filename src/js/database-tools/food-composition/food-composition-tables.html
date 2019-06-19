@@ -1,0 +1,28 @@
+<div ng-controller="FoodCompositionController">
+  <div class="intake24-database-tool">
+    <h3>Food composition tables</h3>
+
+    <div class="mt-1 mb-1">
+      <a class="btn btn-default" href="#/database-tools/composition-tables/new"><span class="fa fa-plus"></span>&nbsp;Create new table</a>
+    </div>
+
+    <div class="row">
+      <table class="table table-hover col-sm-12">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tr ng-repeat="fct in foodCompositionTables">
+          <td>{{fct.id}}</td>
+          <td>{{fct.description}}</td>
+          <td>
+            <a class="btn btn-default" href="#/database-tools/composition-tables/{{fct.id}}"><span class="fa fa-edit"></span>&nbsp;Edit</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,3 @@
-/**
- * Created by Tim Osadchiy on 16/02/2017.
- */
-
 "use strict";
 
 var getFormedUrl = require("../../core/utils/get-formed-url");
@@ -13,10 +9,13 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     return {
-        list: function () {
-            return $http.get("").then(function (data) {
-               // return data.map(unpackServerData);
-            });
+        exportFoodFrequencies: function (locale, limitToSurveys) {
+            var data = JSON.stringify({ locale: locale.id, limitToSurveys: limitToSurveys });
+            return $http.post($window.api_base_url + "tools/foods/frequencies", data);
+        },
+
+        getRecentTasks: function(type) {
+            return $http.get($window.api_base_url + "tools/tasks?type=" + type);
         }
     };
 }

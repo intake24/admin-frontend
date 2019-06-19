@@ -3,10 +3,10 @@
 var _ = require("underscore");
 
 module.exports = function (app) {
-    app.controller("DatabaseToolsController", ["$scope", "LocalesService", "SurveyService", controllerFun]);
+    app.controller("DatabaseToolsController", ["$scope", "LocalesService", "SurveyService", "DatabaseToolsService", controllerFun]);
 };
 
-function controllerFun($scope, LocalesService, SurveyService) {
+function controllerFun($scope, LocalesService, SurveyService, DatabaseToolsService) {
 
     LocalesService.list().then(function (locales) {
         $scope.locales = locales;
@@ -21,6 +21,7 @@ function controllerFun($scope, LocalesService, SurveyService) {
     };
 
     $scope.surveysSectionOpen = false;
+    $scope.requestInProgress = false;
 
     $scope.$watch("selectedLocale", function (locale) {
         if (locale) {
@@ -46,5 +47,22 @@ function controllerFun($scope, LocalesService, SurveyService) {
 
     $scope.clearSurveys = function () {
         $scope.surveySelect.selectedIds = [];
-    }
+    };
+
+    $scope.requestExport = function () {
+        $scope.requestInProgress = true;
+
+        var limitToSurveys;
+
+        if (_.isEqual($scope.surveySelect.availableIds, $scope.surveySelect.selectedIds))
+            limitToSurveys = [];
+        else
+            limitToSurveys = $scope.surveySelect.selectedIds;
+
+        DatabaseToolsService.exportFoodFrequencies($scope.selectedLocale, limitToSurveys)
+            .then( function(){
+                $scope.requestInProgress = false;
+            });
+
+    };
 }

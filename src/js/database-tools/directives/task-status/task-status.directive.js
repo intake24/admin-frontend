@@ -1,12 +1,12 @@
 "use strict";
 
 module.exports = function (app) {
-    app.directive("taskStatus", ["SurveyService", "$interval", "$location",
-        function (SurveyService, $interval, $location) {
+    app.directive("taskStatus", ["DatabaseToolsService", "$interval", "$location",
+        function (DatabaseToolsService, $interval, $location) {
             return {
                 restrict: "E",
                 scope: {
-                    surveyId: "="
+                    type: "="
                 },
                 link: function (scope, element, attr) {
 
@@ -43,9 +43,9 @@ module.exports = function (app) {
                     }
 
                     function refreshTasks() {
-                        SurveyService.getActiveExportTasks(scope.surveyId).then(
+                        DatabaseToolsService.getRecentTasks(scope.type).then(
                             function success(response) {
-                                scope.activeTasks = response.activeTasks;
+                                scope.activeTasks = response;
                             },
                             function error(response) {
                                 console.error(response);

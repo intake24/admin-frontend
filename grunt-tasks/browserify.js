@@ -15,7 +15,7 @@ module.exports = function (grunt) {
         build: {
             files: browserifyFileOptions,
             options: {
-                watch: [config.watchJs],
+                watch: config.srcWatch,
                 browserifyOptions: {
                     debug: config.includeJsMaps
                 },

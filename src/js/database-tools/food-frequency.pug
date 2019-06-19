@@ -22,4 +22,7 @@ div(ng-controller="DatabaseToolsController")
                             ui-select-choices(repeat="id in surveySelect.availableIds | orderBy: 'id' | filter: $select.search ")
                                 | {{ id }}
                 .form-group
-                    button.btn.btn-success Export
+                    button.btn.btn-success(ng-click="requestExport()" ng-disabled="requestInProgress") Export
+
+        h3 Recent export tasks
+        task-status(type="'food-frequency'")

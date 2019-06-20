@@ -8,88 +8,119 @@ module.exports = function (app) {
 
 function controllerFun($scope, FoodCompositionTablesService, $routeParams) {
 
-    //FoodCompositionTablesService.
+    FoodCompositionTablesService.getNutrientTypes().then(function (data) {
+        $scope.nutrients = data;
+    });
 
-    $scope.nutrients = [
-        {
-            id: 1,
-            name: "Energy",
-            unit: "kcal"
-        },
-        {
-            id: 2,
-            name: "Water",
-            unit: "g"
-        }
+    FoodCompositionTablesService.getFoodCompositionTable($routeParams.tableId).then(function (data) {
+        $scope.table = data;
+    });
 
-    ];
-
-    $scope.mapping = {
-        rowOffset: 2,
-
-        columns: [
-            {
-                nutrientId: 1,
-                columnOffset: 12
-            },
-            {
-                nutrientId: 1,
-                columnOffset: 121
-            },
-            {
-                nutrientId: 2,
-                columnOffset: 1232
-            },
-            {
-                nutrientId: 2,
-                columnOffset: 1243
-            },
-            {
-                nutrientId: 1,
-                columnOffset: 32
-            }]
-    };
-
+    $scope.nutrientColumnsCollapsed = true;
 
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    $scope.offsetToExcelColumn = function (offset) {
+    function offsetToExcelColumn(offset) {
+        if (offset != null) {
+            var result = "";
 
-        var result = "";
+            while (offset > (letters.length - 1)) {
+                var d = Math.floor(offset / letters.length) - 1;
+                var rem = offset % letters.length;
 
-        while (offset > letters.length) {
-            var d = Math.floor(offset / letters.length) - 1;
-            var rem = offset % letters.length;
+                result = letters.charAt(rem) + result;
+                offset = d;
+            }
 
-            result = letters.charAt(rem) + result;
-            offset = d;
+            return letters.charAt(offset) + result;
+        } else
+            return undefined;
+    }
+
+    function excelColumnToOffset(column) {
+        if (column != null) {
+            column = column.toUpperCase();
+            var result = 0;
+            var f = 1;
+
+            for (var i = column.length - 1; i >= 0; i--) {
+                result += f * (letters.indexOf(column.charAt(i)) + 1);
+                f *= 26;
+            }
+
+            return result - 1;
+        } else
+            return undefined;
+    }
+
+    $scope.idColumnOffsetModel = function (newVal) {
+        if (arguments.length) {
+            if (newVal) {
+                $scope.table.mapping.idColumnOffset = excelColumnToOffset(newVal);
+            }
+            return $scope.table.mapping.idColumnOffset;
+        } else {
+            if ($scope.table)
+                return offsetToExcelColumn($scope.table.mapping.idColumnOffset);
+            else
+                return undefined;
         }
-
-        return letters.charAt(offset) + result;
     };
 
-    $scope.excelColumnToOffset = function (column) {
-        var result = 0;
-        var f = 1;
+    $scope.descriptionColumnOffsetModel = function (newVal) {
+        if (arguments.length) {
+            if (newVal) {
+                $scope.table.mapping.descriptionColumnOffset = excelColumnToOffset(newVal);
+            }
+            return $scope.table.mapping.descriptionColumnOffset;
+        } else {
+            if ($scope.table)
+                return offsetToExcelColumn($scope.table.mapping.descriptionColumnOffset);
+            else
+                return undefined;
 
-        for (var i = column.length - 1; i >= 0; i--) {
-            result += f * letters.indexOf(column.charAt(i) + 1);
         }
-
-        return result;
     };
 
+    $scope.localDescriptionColumnOffsetModel = function (newVal) {
+        if (arguments.length) {
+            if (newVal) {
+                $scope.table.mapping.localDescriptionColumnOffset = excelColumnToOffset(newVal);
+            }
+            return $scope.table.mapping.localDescriptionColumnOffset;
+        } else {
+            if ($scope.table)
+                return offsetToExcelColumn($scope.table.mapping.localDescriptionColumnOffset);
+            else
+                return undefined;
+        }
+    };
 
-    $scope.nutrientLabel = function (id) {
-        var nutrient = _.find($scope.nutrients, function (n) {
-            return n.id == id;
+    $scope.columnOffsetModel = function (newVal) {
+        if (arguments.length) {
+            if (newVal) {
+                this.columnOffset = excelColumnToOffset(newVal);
+            }
+            return this.columnOffset;
+        } else {
+            return offsetToExcelColumn(this.columnOffset);
+        }
+    };
+
+    $scope.deleteMappingColumn = function (deleted) {
+        $scope.table.mapping.columns = _.filter($scope.table.mapping.columns, function (col) {
+            return col != deleted;
         });
-
-        if (nutrient)
-            return nutrient.name + " (" + nutrient.unit + ")";
-        else
-            return "#NOTFOUND"
     };
 
-    console.log($routeParams);
+    $scope.addMappingColumn = function () {
+        $scope.table.mapping.columns.push({
+            nutrientId: 1,
+            columnOffset: 0
+        });
+    };
+
+    $scope.save = function () {
+        console.log($scope.table.mapping);
+    }
 }

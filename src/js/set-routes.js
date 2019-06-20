@@ -112,7 +112,7 @@ module.exports = function (app) {
             })
             .when(routes.databaseTools.foodFrequency, {
                 template: require("./database-tools/food-frequency.pug"),
-                controller: 'DatabaseToolsController'
+                controller: 'FoodFrequencyController'
             })
             .when(routes.databaseTools.compositionTables, {
                 template: require("./database-tools/food-composition/food-composition-tables.html"),

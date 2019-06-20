@@ -1,28 +1,27 @@
-div(ng-controller="FoodFrequencyController")
-    .intake24-database-tool
-        h3 Export food frequencies
-        .row
-            form.col-sm-12
-                .form-group
-                    label.control-label Locale
-                    select.form-control(ng-model="selectedLocale" ng-options="item.englishName for item in locales track by item.id")
-                .form-group
-                    button.btn.btn-sm.btn-default(ng-click="toggleSurveysSection()")
-                        | Limit to specific surveys
-                        | &nbsp;
-                        span.fa.fa-chevron-right(ng-if="!surveysSectionOpen")
-                        span.fa.fa-chevron-down(ng-if="surveysSectionOpen")
-                    div(ng-if="surveysSectionOpen")
-                        div
-                            button.btn.btn-link(ng-click="includeAllSurveys()") Include all
-                            button.btn.btn-link(ng-click="clearSurveys()") Clear
-                        ui-select.form-control(multiple ng-model="surveySelect.selectedIds" theme="bootstrap" close-on-select="false" title="Surveys to use for frequency data")
-                            ui-select-match(placeholder="Select surveys...")
-                                | {{ $item }}
-                            ui-select-choices(repeat="id in surveySelect.availableIds | orderBy: 'id' | filter: $select.search ")
-                                | {{ id }}
-                .form-group
-                    button.btn.btn-success(ng-click="requestExport()" ng-disabled="requestInProgress") Export
+.intake24-database-tool
+    h3 Export food frequencies
+    .row
+        form.col-sm-12
+            .form-group
+                label.control-label Locale
+                select.form-control(ng-model="selectedLocale" ng-options="item.englishName for item in locales track by item.id")
+            .form-group
+                button.btn.btn-sm.btn-default(ng-click="toggleSurveysSection()")
+                    | Limit to specific surveys
+                    | &nbsp;
+                    span.fa.fa-chevron-right(ng-if="!surveysSectionOpen")
+                    span.fa.fa-chevron-down(ng-if="surveysSectionOpen")
+                div(ng-if="surveysSectionOpen")
+                    div
+                        button.btn.btn-link(ng-click="includeAllSurveys()") Include all
+                        button.btn.btn-link(ng-click="clearSurveys()") Clear
+                    ui-select.form-control(multiple ng-model="surveySelect.selectedIds" theme="bootstrap" close-on-select="false" title="Surveys to use for frequency data")
+                        ui-select-match(placeholder="Select surveys...")
+                            | {{ $item }}
+                        ui-select-choices(repeat="id in surveySelect.availableIds | orderBy: 'id' | filter: $select.search ")
+                            | {{ id }}
+            .form-group
+                button.btn.btn-success(ng-click="requestExport()" ng-disabled="requestInProgress") Export
 
-        h3 Recent export tasks
-        task-status(type="'food-frequency'")
+    h3 Recent export tasks
+    task-status(type="'food-frequency'")

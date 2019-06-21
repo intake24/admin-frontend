@@ -108,19 +108,29 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams) {
     };
 
     $scope.deleteMappingColumn = function (deleted) {
-        $scope.table.mapping.columns = _.filter($scope.table.mapping.columns, function (col) {
+        $scope.table.mapping.nutrientColumns = _.filter($scope.table.mapping.nutrientColumns, function (col) {
             return col != deleted;
         });
     };
 
     $scope.addMappingColumn = function () {
-        $scope.table.mapping.columns.push({
+        $scope.table.mapping.nutrientColumns.push({
             nutrientId: 1,
             columnOffset: 0
         });
     };
 
     $scope.save = function () {
-        console.log($scope.table.mapping);
+        FoodCompositionTablesService.updateFoodCompositionTable($routeParams.tableId, $scope.table);
+    };
+
+    $scope.nutrientName = function(id) {
+
+        for (var i = 0; i < $scope.nutrients.length; i++) {
+            if ($scope.nutrients[i].id == id)
+                return $scope.nutrients[i].name;
+        }
+
+        return undefined;
     }
 }

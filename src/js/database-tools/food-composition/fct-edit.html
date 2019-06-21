@@ -71,20 +71,15 @@
 
                     <tr ng-if="nutrients && table" ng-repeat="col in table.mapping.nutrientColumns">
                         <td class="col-sm-4">
-                            <ui-select ng-model="col.nutrientId" theme="bootstrap" title="Choose a nutrient">
-                                <ui-select-match placeholder="Type to search for a nutrient">{{$select.selected.name}}
-                                    ({{$select.selected.unit}})
-                                </ui-select-match>
-                                <ui-select-choices
-                                        repeat="nutrient.id as nutrient in nutrients | filter: { name : $select.search }">
-                                    <div>{{ nutrient.name }} ({{nutrient.unit}})</div>
-                                </ui-select-choices>
-                            </ui-select>
+                            <select ng-model="col.nutrientId" class="form-control" ng-focus="col.focus = true" ng-blur="col.focus = false">
+                                <option ng-value="col.nutrientId" ng-if="!col.focus">{{nutrientName(col.nutrientId)}}</option>
+                                <option ng-value="nutrient.id" ng-if="col.focus" ng-repeat="nutrient in nutrients">{{nutrient.name}}</option>
+                            </select>
                         </td>
                         <td class="col-sm-2"><input pattern="[a-zA-Z]+" type="text" class="form-control"
                                                     ng-model="columnOffsetModel.bind(col)"
                                                     ng-model-options=" { getterSetter: true } "></td>
-                        <td>
+                        <td class="col-sm-2">
                             <button class="btn btn-xs btn-danger" ng-click="deleteMappingColumn(col)"><span
                                     class="fa fa-remove"></span>&nbsp; Delete
                             </button>

@@ -14,11 +14,15 @@ function serviceFun($http, $window) {
         },
 
         getFoodCompositionTable: function (tableId) {
-            return $http.get($window.api_base_url + "tools/foods/composition/tables/"+tableId);
+            return $http.get($window.api_base_url + "tools/foods/composition/tables/" + tableId);
         },
 
-        getNutrientTypes: function() {
+        getNutrientTypes: function () {
             return $http.get($window.api_base_url + "tools/foods/composition/nutrients");
+        },
+
+        updateFoodCompositionTable: function (tableId, updatedTable) {
+            return $http.post($window.api_base_url + "tools/foods/composition/tables/" + tableId, JSON.stringify(updatedTable));
         }
 
     };

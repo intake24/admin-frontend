@@ -3,10 +3,10 @@
 var _ = require("underscore");
 
 module.exports = function (app) {
-    app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", controllerFun]);
+    app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location", controllerFun]);
 };
 
-function controllerFun($scope, FoodCompositionTablesService, $routeParams) {
+function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location) {
 
     FoodCompositionTablesService.getNutrientTypes().then(function (data) {
         $scope.nutrients = data;
@@ -120,8 +120,35 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams) {
         });
     };
 
+    function packTableForUpdate() {
+        function cleanNutrientColumn(col) {
+            return {
+                columnOffset: col.columnOffset,
+                nutrientId: col.nutrientId
+            }
+        }
+
+        return {
+            id: $scope.table.id,
+            description: $scope.table.description,
+            mapping: {
+                rowOffset: $scope.table.mapping.rowOffset,
+                idColumnOffset: $scope.table.mapping.idColumnOffset,
+                descriptionColumnOffset: $scope.table.mapping.descriptionColumnOffset,
+                localDescriptionColumnOffset: $scope.table.mapping.localDescriptionColumnOffset,
+                nutrientColumns: _.map($scope.table.mapping.nutrientColumns, cleanNutrientColumn)
+            }
+        };
+    }
+
     $scope.save = function () {
-        FoodCompositionTablesService.updateFoodCompositionTable($routeParams.tableId, $scope.table);
+
+        var newId = $scope.table.id;
+
+        FoodCompositionTablesService.updateFoodCompositionTable($routeParams.tableId, packTableForUpdate()).then(
+            $location.path($location.path().replace($routeParams.tableId, newId))
+        );
+
     };
 
     $scope.nutrientName = function(id) {

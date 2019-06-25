@@ -3,10 +3,11 @@
 var _ = require("underscore");
 
 module.exports = function (app) {
-    app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location", controllerFun]);
+    app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location",
+        "MessageService", controllerFun]);
 };
 
-function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location) {
+function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, MessageService) {
 
     FoodCompositionTablesService.getNutrientTypes().then(function (data) {
         $scope.nutrients = data;
@@ -151,7 +152,7 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
 
     };
 
-    $scope.nutrientName = function(id) {
+    $scope.nutrientName = function (id) {
 
         for (var i = 0; i < $scope.nutrients.length; i++) {
             if ($scope.nutrients[i].id == id)
@@ -159,5 +160,13 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         }
 
         return undefined;
-    }
+    };
+
+    $scope.uploadSpreadsheet = function (files) {
+        FoodCompositionTablesService.uploadFoodCompositionSpreadsheet($routeParams.tableId, files[0]).then(
+            function () {
+                MessageService.showSuccess("Food composition table updated successfully");
+            }
+        );
+    };
 }

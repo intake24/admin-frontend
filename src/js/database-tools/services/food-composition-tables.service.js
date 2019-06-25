@@ -23,8 +23,15 @@ function serviceFun($http, $window) {
 
         updateFoodCompositionTable: function (tableId, updatedTable) {
             return $http.post($window.api_base_url + "tools/foods/composition/tables/" + tableId, JSON.stringify(updatedTable));
-        }
+        },
 
+        uploadFoodCompositionSpreadsheet: function(tableId, file) {
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.post($window.api_base_url + "tools/foods/composition/tables/" + tableId + "/csv", fd, {
+                transformRequest: angular.identity,
+                headers: { "Content-Type": undefined}
+            });
+        }
     };
 }
-

@@ -16,7 +16,7 @@
                 <input class="form-control" type="text" ng-model="table.description"/>
             </div>
             <div class="form-group">
-                <button class="btn btn-default" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
+                <button class="btn btn-default" ng-disabled="requestInProgress" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
                     changes
                 </button>
             </div>
@@ -91,7 +91,7 @@
                 <button class="btn btn-sm btn-default" ng-click="addMappingColumn()"><span class="fa fa-plus"></span>&nbsp;
                     Add nutrient
                 </button>
-                <button class="btn btn-default btn-sm" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
+                <button class="btn btn-default btn-sm" ng-disabled="requestInProgress" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
                     changes
                 </button>
             </div>
@@ -99,7 +99,7 @@
             <h3>Nutrient data</h3>
 
             <div class="form-group">
-                <button class="btn btn-default" file-button on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet</button>
+                <button class="btn btn-default" ng-disabled="newTable || requestInProgress" file-button on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet</button>
             </div>
 
         </form>

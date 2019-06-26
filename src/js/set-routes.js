@@ -24,7 +24,8 @@ module.exports = function (app) {
         databaseTools: {
             foodFrequency: '/database-tools/food-frequency',
             compositionTables: '/database-tools/composition-tables',
-            compositionTablesEdit: '/database-tools/composition-tables/:tableId'
+            compositionTablesNew: '/database-tools/composition-tables/new',
+            compositionTablesEdit: '/database-tools/composition-tables/edit/:tableId'
         },
         surveyFeedback: '/survey-feedback'
     };
@@ -119,6 +120,10 @@ module.exports = function (app) {
                 controller: 'FoodCompositionController'
             })
             .when(routes.databaseTools.compositionTablesEdit, {
+                template: require("./database-tools/food-composition/fct-edit.html"),
+                controller: 'FoodCompositionEditController'
+            })
+            .when(routes.databaseTools.compositionTablesNew, {
                 template: require("./database-tools/food-composition/fct-edit.html"),
                 controller: 'FoodCompositionEditController'
             })

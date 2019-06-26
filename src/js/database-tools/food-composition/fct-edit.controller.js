@@ -4,20 +4,31 @@ var _ = require("underscore");
 
 module.exports = function (app) {
     app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location",
-        "MessageService", controllerFun]);
+        "MessageService", "appRoutes", controllerFun]);
 };
 
-function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, MessageService) {
+function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, MessageService, AppRoutes) {
+
+    $scope.newTable = $routeParams.tableId == null;
+    $scope.requestInProgress = false;
 
     FoodCompositionTablesService.getNutrientTypes().then(function (data) {
         $scope.nutrients = data;
     });
 
-    FoodCompositionTablesService.getFoodCompositionTable($routeParams.tableId).then(function (data) {
-        $scope.table = data;
-    });
+    if (!$scope.newTable) {
+        FoodCompositionTablesService.getFoodCompositionTable($routeParams.tableId).then(function (data) {
+            $scope.table = data;
+        });
+    } else {
+        $scope.table = {
+            mapping: {
+                nutrientColumns: []
+            }
+        }
+    }
 
-    $scope.nutrientColumnsCollapsed = true;
+    $scope.nutrientColumnsCollapsed = !$scope.newTable;
 
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -121,7 +132,7 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         });
     };
 
-    function packTableForUpdate() {
+    function prepareTableData() {
         function cleanNutrientColumn(col) {
             return {
                 columnOffset: col.columnOffset,
@@ -143,13 +154,25 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
     }
 
     $scope.save = function () {
+        $scope.requestInProgress = true;
 
-        var newId = $scope.table.id;
-
-        FoodCompositionTablesService.updateFoodCompositionTable($routeParams.tableId, packTableForUpdate()).then(
-            $location.path($location.path().replace($routeParams.tableId, newId))
-        );
-
+        if ($scope.newTable) {
+            FoodCompositionTablesService.createFoodCompositionTable(prepareTableData()).then(function () {
+                    $scope.requestInProgress = false;
+                    $location.path(AppRoutes.databaseTools.compositionTablesEdit.replace(":tableId", $scope.table.id));
+                },
+                function () {
+                    $scope.requestInProgress = false;
+                });
+        } else {
+            FoodCompositionTablesService.updateFoodCompositionTable($routeParams.tableId, prepareTableData()).then(function () {
+                    $scope.requestInProgress = false;
+                    $location.path(AppRoutes.databaseTools.compositionTablesEdit.replace(":tableId", $scope.table.id));
+                },
+                function () {
+                    $scope.requestInProgress = false;
+                });
+        }
     };
 
     $scope.nutrientName = function (id) {

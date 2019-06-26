@@ -70,6 +70,7 @@ module.exports = function (app) {
                             return retryRequest(rejection);
                         }
                     } else {
+
                         if (rejection.data && rejection.data.errorMessage) {
                             MessageService.showMessage(rejection.data.errorMessage, "danger");
                         } else {

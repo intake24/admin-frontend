@@ -11,6 +11,8 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
 
     $scope.newTable = $routeParams.tableId == null;
     $scope.requestInProgress = false;
+    $scope.uploadRequestInProgress = false;
+    $scope.uploadWarnings = [];
 
     FoodCompositionTablesService.getNutrientTypes().then(function (data) {
         $scope.nutrients = data;
@@ -186,9 +188,19 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
     };
 
     $scope.uploadSpreadsheet = function (files) {
+
+        $scope.uploadRequestInProgress = true;
+
         FoodCompositionTablesService.uploadFoodCompositionSpreadsheet($routeParams.tableId, files[0]).then(
-            function () {
-                MessageService.showSuccess("Food composition table updated successfully");
+            function (response) {
+
+                $scope.uploadRequestInProgress = false;
+
+                if (response.length > 0) {
+                    $scope.uploadWarnings = response;
+                    MessageService.showWarning("Food composition table updated but there were problems, see below");
+                } else
+                    MessageService.showSuccess("Food composition table updated successfully");
             }
         );
     };

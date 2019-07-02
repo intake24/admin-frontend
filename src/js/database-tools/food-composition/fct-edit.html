@@ -98,8 +98,13 @@
 
             <h3>Nutrient data</h3>
 
+            <div class="form-group bg-warning p-1" ng-if="uploadWarnings.length > 0">
+                <h4 class="mb-1">The following problems were encountered during the upload:</h4>
+                <p class="mb-1" ng-repeat="warning in uploadWarnings">{{ warning }}</p>
+            </div>
+
             <div class="form-group">
-                <button class="btn btn-default" ng-disabled="newTable || requestInProgress" file-button on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet</button>
+                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet</button>
             </div>
 
         </form>

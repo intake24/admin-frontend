@@ -31,6 +31,10 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                     href: appRoutes.databaseTools.compositionTables,
                     active: false
                 },
+                deriveLocale: {
+                    href: appRoutes.databaseTools.deriveLocale,
+                    active: false
+                },
                 collapsed: true,
                 active: false
             },

@@ -21,6 +21,9 @@
                 li
                     a(ng-href="/\#{{menuItems.databaseTools.compositionTables.href}}" ng-class="{'active': menuItems.databaseTools.compositionTables.active}")
                         | #{ gettext("Composition tables") }
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.deriveLocale.href}}" ng-class="{'active': menuItems.databaseTools.deriveLocale.active}")
+                        | #{ gettext("Derive new locale") }
 
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')

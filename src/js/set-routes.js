@@ -23,6 +23,7 @@ module.exports = function (app) {
         surveyManagerSurveyResults: '/survey-manager/:surveyId/results',
         databaseTools: {
             foodFrequency: '/database-tools/food-frequency',
+            deriveLocale: '/database-tools/derive-locale',
             compositionTables: '/database-tools/composition-tables',
             compositionTablesNew: '/database-tools/composition-tables/new',
             compositionTablesEdit: '/database-tools/composition-tables/edit/:tableId'
@@ -114,6 +115,10 @@ module.exports = function (app) {
             .when(routes.databaseTools.foodFrequency, {
                 template: require("./database-tools/food-frequency.pug"),
                 controller: 'FoodFrequencyController'
+            })
+            .when(routes.databaseTools.deriveLocale, {
+                template: require("./database-tools/derive-locale/derive-locale.html"),
+                controller: 'DeriveLocaleController'
             })
             .when(routes.databaseTools.compositionTables, {
                 template: require("./database-tools/food-composition/food-composition-tables.html"),

@@ -11,11 +11,11 @@ function serviceFun($http, $window) {
     return {
         exportFoodFrequencies: function (locale, limitToSurveys) {
             var data = JSON.stringify({ locale: locale.id, limitToSurveys: limitToSurveys });
-            return $http.post($window.api_base_url + "tools/foods/frequencies", data);
+            return $http.post($window.api_base_url + "v2/foods/frequencies", data);
         },
 
         getRecentTasks: function(type) {
-            return $http.get($window.api_base_url + "tools/tasks?type=" + type);
+            return $http.get($window.api_base_url + "v2/tasks?type=" + type);
         }
     };
 }

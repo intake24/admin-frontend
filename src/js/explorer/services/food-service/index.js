@@ -12,7 +12,7 @@ function serviceFun($http, $q, LocalesService, PackerService) {
 
     return {
         getRootCategories: function (locale) {
-            return $http.get(api_base_url + "admin/browse/" + locale + "/root-categories")
+            return $http.get(api_base_url + "v2/foods/admin/" + locale + "/root-categories")
                 .then(function (data) {
                     var result = data.map(PackerService.unpackCategoryHeader);
                     result.unshift({
@@ -27,14 +27,14 @@ function serviceFun($http, $q, LocalesService, PackerService) {
         },
 
         getUncategorisedFoods: function (locale) {
-            return $http.get(api_base_url + "admin/browse/" + locale + "/uncategorised-foods")
+            return $http.get(api_base_url + "v2/foods/admin/" + locale + "/uncategorised-foods")
                 .then(function (data) {
                     return data.map(PackerService.unpackFoodHeader);
                 });
         },
 
         getCategoryContents: function (locale, code) {
-            return $http.get(api_base_url + "admin/browse/" + locale + "/" + code)
+            return $http.get(api_base_url + "v2/foods/admin/" + locale + "/categories/" + code + "/contents")
                 .then(function (data) {
                     return PackerService.unpackCategoryContents(data);
                 });

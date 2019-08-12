@@ -15,6 +15,17 @@ function controllerFun($scope, DeriveLocaleService, LocalesService, MessageServi
     $scope.targetLocale = undefined;
     $scope.errors = [];
 
+    $scope.availableFormats = [
+        {
+            id: "ndns1",
+            description: "NDNS (version 1)"
+        },
+        {
+            id: "sab1",
+            description: "SAB (version 1)"
+        }
+    ];
+
     LocalesService.list().then(function (locales) {
         $scope.locales = locales;
     });
@@ -22,7 +33,7 @@ function controllerFun($scope, DeriveLocaleService, LocalesService, MessageServi
     $scope.uploadSpreadsheet = function (files) {
         $scope.requestInProgress = true;
 
-        DeriveLocaleService.deriveLocale($scope.sourceLocale, $scope.targetLocale, files[0]).then(
+        DeriveLocaleService.deriveLocale($scope.sourceLocale, $scope.targetLocale, $scope.format, files[0]).then(
             function (response) {
                 $scope.requestInProgress = false;
                 MessageService.showSuccess("New food database initialised successfully");

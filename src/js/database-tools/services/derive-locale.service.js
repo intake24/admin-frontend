@@ -9,13 +9,14 @@ module.exports = function (app) {
 function serviceFun($http, $window) {
 
     return {
-        deriveLocale: function (sourceLocale, targetLocale, file) {
+        deriveLocale: function (sourceLocale, targetLocale, format, file) {
             var fd = new FormData();
             fd.append("file", file);
             fd.append("sourceLocale", sourceLocale);
             fd.append("targetLocale", targetLocale);
+            fd.append("format", format);
 
-            return $http.post($window.api_base_url + "v2/foods/derive-locale", fd, {
+            return $http.post($window.api_base_url + "v2/foods/admin/derive-locale", fd, {
                 transformRequest: angular.identity,
                 headers: {"Content-Type": undefined}
             });

@@ -45,9 +45,12 @@
                 <input class="form-control" type="text" ng-model="table.mapping.rowOffset"/>
             </div>
 
+            <h3>Nutrient column mapping</h3>
+
             <div class="form-group">
-                <button class="btn btn-primary" ng-click="nutrientColumnsCollapsed = !nutrientColumnsCollapsed">Nutrient
-                    columns
+                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadMappingSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from CSV</button>
+                <button class="btn btn-default"  ng-click="nutrientColumnsCollapsed = !nutrientColumnsCollapsed">Edit
+                    mapping
                     <span class="fa fa-chevron-right" ng-if="nutrientColumnsCollapsed"></span>
                     <span class="fa fa-chevron-down" ng-if="!nutrientColumnsCollapsed"></span></button>
             </div>
@@ -104,7 +107,7 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet</button>
+                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadCompositionSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from CSV</button>
             </div>
 
         </form>

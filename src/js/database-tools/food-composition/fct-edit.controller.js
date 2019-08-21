@@ -4,10 +4,10 @@ var _ = require("underscore");
 
 module.exports = function (app) {
     app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location",
-        "MessageService", "appRoutes", controllerFun]);
+        "$route", "MessageService", "appRoutes", controllerFun]);
 };
 
-function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, MessageService, AppRoutes) {
+function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, $route, MessageService, AppRoutes) {
 
     $scope.newTable = $routeParams.tableId == null;
     $scope.requestInProgress = false;
@@ -187,7 +187,7 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         return undefined;
     };
 
-    $scope.uploadSpreadsheet = function (files) {
+    $scope.uploadCompositionSpreadsheet = function (files) {
 
         $scope.uploadRequestInProgress = true;
 
@@ -201,6 +201,26 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
                     MessageService.showWarning("Food composition table updated but there were problems, see below");
                 } else
                     MessageService.showSuccess("Food composition table updated successfully");
+            },
+
+            function (reason) {
+                $scope.uploadRequestInProgress = false;
+            }
+        );
+    };
+
+    $scope.uploadMappingSpreadsheet = function (files) {
+
+        $scope.uploadRequestInProgress = true;
+
+        FoodCompositionTablesService.uploadMappingSpreadsheet($routeParams.tableId, files[0]).then(
+            function (response) {
+                MessageService.showSuccess("Food composition table updated successfully");
+                $route.reload();
+            },
+
+            function (reason) {
+                $scope.uploadRequestInProgress = false;
             }
         );
     };

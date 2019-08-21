@@ -37,7 +37,7 @@
 
       <div class="form-group bg-warning p-1" ng-if="errors.length > 0">
         <h4 class="mb-1">The following problems were encountered during the upload:</h4>
-        <p class="mb-1" ng-repeat="errorMessage in errors">{{ errorMessage }}</p>
+        <p class="mb-1" ng-repeat="errorMessage in errors track by $index">{{ errorMessage }}</p>
       </div>
 
       <div class="form-group">

@@ -36,6 +36,15 @@ function serviceFun($http, $window) {
                 transformRequest: angular.identity,
                 headers: { "Content-Type": undefined}
             });
+        },
+
+        uploadMappingSpreadsheet: function(tableId, file) {
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.patch($window.api_base_url + "v2/foods/composition/tables/" + tableId + "/mapping.csv", fd, {
+                transformRequest: angular.identity,
+                headers: { "Content-Type": undefined}
+            });
         }
     };
 }

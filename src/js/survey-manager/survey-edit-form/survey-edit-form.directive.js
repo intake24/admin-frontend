@@ -4,15 +4,18 @@
 
 "use strict";
 
-module.exports = function (app) {
-    app.directive("surveyEditForm", ["LocalesService", "SurveyService", "UserStateService",
-        "uiDatetimePickerConfig", directiveFun]);
+module.exports = function(app) {
+    app.directive("surveyEditForm", [
+        "LocalesService",
+        "SurveyService",
+        "UserStateService",
+        "uiDatetimePickerConfig",
+        directiveFun
+    ]);
 };
 
 function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetimePickerConfig) {
-
     function controller(scope, element, attribute) {
-
         scope.form = {};
 
         scope.schemes = [
@@ -23,14 +26,18 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             {
                 id: "ndns419",
                 name: "NDNS dress rehearsal (April 2019)"
+            },
+            {
+                id: "ndns1019",
+                name: "NDNS (October 2019)"
             }
         ];
 
         scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
         scope.surveyStateOptions = [
-            {value: "0", text: "Has not started"},
-            {value: "2", text: "Active"},
-            {value: "1", text: "Suspended"}
+            { value: "0", text: "Has not started" },
+            { value: "2", text: "Active" },
+            { value: "1", text: "Suspended" }
         ];
 
         scope.loading = false;
@@ -48,19 +55,19 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
         scope.locales = [];
 
-        scope.openStartDatePicker = function () {
+        scope.openStartDatePicker = function() {
             scope.datePickerState.startIsOpen = true;
         };
 
-        scope.openEndDatePicker = function () {
+        scope.openEndDatePicker = function() {
             scope.datePickerState.endIsOpen = true;
         };
 
-        scope.cancel = function () {
+        scope.cancel = function() {
             updateScope(scope, scope.survey);
         };
 
-        scope.save = function () {
+        scope.save = function() {
             if (!validateForm(scope)) {
                 return;
             }
@@ -69,35 +76,37 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             if (!scope.survey) {
                 def = SurveyService.create(getRequest(scope));
             } else {
-                def = SurveyService.patch(scope.survey.id, getRequest(scope)).then(function (data) {
+                def = SurveyService.patch(scope.survey.id, getRequest(scope)).then(function(data) {
                     updateScope(scope, data);
                     updateSurvey(scope, data);
                     return data;
                 });
             }
-            def.then(function (data) {
+            def.then(function(data) {
                 if (scope.onSaved) {
                     scope.onSaved(data);
                 }
-            }).finally(function () {
+            }).finally(function() {
                 scope.loading = false;
             });
         };
 
-        scope.$watch("survey", function (newVal) {
+        scope.$watch("survey", function(newVal) {
             updateScope(scope, newVal);
         });
 
-        scope.$watch(function () {
-            return UserStateService.getUserInfo();
-        }, function (newValue) {
-            scope.currentUser = newValue;
-        });
+        scope.$watch(
+            function() {
+                return UserStateService.getUserInfo();
+            },
+            function(newValue) {
+                scope.currentUser = newValue;
+            }
+        );
 
-        LocalesService.list().then(function (locales) {
+        LocalesService.list().then(function(locales) {
             scope.locales = locales;
         });
-
     }
 
     return {
@@ -108,8 +117,7 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
         },
         link: controller,
         template: require("./survey-edit-form.directive.html")
-    }
-
+    };
 }
 
 function getRequest(scope) {
@@ -129,19 +137,20 @@ function getRequest(scope) {
 }
 
 function validateForm(scope) {
-
     scope.formValidation.name = scope.form.name.trim() != "";
 
     scope.formValidation.supportEmail = scope.form.supportEmail.trim() != "";
 
-    scope.formValidation.surveyPeriod = scope.form.startDate != null &&
+    scope.formValidation.surveyPeriod =
+        scope.form.startDate != null &&
         scope.form.endDate != null &&
         scope.form.endDate >= scope.form.startDate;
 
-    return scope.formValidation.name &&
+    return (
+        scope.formValidation.name &&
         scope.formValidation.supportEmail &&
-        scope.formValidation.surveyPeriod;
-
+        scope.formValidation.surveyPeriod
+    );
 }
 
 function updateScope(scope, data) {
@@ -149,8 +158,7 @@ function updateScope(scope, data) {
         scope.form.name = "";
         scope.form.state = "0";
         scope.form.selectedLocale = "en_GB";
-        scope.form.schemeId = "default",
-        scope.form.allowGeneratedUsers = false;
+        (scope.form.schemeId = "default"), (scope.form.allowGeneratedUsers = false);
         scope.form.externalFollowUpURL = "";
         scope.form.supportEmail = "";
         scope.form.startDate = null;
@@ -159,8 +167,8 @@ function updateScope(scope, data) {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
         scope.form.selectedLocale = data.localeId;
-        scope.form.schemeId = data.schemeId,
-        scope.form.allowGeneratedUsers = data.allowGeneratedUsers;
+        (scope.form.schemeId = data.schemeId),
+            (scope.form.allowGeneratedUsers = data.allowGeneratedUsers);
         scope.form.externalFollowUpURL = data.externalFollowUpURL;
         scope.form.supportEmail = data.supportEmail;
         scope.form.startDate = new Date(data.startDate);

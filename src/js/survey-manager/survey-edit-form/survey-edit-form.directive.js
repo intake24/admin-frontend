@@ -132,6 +132,7 @@ function getRequest(scope) {
         externalFollowUpURL: scope.form.externalFollowUpURL,
         supportEmail: scope.form.supportEmail,
         description: scope.survey ? scope.survey.description : null,
+        finalPageHtml: scope.survey ? scope.survey.finalPageHtml : null,
         submissionNotificationUrl: scope.form.submissionNotificationUrl
     };
 }

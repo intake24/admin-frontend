@@ -137,7 +137,10 @@ function getRequest(scope) {
         supportEmail: scope.form.supportEmail,
         description: scope.survey ? scope.survey.description : null,
         finalPageHtml: scope.survey ? scope.survey.finalPageHtml : null,
-        submissionNotificationUrl: scope.form.submissionNotificationUrl
+        submissionNotificationUrl: scope.form.submissionNotificationUrl,
+        feedbackEnabled: scope.form.feedbackEnabled,
+        numberOfSubmissionsForFeedback: scope.form.numberOfSubmissionsForFeedback,
+        storeUserSessionOnServer: scope.form.storeUserSessionOnServer
     };
 }
 
@@ -163,11 +166,15 @@ function updateScope(scope, data) {
         scope.form.name = "";
         scope.form.state = "0";
         scope.form.selectedLocale = "en_GB";
-        (scope.form.schemeId = "default"), (scope.form.allowGeneratedUsers = false);
+        scope.form.schemeId = "default";
+        scope.form.allowGeneratedUsers = false;
         scope.form.externalFollowUpURL = "";
         scope.form.supportEmail = "";
         scope.form.startDate = null;
         scope.form.endDate = null;
+        scope.form.feedbackEnabled = false;
+        scope.form.numberOfSubmissionsForFeedback = "1";
+        scope.form.storeUserSessionOnServer = false;
     } else {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
@@ -179,6 +186,9 @@ function updateScope(scope, data) {
         scope.form.startDate = new Date(data.startDate);
         scope.form.endDate = new Date(data.endDate);
         scope.form.submissionNotificationUrl = data.submissionNotificationUrl;
+        scope.form.feedbackEnabled = data.feedbackEnabled;
+        scope.form.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
+        scope.form.storeUserSessionOnServer = data.storeUserSessionOnServer;
     }
 }
 
@@ -193,4 +203,7 @@ function updateSurvey(scope, data) {
     scope.survey.startDate = data.startDate;
     scope.survey.endDate = data.endDate;
     scope.survey.submissionNotificationUrl = data.submissionNotificationUrl;
+    scope.survey.feedbackEnabled = data.feedbackEnabled;
+    scope.survey.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
+    scope.survey.storeUserSessionOnServer = data.storeUserSessionOnServer;
 }

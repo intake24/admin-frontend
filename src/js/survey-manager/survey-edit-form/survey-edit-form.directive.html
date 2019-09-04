@@ -2,23 +2,39 @@
     <div class="form-group" ng-class="{'has-error': !formValidation.name}">
         <label class="control-label col-sm-2">Survey ID</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control input-lg" placeholder="Survey name" ng-attr-title="{{ currentUser.canCreateSurveys()? '' : 'Please contact the system administrator to change your survey\'s ID' }}"
-                   ng-model="form.name" ng-disabled="!currentUser.canCreateSurveys()">
+            <input
+                type="text"
+                class="form-control input-lg"
+                placeholder="Survey name"
+                ng-attr-title="{{
+                    currentUser.canCreateSurveys()
+                        ? ''
+                        : 'Please contact the system administrator to change your survey\'s ID'
+                }}"
+                ng-model="form.name"
+                ng-disabled="!currentUser.canCreateSurveys()"
+            />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-2">Stage</label>
         <div class="col-sm-10">
             <select class="form-control" ng-model="form.state">
-                <option ng-repeat="opt in surveyStateOptions" value="{{opt.value}}">{{opt.text}}</option>
+                <option ng-repeat="opt in surveyStateOptions" value="{{ opt.value }}">{{
+                    opt.text
+                }}</option>
             </select>
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !formValidation.supportEmail}">
         <label class="control-label col-sm-2">Survey support e-mail</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="admin@example.com"
-                   ng-model="form.supportEmail">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="admin@example.com"
+                ng-model="form.supportEmail"
+            />
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !formValidation.surveyPeriod}">
@@ -26,22 +42,28 @@
         <div class="col-sm-10">
             <div class="row">
                 <div class="col-xs-6">
-                    <input type="text" class="form-control"
-                           placeholder="{{uiDatetimePickerConfig.dateFormat}}"
-                           datetime-picker
-                           is-open="datePickerState.startIsOpen"
-                           ng-focus="openStartDatePicker()"
-                           timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="form.startDate">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{ uiDatetimePickerConfig.dateFormat }}"
+                        datetime-picker
+                        is-open="datePickerState.startIsOpen"
+                        ng-focus="openStartDatePicker()"
+                        timepicker-options="uiDatetimePickerConfig.timepickerOptions"
+                        ng-model="form.startDate"
+                    />
                 </div>
                 <div class="col-xs-6">
-                    <input type="text" class="form-control"
-                           placeholder="{{uiDatetimePickerConfig.dateFormat}}"
-                           datetime-picker
-                           is-open="datePickerState.endIsOpen"
-                           ng-focus="openEndDatePicker()"
-                           timepicker-options="uiDatetimePickerConfig.timepickerOptions"
-                           ng-model="form.endDate">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{ uiDatetimePickerConfig.dateFormat }}"
+                        datetime-picker
+                        is-open="datePickerState.endIsOpen"
+                        ng-focus="openEndDatePicker()"
+                        timepicker-options="uiDatetimePickerConfig.timepickerOptions"
+                        ng-model="form.endDate"
+                    />
                 </div>
             </div>
         </div>
@@ -49,9 +71,18 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Locale</label>
         <div class="col-sm-10">
-            <select class="form-control" ng-model="form.selectedLocale" ng-disabled="!currentUser.canCreateSurveys()" ng-attr-title="{{ currentUser.canCreateSurveys()? '':'Please contact the system administrator to change your survey\'s language' }}">
-                <option ng-repeat="item in locales"
-                        value="{{item.id}}">{{item.englishName}}
+            <select
+                class="form-control"
+                ng-model="form.selectedLocale"
+                ng-disabled="!currentUser.canCreateSurveys()"
+                ng-attr-title="{{
+                    currentUser.canCreateSurveys()
+                        ? ''
+                        : 'Please contact the system administrator to change your survey\'s language'
+                }}"
+            >
+                <option ng-repeat="item in locales" value="{{ item.id }}"
+                    >{{ item.englishName }}
                 </option>
             </select>
         </div>
@@ -59,48 +90,89 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Scheme</label>
         <div class="col-sm-10">
-            <select class="form-control" ng-model="form.schemeId" ng-disabled="!currentUser.canCreateSurveys()" ng-attr-title="{{ currentUser.canCreateSurveys()? '':'Please contact the system administrator to change your survey\'s scheme' }}">
-                <option ng-repeat="item in schemes"
-                        value="{{item.id}}">{{item.name}}
-                </option>
+            <select
+                class="form-control"
+                ng-model="form.schemeId"
+                ng-disabled="!currentUser.canCreateSurveys()"
+                ng-attr-title="{{
+                    currentUser.canCreateSurveys()
+                        ? ''
+                        : 'Please contact the system administrator to change your survey\'s scheme'
+                }}"
+            >
+                <option ng-repeat="item in schemes" value="{{ item.id }}">{{ item.name }} </option>
             </select>
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-2">Follow-up survey URL</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="https://externalsurvey.com/mySurvey"
-                   ng-model="form.externalFollowUpURL">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="https://externalsurvey.com/mySurvey"
+                ng-model="form.externalFollowUpURL"
+            />
         </div>
     </div>
     <div class="form-group" ng-if="currentUser.canCreateSurveys()">
         <label class="control-label col-sm-2">Submission notification URL</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="https://externaldomain.com/notify-submission"
-                   ng-model="form.submissionNotificationUrl">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="https://externaldomain.com/notify-submission"
+                ng-model="form.submissionNotificationUrl"
+            />
         </div>
     </div>
     <div class="form-group" ng-if="currentUser.canCreateSurveys()">
         <div class="col-sm-10 col-sm-offset-2">
             <label class="checkbox-inline">
-                <input type="checkbox" ng-model="form.allowGeneratedUsers">
+                <input type="checkbox" ng-model="form.allowGeneratedUsers" />
                 Allow automatic user generation
+            </label>
+        </div>
+    </div>
+    <div class="form-group" ng-if="currentUser.canCreateSurveys()">
+        <div class="col-sm-10 col-sm-offset-2">
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="form.feedbackEnabled" />
+                Enable Feedback
+            </label>
+        </div>
+    </div>
+    <div class="form-group" ng-if="currentUser.canCreateSurveys()">
+        <label class="control-label col-sm-2">Number of submissions for feedback</label>
+        <div class="col-sm-10">
+            <input
+                type="text"
+                class="form-control"
+                ng-model="form.numberOfSubmissionsForFeedback"
+            />
+        </div>
+    </div>
+    <div class="form-group" ng-if="currentUser.canCreateSurveys()">
+        <div class="col-sm-10 col-sm-offset-2">
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="form.storeUserSessionOnServer" />
+                Store User Session Data On Server
             </label>
         </div>
     </div>
     <div class="form-group text-right">
         <div class="col-xs-12 text-right">
-            <button class="btn btn-default"
-                    ng-click="cancel()"
-                    ng-disabled="loading"
-                    ng-show="survey">
+            <button
+                class="btn btn-default"
+                ng-click="cancel()"
+                ng-disabled="loading"
+                ng-show="survey"
+            >
                 Cancel
             </button>
-            <button class="btn btn-success"
-                    ng-click="save()"
-                    ng-disabled="loading">
+            <button class="btn btn-success" ng-click="save()" ng-disabled="loading">
                 <i class="fa" ng-class="{'fa-spinner fa-spin': loading, 'hide': !loading}"></i>
-                {{ loading ? 'Loading' : 'Save' }}
+                {{ loading ? "Loading" : "Save" }}
             </button>
         </div>
     </div>

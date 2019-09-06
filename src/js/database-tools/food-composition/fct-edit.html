@@ -1,115 +1,155 @@
 <div ng-controller="FoodCompositionEditController">
-    <div class="intake24-database-tool">
-        <div class="mb-2">
-            <a class="btn btn-default" href="#/database-tools/composition-tables"><span
-                    class="fa fa-chevron-left"></span>&nbsp;
-                Back to table list</a>
+  <div class="intake24-database-tool">
+    <div class="mb-2">
+      <a class="btn btn-default" href="#/database-tools/composition-tables"><span
+          class="fa fa-chevron-left"></span>&nbsp;
+        Back to table list</a>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label class="control-label">ID</label>
+        <input class="form-control" type="text" ng-model="table.id"/>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Description</label>
+        <input class="form-control" type="text" ng-model="table.description"/>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-default" ng-disabled="requestInProgress" ng-click="save()"><span
+            class="fa fa-save"></span>&nbsp;Save
+          changes
+        </button>
+      </div>
+      <h3>Source spreadsheet mapping</h3>
+
+      <div class="form-group">
+        <label class="control-label">Record ID column</label>
+        <input class="form-control" type="text" ng-model="idColumnOffsetModel"
+               ng-model-options="{ getterSetter: true }"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Description column</label>
+        <input class="form-control" type="text" ng-model="descriptionColumnOffsetModel"
+               ng-model-options="{ getterSetter: true }"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Local description column (leave blank if N/A)</label>
+        <input class="form-control" type="text" ng-model="localDescriptionColumnOffsetModel"
+               ng-model-options="{ getterSetter: true }"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Number of rows to skip (e.g. header or blank rows)</label>
+        <input class="form-control" type="text" ng-model="table.mapping.rowOffset"/>
+      </div>
+
+      <h3>Nutrient column mapping</h3>
+
+      <div class="form-group">
+        <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button
+                on-change="uploadMappingSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from CSV
+        </button>
+        <button class="btn btn-default" ng-click="nutrientColumnsCollapsed = !nutrientColumnsCollapsed">Edit
+          mapping
+          <span class="fa fa-chevron-right" ng-if="nutrientColumnsCollapsed"></span>
+          <span class="fa fa-chevron-down" ng-if="!nutrientColumnsCollapsed"></span></button>
+      </div>
+
+      <div class="form-group" ng-hide="nutrientColumnsCollapsed">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Intake24 nutrient</th>
+            <th>CSV column</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr ng-if="!(nutrients && table)">
+            <td class="col-sm-4"><i class="fa fa-spinner fa-spin"></i></td>
+            <td class="col-sm-2"></td>
+            <td></td>
+          </tr>
+
+          <tr ng-if="nutrients && table" ng-repeat="col in table.mapping.nutrientColumns">
+            <td class="col-sm-4">
+              <select ng-model="col.nutrientId" class="form-control" ng-focus="col.focus = true"
+                      ng-blur="col.focus = false">
+                <option ng-value="col.nutrientId" ng-if="!col.focus">{{nutrientName(col.nutrientId)}}</option>
+                <option ng-value="nutrient.id" ng-if="col.focus" ng-repeat="nutrient in nutrients">{{nutrient.name}}
+                </option>
+              </select>
+            </td>
+            <td class="col-sm-2"><input pattern="[a-zA-Z]+" type="text" class="form-control"
+                                        ng-model="columnOffsetModel.bind(col)"
+                                        ng-model-options=" { getterSetter: true } "></td>
+            <td class="col-sm-2">
+              <button class="btn btn-xs btn-danger" ng-click="deleteMappingColumn(col)"><span
+                  class="fa fa-remove"></span>&nbsp; Delete
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-default" ng-click="addMappingColumn()"><span class="fa fa-plus"></span>&nbsp;
+          Add nutrient
+        </button>
+        <button class="btn btn-default btn-sm" ng-disabled="requestInProgress" ng-click="save()"><span
+            class="fa fa-save"></span>&nbsp;Save
+          changes
+        </button>
+      </div>
+
+      <h3>Nutrient data</h3>
+
+
+      <div ng-if="nutrientsUploadTask" class="form-group">
+
+        <label class="control-label">Upload status:</label>
+
+        <div ng-if="nutrientsUploadTask.status.status == 'pending'">
+          <div class="progress" style="margin-bottom: 0;">
+            <div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar"
+                 style="width: 100%;">Queued
+            </div>
+          </div>
         </div>
 
-        <form>
-            <div class="form-group">
-                <label class="control-label">ID</label>
-                <input class="form-control" type="text" ng-model="table.id"/>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Description</label>
-                <input class="form-control" type="text" ng-model="table.description"/>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" ng-disabled="requestInProgress" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
-                    changes
-                </button>
-            </div>
-            <h3>Source spreadsheet mapping</h3>
+        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && !nutrientsUploadTask.status.progress" class="progress"
+             style="margin-bottom: 0;">
+          <div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar"
+               style="width: 100%;">In progress
+          </div>
+        </div>
 
-            <div class="form-group">
-                <label class="control-label">Record ID column</label>
-                <input class="form-control" type="text" ng-model="idColumnOffsetModel"
-                       ng-model-options="{ getterSetter: true }"/>
-            </div>
 
-            <div class="form-group">
-                <label class="control-label">Description column</label>
-                <input class="form-control" type="text" ng-model="descriptionColumnOffsetModel"
-                       ng-model-options="{ getterSetter: true }"/>
-            </div>
+        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && nutrientsUploadTask.status.progress" class="progress"
+             style="margin-bottom: 0;">
+          <div class="progress-bar progress-bar-info" role="progressbar"
+               ng-style="{ width: progressToPercentage(nutrientsUploadTask.status.progress) }">
+            In progress&nbsp;{{progressToPercentage(nutrientsUploadTask.status.progress)}}
+          </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label class="control-label">Local description column (leave blank if N/A)</label>
-                <input class="form-control" type="text" ng-model="localDescriptionColumnOffsetModel"
-                       ng-model-options="{ getterSetter: true }"/>
-            </div>
 
-            <div class="form-group">
-                <label class="control-label">Number of rows to skip (e.g. header or blank rows)</label>
-                <input class="form-control" type="text" ng-model="table.mapping.rowOffset"/>
-            </div>
+      <div class="form-group bg-warning p-1" ng-if="uploadWarnings.length > 0">
+        <h4 class="mb-1">The following problems were encountered while reading the spreadsheet:</h4>
+        <p class="mb-1" ng-repeat="warning in uploadWarnings">{{ warning }}</p>
+      </div>
 
-            <h3>Nutrient column mapping</h3>
+      <div class="form-group">
+        <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button
+                on-change="uploadCompositionSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from
+          CSV
+        </button>
+      </div>
 
-            <div class="form-group">
-                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadMappingSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from CSV</button>
-                <button class="btn btn-default"  ng-click="nutrientColumnsCollapsed = !nutrientColumnsCollapsed">Edit
-                    mapping
-                    <span class="fa fa-chevron-right" ng-if="nutrientColumnsCollapsed"></span>
-                    <span class="fa fa-chevron-down" ng-if="!nutrientColumnsCollapsed"></span></button>
-            </div>
-
-            <div class="form-group" ng-hide="nutrientColumnsCollapsed">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Intake24 nutrient</th>
-                        <th>CSV column</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr ng-if="!(nutrients && table)">
-                        <td class="col-sm-4"><i class="fa fa-spinner fa-spin"></i></td>
-                        <td class="col-sm-2"></td>
-                        <td></td>
-                    </tr>
-
-                    <tr ng-if="nutrients && table" ng-repeat="col in table.mapping.nutrientColumns">
-                        <td class="col-sm-4">
-                            <select ng-model="col.nutrientId" class="form-control" ng-focus="col.focus = true" ng-blur="col.focus = false">
-                                <option ng-value="col.nutrientId" ng-if="!col.focus">{{nutrientName(col.nutrientId)}}</option>
-                                <option ng-value="nutrient.id" ng-if="col.focus" ng-repeat="nutrient in nutrients">{{nutrient.name}}</option>
-                            </select>
-                        </td>
-                        <td class="col-sm-2"><input pattern="[a-zA-Z]+" type="text" class="form-control"
-                                                    ng-model="columnOffsetModel.bind(col)"
-                                                    ng-model-options=" { getterSetter: true } "></td>
-                        <td class="col-sm-2">
-                            <button class="btn btn-xs btn-danger" ng-click="deleteMappingColumn(col)"><span
-                                    class="fa fa-remove"></span>&nbsp; Delete
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <button class="btn btn-sm btn-default" ng-click="addMappingColumn()"><span class="fa fa-plus"></span>&nbsp;
-                    Add nutrient
-                </button>
-                <button class="btn btn-default btn-sm" ng-disabled="requestInProgress" ng-click="save()"><span class="fa fa-save"></span>&nbsp;Save
-                    changes
-                </button>
-            </div>
-
-            <h3>Nutrient data</h3>
-
-            <div class="form-group bg-warning p-1" ng-if="uploadWarnings.length > 0">
-                <h4 class="mb-1">The following problems were encountered during the upload:</h4>
-                <p class="mb-1" ng-repeat="warning in uploadWarnings">{{ warning }}</p>
-            </div>
-
-            <div class="form-group">
-                <button class="btn btn-default" ng-disabled="newTable || uploadRequestInProgress" file-button on-change="uploadCompositionSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload from CSV</button>
-            </div>
-
-        </form>
-    </div>
+    </form>
+  </div>
 </div>

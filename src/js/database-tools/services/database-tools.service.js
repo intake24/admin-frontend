@@ -16,6 +16,10 @@ function serviceFun($http, $window) {
 
         getRecentTasks: function(type) {
             return $http.get($window.api_base_url + "v2/tasks?type=" + type);
+        },
+
+        getTaskStatus: function(taskId) {
+            return $http.get($window.api_base_url + "v2/tasks/" + taskId);
         }
     };
 }

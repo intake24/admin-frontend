@@ -4,15 +4,24 @@ var _ = require("underscore");
 
 module.exports = function (app) {
     app.controller("FoodCompositionEditController", ["$scope", "FoodCompositionTablesService", "$routeParams", "$location",
-        "$route", "MessageService", "appRoutes", controllerFun]);
+        "$route", "$interval", "MessageService", "DatabaseToolsService", "appRoutes", controllerFun]);
 };
 
-function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, $route, MessageService, AppRoutes) {
+function controllerFun($scope, FoodCompositionTablesService, $routeParams, $location, $route, $interval, MessageService,
+                       DatabaseToolsService, AppRoutes) {
 
     $scope.newTable = $routeParams.tableId == null;
     $scope.requestInProgress = false;
     $scope.uploadRequestInProgress = false;
     $scope.uploadWarnings = [];
+
+    var uploadStatusIntervalId = undefined;
+
+    this.$onDestroy = function() {
+        if (uploadStatusIntervalId) {
+            $interval.cancel(uploadStatusIntervalId)
+        }
+    };
 
     FoodCompositionTablesService.getNutrientTypes().then(function (data) {
         $scope.nutrients = data;
@@ -187,6 +196,39 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         return undefined;
     };
 
+    $scope.progressToPercentage = function (progress) {
+        var result = (progress * 100.0 | 0) + "%";
+        return result;
+    };
+
+    function onNutrientsUploadComplete() {
+        $interval.cancel(uploadStatusIntervalId);
+        uploadStatusIntervalId = undefined;
+        $scope.nutrientsUploadTask = undefined;
+        $scope.uploadRequestInProgress = false;
+    }
+
+    function updateUploadProgress(taskId) {
+        DatabaseToolsService.getTaskStatus(taskId).then(
+            function (response) {
+
+                $scope.nutrientsUploadTask = response;
+
+                switch(response.status.status) {
+                    case "finished":
+                        MessageService.showSuccess("Food composition table uploaded");
+                        onNutrientsUploadComplete();
+                        break;
+                    case "failed":
+                        MessageService.showDanger("Food composition table upload failed (see console for details)");
+                        console.error(response.status.reason);
+                        onNutrientsUploadComplete();
+                        break;
+                }
+            }
+        )
+    };
+
     $scope.uploadCompositionSpreadsheet = function (files) {
 
         $scope.uploadRequestInProgress = true;
@@ -194,13 +236,20 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         FoodCompositionTablesService.uploadFoodCompositionSpreadsheet($routeParams.tableId, files[0]).then(
             function (response) {
 
+                $scope.uploadWarnings = response.warnings;
+
                 $scope.uploadRequestInProgress = false;
 
-                if (response.length > 0) {
-                    $scope.uploadWarnings = response;
-                    MessageService.showWarning("Food composition table updated but there were problems, see below");
-                } else
-                    MessageService.showSuccess("Food composition table updated successfully");
+                if ($scope.uploadWarnings.length > 0)
+                    MessageService.showWarning("Food composition table is uploading but there are problems, see below");
+                else
+                    MessageService.showSuccess("Food composition table is uploading");
+
+                $scope.nutrientsUploadInProgress = true;
+
+                uploadStatusIntervalId = $interval(function () {
+                    updateUploadProgress(response.taskId);
+                }, 1000);
             },
 
             function (reason) {

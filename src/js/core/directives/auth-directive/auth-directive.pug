@@ -17,7 +17,7 @@
         p Please confirm your e-mail address:
         form(ng-submit="requestPasswordReset()")
             input(type="text" ng-model="username" placeholder=gettext('E-mail'))
-            .g-recaptcha(data-sitekey=recaptcha_site_key data-callback="recaptchaCallback")
+            .g-recaptcha(ng-if="recaptchaEnabled" data-sitekey=recaptcha.site_key data-callback="recaptchaCallback")
             button(ng-hide="passwordRequestDisabled") #{ gettext("Send password reset e-mail") }
             button(ng-hide="!passwordRequestDisabled" disabled) #{ gettext("Please wait") }
                 |&nbsp;

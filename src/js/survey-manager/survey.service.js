@@ -6,16 +6,16 @@
 
 var getFormedUrl = require("../core/utils/get-formed-url");
 
-module.exports = function (app) {
+module.exports = function(app) {
     app.service("SurveyService", ["$http", "$window", serviceFun]);
 };
 
 function serviceFun($http, $window) {
-
     var surveysUrl = $window.api_base_url + "surveys",
         surveyUrl = $window.api_base_url + "surveys/:surveyId",
         createExportTaskUrl = $window.api_base_url + "data-export/:surveyId/submissions/async/csv",
-        getActiveExportTasksUrl = $window.api_base_url + "data-export/:surveyId/submissions/async/status",
+        getActiveExportTasksUrl =
+            $window.api_base_url + "data-export/:surveyId/submissions/async/status",
         surveyStaff = $window.api_base_url + "surveys/:surveyId/users/staff",
         surveyRespondents = $window.api_base_url + "surveys/:surveyId/users/respondents";
 
@@ -32,8 +32,11 @@ function serviceFun($http, $window) {
             endDate: data.endDate,
             description: data.description[0],
             finalPageHtml: data.finalPageHtml[0],
-            submissionNotificationUrl: data.submissionNotificationUrl[0]
-        }
+            submissionNotificationUrl: data.submissionNotificationUrl[0],
+            feedbackEnabled: data.feedbackEnabled,
+            numberOfSubmissionsForFeedback: data.numberOfSubmissionsForFeedback,
+            storeUserSessionOnServer: data.storeUserSessionOnServer[0]
+        };
     }
 
     function packClientData(data) {
@@ -49,47 +52,60 @@ function serviceFun($http, $window) {
             endDate: data.endDate,
             description: data.description ? [data.description] : [],
             finalPageHtml: data.finalPageHtml ? [data.finalPageHtml] : [],
-            submissionNotificationUrl: data.submissionNotificationUrl? [data.submissionNotificationUrl] : []
-        }
+            submissionNotificationUrl: data.submissionNotificationUrl
+                ? [data.submissionNotificationUrl]
+                : [],
+            feedbackEnabled: data.feedbackEnabled,
+            numberOfSubmissionsForFeedback: data.numberOfSubmissionsForFeedback,
+            storeUserSessionOnServer: data.storeUserSessionOnServer
+                ? [data.storeUserSessionOnServer]
+                : []
+        };
     }
 
     return {
-        list: function () {
-            return $http.get(surveysUrl).then(function (data) {
+        list: function() {
+            return $http.get(surveysUrl).then(function(data) {
                 return data.map(unpackServerData);
             });
         },
-        get: function (surveyId) {
-            return $http.get(getFormedUrl(surveyUrl, {surveyId: surveyId})).then(function (data) {
+        get: function(surveyId) {
+            return $http.get(getFormedUrl(surveyUrl, { surveyId: surveyId })).then(function(data) {
                 return unpackServerData(data);
             });
         },
-        create: function (surveyReq) {
-            return $http.post(surveysUrl, packClientData(surveyReq)).then(function (data) {
+        create: function(surveyReq) {
+            return $http.post(surveysUrl, packClientData(surveyReq)).then(function(data) {
                 return unpackServerData(data);
             });
         },
-        patch: function (surveyId, surveyReq) {
-            return $http.patch(getFormedUrl(surveyUrl, {surveyId: surveyId}), packClientData(surveyReq))
-                .then(function (data) {
+        patch: function(surveyId, surveyReq) {
+            return $http
+                .patch(getFormedUrl(surveyUrl, { surveyId: surveyId }), packClientData(surveyReq))
+                .then(function(data) {
                     return unpackServerData(data);
                 });
         },
-        delete: function (surveyId) {
-            return $http.delete(getFormedUrl(surveyUrl, {surveyId: surveyId}));
+        delete: function(surveyId) {
+            return $http.delete(getFormedUrl(surveyUrl, { surveyId: surveyId }));
         },
-        createExportTask: function (surveyId, downloadReq) {
-            var url = getFormedUrl(createExportTaskUrl, {surveyId: surveyId}) +
-                "?dateFrom=" + downloadReq.dateFrom +
-                "&dateTo=" + downloadReq.dateTo + "&forceBOM=1" + "&format=" + downloadReq.format;
+        createExportTask: function(surveyId, downloadReq) {
+            var url =
+                getFormedUrl(createExportTaskUrl, { surveyId: surveyId }) +
+                "?dateFrom=" +
+                downloadReq.dateFrom +
+                "&dateTo=" +
+                downloadReq.dateTo +
+                "&forceBOM=1" +
+                "&format=" +
+                downloadReq.format;
 
             return $http.post(url);
         },
         getActiveExportTasks: function(surveyId) {
-            var url = getFormedUrl(getActiveExportTasksUrl, {surveyId : surveyId})
+            var url = getFormedUrl(getActiveExportTasksUrl, { surveyId: surveyId });
 
             return $http.get(url);
         }
     };
-
 }

@@ -22,7 +22,7 @@ module.exports = function (grunt) {
                 transform: [envify({
                     HIDE_FOOD_DATABASE: config.hideFoodDatabase,
                     API_BASE_URL: config.apiBaseUrl,
-                    RECAPTCHA_SITE_KEY: config.recaptchaSiteKey
+                    RECAPTCHA: config.recaptcha
                 }), stringify({
                     appliesTo: {includeExtensions: ['.html']},
                     minify: true

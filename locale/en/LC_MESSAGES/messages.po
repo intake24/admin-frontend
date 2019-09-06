@@ -143,7 +143,7 @@ msgstr "Attributes"
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.pug:26
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.pug:27
 msgid "Ready meal option"
-msgstr "Ready meal option"
+msgstr "Was this a ready-made food (that is, a food that requires no preparation, for example a ready meal, microwave meal, ready prepared salads and sandwiches. But NOT take-away or restaurant dishes)?"
 
 #: /Users/edjenkins/MAMP/intake-node/views/forms/category-properties.pug:32
 #: /Users/edjenkins/MAMP/intake-node/views/forms/food-properties.pug:33

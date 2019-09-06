@@ -1,7 +1,11 @@
 {
   "name": "Intake24Admin",
   "version": "0.0.1",
-  "private": "true",
+  "private": true,
+  "scripts": {
+    "build": "./node_modules/.bin/grunt --config=config.json",
+    "i18n": "./node_modules/i18n-abide/bin/compile-json locale public/i18n"
+  },
   "dependencies": {
     "angular": "^1.6.4",
     "angular-animate": "^1.6.4",

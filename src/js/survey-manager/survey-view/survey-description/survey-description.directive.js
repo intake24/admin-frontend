@@ -4,15 +4,18 @@
 
 "use strict";
 
-module.exports = function (app) {
-    app.directive("surveyDescription", ["$sce", "SurveyService", "UserStateService",
-        "uiDatetimePickerConfig", directiveFun]);
+module.exports = function(app) {
+    app.directive("surveyDescription", [
+        "$sce",
+        "SurveyService",
+        "UserStateService",
+        "uiDatetimePickerConfig",
+        directiveFun
+    ]);
 };
 
 function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerConfig) {
-
     function controller(scope, element, attribute) {
-
         scope.html = "";
         scope.preview = "";
 
@@ -26,39 +29,38 @@ function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerCon
 
         scope.loading = false;
 
-        scope.cancel = function () {
+        scope.cancel = function() {
             updateScope(scope, scope.survey);
         };
 
-        scope.showPreview = function () {
+        scope.showPreview = function() {
             scope.preview = $sce.trustAsHtml(scope.html);
             scope.previewMode = true;
         };
 
-        scope.hidePreview = function () {
+        scope.hidePreview = function() {
             scope.previewMode = false;
         };
 
-        scope.setTextareaMode = function (val) {
+        scope.setTextareaMode = function(val) {
             scope.textAreaMode = val;
         };
 
-        scope.save = function () {
+        scope.save = function() {
             scope.loading = true;
             SurveyService.patch(scope.survey.id, getRequest(scope))
-                .then(function (data) {
+                .then(function(data) {
                     updateScope(scope, data);
                     updateSurvey(scope, data);
                 })
-                .finally(function () {
-                scope.loading = false;
-            });
+                .finally(function() {
+                    scope.loading = false;
+                });
         };
 
-        scope.$watch("survey", function (newVal) {
+        scope.$watch("survey", function(newVal) {
             updateScope(scope, newVal);
         });
-
     }
 
     return {
@@ -68,8 +70,7 @@ function directiveFun($sce, SurveyService, UserStateService, uiDatetimePickerCon
         },
         link: controller,
         template: require("./survey-description.directive.html")
-    }
-
+    };
 }
 
 function getRequest(scope) {
@@ -84,7 +85,11 @@ function getRequest(scope) {
         externalFollowUpURL: scope.survey.externalFollowUpURL,
         supportEmail: scope.survey.supportEmail,
         description: scope.survey.description,
-        finalPageHtml: scope.survey.finalPageHtml
+        finalPageHtml: scope.survey.finalPageHtml,
+        submissionNotificationUrl: scope.survey.submissionNotificationUrl,
+        feedbackEnabled: scope.survey.feedbackEnabled,
+        numberOfSubmissionsForFeedback: scope.survey.numberOfSubmissionsForFeedback,
+        storeUserSessionOnServer: scope.survey.storeUserSessionOnServer
     };
 
     req[scope.targetField] = scope.html;

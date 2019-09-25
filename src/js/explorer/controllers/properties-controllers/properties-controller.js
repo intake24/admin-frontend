@@ -340,8 +340,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
             var packedOriginalBasic = PackerService.packFoodMainRecordUpdate($scope.originalItemDefinition.main);
             var packedCurrentBasic = PackerService.packFoodMainRecordUpdate($scope.itemDefinition.main);
             return !angular.equals(packedOriginalBasic, packedCurrentBasic);
-        }
-        else
+        } else
             return false;
     };
 
@@ -350,8 +349,7 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
             var packedOriginalLocal = PackerService.packFoodLocalRecordUpdate($scope.originalItemDefinition.local);
             var packedCurrentLocal = PackerService.packFoodLocalRecordUpdate($scope.itemDefinition.local);
             return !angular.equals(packedOriginalLocal, packedCurrentLocal);
-        }
-        else
+        } else
             return false;
     };
 
@@ -518,8 +516,12 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     $scope.saveNewFood = function () {
         FoodService.createNewFood($scope.itemDefinition)
             .then(function () {
-                MessageService.showMessage(gettext('New food added'), 'success');
-                notifyItemUpdated();
+
+                FoodService.addFoodToLocale($scope.currentLocale, $scope.itemDefinition.main.code)
+                    .then(function () {
+                        MessageService.showMessage(gettext('New food added'), 'success');
+                        notifyItemUpdated();
+                    });
             }, function (response) {
                 MessageService.showMessage(gettext('Failed to add new food'), 'danger');
                 // Check if this was caused by a 409, and show a better message
@@ -530,8 +532,11 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     $scope.saveNewLocalFood = function () {
         FoodService.createNewLocalFood($scope.currentLocale, $scope.itemDefinition)
             .then(function () {
-                MessageService.showMessage(gettext('New food added'), 'success');
-                notifyItemUpdated();
+                FoodService.addFoodToLocale($scope.currentLocale, $scope.itemDefinition.main.code)
+                    .then(function () {
+                        MessageService.showMessage(gettext('New food added'), 'success');
+                        notifyItemUpdated();
+                    });
             }, function (response) {
                 MessageService.showMessage(gettext('Failed to add new food'), 'danger');
                 // Check if this was caused by a 409, and show a better message

@@ -72,7 +72,7 @@ function serviceFun($http, $q, LocalesService, PackerService) {
 
         getFoodGroups: function (locale) {
             return $http.get(api_base_url + "admin/food-groups/" + locale)
-                .then(function(data) {
+                .then(function (data) {
                     return PackerService.unpackFoodGroups(data);
                 });
         },
@@ -189,12 +189,20 @@ function serviceFun($http, $q, LocalesService, PackerService) {
             });
         },
 
-        cloneFood: function(locale, code, onSuccess, onFailure) {
+        cloneFood: function (locale, code, onSuccess, onFailure) {
             return $http.post(api_base_url + 'admin/foods/' + locale + '/' + code + '/clone');
         },
 
-        cloneFoodAsLocal: function(locale, code, onSuccess, onFailure) {
+        cloneFoodAsLocal: function (locale, code, onSuccess, onFailure) {
             return $http.post(api_base_url + 'admin/foods/' + locale + '/' + code + '/clone-as-local');
+        },
+
+        addFoodToLocale: function (locale, code) {
+            return $http({
+                method: 'POST',
+                url: api_base_url + 'admin/foods/add-to-locale',
+                params: {locale: locale, code: code}
+            });
         }
 
     };

@@ -1,0 +1,34 @@
+<div class="intake24-database-tool">
+  <h3>Recalculate nutrient values</h3>
+
+  <div class="col-sm-12 col-lg-8">
+    <div class="bg-info p-1">
+      <p>This tool can be used to recalculate nutritional data for existing submissions following a food
+        composition table update.</p>
+
+      <p>This tool will only update the existing nutrient values, it will <strong>not</strong> update the food
+        composition table codes for existing recall submissions if they are changed in the food editor tool.</p>
+
+      <p>It is intended to be used when the column mapping is updated for a food composition table, for example
+        to import new nutrient types into Intake24.</p>
+    </div>
+
+    <form class="mt-1">
+      <div class="form-group">
+        <label class="control-label">Survey ID</label>
+        <select ng-model="targetSurveyId" class="form-control">
+          <option ng-value="id" ng-repeat="id in surveyIds | orderBy">{{id}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-success" ng-disabled="!targetSurveyId" ng-click="recalculateNutrients()"> Recalculate nutrients
+        </button>
+      </div>
+    </form>
+
+    <h3>Active tasks</h3>
+    <task-status type="'recalculate-nutrients'"></task-status>
+  </div>
+</div>
+

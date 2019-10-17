@@ -24,6 +24,9 @@
                         <button type="button" class="btn btn-xs btn-success">Download</button>
                     </a>
                 </td>
+                <td ng-if="task.status.status == 'finished' && !task.status.download.url">
+                    <span class="label label-success">Successful</span>
+                </td>
                 <td ng-if="task.status.status == 'pending'">
                     <div class="progress" style="margin-bottom: 0;">
                         <div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar"
@@ -57,7 +60,7 @@
                 </td>
 
                 <td ng-if="task.status.Expired">Download expired</td>-->
-                <td ng-if="task.status.status == 'failed'">Failed</td>
+                <td ng-if="task.status.status == 'failed'"><span class="label label-danger">Failed</span></td>
             </tr>
         </table>
     </div>

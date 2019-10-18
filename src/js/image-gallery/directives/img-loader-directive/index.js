@@ -2,21 +2,20 @@
  * Created by Tim Osadchiy on 22/10/2016.
  */
 
-'use strict';
+"use strict";
 
-module.exports = function (app) {
-    app.directive('imgLoader', ['$window', directiveFun]);
+module.exports = function(app) {
+    app.directive("imgLoader", ["$window", directiveFun]);
 
     function directiveFun($window) {
-
         function controller(scope, element, attributes) {
-
             scope.passedSrc = "";
             scope.loaded = false;
             scope.failed = false;
             scope.completedPercentage = 0;
+            scope.parentEl = scope.parent ? document.querySelector(scope.parent) : $window;
 
-            scope.$watch("src", function (newVal, oldVal) {
+            scope.$watch("src", function(newVal, oldVal) {
                 if (newVal && newVal !== oldVal) {
                     scope.passedSrc = "";
                     watchScroll();
@@ -32,7 +31,7 @@ module.exports = function (app) {
                 var img = new Image(),
                     unregisterWatcher;
 
-                img.onload = function () {
+                img.onload = function() {
                     scope.loaded = true;
                     unregisterWatcher();
                     scope.$apply();
@@ -40,58 +39,61 @@ module.exports = function (app) {
 
                 img.load(scope.src);
 
-                unregisterWatcher = scope.$watch(function () {
-                    return img.completedPercentage;
-                }, function () {
-                    if (isNaN(img.completedPercentage)) {
-                        scope.failed = true;
-                    } else {
-                        scope.completedPercentage = img.completedPercentage;
+                unregisterWatcher = scope.$watch(
+                    function() {
+                        return img.completedPercentage;
+                    },
+                    function() {
+                        if (isNaN(img.completedPercentage)) {
+                            scope.failed = true;
+                        } else {
+                            scope.completedPercentage = img.completedPercentage;
+                        }
                     }
-                });
+                );
             }
 
             function watchScroll() {
-                var off = function () {
-                        angular.element($window).off("scroll", _bindFn);
+                var off = function() {
+                        angular.element(scope.parentEl).off("scroll", _bindFn);
                     },
-                    _bindFn = function () {
-                        if (isElementInViewport(element[0], $window)) {
+                    _bindFn = function() {
+                        if (isInViewport(element[0])) {
                             loadImageSrc();
                             off();
                         }
                     };
 
                 scope.$on("$destroy", off);
-                angular.element($window).on("scroll", _bindFn);
+                angular.element(scope.parentEl).on("scroll", _bindFn);
                 _bindFn();
             }
-
         }
 
         return {
-            restrict: 'E',
+            restrict: "E",
             link: controller,
             scope: {
-                src: "=?"
+                src: "=?",
+                parent: "@"
             },
             template: require("./img-loader-directive.html")
         };
     }
-
 };
 
-function isElementInViewport(el, window) {
-
-    var top = el.offsetTop;
-    var height = el.offsetHeight;
-    var parEl = el;
-
-    while (parEl.offsetParent) {
-        parEl = parEl.offsetParent;
-        top += parEl.offsetTop;
-    }
-
-    return window.pageYOffset <= (top + height) &&
-        top <= (window.pageYOffset + window.innerHeight);
-}
+/*!
+ * Determine if an element is in the viewport
+ * (c) 2017 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param  {Node}    elem The element
+ * @return {Boolean}      Returns true if element is in the viewport
+ */
+var isInViewport = function(elem) {
+    var distance = elem.getBoundingClientRect();
+    return (
+        distance.top >= 0 &&
+        distance.left >= 0 &&
+        distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        distance.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+};

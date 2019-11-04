@@ -34,6 +34,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             {
                 id: "sab",
                 name: "South Asia BioBank"
+            },
+            {
+                id: "bham1119",
+                name: "Birmingham (Nov 2019)"
             }
         ];
 

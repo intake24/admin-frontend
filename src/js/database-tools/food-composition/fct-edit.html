@@ -46,6 +46,50 @@
         <input class="form-control" type="text" ng-model="table.mapping.rowOffset"/>
       </div>
 
+      <h3>Field column mapping</h3>
+
+      <div class="form-group" ng-hide="fieldColumnsCollapsed">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Field name</th>
+            <th>CSV column</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr ng-if="!(table)">
+            <td class="col-sm-4"><i class="fa fa-spinner fa-spin"></i></td>
+            <td class="col-sm-2"></td>
+            <td></td>
+          </tr>
+
+          <tr ng-if="table" ng-repeat="col in table.mapping.fieldColumns">
+            <td class="col-sm-4">
+              <input pattern="[a-zA-Z0-9_]+" type="text" class="form-control" ng-model="col.fieldName"/>
+            </td>
+            <td class="col-sm-2"><input pattern="[a-zA-Z]+" type="text" class="form-control"
+                                        ng-model="columnOffsetModel.bind(col)"
+                                        ng-model-options=" { getterSetter: true } "></td>
+            <td class="col-sm-2">
+              <button class="btn btn-xs btn-danger" ng-click="deleteFieldColumn(col)"><span
+                  class="fa fa-remove"></span>&nbsp; Delete
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-default" ng-click="addFieldColumn()"><span class="fa fa-plus"></span>&nbsp;
+          Add field
+        </button>
+        <button class="btn btn-default btn-sm" ng-disabled="requestInProgress" ng-click="save()"><span
+            class="fa fa-save"></span>&nbsp;Save
+          changes
+        </button>
+      </div>
+
       <h3>Nutrient column mapping</h3>
 
       <div class="form-group">
@@ -120,7 +164,8 @@
           </div>
         </div>
 
-        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && !nutrientsUploadTask.status.progress" class="progress"
+        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && !nutrientsUploadTask.status.progress"
+             class="progress"
              style="margin-bottom: 0;">
           <div class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar"
                style="width: 100%;">In progress
@@ -128,7 +173,8 @@
         </div>
 
 
-        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && nutrientsUploadTask.status.progress" class="progress"
+        <div ng-if="nutrientsUploadTask.status.status == 'in_progress' && nutrientsUploadTask.status.progress"
+             class="progress"
              style="margin-bottom: 0;">
           <div class="progress-bar progress-bar-info" role="progressbar"
                ng-style="{ width: progressToPercentage(nutrientsUploadTask.status.progress) }">

@@ -34,7 +34,8 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
     } else {
         $scope.table = {
             mapping: {
-                nutrientColumns: []
+                nutrientColumns: [],
+                fieldColumns: []
             }
         }
     }
@@ -130,6 +131,12 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         }
     };
 
+    $scope.deleteFieldColumn = function (deleted) {
+        $scope.table.mapping.fieldColumns = _.filter($scope.table.mapping.fieldColumns, function (col) {
+            return col != deleted;
+        });
+    };
+
     $scope.deleteMappingColumn = function (deleted) {
         $scope.table.mapping.nutrientColumns = _.filter($scope.table.mapping.nutrientColumns, function (col) {
             return col != deleted;
@@ -143,11 +150,25 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
         });
     };
 
+    $scope.addFieldColumn = function () {
+        $scope.table.mapping.fieldColumns.push({
+            fieldName: "new_field",
+            columnOffset: 0
+        });
+    };
+
     function prepareTableData() {
         function cleanNutrientColumn(col) {
             return {
                 columnOffset: col.columnOffset,
                 nutrientId: col.nutrientId
+            }
+        }
+
+        function cleanFieldColumn(col) {
+            return {
+                columnOffset: col.columnOffset,
+                fieldName: col.fieldName
             }
         }
 
@@ -159,7 +180,8 @@ function controllerFun($scope, FoodCompositionTablesService, $routeParams, $loca
                 idColumnOffset: $scope.table.mapping.idColumnOffset,
                 descriptionColumnOffset: $scope.table.mapping.descriptionColumnOffset,
                 localDescriptionColumnOffset: $scope.table.mapping.localDescriptionColumnOffset,
-                nutrientColumns: _.map($scope.table.mapping.nutrientColumns, cleanNutrientColumn)
+                nutrientColumns: _.map($scope.table.mapping.nutrientColumns, cleanNutrientColumn),
+                fieldColumns: _.map($scope.table.mapping.fieldColumns, cleanFieldColumn)
             }
         };
     }

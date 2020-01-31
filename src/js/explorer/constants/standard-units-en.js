@@ -10,6 +10,16 @@ module.exports = function () {
         },
 
         {
+            id: 'six_inch_sub_rolls',
+            name: '6 inch sub rolls'
+        },
+
+        {
+            id: 'twelve_inch_sub_rolls',
+            name: '12 inch sub rolls'
+        },
+
+        {
             id: 'anchovies',
             name: 'anchovies'
         },
@@ -115,6 +125,11 @@ module.exports = function () {
         },
 
         {
+            id: 'buns',
+            name: 'buns'
+        },
+
+        {
             id: 'burritos',
             name: 'burritos'
         },
@@ -142,6 +157,11 @@ module.exports = function () {
         {
             id: 'cherries',
             name: 'cherries'
+        },
+
+        {
+            id: 'chestnuts',
+            name: 'chestnuts'
         },
 
         {
@@ -175,6 +195,16 @@ module.exports = function () {
         },
 
         {
+            id: 'crepes',
+            name: 'crepes'
+        },
+
+        {
+            id: 'cubes',
+            name: 'cubes'
+        },
+
+        {
             id: 'cups',
             name: 'cups'
         },
@@ -185,6 +215,11 @@ module.exports = function () {
         },
 
         {
+            id: 'dessert_spoons',
+            name: 'dessert spoons'
+        },
+
+        {
             id: 'double_measures',
             name: 'double measures'
         },
@@ -192,6 +227,11 @@ module.exports = function () {
         {
             id: 'dough_balls',
             name: 'dough balls'
+        },
+
+        {
+            id: 'drumsticks',
+            name: 'drumsticks'
         },
 
         {
@@ -250,6 +290,11 @@ module.exports = function () {
         },
 
         {
+            id: 'fishes',
+            name: 'fishes'
+        },
+
+        {
             id: 'fritters',
             name: 'fritters'
         },
@@ -270,6 +315,11 @@ module.exports = function () {
         },
 
         {
+            id: 'half_pints',
+            name: 'half pints'
+        },
+
+        {
             id: 'heaped_tablespoons',
             name: 'heaped tablespoons'
         },
@@ -277,6 +327,11 @@ module.exports = function () {
         {
             id: 'heaped_teaspoons',
             name: 'heaped teaspoons'
+        },
+
+        {
+            id: 'hoppers',
+            name: 'hoppers'
         },
 
         {
@@ -385,6 +440,11 @@ module.exports = function () {
         },
 
         {
+            id: 'large_coconut_spoons',
+            name: 'large coconut spoons'
+        },
+
+        {
             id: 'large_crackers',
             name: 'large crackers'
         },
@@ -402,6 +462,16 @@ module.exports = function () {
         {
             id: 'large_flapjacks',
             name: 'large flapjacks'
+        },
+
+        {
+            id: 'large_flatbreads',
+            name: 'large flatbreads'
+        },
+
+        {
+            id: 'large_fruits',
+            name: 'large fruits'
         },
 
         {
@@ -462,6 +532,11 @@ module.exports = function () {
         {
             id: 'large_pastries',
             name: 'large pastries'
+        },
+
+        {
+            id: 'large_pieces',
+            name: 'large pieces'
         },
 
         {
@@ -542,6 +617,11 @@ module.exports = function () {
         {
             id: 'leeks',
             name: 'leeks'
+        },
+
+        {
+            id: 'legs',
+            name: 'legs'
         },
 
         {
@@ -635,6 +715,11 @@ module.exports = function () {
         },
 
         {
+            id: 'medium_coconut_spoons',
+            name: 'medium coconut spoons'
+        },
+
+        {
             id: 'medium_courgettes',
             name: 'medium courgettes'
         },
@@ -655,6 +740,16 @@ module.exports = function () {
         },
 
         {
+            id: 'medium_flatbreads',
+            name: 'medium flatbreads'
+        },
+
+        {
+            id: 'medium_fruits',
+            name: 'medium fruits'
+        },
+
+        {
             id: 'medium_gherkins',
             name: 'medium gherkins'
         },
@@ -662,6 +757,11 @@ module.exports = function () {
         {
             id: 'medium_handfuls',
             name: 'medium handfuls'
+        },
+
+        {
+            id: 'medium_hot_dogs',
+            name: 'medium hot dogs'
         },
 
         {
@@ -692,6 +792,11 @@ module.exports = function () {
         {
             id: 'medium_parsnips',
             name: 'medium parsnips'
+        },
+
+        {
+            id: 'medium_pieces',
+            name: 'medium pieces'
         },
 
         {
@@ -797,6 +902,11 @@ module.exports = function () {
         {
             id: 'mini_marshmallows',
             name: 'mini marshmallows'
+        },
+
+        {
+            id: 'mini_mozzarella_balls',
+            name: 'mini mozzarella balls'
         },
 
         {
@@ -970,6 +1080,16 @@ module.exports = function () {
         },
 
         {
+            id: 'pints',
+            name: 'pints'
+        },
+
+        {
+            id: 'pods',
+            name: 'pods'
+        },
+
+        {
             id: 'poppadums',
             name: 'poppadums'
         },
@@ -1095,6 +1215,11 @@ module.exports = function () {
         },
 
         {
+            id: 'seeds',
+            name: 'seeds'
+        },
+
+        {
             id: 'segments',
             name: 'segments'
         },
@@ -1195,8 +1320,13 @@ module.exports = function () {
         },
 
         {
-            id: 'small_carrots',
-            name: 'small carrots'
+            id: 'small_bowls',
+            name: 'small bowls'
+        },
+
+        {
+            id: 'small_cakes',
+            name: 'small cakes'
         },
 
         {
@@ -1207,6 +1337,11 @@ module.exports = function () {
         {
             id: 'small_chops',
             name: 'small chops'
+        },
+
+        {
+            id: 'small_coconut_spoons',
+            name: 'small coconut spoons'
         },
 
         {
@@ -1227,6 +1362,11 @@ module.exports = function () {
         {
             id: 'small_flatbreads',
             name: 'small flatbreads'
+        },
+
+        {
+            id: 'small_fruits',
+            name: 'small fruits'
         },
 
         {
@@ -1300,6 +1440,11 @@ module.exports = function () {
         },
 
         {
+            id: 'small_pieces',
+            name: 'small pieces'
+        },
+
+        {
             id: 'small_pies',
             name: 'small pies'
         },
@@ -1367,6 +1512,11 @@ module.exports = function () {
         {
             id: 'small_tubs',
             name: 'small tubs'
+        },
+
+        {
+            id: 'snack_size_bars',
+            name: 'snack size bars'
         },
 
         {
@@ -1455,6 +1605,11 @@ module.exports = function () {
         },
 
         {
+            id: 'takeaway_portions',
+            name: 'takeaway portions'
+        },
+
+        {
             id: 'tarts',
             name: 'tarts'
         },
@@ -1467,6 +1622,11 @@ module.exports = function () {
         {
             id: 'thick_slices',
             name: 'thick slices'
+        },
+
+        {
+            id: 'thighs',
+            name: 'thighs'
         },
 
         {
@@ -1492,6 +1652,11 @@ module.exports = function () {
         {
             id: 'triangle_slices_half_a_piece_of_bread',
             name: 'triangle slices (half a piece of bread)'
+        },
+
+        {
+            id: 'tubes',
+            name: 'tubes'
         },
 
         {
@@ -1582,6 +1747,11 @@ module.exports = function () {
         {
             id: 'wings',
             name: 'wings'
+        },
+
+        {
+            id: 'wraps_made_with_one_whole_tortilla',
+            name: 'wraps made with one whole tortilla'
         },
 
         {

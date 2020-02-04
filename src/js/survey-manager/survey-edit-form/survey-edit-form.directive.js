@@ -24,6 +24,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "Default"
             },
             {
+                id: "ndns_default",
+                name: "NDNS Default"
+            },
+            {
                 id: "ndns419",
                 name: "NDNS dress rehearsal (April 2019)"
             },

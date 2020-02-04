@@ -22,7 +22,7 @@ function serviceFun() {
         cerealTypes: [{'name': gettext('Hoop'), 'slug': 'hoop'}, {
             'name': gettext('Flake'),
             'slug': 'flake'
-        }, {'name': gettext('Rice krispie'), 'slug': 'rice-krispie'}],
+        }, {'name': gettext('Rice krispie'), 'slug': 'rkris'}],
         currentItem: new Object(),
         originalCode: new Object(),
         foodGroups: new Object(),

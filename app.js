@@ -1,10 +1,11 @@
 /*
  * Module dependencies
  */
-var express = require('express')
-    ,routes = require('./routes')
-    ,i18n = require('i18n-abide')
-    ,cors = require('express-cors');
+var express = require('express');
+var cors = require('cors');
+var i18n = require('i18n-abide');
+var logger = require('morgan');
+var routes = require('./routes');
 
 var app = express();
 
@@ -22,13 +23,12 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
 }));
 
-app.use(express.logger('dev'));
+app.use(logger('dev'));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', routes.dashboardDefault);
 app.get('/:intake_locale/:ui_lang', routes.dashboard);
-app.get('/image-gallery', routes.imageGallery);
+// app.get('/image-gallery', routes.imageGallery);
 app.get('/password-reset', routes.passwordReset);
-
 
 app.listen(3002);

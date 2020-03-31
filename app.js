@@ -6,10 +6,11 @@ var cors = require('cors');
 var helmet = require('helmet');
 var i18n = require('i18n-abide');
 var logger = require('morgan');
+var config = require('./config');
 var routes = require('./routes');
 
 var app = express();
-app.use(helmet());
+app.use(helmet(config.helmet));
 
 app.use(i18n.abide({
   supported_languages: ['ar', 'en'],

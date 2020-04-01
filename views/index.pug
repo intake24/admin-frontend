@@ -8,13 +8,13 @@ html(lang=lang dir=lang_dir)
 
         link(rel='stylesheet', href='/style.css')
 
-        script(type="text/javascript").
+        script(type="text/javascript" nonce=nonce).
             window.intake24_locale = '#{intake24_locale}';
 
         //- Load current translation file
         script(type="text/javascript" src='/i18n/' + lang + '/messages.js')
         script(type="text/javascript" src='/intake24-admin.js')
-        script(src="https://www.google.com/recaptcha/api.js" async defer)
+        script(src="https://www.google.com/recaptcha/api.js" nonce=nonce async defer)
 
     body(ng-app='intake24.admin' ng-controller='AdminController'
     ng-class="{authenticated: currentUser != null, 'no-scroll': bodyIsUnscrollable}")

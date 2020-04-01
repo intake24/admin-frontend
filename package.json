@@ -31,7 +31,8 @@
     "pug": "^2.0.4",
     "textangular": "^1.5.16",
     "ui-select": "^0.19.8",
-    "underscore": "^1.9.2"
+    "underscore": "^1.10.2",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

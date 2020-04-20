@@ -37,6 +37,7 @@ app.use(
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
+          frameSrc: ["'self'", 'www.google.com'],
           imgSrc: ["'self'", 'blob:', config.apiBaseUrl],
           styleSrc: [
             "'self'",

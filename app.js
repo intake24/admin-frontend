@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var express = require('express');
-var cors = require('cors');
 var helmet = require('helmet');
 var i18n = require('i18n-abide');
 var logger = require('morgan');
@@ -54,12 +53,6 @@ app.use(
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
-app.use(
-  cors({
-    allowedOrigins: ['*'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
-  })
-);
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/public'));

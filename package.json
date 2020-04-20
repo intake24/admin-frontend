@@ -19,7 +19,6 @@
     "bootstrap": "^3.3.7",
     "bootstrap-ui-datetime-picker": "^2.6.4",
     "clusterfck": "^0.6.0",
-    "cors": "^2.8.5",
     "d3": "^5.15.0",
     "express": "^4.17.1",
     "font-awesome": "^4.7.0",

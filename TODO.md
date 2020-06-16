@@ -6,6 +6,7 @@
 - Current locale is not correctly highlighted in sidebar
 - Multiple nutrient table codes (not possible to add)
 
+
 ## Features
 
 - Fallback locale support (not sure if client support required?)

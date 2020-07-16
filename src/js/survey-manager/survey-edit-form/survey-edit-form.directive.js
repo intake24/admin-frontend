@@ -36,6 +36,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "NDNS (October 2019)"
             },
             {
+                id: "ndns_follow_up",
+                name: "NDNS FollowUp"
+            },
+            {
                 id: "sab",
                 name: "South Asia BioBank"
             },

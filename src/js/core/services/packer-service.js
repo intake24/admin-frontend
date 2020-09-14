@@ -273,7 +273,7 @@ function serviceFun() {
                         if (param.name == 'drinkware-id') {
                             unpacked.parameters.drinkware_id = param.value;
                         } else if (param.name == 'initial-fill-level') {
-                            unpacked.parameters.initial_fill_level = param.value;
+                            unpacked.parameters.initial_fill_level = parseFloat(param.value);
                         } else if (param.name == 'skip-fill-level') {
                             unpacked.parameters.skip_fill_level = param.value == "true";
                         }

@@ -152,7 +152,9 @@ function getRequest(scope) {
         submissionNotificationUrl: scope.form.submissionNotificationUrl,
         feedbackEnabled: scope.form.feedbackEnabled,
         numberOfSubmissionsForFeedback: scope.form.numberOfSubmissionsForFeedback,
-        storeUserSessionOnServer: scope.form.storeUserSessionOnServer
+        storeUserSessionOnServer: scope.form.storeUserSessionOnServer,
+        maximumDailySubmissions: scope.form.maximumDailySubmissions,
+        minimumSubmissionInterval: scope.form.minimumSubmissionInterval
     };
 }
 
@@ -187,6 +189,8 @@ function updateScope(scope, data) {
         scope.form.feedbackEnabled = false;
         scope.form.numberOfSubmissionsForFeedback = "1";
         scope.form.storeUserSessionOnServer = false;
+        scope.form.maximumDailySubmissions = 3;
+        scope.form.minimumSubmissionInterval = 600;
     } else {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
@@ -201,6 +205,8 @@ function updateScope(scope, data) {
         scope.form.feedbackEnabled = data.feedbackEnabled;
         scope.form.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
         scope.form.storeUserSessionOnServer = data.storeUserSessionOnServer;
+        scope.form.maximumDailySubmissions = data.maximumDailySubmissions;
+        scope.form.minimumSubmissionInterval = data.minimumSubmissionInterval;
     }
 }
 
@@ -218,4 +224,6 @@ function updateSurvey(scope, data) {
     scope.survey.feedbackEnabled = data.feedbackEnabled;
     scope.survey.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
     scope.survey.storeUserSessionOnServer = data.storeUserSessionOnServer;
+    scope.survey.maximumDailySubmissions = data.maximumDailySubmissions;
+    scope.survey.minimumSubmissionInterval = data.minimumSubmissionInterval;
 }

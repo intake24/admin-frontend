@@ -35,7 +35,9 @@ function serviceFun($http, $window) {
             submissionNotificationUrl: data.submissionNotificationUrl[0],
             feedbackEnabled: data.feedbackEnabled,
             numberOfSubmissionsForFeedback: data.numberOfSubmissionsForFeedback,
-            storeUserSessionOnServer: data.storeUserSessionOnServer[0]
+            storeUserSessionOnServer: data.storeUserSessionOnServer[0],
+            maximumDailySubmissions: data.maximumDailySubmissions,
+            minimumSubmissionInterval: data.minimumSubmissionInterval
         };
     }
 
@@ -59,7 +61,9 @@ function serviceFun($http, $window) {
             numberOfSubmissionsForFeedback: data.numberOfSubmissionsForFeedback,
             storeUserSessionOnServer: data.storeUserSessionOnServer
                 ? [data.storeUserSessionOnServer]
-                : []
+                : [],
+            maximumDailySubmissions: data.maximumDailySubmissions,
+            minimumSubmissionInterval: data.minimumSubmissionInterval
         };
     }
 

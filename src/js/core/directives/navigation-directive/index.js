@@ -39,6 +39,10 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                     href: appRoutes.databaseTools.recalculateNutrients,
                     active: false
                 },
+                exportMapping: {
+                    href: appRoutes.databaseTools.exportMapping,
+                    active: false
+                },
                 collapsed: true,
                 active: false
             },

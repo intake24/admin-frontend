@@ -27,6 +27,9 @@
                 li
                     a(ng-href="/\#{{menuItems.databaseTools.recalculateNutrients.href}}" ng-class="{'active': menuItems.databaseTools.recalculateNutrients.active}")
                         | #{ gettext("Recalculate nutrients") }
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.exportMapping.href}}" ng-class="{'active': menuItems.databaseTools.exportMapping.active}")
+                        | #{ gettext("Export nutrient mapping") }
 
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')

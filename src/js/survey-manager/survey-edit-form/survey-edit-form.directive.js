@@ -145,6 +145,7 @@ function getRequest(scope) {
         schemeId: scope.form.schemeId,
         localeId: scope.form.selectedLocale,
         allowGeneratedUsers: scope.form.allowGeneratedUsers,
+        generateUserKey: scope.form.generateUserKey,
         externalFollowUpURL: scope.form.externalFollowUpURL,
         supportEmail: scope.form.supportEmail,
         description: scope.survey ? scope.survey.description : null,
@@ -154,6 +155,7 @@ function getRequest(scope) {
         numberOfSubmissionsForFeedback: scope.form.numberOfSubmissionsForFeedback,
         storeUserSessionOnServer: scope.form.storeUserSessionOnServer,
         maximumDailySubmissions: scope.form.maximumDailySubmissions,
+        maximumTotalSubmissions: scope.form.maximumTotalSubmissions,
         minimumSubmissionInterval: scope.form.minimumSubmissionInterval
     };
 }
@@ -195,8 +197,9 @@ function updateScope(scope, data) {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
         scope.form.selectedLocale = data.localeId;
-        (scope.form.schemeId = data.schemeId),
-            (scope.form.allowGeneratedUsers = data.allowGeneratedUsers);
+        scope.form.schemeId = data.schemeId;
+        scope.form.allowGeneratedUsers = data.allowGeneratedUsers;
+        scope.form.generateUserKey = data.generateUserKey;
         scope.form.externalFollowUpURL = data.externalFollowUpURL;
         scope.form.supportEmail = data.supportEmail;
         scope.form.startDate = new Date(data.startDate);
@@ -206,6 +209,7 @@ function updateScope(scope, data) {
         scope.form.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
         scope.form.storeUserSessionOnServer = data.storeUserSessionOnServer;
         scope.form.maximumDailySubmissions = data.maximumDailySubmissions;
+        scope.form.maximumTotalSubmissions = data.maximumTotalSubmissions;
         scope.form.minimumSubmissionInterval = data.minimumSubmissionInterval;
     }
 }
@@ -216,6 +220,7 @@ function updateSurvey(scope, data) {
     scope.survey.localeId = data.localeId;
     scope.survey.schemeId = data.schemeId;
     scope.survey.allowGeneratedUsers = data.allowGeneratedUsers;
+    scope.survey.generateUserKey = data.generateUserKey;
     scope.survey.externalFollowUpURL = data.externalFollowUpURL;
     scope.survey.supportEmail = data.supportEmail;
     scope.survey.startDate = data.startDate;
@@ -225,5 +230,6 @@ function updateSurvey(scope, data) {
     scope.survey.numberOfSubmissionsForFeedback = data.numberOfSubmissionsForFeedback;
     scope.survey.storeUserSessionOnServer = data.storeUserSessionOnServer;
     scope.survey.maximumDailySubmissions = data.maximumDailySubmissions;
+    scope.survey.maximumTotalSubmissions = data.maximumTotalSubmissions;
     scope.survey.minimumSubmissionInterval = data.minimumSubmissionInterval;
 }

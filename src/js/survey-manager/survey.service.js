@@ -26,6 +26,7 @@ function serviceFun($http, $window) {
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
+            generateUserKey: data.generateUserKey[0],
             externalFollowUpURL: data.externalFollowUpURL[0],
             supportEmail: data.supportEmail,
             startDate: data.startDate,
@@ -37,6 +38,7 @@ function serviceFun($http, $window) {
             numberOfSubmissionsForFeedback: data.numberOfSubmissionsForFeedback,
             storeUserSessionOnServer: data.storeUserSessionOnServer[0],
             maximumDailySubmissions: data.maximumDailySubmissions,
+            maximumTotalSubmissions: data.maximumTotalSubmissions[0],
             minimumSubmissionInterval: data.minimumSubmissionInterval
         };
     }
@@ -48,6 +50,7 @@ function serviceFun($http, $window) {
             schemeId: data.schemeId,
             localeId: data.localeId,
             allowGeneratedUsers: data.allowGeneratedUsers,
+            generateUserKey: data.generateUserKey ? [data.generateUserKey] : [],
             externalFollowUpURL: data.externalFollowUpURL ? [data.externalFollowUpURL] : [],
             supportEmail: data.supportEmail,
             startDate: data.startDate,
@@ -63,6 +66,7 @@ function serviceFun($http, $window) {
                 ? [data.storeUserSessionOnServer]
                 : [],
             maximumDailySubmissions: data.maximumDailySubmissions,
+            maximumTotalSubmissions: data.maximumTotalSubmissions? [data.maximumTotalSubmissions] : [],
             minimumSubmissionInterval: data.minimumSubmissionInterval
         };
     }

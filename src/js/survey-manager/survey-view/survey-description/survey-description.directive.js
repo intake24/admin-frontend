@@ -82,6 +82,7 @@ function getRequest(scope) {
         schemeId: scope.survey.schemeId,
         localeId: scope.survey.localeId,
         allowGeneratedUsers: scope.survey.allowGeneratedUsers,
+        generateUserKey: scope.survey.generateUserKey,
         externalFollowUpURL: scope.survey.externalFollowUpURL,
         supportEmail: scope.survey.supportEmail,
         description: scope.survey.description,
@@ -91,6 +92,7 @@ function getRequest(scope) {
         numberOfSubmissionsForFeedback: scope.survey.numberOfSubmissionsForFeedback,
         storeUserSessionOnServer: scope.survey.storeUserSessionOnServer,
         maximumDailySubmissions: scope.survey.maximumDailySubmissions,
+        maximumTotalSubmissions: scope.survey.maximumTotalSubmissions,
         minimumSubmissionInterval: scope.survey.minimumSubmissionInterval
     };
 

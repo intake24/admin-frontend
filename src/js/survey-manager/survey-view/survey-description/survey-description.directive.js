@@ -91,7 +91,8 @@ function getRequest(scope) {
         numberOfSubmissionsForFeedback: scope.survey.numberOfSubmissionsForFeedback,
         storeUserSessionOnServer: scope.survey.storeUserSessionOnServer,
         maximumDailySubmissions: scope.survey.maximumDailySubmissions,
-        minimumSubmissionInterval: scope.survey.minimumSubmissionInterval
+        minimumSubmissionInterval: scope.survey.minimumSubmissionInterval,
+        authUrlDomainOverride: scope.survey.authUrlDomainOverride
     };
 
     req[scope.targetField] = scope.html;

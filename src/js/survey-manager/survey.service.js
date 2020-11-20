@@ -39,7 +39,8 @@ function serviceFun($http, $window) {
             storeUserSessionOnServer: data.storeUserSessionOnServer[0],
             maximumDailySubmissions: data.maximumDailySubmissions,
             maximumTotalSubmissions: data.maximumTotalSubmissions[0],
-            minimumSubmissionInterval: data.minimumSubmissionInterval
+            minimumSubmissionInterval: data.minimumSubmissionInterval[0],
+            authUrlDomainOverride: data.authUrlDomainOverride
         };
     }
 
@@ -67,7 +68,8 @@ function serviceFun($http, $window) {
                 : [],
             maximumDailySubmissions: data.maximumDailySubmissions,
             maximumTotalSubmissions: data.maximumTotalSubmissions? [data.maximumTotalSubmissions] : [],
-            minimumSubmissionInterval: data.minimumSubmissionInterval
+            minimumSubmissionInterval: data.minimumSubmissionInterval,
+            authUrlDomainOverride: data.authUrlDomainOverride ? [data.authUrlDomainOverride] : []
         };
     }
 

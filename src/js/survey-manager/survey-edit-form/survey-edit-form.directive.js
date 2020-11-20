@@ -156,7 +156,8 @@ function getRequest(scope) {
         storeUserSessionOnServer: scope.form.storeUserSessionOnServer,
         maximumDailySubmissions: scope.form.maximumDailySubmissions,
         maximumTotalSubmissions: scope.form.maximumTotalSubmissions,
-        minimumSubmissionInterval: scope.form.minimumSubmissionInterval
+        minimumSubmissionInterval: scope.form.minimumSubmissionInterval,
+        authUrlDomainOverride: scope.form.authUrlDomainOverride
     };
 }
 
@@ -193,6 +194,7 @@ function updateScope(scope, data) {
         scope.form.storeUserSessionOnServer = false;
         scope.form.maximumDailySubmissions = 3;
         scope.form.minimumSubmissionInterval = 600;
+        scope.form.authUrlDomainOverride = null;
     } else {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
@@ -211,6 +213,7 @@ function updateScope(scope, data) {
         scope.form.maximumDailySubmissions = data.maximumDailySubmissions;
         scope.form.maximumTotalSubmissions = data.maximumTotalSubmissions;
         scope.form.minimumSubmissionInterval = data.minimumSubmissionInterval;
+        scope.form.authUrlDomainOverride = data.authUrlDomainOverride;
     }
 }
 

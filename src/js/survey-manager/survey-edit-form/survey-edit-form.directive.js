@@ -157,7 +157,8 @@ function getRequest(scope) {
         maximumDailySubmissions: scope.form.maximumDailySubmissions,
         maximumTotalSubmissions: scope.form.maximumTotalSubmissions,
         minimumSubmissionInterval: scope.form.minimumSubmissionInterval,
-        authUrlDomainOverride: scope.form.authUrlDomainOverride
+        authUrlDomainOverride: scope.form.authUrlDomainOverride,
+        errorReporting: scope.form.errorReporting
     };
 }
 
@@ -195,6 +196,10 @@ function updateScope(scope, data) {
         scope.form.maximumDailySubmissions = 3;
         scope.form.minimumSubmissionInterval = 600;
         scope.form.authUrlDomainOverride = null;
+        scope.form.errorReporting = {
+            reportSurveyState: true,
+            reportStackTrace: true
+        };
     } else {
         scope.form.name = data.id;
         scope.form.state = String(data.state);
@@ -214,6 +219,7 @@ function updateScope(scope, data) {
         scope.form.maximumTotalSubmissions = data.maximumTotalSubmissions;
         scope.form.minimumSubmissionInterval = data.minimumSubmissionInterval;
         scope.form.authUrlDomainOverride = data.authUrlDomainOverride;
+        scope.form.errorReporting = data.errorReporting;
     }
 }
 
@@ -235,4 +241,6 @@ function updateSurvey(scope, data) {
     scope.survey.maximumDailySubmissions = data.maximumDailySubmissions;
     scope.survey.maximumTotalSubmissions = data.maximumTotalSubmissions;
     scope.survey.minimumSubmissionInterval = data.minimumSubmissionInterval;
+    scope.form.authUrlDomainOverride = data.authUrlDomainOverride;
+    scope.form.errorReporting = data.errorReporting;
 }

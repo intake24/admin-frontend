@@ -94,7 +94,8 @@ function getRequest(scope) {
         maximumDailySubmissions: scope.survey.maximumDailySubmissions,
         maximumTotalSubmissions: scope.survey.maximumTotalSubmissions,
         minimumSubmissionInterval: scope.survey.minimumSubmissionInterval,
-        authUrlDomainOverride: scope.survey.authUrlDomainOverride
+        authUrlDomainOverride: scope.survey.authUrlDomainOverride,
+        errorReporting: scope.survey.errorReporting
     };
 
     req[scope.targetField] = scope.html;

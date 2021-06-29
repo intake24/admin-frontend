@@ -25,6 +25,12 @@
                     a(ng-href="/\#{{menuItems.databaseTools.deriveLocale.href}}" ng-class="{'active': menuItems.databaseTools.deriveLocale.active}")
                         | #{ gettext("Derive new locale") }
                 li
+                    a(ng-href="/\#{{menuItems.databaseTools.mergeLocales.href}}" ng-class="{'active': menuItems.databaseTools.mergeLocales.active}")
+                        | #{ gettext("Merge locales") }
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.updateUKSA.href}}" ng-class="{'active': menuItems.databaseTools.updateUKSA.active}")
+                        | #{ gettext("Update UKSAv2 portion sizes") }
+                li
                     a(ng-href="/\#{{menuItems.databaseTools.recalculateNutrients.href}}" ng-class="{'active': menuItems.databaseTools.recalculateNutrients.active}")
                         | #{ gettext("Recalculate nutrients") }
                 li

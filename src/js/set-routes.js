@@ -24,6 +24,8 @@ module.exports = function (app) {
         databaseTools: {
             foodFrequency: '/database-tools/food-frequency',
             deriveLocale: '/database-tools/derive-locale',
+            mergeLocales: '/database-tools/merge-locales',
+            updateUKSA: '/database-tools/update-uksa',
             recalculateNutrients: '/database-tools/recalculate-nutrients',
             exportMapping: '/database-tools/export-mapping',
             compositionTables: '/database-tools/composition-tables',
@@ -121,6 +123,14 @@ module.exports = function (app) {
             .when(routes.databaseTools.deriveLocale, {
                 template: require("./database-tools/derive-locale/derive-locale.html"),
                 controller: 'DeriveLocaleController'
+            })
+            .when(routes.databaseTools.mergeLocales, {
+                template: require("./database-tools/merge-locales/merge-locales.html"),
+                controller: 'MergeLocalesController'
+            })
+            .when(routes.databaseTools.updateUKSA, {
+                template: require("./database-tools/update-uksa/update-uksa.html"),
+                controller: 'UpdateUKSAController'
             })
             .when(routes.databaseTools.recalculateNutrients, {
                 template: require("./database-tools/recalculate-nutrients/recalculate-nutrients.html"),

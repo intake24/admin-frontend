@@ -35,6 +35,14 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                     href: appRoutes.databaseTools.deriveLocale,
                     active: false
                 },
+                mergeLocales: {
+                    href: appRoutes.databaseTools.mergeLocales,
+                    active: false
+                },
+                updateUKSA: {
+                    href: appRoutes.databaseTools.updateUKSA,
+                    active: false
+                },
                 recalculateNutrients: {
                     href: appRoutes.databaseTools.recalculateNutrients,
                     active: false

@@ -1,0 +1,52 @@
+<div class="intake24-database-tool">
+  <h3>Merge food database locales</h3>
+
+  <div class="col-sm-12 col-lg-8">
+    <div class="bg-info p-1">
+      <p>This tool will create a new food database locale from two existing locales using instructions from a spreadsheet.</p>
+
+      <p><strong>Base locale</strong> will be used as the prototype for the new locale.</p>
+
+      <p><strong>Merge locale</strong> will be used to override data from the base locale.</p>
+
+      <p>Creating new locales is currently not possible using this tool because it requires changing
+        the backend code to set up the indexing and spelling correction rules.</p>
+
+      <p>This tool will only work for newly created locales that have no foods included yet.</p>
+    </div>
+
+    <form class="mt-1">
+      <div class="form-group">
+        <label class="control-label">Base locale</label>
+        <select ng-model="baseLocale" class="form-control">
+          <option ng-value="locale.id" ng-repeat="locale in locales | orderBy: 'englishName'">{{locale.englishName}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Merge locale</label>
+        <select ng-model="mergeLocale" class="form-control">
+          <option ng-value="locale.id" ng-repeat="locale in locales | orderBy: 'englishName' ">{{locale.englishName}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Target locale</label>
+        <select ng-model="targetLocale" class="form-control">
+        <option ng-value="locale.id" ng-repeat="locale in locales | orderBy: 'englishName' ">{{locale.englishName}}</option>
+        </select>
+      </div>
+
+      <div class="form-group bg-warning p-1" ng-if="errors.length > 0">
+        <h4 class="mb-1">The following problems were encountered during the upload:</h4>
+        <p class="mb-1" ng-repeat="errorMessage in errors track by $index">{{ errorMessage }}</p>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-default" ng-disabled="!(baseLocale && mergeLocale && targetLocale)" file-button
+                on-change="uploadSpreadsheet(fileList)"><span class="fa fa-upload"></span>&nbsp;Upload spreadsheet
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1605,6 +1605,11 @@ module.exports = function () {
         },
 
         {
+            id: 'tablets_capsules',
+            name: 'tablets/capsules'
+        },
+
+        {
             id: 'takeaway_portions',
             name: 'takeaway portions'
         },

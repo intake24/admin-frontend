@@ -130,6 +130,11 @@ module.exports = function () {
         },
 
         {
+            id: 'burgers',
+            name: 'burgers'
+        },
+
+        {
             id: 'burritos',
             name: 'burritos'
         },
@@ -252,6 +257,11 @@ module.exports = function () {
         {
             id: 'extra_large_bars',
             name: 'extra large bars'
+        },
+
+        {
+            id: 'extra_large_biscuits',
+            name: 'extra large biscuits'
         },
 
         {

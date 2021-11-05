@@ -36,6 +36,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "NDNS (October 2019)"
             },
             {
+                id: "ndns1019_behaviour",
+                name: "NDNS (October 2019) Behaviour"
+            },
+            {
                 id: "ndns_follow_up",
                 name: "NDNS FollowUp"
             },

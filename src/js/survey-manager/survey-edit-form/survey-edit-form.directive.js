@@ -94,6 +94,12 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
 
         scope.locales = [];
 
+        scope.showJWT = false;
+
+        scope.toggleShowJWT = function() {
+            scope.showJWT = !scope.showJWT;
+        };
+
         scope.openStartDatePicker = function() {
             scope.datePickerState.startIsOpen = true;
         };

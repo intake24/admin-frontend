@@ -205,6 +205,11 @@ module.exports = function () {
         },
 
         {
+            id: 'crumpets',
+            name: 'crumpets'
+        },
+
+        {
             id: 'cubes',
             name: 'cubes'
         },
@@ -312,6 +317,11 @@ module.exports = function () {
         {
             id: 'fruits',
             name: 'fruits'
+        },
+
+        {
+            id: 'giant_crumpets',
+            name: 'giant crumpets'
         },
 
         {
@@ -1085,6 +1095,11 @@ module.exports = function () {
         },
 
         {
+            id: 'pikelets',
+            name: 'pikelets'
+        },
+
+        {
             id: 'pilchards',
             name: 'pilchards'
         },
@@ -1330,13 +1345,18 @@ module.exports = function () {
         },
 
         {
-            id: 'small_bowls',
-            name: 'small bowls'
+            id: 'small_burgers',
+            name: 'small burgers'
         },
 
         {
             id: 'small_cakes',
             name: 'small cakes'
+        },
+
+        {
+            id: 'small_carrots',
+            name: 'small carrots'
         },
 
         {
@@ -1442,6 +1462,11 @@ module.exports = function () {
         {
             id: 'small_pancakes',
             name: 'small pancakes'
+        },
+
+        {
+            id: 'small_pastries',
+            name: 'small pastries'
         },
 
         {

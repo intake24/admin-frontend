@@ -195,6 +195,11 @@ module.exports = function () {
         },
 
         {
+            id: 'cocktail_sausages',
+            name: 'cocktail sausages'
+        },
+
+        {
             id: 'crackers',
             name: 'crackers'
         },
@@ -512,6 +517,11 @@ module.exports = function () {
         {
             id: 'large_jars',
             name: 'large jars'
+        },
+
+        {
+            id: 'large_kebabs',
+            name: 'large kebabs'
         },
 
         {
@@ -1182,6 +1192,11 @@ module.exports = function () {
         {
             id: 'regular_churros',
             name: 'regular churros'
+        },
+
+        {
+            id: 'regular_standard_kebabs',
+            name: 'regular / standard kebabs'
         },
 
         {

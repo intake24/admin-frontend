@@ -140,6 +140,11 @@ module.exports = function () {
         },
 
         {
+            id: 'buttons',
+            name: 'buttons'
+        },
+
+        {
             id: 'cakes',
             name: 'cakes'
         },
@@ -325,8 +330,18 @@ module.exports = function () {
         },
 
         {
+            id: 'giant_buttons',
+            name: 'giant buttons'
+        },
+
+        {
             id: 'giant_crumpets',
             name: 'giant crumpets'
+        },
+
+        {
+            id: 'goujons',
+            name: 'goujons'
         },
 
         {
@@ -382,6 +397,11 @@ module.exports = function () {
         {
             id: 'individual_pots',
             name: 'individual pots'
+        },
+
+        {
+            id: 'individual_slices',
+            name: 'individual slices'
         },
 
         {
@@ -445,6 +465,16 @@ module.exports = function () {
         },
 
         {
+            id: 'large_burgers',
+            name: 'large burgers'
+        },
+
+        {
+            id: 'large_cakes',
+            name: 'large cakes'
+        },
+
+        {
             id: 'large_carrots',
             name: 'large carrots'
         },
@@ -482,6 +512,11 @@ module.exports = function () {
         {
             id: 'large_fillets',
             name: 'large fillets'
+        },
+
+        {
+            id: 'large_fingers',
+            name: 'large fingers'
         },
 
         {
@@ -587,6 +622,11 @@ module.exports = function () {
         {
             id: 'large_pots',
             name: 'large pots'
+        },
+
+        {
+            id: 'large_rolls',
+            name: 'large rolls'
         },
 
         {
@@ -845,6 +885,11 @@ module.exports = function () {
         },
 
         {
+            id: 'medium_rolls',
+            name: 'medium rolls'
+        },
+
+        {
             id: 'medium_scones',
             name: 'medium scones'
         },
@@ -950,6 +995,11 @@ module.exports = function () {
         },
 
         {
+            id: 'mini_rolls',
+            name: 'mini rolls'
+        },
+
+        {
             id: 'mini_skewers',
             name: 'mini skewers'
         },
@@ -1000,6 +1050,11 @@ module.exports = function () {
         },
 
         {
+            id: 'multipack_bars',
+            name: 'multipack bars'
+        },
+
+        {
             id: 'multipack_bottles',
             name: 'multipack bottles'
         },
@@ -1022,6 +1077,11 @@ module.exports = function () {
         {
             id: 'new_potatoes',
             name: 'new potatoes'
+        },
+
+        {
+            id: 'nuggets_dippers',
+            name: 'nuggets/dippers'
         },
 
         {

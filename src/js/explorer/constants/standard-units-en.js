@@ -625,6 +625,11 @@ module.exports = function () {
         },
 
         {
+            id: 'large_pouches',
+            name: 'large pouches'
+        },
+
+        {
             id: 'large_rolls',
             name: 'large rolls'
         },
@@ -882,6 +887,11 @@ module.exports = function () {
         {
             id: 'medium_pots',
             name: 'medium pots'
+        },
+
+        {
+            id: 'medium_pouches',
+            name: 'medium pouches'
         },
 
         {
@@ -1572,6 +1582,11 @@ module.exports = function () {
         {
             id: 'small_pots',
             name: 'small pots'
+        },
+
+        {
+            id: 'small_pouches',
+            name: 'small pouches'
         },
 
         {

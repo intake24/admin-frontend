@@ -1375,6 +1375,16 @@ module.exports = function () {
         },
 
         {
+            id: 'slices_1_6th_of_cake',
+            name: 'slices (1/6th of cake)'
+        },
+
+        {
+            id: 'slices_1_4th_of_cake',
+            name: 'slices (1/4th of cake)'
+        },
+
+        {
             id: 'slices_1_8th_of_pie',
             name: 'slices (1/8th of pie)'
         },

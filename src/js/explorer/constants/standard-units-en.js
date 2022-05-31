@@ -940,6 +940,11 @@ module.exports = function () {
         },
 
         {
+            id: 'mini_baby_peppers',
+            name: 'Mini/baby peppers'
+        },
+
+        {
             id: 'mini_bars',
             name: 'mini bars'
         },

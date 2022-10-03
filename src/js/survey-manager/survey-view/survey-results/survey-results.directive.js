@@ -15,7 +15,7 @@ function directiveFun(SurveyService, uiDatetimePickerConfig, $interval, $locatio
 
         scope.dateFrom = null;
         scope.dateTo = null;
-        scope.format = "v1";
+        scope.format = "v4";
 
         scope.uiDatetimePickerConfig = uiDatetimePickerConfig;
 

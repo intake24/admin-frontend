@@ -32,6 +32,13 @@ function serviceFun($http, $window) {
                 transformRequest: angular.identity,
                 headers: {"Content-Type": undefined}
             });
+        },
+
+        copyCategoryPortionSizeMethods: function (sourceLocale, targetLocale) {
+            return $http.post($window.api_base_url + `v2/foods/admin/copy-category-psm?src=${sourceLocale}&dst=${targetLocale}`, {
+                transformRequest: angular.identity,
+                headers: {"Content-Type": undefined}
+            });
         }
     };
 }

@@ -59,6 +59,10 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                     href: appRoutes.databaseTools.copyPAData,
                     active: false
                 },
+                copyCategoryPsm: {
+                    href: appRoutes.databaseTools.copyCategoryPsm,
+                    active: false
+                },
                 collapsed: true,
                 active: false
             },

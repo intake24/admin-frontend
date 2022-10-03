@@ -32,7 +32,8 @@ module.exports = function (app) {
             compositionTables: '/database-tools/composition-tables',
             compositionTablesNew: '/database-tools/composition-tables/new',
             compositionTablesEdit: '/database-tools/composition-tables/edit/:tableId',
-            copyPAData: '/database-tools/copy-pa-data'
+            copyPAData: '/database-tools/copy-pa-data',
+            copyCategoryPsm: '/database-tools/copy-category-psm'
         },
         surveyFeedback: '/survey-feedback'
     };
@@ -161,6 +162,10 @@ module.exports = function (app) {
             .when(routes.databaseTools.copyPAData, {
                 template: require("./database-tools/copy-pa-data/copy-pa-data.html"),
                 controller: 'CopyPADataController'
+            })
+            .when(routes.databaseTools.copyCategoryPsm, {
+                template: require("./database-tools/copy-category-psm/copy-category-psm.html"),
+                controller: 'CopyCategoryPsmController'
             })
             .otherwise({
                 redirectTo: routes.welcome

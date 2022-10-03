@@ -12,4 +12,5 @@ module.exports = function (app) {
     require("./export-nutrient-mapping/export-nutrient-mapping.controller")(app);
     require("./copy-pa-data/copy-pa-data.controller")(app);
     require("./directives/task-status/task-status.directive")(app);
+    require("./copy-category-psm/copy-category-psm.controller")(app);
 };

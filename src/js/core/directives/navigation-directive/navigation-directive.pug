@@ -42,6 +42,10 @@
                 li
                     a(ng-href="/\#{{menuItems.databaseTools.copyPAData.href}}" ng-class="{'active': menuItems.databaseTools.copyPAData.active}")
                         | #{ gettext("Copy pairwise associations data") }
+                li
+                    a(ng-href="/\#{{menuItems.databaseTools.copyCategoryPsm.href}}" ng-class="{'active': menuItems.databaseTools.copyCategoryPsm.active}")
+                        | #{ gettext("Copy category portion size data") }
+
 
         li(ng-class="{'active': !menuItems.imageGalleries.collapsed}" ng-if="currentUser.canAccessPortionSizeImages()")
             a(ng-click='toggleItem("imageGalleries")')

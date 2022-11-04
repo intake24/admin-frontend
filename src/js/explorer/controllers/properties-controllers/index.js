@@ -7,5 +7,4 @@ module.exports = function(app) {
     require('./portion-size-controller')(app);
     require('./portion-size-item-controller')(app);
     require('./properties-controller')(app);
-
 };

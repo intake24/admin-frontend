@@ -12,7 +12,7 @@
                 ui-select-choices(repeat="item.id as item in (foodGroups | filter: {displayName: $select.search})")
                     span(ng-bind="item.displayName")
 
-    include properties-locale
+include food-locales
 
 include food-properties-nutrient-codes
 

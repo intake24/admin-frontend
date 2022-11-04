@@ -1,0 +1,32 @@
+.property(ng-if="currentUserCanUpdateMainFields")
+    h3 #{ gettext("Use in locales") }
+    button(class="btn btn-default mb-1" ng-click="localesCollapsed = !localesCollapsed")
+        | Show locale settings
+        | &nbsp;
+        span(class="fa fa-chevron-right" ng-if="localesCollapsed")
+        span(class="fa fa-chevron-down" ng-if="!localesCollapsed")
+    i(class="fa fa-spinner fa-spin" style="font-size: x-large;" ng-if="!locales && !localesCollapsed")
+
+    div(ng-if="locales && !localesCollapsed" class="panel panel-default")
+
+        div(class="panel-heading")
+            button(class="btn btn-default btn-sm mr-1" ng-click="useExclusivelyInCurrentLocale()")
+                | Use exclusively in current locale
+
+            button(class="btn btn-default btn-sm mr-1" ng-click="doNotUseInCurrentLocale()")
+                | Do not use in current locale
+
+            button(class="btn btn-default btn-sm" ng-disabled="!revertLocaleChangesEnabled()" ng-click="revertLocaleChanges()")
+                | Revert changes
+
+        div(class="panel-body")
+            div(class="well" ng-if="!validateFoodLocales()").error
+                i(class="fa fa-exclamation-triangle" style="font-size: large;")
+                | &nbsp;
+                | Food must be assigned to at least one locale
+
+            label(ng-repeat="locale in locales" ng-class="{ active: foodLocalesModel(locale.id) }").locale-checkbox-label
+                input(type="checkbox" ng-model="foodLocalesModel.bind(null, locale.id)" ng-model-options="{getterSetter: true}").locale-checkbox-input
+                i(class="flag" ng-class="locale.flagCode")
+                | &nbsp;
+                span {{ locale.englishName }}

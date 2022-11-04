@@ -18,6 +18,10 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
 
     $scope.sharedData = sharedData;
 
+    $scope.locales = null;
+
+    $scope.localesCollapsed = true;
+
     $scope.useInRecipesOptions = [{
         label: "Use anywhere",
         value: 0
@@ -28,6 +32,10 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         label: "Use only as recipe ingredient",
         value: 2
     }];
+
+    LocalesService.list().then((locales) => {
+        $scope.locales = _.sortBy(locales, (l) => l.englishName);
+    });
 
     $scope.$watch(function () {
         return $routeParams.locale;
@@ -128,12 +136,15 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     };
 
     $scope.notValid = function () {
-        return $scope.codeIsInvalid || !$scope.portionSizeIsValid ||
-            $scope.itemDefinition.main.englishDescription == '' || !checkNutrientCodes() ||
-            $scope.currentItem.type == "food" &&
+        return $scope.codeIsInvalid ||
+            !$scope.portionSizeIsValid ||
+            $scope.itemDefinition.main.englishDescription === '' ||
+            !checkNutrientCodes() ||
+            $scope.currentItem.type === "food" &&
             $scope.itemDefinition.local.associatedFoods.filter(function (item) {
                 return !item.foodOrCategory;
-            }).length > 0;
+            }).length > 0 ||
+            $scope.currentItem.type === "food" &&!$scope.validateFoodLocales()
     };
 
     $scope.$watch('itemDefinition.main.code', function () {
@@ -253,6 +264,49 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
         }
     }
 
+    $scope.foodLocalesModel = function (localeId, value) {
+        if ($scope.currentItem.type !== 'food')
+            return undefined;
+
+        if ($scope.itemDefinition == null)
+            return undefined;
+
+        const def = $scope.itemDefinition.main;
+
+        if (angular.isDefined(value)) {
+            let restrictions = _.filter(def.localeRestrictions, (id) => id !== localeId);
+            if (value)
+                restrictions.push(localeId);
+            def.localeRestrictions = restrictions;
+        } else {
+            return _.contains(def.localeRestrictions, localeId);
+        }
+    }
+
+    $scope.revertLocaleChangesEnabled = function () {
+        return !_.isEqual($scope.foodLocalesModel, $scope.initialFoodLocales);
+    }
+
+    $scope.revertLocaleChanges = function () {
+        $scope.itemDefinition.main.localeRestrictions = _.clone($scope.originalItemDefinition.main.localeRestrictions);
+    }
+
+    $scope.useExclusivelyInCurrentLocale = function () {
+        $scope.itemDefinition.main.localeRestrictions = [$scope.currentLocale];
+    }
+
+    $scope.doNotUseInCurrentLocale = function () {
+        $scope.itemDefinition.main.localeRestrictions = _.filter($scope.itemDefinition.main.localeRestrictions,
+            (localeId) => localeId != $scope.currentLocale);
+    }
+
+    $scope.validateFoodLocales = function () {
+        if ($scope.currentItem.type !== 'food')
+            return undefined;
+
+        return $scope.itemDefinition.main.localeRestrictions.length > 0;
+    }
+
     function reloadFoodGroups() {
         FoodService.getFoodGroups($routeParams.locale).then(function (groups) {
             $scope.foodGroups = groups;
@@ -294,7 +348,6 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
                 $scope.codeIsValid = codeValid;
                 $scope.codeIsInvalid = !codeValid;
             });
-
     }
 
     function disableButtons() {

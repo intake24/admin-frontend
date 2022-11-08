@@ -195,6 +195,11 @@ module.exports = function () {
         },
 
         {
+            id: 'chunky_fingers',
+            name: 'chunky fingers'
+        },
+
+        {
             id: 'cloves',
             name: 'cloves'
         },

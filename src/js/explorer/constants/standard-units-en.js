@@ -155,6 +155,11 @@ module.exports = function () {
         },
 
         {
+            id: 'cans',
+            name: 'cans'
+        },
+
+        {
             id: 'cartons',
             name: 'cartons'
         },

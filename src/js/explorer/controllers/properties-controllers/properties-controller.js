@@ -284,7 +284,8 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     }
 
     $scope.revertLocaleChangesEnabled = function () {
-        return !_.isEqual($scope.foodLocalesModel, $scope.initialFoodLocales);
+        return !_.isEqual($scope.itemDefinition.main.localeRestrictions.sort(),
+            $scope.originalItemDefinition.main.localeRestrictions.sort());
     }
 
     $scope.revertLocaleChanges = function () {

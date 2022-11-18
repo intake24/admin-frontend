@@ -97,7 +97,7 @@ function serviceFun() {
                     useInRecipes: instance.unpackOption(packed.main.attributes.useInRecipes)
                 },
                 parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader),
-                localeRestrictions: packed.main.localeRestrictions
+                localeRestrictions: packed.main.localeRestrictions.sort()
             },
             local: {
                 version: instance.unpackOption(packed.local.version),
@@ -328,7 +328,7 @@ function serviceFun() {
             englishDescription: unpacked.englishDescription,
             isHidden: unpacked.isHidden,
             attributes: instance.packInheritableAttributes(unpacked.attributes),
-            localeRestrictions: unpacked.localeRestrictions,
+            localeRestrictions: unpacked.localeRestrictions.sort(),
             parentCategories: _.map(unpacked.parentCategories, function (header) {
                 return header.code;
             }),
@@ -345,7 +345,7 @@ function serviceFun() {
             parentCategories: _.map(unpacked.parentCategories, function (header) {
                 return header.code;
             }),
-            localeRestrictions: unpacked.localeRestrictions
+            localeRestrictions:  unpacked.localeRestrictions.sort()
         };
     };
 
@@ -358,7 +358,7 @@ function serviceFun() {
             parentCategories: _.map(unpacked.main.parentCategories, function (header) {
                 return header.code;
             }),
-            localeRestrictions: unpacked.main.localeRestrictions
+            localeRestrictions: unpacked.main.localeRestrictions.sort()
         };
     };
 

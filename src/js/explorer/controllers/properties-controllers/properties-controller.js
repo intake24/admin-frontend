@@ -284,8 +284,8 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     }
 
     $scope.revertLocaleChangesEnabled = function () {
-        return !_.isEqual($scope.itemDefinition.main.localeRestrictions.sort(),
-            $scope.originalItemDefinition.main.localeRestrictions.sort());
+        return $scope.itemDefinition &&
+            !_.isEqual($scope.itemDefinition.main.localeRestrictions.sort(), $scope.originalItemDefinition.main.localeRestrictions.sort());
     }
 
     $scope.revertLocaleChanges = function () {
@@ -302,6 +302,9 @@ function controllerFun($scope, $rootScope, $routeParams, currentItem, sharedData
     }
 
     $scope.validateFoodLocales = function () {
+        if (!$scope.currentItem || ! $scope.itemDefinition)
+            return undefined;
+
         if ($scope.currentItem.type !== 'food')
             return undefined;
 

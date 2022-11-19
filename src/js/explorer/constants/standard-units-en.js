@@ -545,6 +545,11 @@ module.exports = function () {
         },
 
         {
+            id: 'large_glasses',
+            name: 'large glasses (250ml)'
+        },
+
+        {
             id: 'large_gherkins',
             name: 'large gherkins'
         },
@@ -832,6 +837,11 @@ module.exports = function () {
         {
             id: 'medium_fruits',
             name: 'medium fruits'
+        },
+
+        {
+            id: 'medium_glasses',
+            name: 'medium glasses (175ml)'
         },
 
         {
@@ -1507,6 +1517,11 @@ module.exports = function () {
         {
             id: 'small_fruits',
             name: 'small fruits'
+        },
+
+        {
+            id: 'small_glasses',
+            name: 'small glasses (125ml)'
         },
 
         {

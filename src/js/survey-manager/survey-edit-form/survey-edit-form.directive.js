@@ -50,6 +50,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             {
                 id: "bham1119",
                 name: "Birmingham (Nov 2019)"
+            },
+            {
+                id: "debeat",
+                name: "DEBEAT"
             }
         ];
 

@@ -34,7 +34,9 @@ app.use(
     {
       contentSecurityPolicy: {
         directives: {
+          baseUri: ["'self'"],
           defaultSrc: ["'self'"],
+          objectSrc: ["'none'"],
           scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
           frameSrc: ["'self'", 'www.google.com', 'www.youtube.com'],
           imgSrc: ["'self'", 'blob:', 'data:', config.apiBaseUrl, ...(config.additionalImageSources || [])],

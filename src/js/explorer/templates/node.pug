@@ -7,9 +7,9 @@ span.food-list-container-node(ng-class="{active: value.selected}")
             ng-hide='(value.loadingChildren || value.open)')
 
         i(class='fa fa-spinner fa-spin fa-fw' ng-class="{hidden: !value.loadingChildren}")
-        i(ng-class='nodeMarkerClass(value)' uib-popover-template="'problems-popover-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='hasProblems(value) && !value.loadingChildren')
-        i(ng-class='nodeMarkerClass(value)' ng-if='!hasProblems(value) && !value.loadingChildren && !problemsServiceUnavailable')
-        i(ng-class='nodeMarkerClass(value)' uib-popover-template="'problems-unavailable-template'" popover-trigger="mouseenter" popover-placement="bottom-left" ng-if='!value.loadingChildren && problemsServiceUnavailable')
+        i(ng-class='nodeMarkerClass(value)' uib-popover-template="'problems-popover-template'" popover-trigger="'mouseenter'" popover-placement="bottom-left" ng-if='hasProblems(value) && !value.loadingChildren')
+        i(ng-class='nodeMarkerClass(value)' ng-if='!hasProblems(value) && !value.loadingChildren && !problemsServiceUnavailable' popover-trigger="'mouseenter'")
+        i(ng-class='nodeMarkerClass(value)' uib-popover-template="'problems-unavailable-template'" popover-trigger="'mouseenter'" popover-placement="bottom-left" ng-if='!value.loadingChildren && problemsServiceUnavailable')
 
     a(ng-click='showNodeProperties(value)' ng-attr-dir="{{getTextDirection()}}")
 

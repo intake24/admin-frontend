@@ -96,8 +96,7 @@ function serviceFun() {
                     reasonableAmount: instance.unpackOption(packed.main.attributes.reasonableAmount),
                     useInRecipes: instance.unpackOption(packed.main.attributes.useInRecipes)
                 },
-                parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader),
-                localeRestrictions: packed.main.localeRestrictions.sort()
+                parentCategories: _.map(packed.main.parentCategories, instance.unpackCategoryHeader)
             },
             local: {
                 version: instance.unpackOption(packed.local.version),
@@ -112,6 +111,7 @@ function serviceFun() {
         var unpacked = instance.unpackCommonRecordFields(packed);
 
         unpacked.main.groupCode = packed.main.groupCode;
+        unpacked.main.localeRestrictions = packed.main.localeRestrictions.sort();
         unpacked.local.nutrientTableCodes = packed.local.nutrientTableCodes;
         unpacked.local.brandNames = packed.local.brandNames;
         unpacked.local.associatedFoods = _.map(packed.local.associatedFoods, instance.unpackAssociatedFood);
@@ -328,7 +328,6 @@ function serviceFun() {
             englishDescription: unpacked.englishDescription,
             isHidden: unpacked.isHidden,
             attributes: instance.packInheritableAttributes(unpacked.attributes),
-            localeRestrictions: unpacked.localeRestrictions.sort(),
             parentCategories: _.map(unpacked.parentCategories, function (header) {
                 return header.code;
             }),

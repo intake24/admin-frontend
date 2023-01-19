@@ -32,6 +32,7 @@ app.use((req, res, next) => {
 app.use(
   helmet(
     {
+      crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
         directives: {
           baseUri: ["'self'"],

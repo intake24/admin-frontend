@@ -23,6 +23,10 @@ function controllerFun($scope, DeriveLocaleService, LocalesService, MessageServi
         {
             id: "sab1",
             description: "SAB (version 1)"
+        },
+        {
+            id: "nz1",
+            description: "New Zealand (version 1)"
         }
     ];
 

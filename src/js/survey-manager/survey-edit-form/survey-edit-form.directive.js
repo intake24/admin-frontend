@@ -54,6 +54,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             {
                 id: "debeat",
                 name: "DEBEAT"
+            },
+            {
+                id: "nz",
+                name: "New Zealand"
             }
         ];
 

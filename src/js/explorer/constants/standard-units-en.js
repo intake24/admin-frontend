@@ -420,6 +420,11 @@ module.exports = function () {
         },
 
         {
+            id: 'items',
+            name: 'items'
+        },
+
+        {
             id: 'jars',
             name: 'jars'
         },
@@ -562,6 +567,11 @@ module.exports = function () {
         {
             id: 'large_hot_dogs',
             name: 'large hot dogs'
+        },
+
+        {
+            id: 'large_items',
+            name: 'large items'
         },
 
         {
@@ -857,6 +867,11 @@ module.exports = function () {
         {
             id: 'medium_hot_dogs',
             name: 'medium hot dogs'
+        },
+
+        {
+            id: 'medium_items',
+            name: 'medium items'
         },
 
         {
@@ -1547,6 +1562,11 @@ module.exports = function () {
         {
             id: 'small_individual_tubs',
             name: 'small individual tubs'
+        },
+
+        {
+            id: 'small_items',
+            name: 'small items'
         },
 
         {

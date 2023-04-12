@@ -1,0 +1,126 @@
+<div class="intake24-database-tool">
+
+
+  <h3>Upload drinkware image set</h3>
+
+  <div class="row">
+    <div class="col-sm-12 col-lg-8">
+      <div class="bg-info p-1">
+        <p>Editing drink sliding scales is not supported, however you can upload a new sliding scale set here.</p>
+        <p>This function is for upload only, in case of any issues uploaded data has to be edited/deleted manually.</p>
+      </div>
+    </div>
+  </div>
+
+  <form class="form-horizontal mt-1">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Glass/cup/mug selection</h4>
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <div class="col-xs-3 text-right">
+        <label class="control-label">Set image:</label>
+      </div>
+      <div class="col-xs-9">
+        <span class="badge">{{ showFileName(setImageFile) }}</span>
+        <button class="btn btn-sm" file-button
+                on-change="onSetImageSelected(fileList)"><span class="fa fa-upload"></span>&nbsp;Select image
+        </button>
+      </div>
+    </div>
+
+
+    <div class="row mb-1">
+      <div class="col-xs-3 text-right">
+        <label class="control-label">Object outlines (.svg):</label>
+      </div>
+
+      <div class="col-xs-9">
+        <span class="badge">{{ showFileName(setOutlinesFile) }}</span>
+        <button class="btn btn-sm" file-button
+                on-change="onSetOutlinesSelected(fileList)"><span class="fa fa-upload"></span>&nbsp;Select file
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Volume measurements</h4>
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <div class="col-xs-3 text-right">
+        <label class="control-label">Volume samples (.csv):</label>
+      </div>
+      <div class="col-xs-9">
+        <span class="badge">{{ showFileName(volumeSamplesFile) }}</span>
+        <button class="btn btn-sm" file-button
+                on-change="onVolumeSamplesSelected(fileList)"><span class="fa fa-upload"></span>&nbsp;Select file
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Sliding scales</h4>
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <div class="col-xs-2">
+        <label class="control-label">Object ID</label>
+      </div>
+
+      <div class="col-xs-4">
+        <label class="control-label">Base image</label>
+      </div>
+
+      <div class="col-xs-4">
+        <label class="control-label">Fill outline (.svg)</label>
+      </div>
+    </div>
+
+    <div ng-repeat="(index, item) in slidingScales track by index">
+
+      <div class="row mb-1">
+        <div class="col-xs-2">
+          <input type="text" class="form-control" ng-model="item.objectId"></input>
+        </div>
+
+        <div class="col-xs-4">
+          <span class="badge">{{ showFileName(item.baseImage) }}</span>
+          <button class="btn btn-sm" file-button
+                  on-change="item.baseImage=fileList[0]"><span class="fa fa-upload"></span>&nbsp;Select file
+          </button>
+        </div>
+
+        <div class="col-xs-4">
+
+          <span class="badge">{{ showFileName(item.outline) }}</span>
+          <button class="btn btn-sm" file-button
+                  on-change="item.outline=fileList[0]"><span class="fa fa-upload"></span>&nbsp;Select file
+          </button>
+
+        </div>
+
+        <div class="col-xs-2">
+          <button class="btn btn-sm" ng-click="removeSlidingScale(index)"><i class="fa fa-trash"></i></button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <div class="col-xs-4">
+        <button class="btn btn-sm" ng-click="addSlidingScale()"><i class="fa fa-plus"></i></button>
+      </div>
+    </div>
+  </form>
+
+  <button class="btn btn-primary" ng-click="upload()"><span class="fa fa-upload"></span>&nbsp;Upload</button>
+
+</div>
+

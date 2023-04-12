@@ -86,6 +86,11 @@ function directiveFun($location, $routeParams, LocalesService, appRoutes, UserSt
                 active: false,
                 parent: "imageGalleries"
             },
+            imageGalleryDrinkware: {
+                href: appRoutes.imageGalleryNewDrinkware,
+                active: false,
+                parent: "imageGalleries"
+            },
             userManager: {
                 href: appRoutes.userManagerRoute,
                 collapsed: true,

@@ -56,6 +56,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "DEBEAT"
             },
             {
+                id: "fss_intake_children",
+                name: "FSS Intake Children"
+            },
+            {
                 id: "nz",
                 name: "New Zealand"
             }

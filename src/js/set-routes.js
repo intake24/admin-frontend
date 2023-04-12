@@ -11,6 +11,7 @@ module.exports = function (app) {
         imageGalleryGuidedList: "/galleries/guided",
         imageGalleryGuidedItem: "/galleries/guided/:guidedId",
         imageGalleryNewGuidedItem: "/galleries/new-guided",
+        imageGalleryNewDrinkware: "/galleries/new-drinkware",
         userManagerRoute: '/users',
         userManagerRespondents: '/users/respondents',
         userManagerAdmins: '/users/admins',
@@ -74,6 +75,10 @@ module.exports = function (app) {
             })
             .when(routes.imageGalleryRoute, {
                 redirectTo: routes.imageGalleryMain
+            })
+            .when(routes.imageGalleryNewDrinkware, {
+                template: require("./image-gallery/templates/image-gallery-drinkware.html"),
+                controller: 'ImageGalleryDrinkware'
             })
             .when(routes.userManagerAdmins, {
                 template: require("./user-managers/controllers/user-manager-admins/index.html"),

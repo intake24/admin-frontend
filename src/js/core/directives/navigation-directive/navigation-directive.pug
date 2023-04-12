@@ -61,6 +61,10 @@
                 li
                     a(ng-href="\#{{menuItems.imageGalleryGuided.href}}" ng-class="{'active': menuItems.imageGalleryGuided.active}")
                         | #{ gettext("image_gallery_guided") }
+                li
+                    a(ng-href="\#{{menuItems.imageGalleryDrinkware.href}}" ng-class="{'active': menuItems.imageGalleryDrinkware.active}")
+                        | #{ gettext("Drinkware") }
+
 
         li.group(ng-if="currentUser.canAccessSurveyManager()")
             a(ng-href="\#{{menuItems.surveyManager.href}}" ng-class="{'active': menuItems.surveyManager.active}")

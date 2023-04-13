@@ -1,7 +1,8 @@
 "use strict";
 
+
 module.exports = function (app) {
-    app.controller("ImageGalleryDrinkware", ["$scope", function ($scope) {
+    app.controller("ImageGalleryDrinkware", ["$scope", "DrinkwareService", function ($scope, DrinkwareService) {
 
         $scope.slidingScales = [];
 
@@ -30,8 +31,18 @@ module.exports = function (app) {
             $scope.slidingScales.splice(index, 1);
         }
 
-        $scope.upload = function() {
-            window.alert(JSON.stringify($scope.slidingScales));
+        $scope.canUpload = function () {
+            let slidingScalesNotEmpty = $scope.slidingScales.length > 0;
+            let slidingScalesValid = $scope.slidingScales.every((item) => item.objectId && item.baseImage && item.outline);
+
+            return !$scope.uploadInProgress && $scope.id && $scope.setImageFile && $scope.setOutlinesFile && $scope.volumeSamplesFile &&
+                slidingScalesNotEmpty && slidingScalesValid;
+        }
+
+        $scope.upload = function () {
+            $scope.uploadInProgress = true;
+            DrinkwareService.upload($scope.id, $scope.setImageFile, $scope.setOutlinesFile, $scope.volumeSamplesFile, $scope.slidingScales)
+                .then(() => $scope.uploadInProgress = false);
         }
     }]);
 };

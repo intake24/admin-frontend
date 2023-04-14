@@ -9,9 +9,10 @@ module.exports = function (app) {
         const BASE_URL = $window.api_base_url + "admin/portion-size/drinkware";
 
         return {
-            upload: function (id, setImageFile, setOutlinesFile, volumeSamplesFile, slidingScales) {
+            upload: function (id, description, setImageFile, setOutlinesFile, volumeSamplesFile, slidingScales) {
                 let fd = new FormData();
                 fd.append("setId", id);
+                fd.append("setDescription", description);
                 fd.append("setImageFile", setImageFile);
                 fd.append("setOutlinesFile", setOutlinesFile);
                 fd.append("volumeSamplesFile", volumeSamplesFile);

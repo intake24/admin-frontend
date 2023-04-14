@@ -35,14 +35,15 @@ module.exports = function (app) {
             let slidingScalesNotEmpty = $scope.slidingScales.length > 0;
             let slidingScalesValid = $scope.slidingScales.every((item) => item.objectId && item.baseImage && item.outline);
 
-            return !$scope.uploadInProgress && $scope.id && $scope.setImageFile && $scope.setOutlinesFile && $scope.volumeSamplesFile &&
-                slidingScalesNotEmpty && slidingScalesValid;
+            return !$scope.uploadInProgress && $scope.id && $scope.description && $scope.setImageFile
+                && $scope.setOutlinesFile && $scope.volumeSamplesFile && slidingScalesNotEmpty && slidingScalesValid;
         }
 
         $scope.upload = function () {
             $scope.uploadInProgress = true;
-            DrinkwareService.upload($scope.id, $scope.setImageFile, $scope.setOutlinesFile, $scope.volumeSamplesFile, $scope.slidingScales)
-                .then(() => $scope.uploadInProgress = false);
+            DrinkwareService.upload($scope.id, $scope.description, $scope.setImageFile,
+                $scope.setOutlinesFile, $scope.volumeSamplesFile, $scope.slidingScales)
+                .finally(() => $scope.uploadInProgress = false);
         }
     }]);
 };

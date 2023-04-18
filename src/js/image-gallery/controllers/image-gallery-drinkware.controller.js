@@ -2,7 +2,7 @@
 
 
 module.exports = function (app) {
-    app.controller("ImageGalleryDrinkware", ["$scope", "DrinkwareService", function ($scope, DrinkwareService) {
+    app.controller("ImageGalleryDrinkware", ["$scope", "DrinkwareService", "MessageService", function ($scope, DrinkwareService, MessageService) {
 
         $scope.slidingScales = [];
 
@@ -43,6 +43,9 @@ module.exports = function (app) {
             $scope.uploadInProgress = true;
             DrinkwareService.upload($scope.id, $scope.description, $scope.setImageFile,
                 $scope.setOutlinesFile, $scope.volumeSamplesFile, $scope.slidingScales)
+                .then(() => {
+                    MessageService.showSuccess("New drinkware set uploaded successfully");
+                })
                 .finally(() => $scope.uploadInProgress = false);
         }
     }]);

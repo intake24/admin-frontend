@@ -28,6 +28,10 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "NDNS Default"
             },
             {
+                id: "ndns_default_simple",
+                name: "NDNS Simplified"
+            },
+            {
                 id: "ndns419",
                 name: "NDNS dress rehearsal (April 2019)"
             },

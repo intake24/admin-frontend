@@ -48,12 +48,12 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
                 name: "NDNS FollowUp"
             },
             {
-                id: "sab",
-                name: "South Asia BioBank"
-            },
-            {
                 id: "bham1119",
                 name: "Birmingham (Nov 2019)"
+            },
+            {
+                id: "bristol_ooh",
+                name: "Bristol Out-of-Home"
             },
             {
                 id: "debeat",
@@ -66,7 +66,11 @@ function directiveFun(LocalesService, SurveyService, UserStateService, uiDatetim
             {
                 id: "nz",
                 name: "New Zealand"
-            }
+            },
+            {
+                id: "sab",
+                name: "South Asia BioBank"
+            },
         ];
 
         scope.searchSortingAlgorithmOptions = [
